@@ -19,7 +19,7 @@ Imports:
     magrittr,
     Matrix,
     readr,
-    reticulate
+    reticulate (>= 1.4.1)
 Depends: 
     R (>= 3.5)
 RoxygenNote: 7.3.2
