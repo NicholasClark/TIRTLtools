@@ -1,16 +1,21 @@
 Package: TIRTLtools
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Analysis Tools for TIRTLseq Data
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "Nicholas", "Clark",
+      email = "Nicholas.Clark@STJUDE.ORG",
+      role = c("aut", "cre")
+    ),
+    person(
+      "Mikhail", "Pogorelyy",
+      email = "Mikhail.Pogorelyy@STJUDE.ORG",
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
+Description: A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using TIRTL-seq.
+    Contains an efficient GPU implementation of TCRdist (Dash et al., Nature 2017).
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

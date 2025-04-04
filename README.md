@@ -1,6 +1,6 @@
 # TIRTLtools R package
 
-A suite of tools for analyzing T-cell receptor (TCR) datasets created using TIRTL-seq.
+A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using TIRTL-seq.
 
 Package may change frequently as it is in active development.
 
