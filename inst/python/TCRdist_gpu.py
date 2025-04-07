@@ -60,28 +60,15 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
                   only_lower_tri = True,
                   compare_to_self = False):
     result = mx.sum(submat[tcr1[:, None, :], tcr2[ None,:, :]],axis=2)
-    #  if comparing a set of TCRs to itelf:
-    #  keep track of TCRdist == 0 and set them to -1 (except for the same TCR against itself)
-    if compare_to_self:
-        if ch1 == ch2:
-            mask = (result == 0) & (~np.eye(result.shape[0], dtype=bool))
-            mask = mask*(-1)
-            result = result+mask
-        else:
-            mask = result == 0
-            mask = mask*(-1)
-            result = result+mask
-    # if comparing two different sets of TCRs:
-    #  keep track of TCRdist == 0 and set them to -1
-    else:
-        mask = result == 0
-        mask = mask*(-1)
-        result = result+mask
-    ### set values greater than the cutoff to zero
+    ### set values with TCRdist == 0 to negative 1 so that they are not lost when converted to sparse matrix
+    mask = result == 0
+    mask = mask*(-1)
+    result = result+mask
+    ## set values greater than the cutoff to zero
     less_or_equal = mx.less_equal(result, tcrdist_cutoff)
     result = result*less_or_equal
-    if mx.__name__ == "cupy":
-        result = mx.asnumpy(result)
+    # if mx.__name__ == "cupy":
+    #     result = mx.asnumpy(result)
     if output in ["sparse", "both", "edge_list"]:
         #score_dtype = np.int16
         score_dtype = np.int32
@@ -98,7 +85,7 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
                 df = df[df['edge1_0index'] > df['edge2_0index']]
             else:
                 df = df[df['edge1_0index'] != df['edge2_0index']]
-        ### replace -1's with 0's
+        ### Change values of -1 back to zero (see comment above)
         df['TCRdist'] = df['TCRdist'].replace(-1, 0)
     if output == "both":
         return(result_sparse, df)
