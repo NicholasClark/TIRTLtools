@@ -67,8 +67,8 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
     ## set values greater than the cutoff to zero
     less_or_equal = mx.less_equal(result, tcrdist_cutoff)
     result = result*less_or_equal
-    # if mx.__name__ == "cupy":
-    #     result = mx.asnumpy(result)
+    if mx.__name__ == "cupy":
+        result = mx.asnumpy(result)
     if output in ["sparse", "both", "edge_list"]:
         #score_dtype = np.int16
         score_dtype = np.int32
