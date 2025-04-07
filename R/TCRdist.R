@@ -1,19 +1,31 @@
 ## TCRdist main function
 
-# tcr_all = arrow::read_parquet("../covid_data_analysis/data/vdj_and_covid_032425.parquet")
-# tcr1 = tcr_all[1:20000,]
-# tcr2 = tcr_all[1:20000,]
-# # tmp1 = TCRdist(tcr1 = tcr1, only_lower_tri = FALSE)
-# # tmp2 = TCRdist(tcr1 = tcr1, only_lower_tri = TRUE)
-# tmp3 = TCRdist(tcr1 = tcr1, tcrdist_cutoff=120, only_lower_tri = TRUE)
-# tmp2 = TCRdist(tcr1 = tcr1, tcr2 = tcr2, tcrdist_cutoff=120, only_lower_tri = F)
+tcr_all = arrow::read_parquet("../covid_data_analysis/data/vdj_and_covid_032425.parquet")
+tcr1 = tcr_all[1:20000,]
+tcr2 = tcr_all[1:20000,]
+# tmp1 = TCRdist(tcr1 = tcr1, only_lower_tri = FALSE)
+# tmp2 = TCRdist(tcr1 = tcr1, only_lower_tri = TRUE)
+tmp3 = TCRdist(tcr1 = tcr1, tcrdist_cutoff=120, only_lower_tri = TRUE)
+tmp2 = TCRdist(tcr1 = tcr1, tcr2 = tcr2, tcrdist_cutoff=120, only_lower_tri = F)
 
 TCRdist = function(tcr1=NULL, tcr2=NULL, params_df = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=1000, print_res = TRUE, only_lower_tri = TRUE) {
   #reticulate::use_condaenv("nick_main")
   #np <- import("numpy", delay_load = TRUE)
   #reticulate::use_condaenv("TIRTLtools")
-  utils = reticulate::import_from_path("utils", path = "inst/python/", convert = TRUE, delay_load = TRUE)
-  TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = "inst/python", convert = TRUE, delay_load = TRUE)
+  # source_python_func <- function() {
+  #   # Get full path to the Python file
+  #   py_file <- system.file("python", "utils.py", package = "yourpackagename")
+  #
+  #   if (py_file == "") {
+  #     stop("Could not find func.py. Make sure it is installed in inst/python/")
+  #   }
+  #
+  #   # Source the Python file
+  #   reticulate::source_python(py_file)
+  # }
+  #utils = reticulate::import_from_path("utils", path = "inst/python/", convert = TRUE, delay_load = TRUE)
+  #TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = "inst/python", convert = TRUE, delay_load = TRUE)
+  TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
   pd = reticulate::import("pandas", delay_load = TRUE)
   np = reticulate::import("numpy", delay_load = TRUE)
   #mx = reticulate::import("mlx.core", delay_load = TRUE)
