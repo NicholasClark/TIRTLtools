@@ -102,7 +102,7 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
     #chunk_size = np.int64(chunk_size)
     #print_chunk_size = np.int64(print_chunk_size)
     compare_to_self = False
-    submat = mx.array(submat)
+    submat = mx.array(submat, dtype = mx.uint8)
     params_vec = dict(zip(params_df["feature"], params_df["value"]))
     tcr1_mx = process_TCRs(tcr1, params_vec=params_vec)
     tcr1 = tcr1.copy()
