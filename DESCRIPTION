@@ -11,7 +11,7 @@ Authors@R: c(
     person(
       "Mikhail", "Pogorelyy",
       email = "Mikhail.Pogorelyy@STJUDE.ORG",
-      role = c("aut", "cre")
+      role = c("aut")
     )
   )
 Description: A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using TIRTL-seq.
