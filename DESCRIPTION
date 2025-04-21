@@ -21,6 +21,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.table,
+    ggplot2,
     magrittr,
     Matrix,
     readr,

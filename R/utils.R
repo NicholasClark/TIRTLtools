@@ -10,3 +10,46 @@ pad_center <- function(seq, target_length) {
     return(paste(c(first_half, rep("_", total_padding), second_half), collapse = "" ))
   }
 }
+
+get_log_labels_neg = function(x) {
+  y1 = min(x) %>% log10() %>% floor()
+  y2 = -1
+  y_breaks = y1:y2
+  expr_list = sapply(y_breaks, function(x) {
+    if(x %in% c(0,-1,-2)) return(as.character(10^x))
+    bquote("10"^.(as.character(x)))
+  })
+  labels_y <- do.call("expression", expr_list)
+  return(list(brks = 10^y_breaks, labels = labels_y))
+}
+
+get_log_labels_pos = function(x) {
+  max_rank = max(x) %>% log10() %>% ceiling()
+  x_breaks = 0:max_rank
+  expr_list = sapply(x_breaks, function(x) {
+    if(x %in% c(0,1,2)) return(as.character(10^x))
+    bquote("10"^.(as.character(x)))
+  })
+  labels_x = do.call("expression", expr_list)
+  return(list(brks = 10^x_breaks, labels = labels_x))
+}
+
+geta<-function(dtlist){
+  dtlist[grepl("TRA",names(dtlist))]
+}
+
+getb<-function(dtlist){
+  dtlist[grepl("TRB",names(dtlist))]
+}
+
+geta_sm<-function(dtlist){ #same, but smaller files!
+  lapply(dtlist[grepl("TRA",names(dtlist))],function(x)x[,.(readCount,readFraction,targetSequences),])
+}
+
+getb_sm<-function(dtlist){ #same, but smaller files!
+  lapply(dtlist[grepl("TRB",names(dtlist))],function(x)x[,.(readCount,readFraction,targetSequences),])
+}
+
+get_well_subset<-function(row_range=1:16,col_range=1:24){
+  unlist(sapply(LETTERS[row_range],function(x)paste(x,col_range,sep=""),simplify = F))
+}
