@@ -20,7 +20,7 @@
 #'
 
 plot_gene_usage = function(data, groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
-                        value_type = c("n", "readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg"),
+                        value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
                         agg_func = c("sum", "max"),
                         log_scale = FALSE,
                         style = c("barplot", "boxplot")) {
@@ -36,82 +36,137 @@ plot_gene_usage = function(data, groups = NULL, gene = c("va", "vb", "ja", "jb",
   if(is_data_frame) is_paired = "wij" %in% colnames(data)
   if(is_list) is_paired = "wij" %in% colnames(data[[1]])
 
-  ### for list of data frames input -----------------
-  if(is_list) {
+  if(value_type == "auto") {
+    if(is_paired) {
+      value_type = "n_wells"
+    } else {
+      value_type = "readFraction"
+    }
+  }
 
-    data_all = lapply(1:length(data), function(i) {
+  ### get top genes
+  if(is_list) {
+    data = lapply(1:length(data), function(i) {
       data_tmp = data[[i]]
-      if(!is.null(group)) data_tmp$group = groups[i]
+      if(!is.null(groups)) {
+        data_tmp$group = groups[i]
+      } else {
+        data_tmp$group = as.character(i)
+      }
       return(data_tmp)
     }) %>% dplyr::bind_rows()
-
-    if(is_paired) {
-      ### choose v-segment to keep: top n_max most common
-      data_summ_all = data_all %>% group_by(!!sym(gene)) %>% summarize(n = n()) %>% arrange(desc(n))
-      v_kept = data_summ_all[[gene]][1:n_max]
-
-      data_all_sub = data_all %>% filter(!!sym(gene) %in% v_kept)
-      data_gg = data_all_sub %>% group_by(group,!!sym(gene)) %>% summarize(n = n())
-      data_gg[[gene]] = factor(data_gg[[gene]], levels = rev(v_kept))
-
-      #data_all_sub[[gene]] = factor(data_all_sub[[gene]], levels = rev(v_kept))
-
-      xlab_title = "Count"
-      if(style == "barplot") {
-        gg = ggplot(data_gg) + geom_col(aes(x=n, y=va, fill = group),
-                                        color = "grey20", position = "dodge") + theme_classic() +
-          ylab("") + xlab(xlab_title)
-      }
-      if(style == "boxplot") {
-        gg = ggplot(data_gg, aes(x=n, y=va)) + geom_boxplot() +
-          geom_point(aes(color = group)) + theme_classic() +
-          ylab("") + xlab(xlab_title)
-      }
-    } else { ### pseudobulk
-
-    }
   }
-  ### for single data frame input ----------------------
-  if(is_data_frame) {
-    if(is_paired) {
-      data_summ = data %>% group_by(!!sym(gene)) %>% summarize(n = n()) %>% arrange(desc(n))
-      #data_gg = data_summ[1:n_max,] %>% mutate(va = factor(!!gene, levels = rev(!!gene)))
-      data_gg = data_summ[1:n_max,]
-      data_gg[[gene]] = factor(data_gg[[gene]], levels = rev(data_gg[[gene]]))
+  if(is_paired) data$n_wells = data$wij
 
-      xlab_title = "Count"
-      gg = ggplot(data_gg) + geom_col(aes(x=n, y=!!sym(gene), fill = n), color = "grey20") + theme_classic() +
-        ylab("") +
-        paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
-    } else { ### pseudobulk
-      ### sum over multiple rows w/ the same gene
-      data_summ = data %>% group_by(!!sym(gene)) %>% summarize(n = n(), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE)) %>% arrange(desc(!!sym(value_type)))
-      n_genes_obs = dim(data_summ)[1]
-      if(n_max >= n_genes_obs) {
-        n_max = n_genes_obs
-        keep_genes = data_summ[[gene]][1:n_max]
-        data_gg = data_summ
-        data_gg[[gene]] = factor(data_gg[[gene]], levels = rev(keep_genes))
-        warning(paste('n_max >= number of genes observed: displaying', n_genes_obs, 'genes'))
-      } else {
-        keep_genes = data_summ[[gene]][1:n_max]
-        data_other = data_summ[(n_max+1):dim(data_summ)[1],] %>%
-          summarize(!!sym(gene) := "other", n=sum(n,na.rm=TRUE), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE))
-        data_gg = bind_rows(data_summ[1:n_max,], data_other)
-        data_gg[[gene]] = factor(data_gg[[gene]], levels = c("other",rev(keep_genes)))
-      }
-      gg = ggplot(data_gg) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = !!sym(value_type)), color = "grey20") +
-        ylab("") +
-        theme_classic() +
-        paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
-      if(log_scale) {
-        gg = gg + scale_x_log10(labels = scales::label_log())
-      } else {
-        gg = gg + scale_x_continuous(labels = scales::label_number_auto())
-      }
-    }
+  top_gene_df = data %>% group_by(!!sym(gene)) %>% summarize(n = n(), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE)) %>% arrange(desc(!!sym(value_type)))
+  if(n_max<=dim(top_gene_df)[1]) {
+    top_genes = top_gene_df[[gene]][1:n_max]
+  } else {
+    top_genes = top_gene_df[[gene]]
+  }
+  data[[gene]] = ifelse(data[[gene]] %in% top_genes, data[[gene]], "other")
+  ### summarize by gene
+  if(is_list && !is.null(groups)) {
+    data_summ = data %>% group_by(!!sym(gene), group) %>% summarize(n = n(), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE)) %>% arrange(desc(!!sym(value_type)))
+  }
+  else {
+    data_summ = data %>% group_by(!!sym(gene)) %>% summarize(n = n(), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE)) %>% arrange(desc(!!sym(value_type)))
+  }
+  data_summ[[gene]] = factor(data_summ[[gene]], levels = rev(c(top_genes, "other")))
+  ### plot
+  if(is_list && !is.null(groups)) {
+    gg = ggplot(data_summ) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = group), position = "dodge", color = "grey20")
+  } else {
+    gg = ggplot(data_summ) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = !!sym(value_type)), color = "grey20") +
+      paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
+  }
+  gg = gg + ylab("") +theme_classic()
+  if(log_scale) {
+    gg = gg + scale_x_log10(labels = scales::label_log())
+  } else {
+    gg = gg + scale_x_continuous(labels = scales::label_number_auto())
   }
   return(gg)
+
+  # ### for list of data frames input -----------------
+  # if(is_list) {
+  #
+  #   data_all = lapply(1:length(data), function(i) {
+  #     data_tmp = data[[i]]
+  #     if(!is.null(group)) data_tmp$group = groups[i]
+  #     return(data_tmp)
+  #   }) %>% dplyr::bind_rows()
+  #
+  #   if(is_paired) {
+  #     ### choose v-segment to keep: top n_max most common
+  #     data_summ_all = data_all %>% group_by(!!sym(gene)) %>% summarize(n = n()) %>% arrange(desc(n))
+  #     v_kept = data_summ_all[[gene]][1:n_max]
+  #
+  #     data_all_sub = data_all %>% filter(!!sym(gene) %in% v_kept)
+  #     data_gg = data_all_sub %>% group_by(group,!!sym(gene)) %>% summarize(n = n())
+  #     data_gg[[gene]] = factor(data_gg[[gene]], levels = rev(v_kept))
+  #
+  #     #data_all_sub[[gene]] = factor(data_all_sub[[gene]], levels = rev(v_kept))
+  #
+  #     xlab_title = "Count"
+  #     if(style == "barplot") {
+  #       gg = ggplot(data_gg) + geom_col(aes(x=n, y=va, fill = group),
+  #                                       color = "grey20", position = "dodge") + theme_classic() +
+  #         ylab("") + xlab(xlab_title)
+  #     }
+  #     if(style == "boxplot") {
+  #       gg = ggplot(data_gg, aes(x=n, y=va)) + geom_boxplot() +
+  #         geom_point(aes(color = group)) + theme_classic() +
+  #         ylab("") + xlab(xlab_title)
+  #     }
+  #   } else { ### pseudobulk
+  #
+  #   }
+  # }
+  # ### for single data frame input ----------------------
+  # if(is_data_frame) {
+  #   if(is_paired) {
+  #     data$n_wells = data$wij
+  #     ### sum over multiple rows w/ the same gene
+  #     data_summ = data %>% group_by(!!sym(gene)) %>% summarize(n = n(), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE)) %>% arrange(desc(!!sym(value_type)))
+  #
+  #
+  #     data_gg = data_summ[1:n_max,]
+  #     data_gg[[gene]] = factor(data_gg[[gene]], levels = rev(data_gg[[gene]]))
+  #
+  #     xlab_title = "Count"
+  #     gg = ggplot(data_gg) + geom_col(aes(x=n, y=!!sym(gene), fill = n), color = "grey20") + theme_classic() +
+  #       ylab("") +
+  #       paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
+  #   } else { ### pseudobulk
+  #     ### sum over multiple rows w/ the same gene
+  #     data_summ = data %>% group_by(!!sym(gene)) %>% summarize(n = n(), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE)) %>% arrange(desc(!!sym(value_type)))
+  #     n_genes_obs = dim(data_summ)[1]
+  #     if(n_max >= n_genes_obs) {
+  #       n_max = n_genes_obs
+  #       keep_genes = data_summ[[gene]][1:n_max]
+  #       data_gg = data_summ
+  #       data_gg[[gene]] = factor(data_gg[[gene]], levels = rev(keep_genes))
+  #       warning(paste('n_max >= number of genes observed: displaying', n_genes_obs, 'genes'))
+  #     } else {
+  #       keep_genes = data_summ[[gene]][1:n_max]
+  #       data_other = data_summ[(n_max+1):dim(data_summ)[1],] %>%
+  #         summarize(!!sym(gene) := "other", n=sum(n,na.rm=TRUE), !!sym(value_type) := agg_func(!!sym(value_type), na.rm = TRUE))
+  #       data_gg = bind_rows(data_summ[1:n_max,], data_other)
+  #       data_gg[[gene]] = factor(data_gg[[gene]], levels = c("other",rev(keep_genes)))
+  #     }
+  #     gg = ggplot(data_gg) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = !!sym(value_type)), color = "grey20") +
+  #       ylab("") +
+  #       theme_classic() +
+  #       paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
+  #     if(log_scale) {
+  #       gg = gg + scale_x_log10(labels = scales::label_log())
+  #     } else {
+  #       gg = gg + scale_x_continuous(labels = scales::label_number_auto())
+  #     }
+  #   }
+  # }
+  #return(gg)
 }
 
 
