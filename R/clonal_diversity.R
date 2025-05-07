@@ -13,7 +13,7 @@
 #' Calculation of clonal diversity measures from TCR data
 #'
 #' @description
-#' `clonal_diversity` returns a number of clonal diversity measures (e.g. Hill numbers,
+#' `diversity` returns a number of clonal diversity measures (e.g. Hill numbers,
 #' Shannon and Simpson indices) calculated from supplied data.
 #'
 #' @details
@@ -79,16 +79,25 @@
 #'
 #' @param data either a single data frame containing paired TCRs from TIRTL-seq output or a list of
 #' data frames for many experiments
+#' @param meta a dataframe of metadata for all of the samples in data. The first column is
+#' expected to have unique sample names.
+#' @param type_column the column from the TIRTLseq paired or pseudobulk output that determines
+#' clonotype uniqueness. The default is "auto", which will use "aaSeqCDR3" for pseudobulk and "cdr3b"
+#' for paired results.
+#' @param proportion_column the column from the TIRTLseq paired or pseudobulk data that will be used to
+#' calculate the total proportion of each clonotype. The default is "readFraction". If no suitable
+#' column is given, the proportion of occurences of each clonotype in the data will be used to
+#' calculate diversity.
 #' @param q a vector of integers specifying which "orders" to calculate for Hill numbers and Renyi entropy.
 #' @param percent a percentage (out of 100) or a vector of percentages to use when calculating dXX values,
 #' i.e. the minimum number of clones needed to cover XX percent of the sample.
-#' @param tol the tolerance used to check that the proportions of all clones sum to 1
+#' @param tol the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)
 #' @param methods the diversity indices or methods to calculate.
 #'
 #' @examples
 #'
 
-diversity = function(data, type_column = "auto", proportion_column="readFraction",
+diversity = function(data, meta= NULL, type_column = "auto", proportion_column="readFraction",
                      q=0:6, percent = seq(10,90,10), tol = 1e-10,
                      methods = c("simpson","gini","gini.simpson","inv.simpson","shannon",
                                  "berger.parker", "richness", "d50", "dXX", "renyi", "hill")
@@ -102,20 +111,22 @@ diversity = function(data, type_column = "auto", proportion_column="readFraction
 
 
 
-  call_args <- as.list(match.call())[-1]
+  call_args = as.list(match.call())[-1]
+  call_args$meta = NULL
 
   if(is_list) {
     res = lapply(data, function(x) {
       call_args$data = x
-      #tmp = .diversity_single(x, type_column = type_column, )
       do.call(.diversity_single, call_args)
     })
   } else {
     res = do.call(.diversity_single, call_args)
   }
-  return(res)
+  out = list(result = res, meta = meta)
+  return(out)
 }
 
+### helper function - calculates diversity metrics for a single data frame
 .diversity_single = function(data, type_column = "auto", proportion_column="readFraction",
                              q=0:6, percent = seq(10,90,10), tol = 1e-10,
                              methods = c("simpson","gini","gini.simpson","inv.simpson","shannon",
@@ -141,8 +152,7 @@ diversity = function(data, type_column = "auto", proportion_column="readFraction
   return(res)
 }
 
-plot
-
+### helper function - calculates diversity metrics given a vector of proportions summing to one.
 .calc_all_diversity = function(proportions, q=0:6, percent = seq(10,90,10), tol = 1e-14,
                             methods = c("simpson","gini","gini.simpson","inv.simpson","shannon",
                                         "berger.parker", "richness", "d50", "dXX", "renyi", "hill")) {
@@ -176,87 +186,3 @@ plot
   res = res[methods]
   return(res)
 }
-
-.berger.parker = function(p) {
-  max(p)
-}
-
-.richness = function(p) {
-  length(p)
-}
-
-.simpson = function(p) {
-  sum(p^2)
-}
-
-.gini.simpson = function(p) {
-  1-sum(p^2) ### 1 - simpson
-}
-
-.inv.simpson = function(p) {
-  1/sum(p^2) ### 1/simpson
-}
-
-.shannon = function(p) {
-  -sum(p*log(p))
-}
-
-.renyi_multi = function(p,q) {
-  res = lapply(q, function(x) .renyi(p,x))
-  return(bind_rows(res))
-}
-
-.renyi = function(p, q) {
-  if(length(q) > 1) stop("'q' needs to be a single number")
-  if(q==1) return( list (value = .shannon(p), q = q) )
-  if(q==Inf) return( list( value = -log(max(p)), q = q ) )
-  return( list( value = (1/(1-q))*log(sum(p^q)), q = q) )
-}
-
-.hill_multi = function(p, q) {
-  res = lapply(q, function(x) .hill(p,x))
-  return(bind_rows(res))
-}
-
-.hill = function(p, q) {
-  if(length(q) > 1) stop("'q' needs to be a single number")
-  if(q==0) {
-    return( list(value = length(p), q = q) )
-  } else if(q==1) {
-    return ( list(value = exp(-sum(p*log(p))), q = q) ) ### exp(shannon entropy)
-  } else if(q==Inf) {
-    return ( list(value = 1/max(p), q = q) )
-  } else {
-    return ( list(value = sum(p^q)^(1/(1-q)), q = q) )
-  }
-}
-
-.dxx_multi = function(p, xx_vec) {
-  res = lapply(xx_vec, function(x) .dxx(p,x))
-  return(bind_rows(res))
-}
-
-## return number of species required to equal or surpass 'xx' percent of sample
-.dxx = function(p, xx) {
-  if(length(xx) > 1) stop("'xx' needs to be a single number")
-  if(xx < 0 || xx > 100) stop("'xx' needs to be a percentage between 0 and 100")
-  run_sum = cumsum(sort(p, decreasing = TRUE))
-  idx = min(which(run_sum >= (xx/100)))
-  return( tibble(n_clones = idx, percent_required = xx, percent_observed = 100*run_sum[idx]) )
-}
-
-.gini = function(p) {
-  p_sort = sort(p, decreasing = FALSE)
-  n = length(p)
-  g = (1/n)*(n+1-2*(sum( (n:1)*p_sort )/sum(p_sort)))
-  return(g)
-}
-
-## return number of species required to equal or surpass 50 percent of sample
-.d50 = function(p) {
-  .dxx(p, 50)
-}
-
-# rarefaction = function(p, step, quantile) {
-#
-# }
