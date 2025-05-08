@@ -53,3 +53,12 @@ getb_sm<-function(dtlist){ #same, but smaller files!
 get_well_subset<-function(row_range=1:16,col_range=1:24){
   unlist(sapply(LETTERS[row_range],function(x)paste(x,col_range,sep=""),simplify = F))
 }
+
+is.paired = function(data) {
+  is_data_frame = is.data.frame(data)
+  is_list = is.list(data) && !is_data_frame
+  if(!(is_list || is_data_frame)) stop("'data' needs to be a data frame or a list of data frames")
+  if(is_data_frame) is_paired = "wij" %in% colnames(data)
+  if(is_list) is_paired = "wij" %in% colnames(data[[1]])
+  return(is_paired)
+}

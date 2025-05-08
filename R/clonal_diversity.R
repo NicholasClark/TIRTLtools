@@ -97,24 +97,46 @@
 #' @examples
 #'
 
-diversity = function(data, meta= NULL, type_column = "auto", proportion_column="readFraction",
+diversity = function(data, meta= NULL, type_column = "auto", proportion_column="auto",
                      q=0:6, percent = seq(10,90,10), tol = 1e-10,
                      methods = .get_all_div_metrics()
                      ) {
 
   is_data_frame = is.data.frame(data)
   is_list = is.list(data) && !is_data_frame
-  if(!(is_list || is_data_frame)) stop("'data' needs to be a data frame or a list of data frames")
-  if(is_data_frame) is_paired = "wij" %in% colnames(data)
-  if(is_list) is_paired = "wij" %in% colnames(data[[1]])
+  is_paired = is.paired(data)
 
+  if(proportion_column == "auto") {
+    if(is_paired) {
+      proportion_column = "wij"
+    } else {
+      proportion_column = "readFraction"
+    }
+    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+    cat(msg)
+  }
 
+  if(type_column == "auto") {
+    if(is_paired) {
+      type_column = "cdr3a+cdr3b"
+    } else {
+      type_column = "aaSeqCDR3"
+    }
+    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
+    cat(msg)
+  }
 
   call_args = as.list(match.call())[-1]
   call_args$meta = NULL
+  call_args$type_column = type_column
+  call_args$proportion_column = proportion_column
 
+  n_samples = length(data)
   if(is_list) {
-    res = lapply(data, function(x) {
+    res = lapply(1:length(data), function(i) {
+      msg = paste("\n", "-- Calculating diversity indices for sample ", i, " of ", n_samples,".", sep = "")
+      cat(msg)
+      x=data[[i]]
       call_args$data = x
       do.call(.diversity_single, call_args)
     })
@@ -126,23 +148,45 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
 }
 
 ### helper function - calculates diversity metrics for a single data frame
-.diversity_single = function(data, type_column = "auto", proportion_column="readFraction",
+.diversity_single = function(data, type_column = "auto", proportion_column="auto",
                              q=0:6, percent = seq(10,90,10), tol = 1e-10,
                              methods = .get_all_div_metrics()
 ) {
+  is_paired = is.paired(data)
   if(type_column == "auto") {
     if(is_paired) {
-      type_column = "cdr3b"
+      type_column = "cdr3a+cdr3b"
     } else {
       type_column = "aaSeqCDR3"
     }
+    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
+    cat(msg)
   }
+  ### allow for grouping by multiple columns
+  #if(grepl("\\+", type_column)) {
+  cols = strsplit(type_column, "\\+")[[1]]
+  sym_type_col = syms(cols)
+  #}
+
+  if(proportion_column == "auto") {
+    if(is_paired) {
+      proportion_column = "wij"
+    } else {
+      proportion_column = "readFraction"
+    }
+    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+    cat(msg)
+  }
+
   if(!proportion_column %in% colnames(data)) {
     warning("'proportion_column' not found in the data, using proportion of occurrences to measure diversity")
-    prop_df = data %>% group_by(!!sym(type_column)) %>% summarize(n = n())
+    #prop_df = data %>% group_by(!!sym(type_column)) %>% summarize(n = n())
+    prop_df = data %>% group_by(!!!sym_type_col) %>% summarize(n = n())
     prop_df$prop = prop_df$n/sum(prop_df$n)
   } else {
-    prop_df = data %>% group_by(!!sym(type_column)) %>%
+    # prop_df = data %>% group_by(!!sym(type_column)) %>%
+    #   summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
+    prop_df = data %>% group_by(!!!sym_type_col) %>%
       summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
     prop_df$prop = prop_df[[proportion_column]]/sum(prop_df[[proportion_column]])
   }
