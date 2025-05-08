@@ -99,8 +99,7 @@
 
 diversity = function(data, meta= NULL, type_column = "auto", proportion_column="readFraction",
                      q=0:6, percent = seq(10,90,10), tol = 1e-10,
-                     methods = c("simpson","gini","gini.simpson","inv.simpson","shannon",
-                                 "berger.parker", "richness", "d50", "dXX", "renyi", "hill")
+                     methods = .get_all_div_metrics()
                      ) {
 
   is_data_frame = is.data.frame(data)
@@ -129,8 +128,7 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
 ### helper function - calculates diversity metrics for a single data frame
 .diversity_single = function(data, type_column = "auto", proportion_column="readFraction",
                              q=0:6, percent = seq(10,90,10), tol = 1e-10,
-                             methods = c("simpson","gini","gini.simpson","inv.simpson","shannon",
-                                         "berger.parker", "richness", "d50", "dXX", "renyi", "hill")
+                             methods = .get_all_div_metrics()
 ) {
   if(type_column == "auto") {
     if(is_paired) {
@@ -154,8 +152,7 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
 
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.
 .calc_all_diversity = function(proportions, q=0:6, percent = seq(10,90,10), tol = 1e-14,
-                            methods = c("simpson","gini","gini.simpson","inv.simpson","shannon",
-                                        "berger.parker", "richness", "d50", "dXX", "renyi", "hill")) {
+                            methods = .get_all_div_metrics() ) {
   data = proportions[!is.na(proportions)]
   data = data[data != 0]
   sum_data = sum(data)

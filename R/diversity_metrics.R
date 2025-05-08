@@ -1,5 +1,11 @@
 ### all clonal diversity metrics
 
+.get_all_div_metrics = function() {
+  div_metrics = c("simpson","gini","gini.simpson","inv.simpson","shannon",
+    "berger.parker", "richness", "d50", "dXX", "renyi", "hill")
+  return(div_metrics)
+}
+
 .berger.parker = function(p) {
   max(p)
 }
