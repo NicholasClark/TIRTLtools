@@ -4,7 +4,11 @@
 #' @param q (optional) for 'renyi' and 'hill' metrics, the order q of the diversity index
 #' @param percent (optional) for 'dXX' metric, the percentage 'XX' between 0 and 100
 
-plot_diversity = function(data, metric=.get_all_div_metrics(), q=2, percent=90, group_col = NULL, label_col = "Sample", flip = FALSE, facet = FALSE) {
+plot_diversity = function(
+    data, metric=.get_all_div_metrics(), q=2, percent=90, group_col = NULL,
+    label_col = "Sample", flip = FALSE, facet = FALSE, log_scale = FALSE,
+    return_data = FALSE
+    ) {
   metric = metric[1]
   ## assume data is a list of diversity metrics for each sample
 
@@ -19,17 +23,35 @@ plot_diversity = function(data, metric=.get_all_div_metrics(), q=2, percent=90, 
   if(length(unique(labels)) != dim(meta)[1]) labels = paste(1:dim(meta)[1], labels)
   gg_df$Sample = factor(labels, levels = labels)
   y_label = .get_ylabel(metric=metric, q=q, percent=percent)
+  y_label = paste(y_label, "|", data$call_args$type_column)
+  plot_title = case_when(
+    metric == "d50" ~ "d50 - The minimum number of types (clones)\nneeded to comprise 50 percent of the data",
+    .default = ""
+  )
   if(is.null(group_col)) {
-    gg = ggplot(gg_df) + geom_col(aes(y=value, x= Sample)) +
+    gg = ggplot(gg_df) +
+      geom_col(aes(y=value, x= Sample)) +
       ylab(y_label) +
+      ggtitle(plot_title) +
       theme_classic()
   } else {
-    gg_df$Group = gg_df[[group_col]]
+    if(length(group_col) == 1) {
+      gg_df$Group = gg_df[[group_col]]
+    } else {
+      gg_df$Group = apply(gg_df[, group_col], 1, paste, collapse = " | ")
+    }
     if(facet) { ### separate panels for each group
-      gg = ggplot(gg_df, aes(y=value, x= Sample)) + geom_col(aes(fill = Group)) +
-        facet_wrap(~Group, scales = "free_y") +
+      gg = ggplot(gg_df, aes(y=value, x= Sample)) +
+        geom_col(aes(fill = Group)) +
         ylab(y_label) +
         theme_classic()
+      if(length(group_col) == 1) {
+        gg = gg + facet_wrap(~Group, scales = ifelse(flip, "free_y", "free_x"))
+      } else {
+        formula1 = paste(group_col, collapse = "+")
+        facet_formula <- as.formula(paste("~", formula1, collapse = ""))
+        gg = gg + ggh4x::facet_nested_wrap(facet_formula, scales = ifelse(flip, "free_y", "free_x"))
+      }
     } else { ### one bar with mean of each group
       gg_summ = gg_df %>% group_by(Group) %>%
         summarize(n= n(), mean = mean(value), sd = sd(value)) %>%
@@ -40,9 +62,23 @@ plot_diversity = function(data, metric=.get_all_div_metrics(), q=2, percent=90, 
         ylab(y_label) +
         theme_classic()
     }
+    if(flip) {
+      gg = gg +
+        scale_y_continuous(trans = ifelse(log_scale, "log10", "identity")) +
+        coord_flip()
+    } else {
+      gg = gg +
+        scale_y_continuous(trans = ifelse(log_scale, "log10", "identity")) +
+        scale_x_discrete(guide = guide_axis(angle = 90))
+    }
   }
-  if(flip) return(gg + coord_flip())
-  return( gg + scale_x_discrete(guide = guide_axis(angle = 90)) )
+  #gg = gg + scale_x_discrete(guide = guide_axis(angle = 90))
+  #if(log_scale) gg = gg + scale_y_log10(labels = scales::label_log())
+  #if(flip) gg = gg + coord_flip()
+  gg = gg + ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
+  res_list = list(plot = gg)
+  if(return_data) res_list$data = gg_df
+  return(res_list)
 }
 
 get_div_metric = function(data, metric, q=NULL, percent = NULL) {

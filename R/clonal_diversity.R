@@ -143,7 +143,7 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
   } else {
     res = do.call(.diversity_single, call_args)
   }
-  out = list(result = res, meta = meta)
+  out = list(result = res, meta = meta, call_args = call_args)
   return(out)
 }
 
@@ -152,6 +152,23 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
                              q=0:6, percent = seq(10,90,10), tol = 1e-10,
                              methods = .get_all_div_metrics()
 ) {
+  prop_df = calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
+  res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods)
+  out = list(diversity = res, prop_df = prop_df)
+  return(out)
+}
+
+calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto") {
+  df_all = lapply(1:length(data_list), function(i) {
+    x = data_list[[i]]
+    tmp = calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
+      mutate(sample_num = i)
+    }) %>% bind_rows()
+  return(df_all)
+}
+
+calculate_proportions = function(data, type_column = "auto", proportion_column="auto"
+                                 ) {
   is_paired = is.paired(data)
   if(type_column == "auto") {
     if(is_paired) {
@@ -162,11 +179,9 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
     msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
     cat(msg)
   }
-  ### allow for grouping by multiple columns
-  #if(grepl("\\+", type_column)) {
+
   cols = strsplit(type_column, "\\+")[[1]]
   sym_type_col = syms(cols)
-  #}
 
   if(proportion_column == "auto") {
     if(is_paired) {
@@ -190,8 +205,7 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
       summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
     prop_df$prop = prop_df[[proportion_column]]/sum(prop_df[[proportion_column]])
   }
-  res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods)
-  return(res)
+  return(prop_df)
 }
 
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.

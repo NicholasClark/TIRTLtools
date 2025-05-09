@@ -62,3 +62,7 @@ is.paired = function(data) {
   if(is_list) is_paired = "wij" %in% colnames(data[[1]])
   return(is_paired)
 }
+
+is.list.only = function(data) {
+  return( is.list(data) && !is.data.frame(data) )
+}
