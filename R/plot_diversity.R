@@ -62,15 +62,15 @@ plot_diversity = function(
         ylab(y_label) +
         theme_classic()
     }
-    if(flip) {
-      gg = gg +
-        scale_y_continuous(trans = ifelse(log_scale, "log10", "identity")) +
-        coord_flip()
-    } else {
-      gg = gg +
-        scale_y_continuous(trans = ifelse(log_scale, "log10", "identity")) +
-        scale_x_discrete(guide = guide_axis(angle = 90))
-    }
+  }
+  if(flip) {
+    gg = gg +
+      scale_y_continuous(trans = ifelse(log_scale, "log10", "identity")) +
+      coord_flip()
+  } else {
+    gg = gg +
+      scale_y_continuous(trans = ifelse(log_scale, "log10", "identity")) +
+      scale_x_discrete(guide = guide_axis(angle = 90))
   }
   #gg = gg + scale_x_discrete(guide = guide_axis(angle = 90))
   #if(log_scale) gg = gg + scale_y_log10(labels = scales::label_log())
@@ -83,8 +83,8 @@ plot_diversity = function(
 
 get_div_metric = function(data, metric, q=NULL, percent = NULL) {
   ll= data$result
-  if(!is.list(ll[[1]][[metric]])) {
-    vec = sapply(ll, function(x) x[[metric]])
+  if(!is.list(ll[[1]]$diversity[[metric]])) {
+    vec = sapply(ll, function(x) x$diversity[[metric]])
   } else {
     if(metric %in% c("d50", "dXX")) {
       if(metric == "d50") {
@@ -93,12 +93,12 @@ get_div_metric = function(data, metric, q=NULL, percent = NULL) {
         percent = .check_percent(percent)
       }
       vec = sapply(ll, function(x) {
-        tbl = x[[metric]][[1]]
+        tbl = x$diversity[[metric]][[1]]
         tbl$n_clones[match(percent, tbl[["percent_required"]])]
       })
     } else if(metric %in% c("renyi", "hill") ) {
       vec = sapply(ll, function(x) {
-        tbl = x[[metric]][[1]]
+        tbl = x$diversity[[metric]][[1]]
         tbl$value[match(q, tbl[["q"]])]
       })
     }
