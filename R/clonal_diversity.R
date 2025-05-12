@@ -158,18 +158,49 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
   return(out)
 }
 
-calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto") {
-  df_all = lapply(1:length(data_list), function(i) {
+### helper function to summarize clones by some column(s) and calculate proportions for each sample
+calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto", return_list = FALSE) {
+  is_paired = is.paired(data)
+  if(type_column == "auto") {
+    if(is_paired) {
+      type_column = "cdr3a+cdr3b"
+    } else {
+      type_column = "aaSeqCDR3"
+    }
+    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
+    cat(msg)
+  }
+
+  cols = strsplit(type_column, "\\+")[[1]]
+  sym_type_col = syms(cols)
+
+  if(proportion_column == "auto") {
+    if(is_paired) {
+      proportion_column = "wij"
+    } else {
+      proportion_column = "readFraction"
+    }
+    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+    cat(msg)
+  }
+  list_all = lapply(1:length(data_list), function(i) {
     x = data_list[[i]]
     tmp = calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
       mutate(sample_num = i)
-    }) %>% bind_rows()
-  return(df_all)
+    })
+  if(return_list) {
+    out = list_all
+  } else {
+    out = list_all %>% bind_rows()
+  }
+  return(out)
 }
 
+### helper function to summarize clones by some column(s) for a single data frame
 calculate_proportions = function(data, type_column = "auto", proportion_column="auto"
                                  ) {
   is_paired = is.paired(data)
+  if(is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
   if(type_column == "auto") {
     if(is_paired) {
       type_column = "cdr3a+cdr3b"
@@ -207,6 +238,7 @@ calculate_proportions = function(data, type_column = "auto", proportion_column="
   }
   return(prop_df)
 }
+
 
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.
 .calc_all_diversity = function(proportions, q=0:6, percent = seq(10,90,10), tol = 1e-14,
