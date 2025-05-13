@@ -1,27 +1,73 @@
 
 
 ## c("dataset", "patient", "timepoint", "cell_type")
-load_tirtlseq = function(directory, chain = c("paired","alpha", "beta"), sep = "_", meta_columns = NULL, verbose = TRUE, n_max = Inf) {
+load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), sep = "_", meta_columns = NULL, verbose = TRUE, n_max = Inf) {
   chain = chain[1]
-  if(!chain %in% c("alpha", "beta", "paired")) stop("'chain' must be 'alpha' or 'beta', or 'paired'")
+  if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
-  if(chain == "alpha") ptn = "*TRA.tsv.gz"
-  if(chain == "beta") ptn = "*TRB.tsv.gz"
-  if(chain == "paired") ptn = "*TIRTLoutput.tsv.gz"
-  files = dir(directory, pattern = ptn)
-  if(n_max < length(files)) {
-    files = files[1:n_max]
+
+  msg = paste("Loading files from: ", directory, "\n", sep = "")
+  cat(msg)
+  # if(chain == "alpha") ptn = "*TRA.tsv.gz"
+  # if(chain == "beta") ptn = "*TRB.tsv.gz"
+  # if(chain == "paired") ptn = "*TIRTLoutput.tsv.gz"
+  alpha_post = "_pseudobulk_TRA\\.tsv\\.gz"
+  beta_post = "_pseudobulk_TRB\\.tsv\\.gz"
+  paired_post = "_TIRTLoutput\\.tsv\\.gz"
+
+  files_alpha = dir(directory, pattern = paste("*",alpha_post,sep="") )
+  files_beta = dir(directory, pattern = paste("*",beta_post,sep="") )
+  files_paired = dir(directory, pattern = paste("*",paired_post,sep="") )
+
+  files_pre_paired = gsub(paired_post, "",files_paired)
+  files_pre_alpha = gsub(alpha_post, "",files_alpha)
+  files_pre_beta = gsub(beta_post, "",files_beta)
+
+  files_pre = case_when(
+    chain == "all" ~ unique(c(files_pre_paired, files_pre_alpha, files_pre_beta)),
+    chain == "alpha" ~ files_pre_alpha,
+    chain == "beta" ~ files_pre_beta,
+    chain == "paired" ~ files_pre_paired
+  )
+
+  if(n_max < length(files_pre)) {
+    files_pre = files_pre[1:n_max]
     msg = paste("Loading first ", n_max, " files:", "\n", sep = "")
     cat(msg)
   }
-  list_tmp = lapply(files, function(ff) {
+  list_tmp = lapply(files_pre, function(ff_pre) {
     if(verbose) {
-      msg = paste("-- Loading file -- ", ff, "\n", sep = "")
+      msg = paste("-- Loading files for sample: ", ff_pre, "\n", sep = "")
       cat(msg)
     }
-    data.table::fread(file.path(directory, ff))
-    })
-  meta_tmp = lapply(files, function(ff) {
+    fa = paste(ff_pre, alpha_post, sep = "") %>% gsub("\\\\", "", .)
+    fb = paste(ff_pre, beta_post, sep = "") %>% gsub("\\\\", "", .)
+    fp = paste(ff_pre, paired_post, sep = "") %>% gsub("\\\\", "", .)
+    obj_names = c("alpha", "beta", "paired")
+    obj_desc = c("Pseudobulk (alpha chain)", "Pseudobulk (beta chain) ", "TIRTLseq (paired chain) ")
+    ff_all = c(fa, fb, fp)
+    obj = lapply(1:length(ff_all), function(i) {
+      desc = obj_desc[i]
+      chain_tmp = obj_names[i]
+      ff = ff_all[i]
+      file_long = file.path(directory, ff)
+      if(chain %in% c("alpha", "beta", "paired") && chain != chain_tmp) return(list())
+      if(file.exists(file_long)) {
+        if(verbose) {
+          msg = paste("---- Loading file -- ", desc, " -- ", ff, "\n", sep = "")
+          cat(msg)
+          df_tmp =  data.table::fread(file_long)
+        }
+        return(df_tmp)
+      } else {
+        msg = paste("------ File not found -- ", desc, " -- ", ff, "\n", sep = "")
+        cat(msg)
+        return(list())
+      }
+    }) %>% setNames(obj_names)
+    return(obj)
+    }) %>% setNames(files_pre)
+  meta_tmp = lapply(files_pre, function(ff) {
     spl = strsplit(ff, split = sep)[[1]]
     df_tmp = list()
     df_tmp$filename = ff
