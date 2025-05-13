@@ -1,5 +1,6 @@
 sample_overlap = function(df_list, meta, n_seq = 200,
                           show_row_names = FALSE, show_column_names = FALSE,
+                          label_col = "filename",
                           title = "") {
   seq_list = lapply(df_list, function(df_tmp) {
     if("readCount" %in% colnames(df_tmp)) { ### pseudo-bulk data
@@ -19,16 +20,18 @@ sample_overlap = function(df_list, meta, n_seq = 200,
       length(intersect(x,y))
     })
   })
-  rownames(olap_mat) = rownames(meta)
-  colnames(olap_mat) = rownames(meta)
+  meta = meta %>% as.data.frame() %>% tibble::column_to_rownames(label_col)
+  labels = rownames(meta)
+  rownames(olap_mat) = labels
+  colnames(olap_mat) = labels
 
   jaccard_mat = sapply(seq_list, function(x) {
     sapply(seq_list, function(y) {
       length(intersect(x,y))/length(union(x,y))
     })
   })
-  rownames(jaccard_mat) = rownames(meta)
-  colnames(jaccard_mat) = rownames(meta)
+  rownames(jaccard_mat) = labels
+  colnames(jaccard_mat) = labels
   row_ann = ComplexHeatmap::rowAnnotation(df = meta)
 
   col_hc <- hclust(as.dist(1-jaccard_mat), method = "average")
