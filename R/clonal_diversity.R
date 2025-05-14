@@ -97,14 +97,26 @@
 #' @examples
 #'
 
-diversity = function(data, meta= NULL, type_column = "auto", proportion_column="auto",
+#diversity = function(data, meta= NULL, chain = c("paired", "alpha", "beta"),
+diversity = function(data, chain = c("paired", "alpha", "beta"),
+                     type_column = "auto", proportion_column="auto",
                      q=0:6, percent = seq(10,90,10), tol = 1e-10,
                      methods = .get_all_div_metrics()
                      ) {
-
-  is_data_frame = is.data.frame(data)
-  is_list = is.list(data) && !is_data_frame
-  is_paired = is.paired(data)
+  meta = data$meta
+  data = data$data
+  chain = chain[1]
+  if(!chain %in% names(data[[1]])) {
+    msg = paste("Error: 'data' object supplied does not include data for chain: ", chain, "\n", sep = "")
+    stop(msg)
+  } else {
+    msg = paste("Calculating diversity for chain: ", chain, "\n", sep = "")
+    cat(msg)
+  }
+  # is_data_frame = is.data.frame(data[[chain]])
+  # is_list = is.list(data[[chain]]) && !is_data_frame
+  # is_paired = is.paired(data[[chain]])
+  is_paired = chain == "paired"
 
   if(proportion_column == "auto") {
     if(is_paired) {
@@ -130,28 +142,31 @@ diversity = function(data, meta= NULL, type_column = "auto", proportion_column="
   call_args$meta = NULL
   call_args$type_column = type_column
   call_args$proportion_column = proportion_column
+  call_args$chain = chain
 
   n_samples = length(data)
-  if(is_list) {
+  #if(is_list) {
     res = lapply(1:length(data), function(i) {
       msg = paste("\n", "-- Calculating diversity indices for sample ", i, " of ", n_samples,".", sep = "")
       cat(msg)
+      # x=data[[chain]][[i]]
       x=data[[i]]
       call_args$data = x
       do.call(.diversity_single, call_args)
-    })
-  } else {
-    res = do.call(.diversity_single, call_args)
-  }
+    }) %>% setNames(names(data))
+  #} else {
+  #  res = do.call(.diversity_single, call_args)
+  #}
   out = list(result = res, meta = meta, call_args = call_args)
   return(out)
 }
 
 ### helper function - calculates diversity metrics for a single data frame
-.diversity_single = function(data, type_column = "auto", proportion_column="auto",
+.diversity_single = function(data, chain, type_column = "auto", proportion_column="auto",
                              q=0:6, percent = seq(10,90,10), tol = 1e-10,
                              methods = .get_all_div_metrics()
 ) {
+  data = data[[chain]]
   prop_df = calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
   res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods)
   out = list(diversity = res, prop_df = prop_df)

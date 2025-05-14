@@ -19,11 +19,26 @@
 #' @examples
 #'
 
-plot_gene_usage = function(data, groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
+plot_gene_usage = function(data, chain = c("paired", "alpha", "beta"),
+                           group_col=NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
+#                           groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
                         value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
                         agg_func = c("sum", "max"),
                         log_scale = FALSE,
                         style = c("barplot", "boxplot")) {
+  meta = data$meta
+  data = data$data
+  chain = chain[1]
+  if(!is.null(group_col)) {
+    groups = meta[[group_col]]
+  } else {
+    groups = NULL
+  }
+
+  #labels = get_labels_from_col(meta, label_col)
+
+  data = lapply(data, function(x) x[[chain]]) %>% setNames(names(data))
+
   gene = gene[1]
   #gene = match.arg(gene)
   style = match.arg(style)

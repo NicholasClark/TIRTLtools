@@ -28,7 +28,8 @@ Imports:
     Matrix,
     paletteer,
     readr,
-    reticulate (>= 1.4.1)
+    reticulate (>= 1.4.1),
+    tictoc
 Depends: 
     R (>= 3.5)
 RoxygenNote: 7.3.2

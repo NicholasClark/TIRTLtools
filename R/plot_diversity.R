@@ -1,19 +1,22 @@
 
-#' @param data a list created by the `diversity` function with diversity metrics for each sample
+#' @param div a list created by the `diversity` function with diversity metrics for each sample
 #' @param metric the diversity metric to use (e.g. shannon, simpson, etc.)
 #' @param q (optional) for 'renyi' and 'hill' metrics, the order q of the diversity index
 #' @param percent (optional) for 'dXX' metric, the percentage 'XX' between 0 and 100
 
 plot_diversity = function(
-    data, metric=.get_all_div_metrics(), q=2, percent=90, group_col = NULL,
+    div, metric=.get_all_div_metrics(), q=2, percent=90, group_col = NULL,
     label_col = "Sample", flip = FALSE, facet = FALSE, log_scale = FALSE,
     return_data = FALSE
     ) {
   metric = metric[1]
-  ## assume data is a list of diversity metrics for each sample
+  #print(metric)
+  #chain = div$call_args$chain
+  #print(chain)
+  ## assume div is a list of diversity metrics for each sample
 
-  vals = get_div_metric(data, metric, q=q, percent=percent)
-  meta = data$meta
+  vals = get_div_metric(div, metric, q=q, percent=percent)
+  meta = div$meta
   gg_df = meta %>% mutate(value = vals)
   if(label_col == "Sample") {
     labels = meta[[1]]
@@ -23,7 +26,7 @@ plot_diversity = function(
   if(length(unique(labels)) != dim(meta)[1]) labels = paste(1:dim(meta)[1], labels)
   gg_df$Sample = factor(labels, levels = labels)
   y_label = .get_ylabel(metric=metric, q=q, percent=percent)
-  y_label = paste(y_label, "|", data$call_args$type_column)
+  y_label = paste(y_label, "|", div$call_args$type_column)
   plot_title = case_when(
     metric == "d50" ~ "d50 - The minimum number of types (clones)\nneeded to comprise 50 percent of the data",
     .default = ""
@@ -81,8 +84,8 @@ plot_diversity = function(
   return(res_list)
 }
 
-get_div_metric = function(data, metric, q=NULL, percent = NULL) {
-  ll= data$result
+get_div_metric = function(div, metric, q=NULL, percent = NULL) {
+  ll= div$result
   if(!is.list(ll[[1]]$diversity[[metric]])) {
     vec = sapply(ll, function(x) x$diversity[[metric]])
   } else {

@@ -1,4 +1,12 @@
-plot_num_partners = function(data, meta=NULL, label_col = NULL, group_col = NULL, fraction = TRUE, max_partners = 5, return_data = FALSE) {
+plot_num_partners = function(data,
+                             label_col = NULL, group_col = NULL, fraction = TRUE,
+                             max_partners = 5, return_data = FALSE) {
+
+  meta = data$meta
+  data = data$data
+
+  data = lapply(data, function(x) x[["paired"]]) %>% setNames(names(data))
+
   is_paired = is.paired(data)
   is_list = is.list.only(data)
   if(!is_paired) stop("'data' must be paired chain output from TIRLT-seq")
@@ -7,7 +15,11 @@ plot_num_partners = function(data, meta=NULL, label_col = NULL, group_col = NULL
     gg_df = lapply(1:length(data), function(i) {
       df_tmp = get_num_partners_single(data[[i]], max_partners = max_partners)
       df_tmp$sample_num = i
-      if(!is.null(group_col)) df_tmp$Group = meta[[group_col]][i]
+      if(!is.null(group_col)) {
+        df_tmp$Group = meta[[group_col]][i]
+      } else {
+        df_tmp$Group = meta[[1]][i]
+      }
       if(!is.null(label_col)) df_tmp$label = meta[[label_col]][i]
       return(df_tmp)
       }) %>% bind_rows() %>% group_by(Group, n_partners, chain) %>%

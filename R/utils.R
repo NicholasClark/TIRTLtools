@@ -66,3 +66,14 @@ is.paired = function(data) {
 is.list.only = function(data) {
   return( is.list(data) && !is.data.frame(data) )
 }
+
+get_labels_from_col = function(meta, label_col) {
+  ### get labels for samples
+  if(label_col == "Sample") {
+    labels = meta[[1]]
+  } else {
+    labels = meta[[label_col]]
+  }
+  if(length(unique(labels)) != dim(meta)[1]) labels = paste(1:dim(meta)[1], labels)
+  return(labels)
+}

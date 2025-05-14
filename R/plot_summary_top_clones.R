@@ -1,22 +1,25 @@
 
 
 plot_clonotype_indices = function(
-    data, meta, type_column = "auto", proportion_column="auto",
-    cutoffs = 10^(1:5), group_col = NULL, label_col = "Sample", flip = FALSE, facet = FALSE, return_data = FALSE) {
+    #data, meta, type_column = "auto", proportion_column="auto",
+  data, chain = c("paired", "alpha", "beta"),
+  type_column = "auto", proportion_column="auto",
+  cutoffs = 10^(1:5), group_col = NULL, label_col = "Sample", flip = FALSE,
+  facet = FALSE, return_data = FALSE) {
 
-  ### get labels for samples
-  if(label_col == "Sample") {
-    labels = meta[[1]]
-  } else {
-    labels = meta[[label_col]]
-  }
-  if(length(unique(labels)) != dim(meta)[1]) labels = paste(1:dim(meta)[1], labels)
+  meta = data$meta
+  data = data$data
+  chain = chain[1]
+
+  data = lapply(data, function(x) x[[chain]]) %>% setNames(names(data))
+
+  labels = get_labels_from_col(meta, label_col)
+
   if(length(group_col) == 1) {
     meta$Group = meta[[group_col]]
   } else {
     meta$Group = apply(meta[, group_col], 1, paste, collapse = " | ")
   }
-
 
   props_list = calculate_proportions_list(data, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
   gg_df = lapply(1:length(props_list), function(i) {

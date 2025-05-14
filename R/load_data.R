@@ -2,11 +2,12 @@
 
 ## c("dataset", "patient", "timepoint", "cell_type")
 load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), sep = "_", meta_columns = NULL, verbose = TRUE, n_max = Inf) {
+  tictoc::tic()
   chain = chain[1]
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
 
-  msg = paste("Loading files from: ", directory, "\n", sep = "")
+  msg = paste("Loading files from: ", directory, "...", "\n", sep = "")
   cat(msg)
   # if(chain == "alpha") ptn = "*TRA.tsv.gz"
   # if(chain == "beta") ptn = "*TRB.tsv.gz"
@@ -35,9 +36,10 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
     msg = paste("Loading first ", n_max, " files:", "\n", sep = "")
     cat(msg)
   }
+  file_counter = 0
   list_tmp = lapply(files_pre, function(ff_pre) {
     if(verbose) {
-      msg = paste("-- Loading files for sample: ", ff_pre, "\n", sep = "")
+      msg = paste("-- Loading files for sample: ", ff_pre, "...",  "\n", sep = "")
       cat(msg)
     }
     fa = paste(ff_pre, alpha_post, sep = "") %>% gsub("\\\\", "", .)
@@ -54,9 +56,10 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
       if(chain %in% c("alpha", "beta", "paired") && chain != chain_tmp) return(list())
       if(file.exists(file_long)) {
         if(verbose) {
-          msg = paste("---- Loading file -- ", desc, " -- ", ff, "\n", sep = "")
+          msg = paste("---- Loading file -- ", desc, " -- ", ff, "...", "\n", sep = "")
           cat(msg)
           df_tmp =  data.table::fread(file_long)
+          file_counter <<- file_counter + 1
         }
         return(df_tmp)
       } else {
@@ -86,5 +89,8 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
   } else {
     meta_tmp$label = df_tmp$filename
   }
+  msg = paste("Loaded ", file_counter, " files from ", length(list_tmp), " samples.", "\n", sep = "")
+  cat(msg)
+  tictoc::toc()
   return(list(data = list_tmp, meta = meta_tmp))
 }
