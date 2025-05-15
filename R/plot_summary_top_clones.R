@@ -8,20 +8,22 @@ plot_clonotype_indices = function(
   facet = FALSE, return_data = FALSE) {
 
   meta = data$meta
-  data = data$data
+  data2 = data$data
   chain = chain[1]
 
-  data = lapply(data, function(x) x[[chain]]) %>% setNames(names(data))
-
+  data3 = lapply(data2, function(x) x[[chain]]) %>% setNames(names(data2))
   labels = get_labels_from_col(meta, label_col)
 
-  if(length(group_col) == 1) {
+  if(is.null(group_col)) {
+    meta$Group = meta[[1]]
+  } else if(length(group_col) == 1) {
     meta$Group = meta[[group_col]]
   } else {
     meta$Group = apply(meta[, group_col], 1, paste, collapse = " | ")
   }
 
-  props_list = calculate_proportions_list(data, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
+  props_list = calculate_proportions_list(data3, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
+
   gg_df = lapply(1:length(props_list), function(i) {
     tmp_df = summarize_clonotype_indices_single(props_list[[i]], type_column = type_column,
                                                 proportion_column = proportion_column, cutoffs = cutoffs)

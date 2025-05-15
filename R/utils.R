@@ -77,3 +77,9 @@ get_labels_from_col = function(meta, label_col) {
   if(length(unique(labels)) != dim(meta)[1]) labels = paste(1:dim(meta)[1], labels)
   return(labels)
 }
+
+split_string_multiline = function(string, width = 65) {
+  lines = strwrap(string, width = width, simplify = TRUE)
+  result = paste(lines, collapse = "\n")
+  return(result)
+}

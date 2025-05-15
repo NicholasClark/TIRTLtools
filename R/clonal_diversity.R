@@ -25,7 +25,7 @@
 #'
 #' gini - The Gini index/coefficient... (https://en.wikipedia.org/wiki/Gini_coefficient).
 #'
-#' gini.simpson - The Gini-Simpson index (https://en.wikipedia.org/wiki/Diversity_index#Gini%E2%80%93Simpson_index)
+#' gini.simpson - The Gini-Simpson index (https://en.wikipedia.org/wiki/Diversity_index#Gini%E2%80%93Simpson_index). Equal to 1-Simpson_index. This equals the probability that two entities taken at random from the dataset represent different types.
 #'
 #' inv.simpson - The Inverse-Simpson index - i.e. the reciprocal of the Simpson index, which measures the effective
 #' number of types when the weighted arithmetic mean is used to calculate diversity. It is equivalent to the
@@ -175,7 +175,7 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 
 ### helper function to summarize clones by some column(s) and calculate proportions for each sample
 calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto", return_list = FALSE) {
-  is_paired = is.paired(data)
+  is_paired = is.paired(data_list)
   if(type_column == "auto") {
     if(is_paired) {
       type_column = "cdr3a+cdr3b"
@@ -198,6 +198,7 @@ calculate_proportions_list = function(data_list, type_column = "auto", proportio
     msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
     cat(msg)
   }
+  print(length(data_list))
   list_all = lapply(1:length(data_list), function(i) {
     x = data_list[[i]]
     tmp = calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
@@ -212,8 +213,8 @@ calculate_proportions_list = function(data_list, type_column = "auto", proportio
 }
 
 ### helper function to summarize clones by some column(s) for a single data frame
-calculate_proportions = function(data, type_column = "auto", proportion_column="auto"
-                                 ) {
+calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
+#calculate_proportions = function(data, type_column, proportion_column) {
   is_paired = is.paired(data)
   if(is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
   if(type_column == "auto") {
