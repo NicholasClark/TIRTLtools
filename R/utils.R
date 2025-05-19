@@ -84,6 +84,9 @@ split_string_multiline = function(string, width = 65) {
   return(result)
 }
 
+add_newline = function(string) {
+  return(paste(string, "\n", sep = ""))
+}
 
 #' Remove duplicates from paired chain data.
 #'
@@ -128,4 +131,56 @@ get_proportion_column = function(proportion_column, is_paired, is_annotated) {
     cat(msg)
   }
   return(proportion_column)
+}
+
+get_all_tcrs = function(data, chain = c("paired", "alpha", "beta"), remove_duplicates = TRUE) {
+  chain = chain[1]
+  df_all = lapply(1:length(data$data), function(i) {
+    sample_df = data$data[[i]][[chain]]
+    sample_df = bind_cols(sample_df, data$meta[i,])
+    return(sample_df)
+  }) %>% bind_rows()
+  if(chain == "paired" && remove_duplicates) df_all = remove_dupes_paired(df_all)
+  return(df_all)
+}
+
+### add alleles ("*01") to va and vb if necessary (needed for TCRdist)
+add_alleles = function(df) {
+  has_allele_va = grepl("\\*", df$va)
+  has_allele_vb = grepl("\\*", df$vb)
+  df$va_orig = df$va
+  df$vb_orig = df$vb
+  df = df %>%
+    mutate(
+      va = ifelse(has_allele_va, va, paste(va, "*01", sep = "")),
+      vb = ifelse(has_allele_vb, vb, paste(vb, "*01", sep = ""))
+    )
+  return(df)
+}
+
+### filter data frame so that va and vb alleles are found in the parameters for tcrdist
+filter_alleles = function(df, params=NULL) {
+  if(is.null(params)) params = TIRTLtools::params
+  df = df %>% filter(va %in% params$feature, vb %in% params$feature)
+  return(df)
+}
+
+### check that va and vb are found in the parameters for tcrdist (but don't remove them)
+check_alleles = function(df, params=NULL) {
+  if(is.null(params)) params = TIRTLtools::params
+  df = df %>% mutate(va_allowed = va %in% params$feature, vb_allowed = vb %in% params$feature) %>%
+    mutate(va_and_vb_allowed = va_allowed & vb_allowed)
+  return(df)
+}
+
+### prep data for tcrdist python function
+prep_for_tcrdist = function(df, params=NULL) {
+  if(is.null(df)) return(df)
+  if(is.null(params)) params = TIRTLtools::params
+  df = add_alleles(df) # add "*01" as allele for va and vb if necessary
+  df = filter_alleles(df, params = params) # remove alleles not found in the parameter data frame
+  if(!"is_functional" %in% colnames(df)) df = identify_non_functional_seqs(df)
+  df = df %>% filter(is_functional) # remove seqs w/ stop codons (*) or frameshifts (_)
+  df = as.data.frame(df) ## convert to standard data frame
+  return(df)
 }

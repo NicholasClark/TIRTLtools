@@ -70,6 +70,7 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
           msg = paste("---- Loading file -- ", desc, " -- ", ff, "...", "\n", sep = "")
           cat(msg)
           df_tmp =  data.table::fread(file_long)
+          df_tmp = identify_non_functional_seqs(df_tmp)
           file_counter <<- file_counter + 1
         }
         return(df_tmp)

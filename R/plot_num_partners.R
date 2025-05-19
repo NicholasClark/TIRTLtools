@@ -1,15 +1,22 @@
 plot_num_partners = function(data,
                              label_col = NULL, group_col = NULL, fraction = TRUE,
+                             include_non_functional = FALSE,
                              max_partners = 5, return_data = FALSE) {
 
   meta = data$meta
   data = data$data
 
-  data = lapply(data, function(x) x[["paired"]]) %>% setNames(names(data))
+  if(include_non_functional) {
+    data = lapply(data, function(x) x[["paired"]]) %>% setNames(names(data))
+  } else {
+    data = lapply(data, function(x) x[["paired"]] %>% filter(is_functional)) %>% setNames(names(data))
+  }
+
 
   is_paired = is.paired(data)
   is_list = is.list.only(data)
   if(!is_paired) stop("'data' must be paired chain output from TIRLT-seq")
+  data = remove_dupes_paired(data)
 
   if(is_list) {
     gg_df = lapply(1:length(data), function(i) {
@@ -29,7 +36,7 @@ plot_num_partners = function(data,
   }
   var = ifelse(fraction, sym("Fraction"), sym("Frequency"))
   char = paste(">", max_partners, sep = "")
-  lvls = c(1:max_partners, char)
+  lvls = c(1:max_partners, char) %>% rev()
   gg_df$n_partners = factor(gg_df$n_partners, levels = lvls)
   gg = ggplot(gg_df) +
     geom_col(aes(x = chain, y = !!var, fill = n_partners)) +
@@ -48,10 +55,10 @@ plot_num_partners = function(data,
 }
 
 get_num_partners_single = function(df, max_partners = 5) {
-  alpha_tbl = table(df$cdr3a) %>% table() %>% as.data.frame.table() %>%
+  alpha_tbl = table(df$alpha_nuc) %>% table() %>% as.data.frame.table() %>%
     magrittr::set_colnames(c("n_partners", "Frequency")) %>%
     mutate( Fraction = Frequency/sum(Frequency), chain = "alpha" )
-  beta_tbl = table(df$cdr3b) %>% table() %>% as.data.frame.table() %>%
+  beta_tbl = table(df$beta_nuc) %>% table() %>% as.data.frame.table() %>%
     magrittr::set_colnames(c("n_partners", "Frequency")) %>%
     mutate( Fraction = Frequency/sum(Frequency), chain = "beta" )
   df_long = bind_rows(alpha_tbl, beta_tbl) %>% mutate(n_partners = as.integer(as.character(n_partners)))
