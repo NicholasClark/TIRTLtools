@@ -21,7 +21,7 @@ make_graph_many_cluster = function(df, dist_df, clusters, pdf_name = "", seed = 
   grps = as.character(unique(grp_vec))
   grps = grps[!is.na(grps)]
   n_grps = length(grps)
-  colbar = rainbow(n_grps) %>% setNames(grps)
+  colbar = get_colors_12()[1:length(grps)] %>% setNames(grps)
   igraph::V(g)$color = colbar[grp_vec]
   if(pdf_name != "") {
     pdf(pdf_name, width = 9, height = 9)

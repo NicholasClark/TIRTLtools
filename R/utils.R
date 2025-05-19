@@ -184,3 +184,33 @@ prep_for_tcrdist = function(df, params=NULL) {
   df = as.data.frame(df) ## convert to standard data frame
   return(df)
 }
+
+get_colors_25 = function() {
+  c25 <- c(
+    "dodgerblue2", "#E31A1C", # red
+    "green4",
+    "#6A3D9A", # purple
+    "#FF7F00", # orange
+    "black", "gold1",
+    "skyblue2", "#FB9A99", # lt pink
+    "palegreen2",
+    "#CAB2D6", # lt purple
+    "#FDBF6F", # lt orange
+    "gray70", "khaki2",
+    "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
+    "darkturquoise", "green1", "yellow4", "yellow3",
+    "darkorange4", "brown"
+  )
+  return(c25)
+}
+
+get_colors_12 = function() {
+  c12 =  c(
+    "dodgerblue2", "#E31A1C",
+    "green4","deeppink1",
+    "#6A3D9A", "#FF7F00",
+    "black", "gold1",
+    "palegreen2","darkorange4",
+    "orchid1", "darkturquoise")
+  return(c12)
+}
