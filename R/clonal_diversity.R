@@ -213,47 +213,47 @@ calculate_proportions_list = function(data_list, type_column = "auto", proportio
 }
 
 ### helper function to summarize clones by some column(s) for a single data frame
-calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
-#calculate_proportions = function(data, type_column, proportion_column) {
-  is_paired = is.paired(data)
-  if(is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
-  if(type_column == "auto") {
-    if(is_paired) {
-      type_column = "cdr3a+cdr3b"
-    } else {
-      type_column = "aaSeqCDR3"
-    }
-    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
-    cat(msg)
-  }
-
-  cols = strsplit(type_column, "\\+")[[1]]
-  sym_type_col = syms(cols)
-
-  if(proportion_column == "auto") {
-    if(is_paired) {
-      proportion_column = "wij"
-    } else {
-      proportion_column = "readFraction"
-    }
-    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
-    cat(msg)
-  }
-
-  if(!proportion_column %in% colnames(data)) {
-    warning("'proportion_column' not found in the data, using proportion of occurrences to measure diversity")
-    #prop_df = data %>% group_by(!!sym(type_column)) %>% summarize(n = n())
-    prop_df = data %>% group_by(!!!sym_type_col) %>% summarize(n = n())
-    prop_df$prop = prop_df$n/sum(prop_df$n)
-  } else {
-    # prop_df = data %>% group_by(!!sym(type_column)) %>%
-    #   summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
-    prop_df = data %>% group_by(!!!sym_type_col) %>%
-      summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
-    prop_df$prop = prop_df[[proportion_column]]/sum(prop_df[[proportion_column]])
-  }
-  return(prop_df)
-}
+# calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
+# #calculate_proportions = function(data, type_column, proportion_column) {
+#   is_paired = is.paired(data)
+#   if(is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
+#   if(type_column == "auto") {
+#     if(is_paired) {
+#       type_column = "alpha_beta"
+#     } else {
+#       type_column = "targetSequences"
+#     }
+#     msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
+#     cat(msg)
+#   }
+#
+#   cols = strsplit(type_column, "\\+")[[1]]
+#   sym_type_col = syms(cols)
+#
+#   if(proportion_column == "auto") {
+#     if(is_paired) {
+#       proportion_column = "wij"
+#     } else {
+#       proportion_column = "readFraction"
+#     }
+#     msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+#     cat(msg)
+#   }
+#
+#   if(!proportion_column %in% colnames(data)) {
+#     warning("'proportion_column' not found in the data, using proportion of occurrences to measure diversity")
+#     #prop_df = data %>% group_by(!!sym(type_column)) %>% summarize(n = n())
+#     prop_df = data %>% group_by(!!!sym_type_col) %>% summarize(n = n())
+#     prop_df$prop = prop_df$n/sum(prop_df$n)
+#   } else {
+#     # prop_df = data %>% group_by(!!sym(type_column)) %>%
+#     #   summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
+#     prop_df = data %>% group_by(!!!sym_type_col) %>%
+#       summarize(!!sym(proportion_column) := sum(!!sym(proportion_column), na.rm = TRUE))
+#     prop_df$prop = prop_df[[proportion_column]]/sum(prop_df[[proportion_column]])
+#   }
+#   return(prop_df)
+# }
 
 
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.

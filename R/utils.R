@@ -83,3 +83,49 @@ split_string_multiline = function(string, width = 65) {
   result = paste(lines, collapse = "\n")
   return(result)
 }
+
+
+#' Remove duplicates from paired chain data.
+#'
+#' There will be duplicates in paired chain data when a pair is called by both
+#' the T-SHELL and MAD-HYPE algorithms.
+#' The input 'data' needs to be either a single data frame (paired chain) or a list
+#' of data frames (paired chain)
+remove_dupes_paired = function(data) {
+  if(is.data.frame(data)) {
+    out = data[!duplicated(data$alpha_beta),]
+  } else {
+    out = lapply(data, function(x) {
+       x[!duplicated(x$alpha_beta),]
+    })
+  }
+  return(out)
+}
+
+
+get_type_column = function(type_column, is_paired) {
+  if(type_column == "auto") {
+    if(is_paired) type_column = "alpha_beta"
+    if(!is_paired) type_column = "targetSequences"
+    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
+    cat(msg)
+  }
+  return(type_column)
+}
+
+get_proportion_column = function(proportion_column, is_paired, is_annotated) {
+  if(proportion_column == "auto") {
+    if(is_paired) {
+      if(is.null(is_annotated) || is_annotated) {
+        proportion_column = "beta_readFraction"
+      } else {
+        proportion_column = "wij"
+      }
+    } else {
+      proportion_column = "readFraction"
+    }
+    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+    cat(msg)
+  }
+  return(proportion_column)
+}

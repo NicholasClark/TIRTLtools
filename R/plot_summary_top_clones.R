@@ -1,18 +1,22 @@
 
 
 plot_clonotype_indices = function(
-    #data, meta, type_column = "auto", proportion_column="auto",
   data, chain = c("paired", "alpha", "beta"),
   type_column = "auto", proportion_column="auto",
   cutoffs = 10^(1:5), group_col = NULL, label_col = "Sample", flip = FALSE,
   facet = FALSE, return_data = FALSE) {
 
+  is_annotated = data$is_annotated
   meta = data$meta
   data2 = data$data
   chain = chain[1]
 
   data3 = lapply(data2, function(x) x[[chain]]) %>% setNames(names(data2))
   labels = get_labels_from_col(meta, label_col)
+
+  is_paired = is.paired(data3[[1]])
+  type_column = get_type_column(type_column, is_paired)
+  proportion_column = get_proportion_column(proportion_column, is_paired, is_annotated)
 
   if(is.null(group_col)) {
     meta$Group = meta[[1]]
@@ -21,11 +25,11 @@ plot_clonotype_indices = function(
   } else {
     meta$Group = apply(meta[, group_col], 1, paste, collapse = " | ")
   }
+  if(chain == "paired") data3 = remove_dupes_paired(data3)
+  #props_list = calculate_proportions_list(data3, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
 
-  props_list = calculate_proportions_list(data3, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
-
-  gg_df = lapply(1:length(props_list), function(i) {
-    tmp_df = summarize_clonotype_indices_single(props_list[[i]], type_column = type_column,
+  gg_df = lapply(1:length(data3), function(i) {
+    tmp_df = summarize_clonotype_indices_single(data3[[i]],
                                                 proportion_column = proportion_column, cutoffs = cutoffs)
     tmp_df$Sample = labels[i]
     if(!is.null(group_col)) {
@@ -76,19 +80,19 @@ plot_clonotype_indices = function(
 }
 
 
-summarize_clonotype_indices_single = function(data, type_column = "auto", proportion_column="auto", cutoffs = 10^(1:4)) {
+summarize_clonotype_indices_single = function(data, proportion_column="auto", cutoffs = 10^(1:4), normalize = FALSE) {
   starts = c(1, cutoffs+1)
   ends = c(cutoffs, Inf)
   grps = paste("[",starts, ":", ends, "]", sep = "")
-  data = data %>% arrange(desc(prop))
+  data = data %>% arrange(desc(!!sym(proportion_column)))
   grp_props = sapply(1:length(grps), function(i) {
     start = starts[i]
     end = ends[i]
     if(start > dim(data)[1]) return(0)
     if(end > dim(data)[1]) end = dim(data)[1]
-    sum(data$prop[start:end])
+    sum(data[[proportion_column]][start:end])
   })
   tmp_df = tibble(clonotype_indices = factor(grps, levels = grps), prop = grp_props)
-  tmp_df$prop = tmp_df$prop/sum(tmp_df$prop)
+  if(normalize) tmp_df$prop = tmp_df$prop/sum(tmp_df$prop)
   return(tmp_df)
 }
