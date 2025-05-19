@@ -12,9 +12,20 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
   # if(chain == "alpha") ptn = "*TRA.tsv.gz"
   # if(chain == "beta") ptn = "*TRB.tsv.gz"
   # if(chain == "paired") ptn = "*TIRTLoutput.tsv.gz"
-  alpha_post = "_pseudobulk_TRA\\.tsv\\.gz"
-  beta_post = "_pseudobulk_TRB\\.tsv\\.gz"
-  paired_post = "_TIRTLoutput\\.tsv\\.gz"
+  all_files = dir(directory)
+  file_exts = all_files %>% tools::file_ext() %>% unique()
+
+  if(length(file_exts) > 1) stop("All files need to be either .tsv or .tsv.gz")
+  if(file_exts == "tsv") {
+    alpha_post = "_pseudobulk_TRA\\.tsv"
+    beta_post = "_pseudobulk_TRB\\.tsv"
+    paired_post = "_TIRTLoutput\\.tsv"
+  } else {
+    alpha_post = "_pseudobulk_TRA\\.tsv\\.gz"
+    beta_post = "_pseudobulk_TRB\\.tsv\\.gz"
+    paired_post = "_TIRTLoutput\\.tsv\\.gz"
+  }
+
 
   files_alpha = dir(directory, pattern = paste("*",alpha_post,sep="") )
   files_beta = dir(directory, pattern = paste("*",beta_post,sep="") )
