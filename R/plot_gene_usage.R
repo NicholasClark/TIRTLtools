@@ -17,7 +17,7 @@
 #' @returns a ggplot object with a bar chart of the most common V-segments.
 #'
 #' @examples
-#'
+#' # example here
 
 plot_gene_usage = function(data, chain = c("paired", "alpha", "beta"),
                            group_col=NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,

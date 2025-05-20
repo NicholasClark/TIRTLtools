@@ -84,7 +84,7 @@
 #' @param methods the diversity indices or methods to calculate.
 #'
 #' @examples
-#'
+#' # example here
 
 #diversity = function(data, meta= NULL, chain = c("paired", "alpha", "beta"),
 diversity = function(data, chain = c("paired", "alpha", "beta"),

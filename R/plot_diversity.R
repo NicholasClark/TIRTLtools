@@ -1,8 +1,18 @@
-
+#' @title
+#' Plotting of clonal diversity metrics
+#'
+#' @description
+#' The `plot_diversity()` function returns...
+#'
+#' @details
+#' This function...
+#'
 #' @param div a list created by the `diversity` function with diversity metrics for each sample
 #' @param metric the diversity metric to use (e.g. shannon, simpson, etc.)
 #' @param q (optional) for 'renyi' and 'hill' metrics, the order q of the diversity index
 #' @param percent (optional) for 'dXX' metric, the percentage 'XX' between 0 and 100
+#'
+#'
 
 plot_diversity = function(
     div, metric=.get_all_div_metrics(), q=2, percent=90, group_col = NULL,

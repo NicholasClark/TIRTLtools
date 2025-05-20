@@ -2,7 +2,7 @@
 #' Clustering of TCRs using TCRdist and the Leiden algorithm
 #'
 #' @description
-#' The `cluster_tcrs()` aggregates all of the paired TCRs found in the data,
+#' The `cluster_tcrs()` function aggregates all of the paired TCRs found in the data,
 #' calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 #' and clusters the results using the Leiden algorithm.
 #'
