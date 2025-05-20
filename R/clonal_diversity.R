@@ -1,14 +1,3 @@
-### clonal diversity
-
-#' possible additions:
-#' 1) chao diversity (https://www.uvm.edu/~ngotelli/manuscriptpdfs/ChaoHill.pdf), rarefaction (https://en.wikipedia.org/wiki/Rarefaction_(ecology))
-#' 2) plotting
-#' 3) (done) allow to take in a list of data frames
-#' 4) only calculate specified metrics to make it faster
-#' 5) allow for multiple columns to be used as "type" -- i.e. to group by both alpha and beta chains (va, vb, cdr3a, cdr3b)
-
-
-
 #' @title
 #' Calculation of clonal diversity measures from TCR data
 #'

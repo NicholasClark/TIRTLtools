@@ -1,5 +1,50 @@
-
-cluster_tcrs = function(data, cluster.type = "leiden", tcrdist_cutoff = 90, resolution = 0.1) {
+#' @title
+#' Clustering of TCRs using TCRdist and the Leiden algorithm
+#'
+#' @description
+#' The `cluster_tcrs()` aggregates all of the paired TCRs found in the data,
+#' calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
+#' and clusters the results using the Leiden algorithm.
+#'
+#' @details
+#' The function also filters the dataset to TCRs that are valid for TCRdist.
+#'
+#' The following TCRs are removed:
+#'  - TCRs that contain stop codons (*) or frame shifts (_) in their cdr3a or cdr3b regions
+#'  - TCRs that contain a cdr3 region with 5 or less amino acids
+#'  - TCRs that contain a v segment allele not found in our parameter table
+#'
+#' V-segments that do not specify an allele (e.g. "TRAV1-2" instead of "TRAV1-2*01")
+#' will be assigned to the "*01" allele.
+#'
+#' @param data a list of TIRTLseq TCR data for samples created with `load_tirtlseq()`
+#' @param tcrdist_cutoff the `TCRdist()` function will only record TCRdist values
+#' less than or equal to the cutoff. Default is 90. Note: Higher cutoffs will return more
+#' data, at most NxN where N is the number of unique TCRs.
+#' @param resolution the "resolution" parameter for the Leiden algorithm. A lower
+#' value will produce larger clusters and a higher value will produce smaller clusters.
+#' Typical values are in the 0.1 - 2.0 range. A higher value may be better for densely
+#' connected data while a lower value may be better for moderately connected data. Default is 0.1.
+#'
+#' @return
+#' Returns a list with the following elements:
+#' * df - a data frame with all unique TCRs along with cluster annotations
+#' * dist_df - a data frame with distances (TCRdist) between TCR pairs in long format
+#' * sparse_adj_mat - an adjacency matrix (in sparse format) marking TCR pairs with TCRdist <= tcrdist_cutoff
+#' * graph_adj - an igraph object created from the adjacency matrix
+#' * tcrdist_cutoff - the cutoff used for TCRdist
+#' * resolution - the resolution parameter used for the Leiden algorithm
+#'
+#' @seealso [plot_clusters()], [identify_non_functional_seqs()]
+#'
+#' @export
+#' @examples
+#' # example code
+#' # paired = load_tirtlseq("your_directory/")
+#' # obj = cluster_tcrs(paired)
+#'
+cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1) {
+  cluster.type = "leiden"
   chain = "paired"
   df_all = get_all_tcrs(data, chain, remove_duplicates = TRUE) ## get all tcrs in one data frame
   #df_all = df_all %>% filter(is_functional)
