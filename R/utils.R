@@ -179,6 +179,7 @@ prep_for_tcrdist = function(df, params=NULL) {
   if(is.null(params)) params = TIRTLtools::params
   df = add_alleles(df) # add "*01" as allele for va and vb if necessary
   df = filter_alleles(df, params = params) # remove alleles not found in the parameter data frame
+  df = df %>% filter(nchar(cdr3a) > 5, nchar(cdr3b) > 5)
   if(!"is_functional" %in% colnames(df)) df = identify_non_functional_seqs(df)
   df = df %>% filter(is_functional) # remove seqs w/ stop codons (*) or frameshifts (_)
   df = as.data.frame(df) ## convert to standard data frame
@@ -213,4 +214,24 @@ get_colors_12 = function() {
     "palegreen2","darkorange4",
     "orchid1", "darkturquoise")
   return(c12)
+}
+
+dist_df_to_matrix = function(dist_df, n_vertices_all, idx_keep) {
+  ## temporarily switch zeros with -1
+  dist_df$TCRdist_mod = ifelse(dist_df$TCRdist == 0L, -1L, dist_df$TCRdist)
+  ## convert to sparse matrix
+  sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
+                                             x=dist_df$TCRdist_mod, symmetric = TRUE,
+                                             dims = c(n_vertices_all, n_vertices_all))
+  tmp = sparse_tcrdist_mat[idx_keep, idx_keep] %>% as.matrix()
+  mode(tmp) <- "integer"
+  #tmp[tmp==0L] = cutoff
+  tmp[tmp==0L] = NA
+  tmp[tmp==-1L] = 0
+  return(tmp)
+}
+
+dist_obj_to_matrix = function(obj, idx_keep) {
+  tmp = dist_df_to_matrix(obj$dist_df, n_vertices_all = dim(obj$df)[1], idx_keep = idx_keep)
+  return(tmp)
 }
