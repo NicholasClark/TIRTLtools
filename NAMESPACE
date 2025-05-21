@@ -4,5 +4,7 @@ import(ggplot2)
 #importFrom(magrittr,"%>%")
 import(dplyr)
 import(magrittr)
+import(data.table)
+import(dtplyr)
 
 export("%>%")

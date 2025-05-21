@@ -54,8 +54,14 @@ get_well_subset<-function(row_range=1:16,col_range=1:24){
   unlist(sapply(LETTERS[row_range],function(x)paste(x,col_range,sep=""),simplify = F))
 }
 
+is.dtplyr = function(data) {
+  num = class(data) %>% grepl("dtplyr", .) %>% sum()
+  check = num > 0
+  return(check)
+}
+
 is.paired = function(data) {
-  is_data_frame = is.data.frame(data)
+  is_data_frame = is.data.frame(data) || is.dtplyr(data)
   is_list = is.list(data) && !is_data_frame
   if(!(is_list || is_data_frame)) stop("'data' needs to be a data frame or a list of data frames")
   if(is_data_frame) is_paired = "wij" %in% colnames(data)

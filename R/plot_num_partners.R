@@ -15,7 +15,7 @@ plot_num_partners = function(data,
 
   is_paired = is.paired(data)
   is_list = is.list.only(data)
-  if(!is_paired) stop("'data' must be paired chain output from TIRLT-seq")
+  if(!is_paired) stop("'data' must be paired chain output from TIRTL-seq")
   data = remove_dupes_paired(data)
 
   if(is_list) {

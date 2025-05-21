@@ -23,6 +23,7 @@ Imports:
     ComplexHeatmap,
     data.table,
     dendsort,
+    dtplyr,
     ggplot2,
     igraph,
     magrittr,

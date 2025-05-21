@@ -25,6 +25,8 @@
 #' value will produce larger clusters and a higher value will produce smaller clusters.
 #' Typical values are in the 0.1 - 2.0 range. A higher value may be better for densely
 #' connected data while a lower value may be better for moderately connected data. Default is 0.1.
+#' @param with_vdjdb if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
+#' If parameter is a data frame, the supplied data frame will be used as the database.
 #'
 #' @return
 #' Returns a list with the following elements:
@@ -43,13 +45,22 @@
 #' # paired = load_tirtlseq("your_directory/")
 #' # obj = cluster_tcrs(paired)
 #'
-cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1) {
+cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE) {
   cluster.type = "leiden"
   chain = "paired"
   df_all_obs = get_all_tcrs(data, chain, remove_duplicates = TRUE) %>%
     mutate(source = "observed") ## get all tcrs in one data frame
-  vdj = TIRTLtools::vdj_db %>% mutate(source = "vdj-db")
-  df_all = bind_rows(df_all_obs, vdj)
+  if(is.data.frame(with_vdjdb)) {
+
+  } else {
+    if(with_vdjdb) {
+      vdj = TIRTLtools::vdj_db %>% mutate(source = "vdj-db")
+      df_all = bind_rows(df_all_obs, vdj)
+    } else {
+      df_all = df_all_obs
+    }
+  }
+
   dist = TCRdist(df_all, tcrdist_cutoff = tcrdist_cutoff)
   dist_df = dist$TCRdist_df
   dist_input = dist$tcr1
