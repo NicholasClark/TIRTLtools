@@ -1,7 +1,11 @@
-plot_clusters = function(obj, n_clusters = 10,seed = 1234) {
-  largest_clusters = table(obj$df$cluster) %>% sort() %>% tail(n_clusters) %>% as.data.frame() %>% as_tibble() %>% set_colnames(c("cluster", "n")) %>% mutate(cluster = as.character(cluster)) %>% arrange(desc(n))
+plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c("cluster", "source"), color_col = "cluster") {
+  cluster_summ = obj$df %>% group_by(cluster) %>%
+    summarize(n_total = n(), n_vdjdb = sum(source == "vdj-db"), n_obs = sum(source == "observed"))
+  largest_clusters = cluster_summ %>% arrange(desc(n_obs)) %>% mutate(cluster = as.integer(cluster)) %>% head(n_clusters)
+  # largest_clusters = table(obj$df$cluster) %>% sort() %>% tail(n_clusters) %>% as.data.frame() %>% as_tibble() %>% set_colnames(c("cluster", "n")) %>% mutate(cluster = factor(cluster, levels = cluster %>% as.character() %>% as.integer() %>% sort() ) ) %>% arrange(desc(n))
+  #largest_clusters$cluster = factor(largest_clusters$cluster, levels = sort(as.integer(as.character(largest_clusters$cluster))))
   ### testing plotting umap or graph of largest clusters
-  df_sub = obj$df %>% filter(cluster %in% largest_clusters$cluster)
+  df_sub = obj$df %>% filter(cluster %in% largest_clusters$cluster) %>% mutate(cluster = factor(cluster %>% as.character() , levels = cluster %>% as.character() %>% unique() %>% as.integer() %>% sort() %>% as.character() ) )
   idx_keep = unique(df_sub$idx_1index)
   dist_mat = dist_obj_to_matrix(obj, idx_keep)
   dist_mat_noNA = dist_mat
@@ -14,17 +18,16 @@ plot_clusters = function(obj, n_clusters = 10,seed = 1234) {
     um = uwot::umap(as.dist(dist_mat_noNA))
     df_sub$um1 = um[,1]
     df_sub$um2 = um[,2]
-    umap_plot = ggplot(df_sub) + geom_point(aes(x=um1, y=um2, color = as.character(cluster)))
+    umap_plot = ggplot(df_sub) + geom_point(aes(x=um1, y=um2, color = !!sym(color_col) ))
   }
   if("graph" %in% type) {
     set.seed(seed)
     gr_sub = igraph::graph_from_adjacency_matrix(adj_sub, mode = "undirected", weighted = NULL)
-    graph_plot = make_graph_many_cluster(df_sub, adj_mat, clusters = largest_clusters$cluster)
+    graph_plot = make_graph_many_cluster(df_sub, adj_mat, clusters = largest_clusters$cluster, color_column = color_col)
   }
   if("heatmap" %in% type) {
     set.seed(seed)
-    ann_df = df_sub[,"cluster", drop = FALSE] %>% as.data.frame()
-    ann_df$cluster = factor(ann_df$cluster, levels = sort(as.integer(largest_clusters$cluster)))
+    ann_df = df_sub[,annotation_cols, drop = FALSE] %>% as.data.frame()
     ann = ComplexHeatmap::columnAnnotation(df = ann_df)
     hm_plot = ComplexHeatmap::Heatmap(adj_mat, top_annotation = ann)
   }

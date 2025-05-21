@@ -1,5 +1,5 @@
 identify_non_functional_seqs = function(df) {
-  if(is.paired(df)) {
+  if("cdr3a" %in% colnames(df) && "cdr3b" %in% colnames(df)) {
     ### for paired data
     df_out = df %>%
       mutate(

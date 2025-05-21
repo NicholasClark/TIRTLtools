@@ -46,8 +46,10 @@
 cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1) {
   cluster.type = "leiden"
   chain = "paired"
-  df_all = get_all_tcrs(data, chain, remove_duplicates = TRUE) ## get all tcrs in one data frame
-  #df_all = df_all %>% filter(is_functional)
+  df_all_obs = get_all_tcrs(data, chain, remove_duplicates = TRUE) %>%
+    mutate(source = "observed") ## get all tcrs in one data frame
+  vdj = TIRTLtools::vdj_db %>% mutate(source = "vdj-db")
+  df_all = bind_rows(df_all_obs, vdj)
   dist = TCRdist(df_all, tcrdist_cutoff = tcrdist_cutoff)
   dist_df = dist$TCRdist_df
   dist_input = dist$tcr1
