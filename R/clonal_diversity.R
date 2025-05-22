@@ -90,7 +90,7 @@
 diversity = function(data, chain = c("paired", "alpha", "beta"),
                      type_column = "auto", proportion_column="auto",
                      q=0:6, percent = seq(10,90,10), tol = 1e-10,
-                     methods = .get_all_div_metrics()
+                     methods = get_all_div_metrics()
                      ) {
   meta = data$meta
   data = data$data
@@ -153,7 +153,7 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 ### helper function - calculates diversity metrics for a single data frame
 .diversity_single = function(data, chain, type_column = "auto", proportion_column="auto",
                              q=0:6, percent = seq(10,90,10), tol = 1e-10,
-                             methods = .get_all_div_metrics()
+                             methods = get_all_div_metrics()
 ) {
   data = data[[chain]]
   prop_df = calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
@@ -163,43 +163,43 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 }
 
 ### helper function to summarize clones by some column(s) and calculate proportions for each sample
-calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto", return_list = FALSE) {
-  is_paired = is.paired(data_list)
-  if(type_column == "auto") {
-    if(is_paired) {
-      type_column = "alpha_beta"
-    } else {
-      type_column = "targetSequences"
-    }
-    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
-    cat(msg)
-  }
-
-  cols = strsplit(type_column, "\\+")[[1]]
-  sym_type_col = syms(cols)
-
-  if(proportion_column == "auto") {
-    if(is_paired) {
-      proportion_column = "wij"
-    } else {
-      proportion_column = "readFraction"
-    }
-    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
-    cat(msg)
-  }
-  print(length(data_list))
-  list_all = lapply(1:length(data_list), function(i) {
-    x = data_list[[i]]
-    tmp = calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
-      mutate(sample_num = i)
-    })
-  if(return_list) {
-    out = list_all
-  } else {
-    out = list_all %>% bind_rows()
-  }
-  return(out)
-}
+# calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto", return_list = FALSE) {
+#   is_paired = is.paired(data_list)
+#   if(type_column == "auto") {
+#     if(is_paired) {
+#       type_column = "alpha_beta"
+#     } else {
+#       type_column = "targetSequences"
+#     }
+#     msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
+#     cat(msg)
+#   }
+#
+#   cols = strsplit(type_column, "\\+")[[1]]
+#   sym_type_col = syms(cols)
+#
+#   if(proportion_column == "auto") {
+#     if(is_paired) {
+#       proportion_column = "wij"
+#     } else {
+#       proportion_column = "readFraction"
+#     }
+#     msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+#     cat(msg)
+#   }
+#   print(length(data_list))
+#   list_all = lapply(1:length(data_list), function(i) {
+#     x = data_list[[i]]
+#     tmp = calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
+#       mutate(sample_num = i)
+#     })
+#   if(return_list) {
+#     out = list_all
+#   } else {
+#     out = list_all %>% bind_rows()
+#   }
+#   return(out)
+# }
 
 ### helper function to summarize clones by some column(s) for a single data frame
 calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
@@ -247,7 +247,7 @@ calculate_proportions = function(data, type_column = "auto", proportion_column="
 
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.
 .calc_all_diversity = function(proportions, q=0:6, percent = seq(10,90,10), tol = 1e-14,
-                            methods = .get_all_div_metrics() ) {
+                            methods = get_all_div_metrics() ) {
   data = proportions[!is.na(proportions)]
   data = data[data != 0]
   sum_data = sum(data)

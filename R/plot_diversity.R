@@ -15,7 +15,7 @@
 #'
 
 plot_diversity = function(
-    div, metric=.get_all_div_metrics(), q=2, percent=90, group_col = NULL,
+    div, metric=get_all_div_metrics(), q=2, percent=90, group_col = NULL,
     label_col = "Sample", flip = FALSE, facet = FALSE, log_scale = FALSE,
     return_data = FALSE
     ) {
