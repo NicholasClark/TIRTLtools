@@ -1,15 +1,17 @@
 
 
 plot_clonotype_indices = function(
-  data, chain = c("paired", "alpha", "beta"),
+  data, chain = c("beta", "alpha"),
   type_column = "auto", proportion_column="auto",
   cutoffs = 10^(1:5), group_col = NULL, label_col = "Sample", flip = FALSE,
-  facet = FALSE, return_data = FALSE) {
+  return_data = FALSE) {
 
   is_annotated = data$is_annotated
   meta = data$meta
   data2 = data$data
   chain = chain[1]
+  if(chain == "paired") stop("Must use pseudobulk data (alpha or beta chain) for visualizing clonotype proportions.")
+  if(!chain %in% c("alpha","beta")) stop("'chain' must be 'alpha' or 'beta'")
 
   data3 = lapply(data2, function(x) x[[chain]]) %>% setNames(names(data2))
   labels = get_labels_from_col(meta, label_col)

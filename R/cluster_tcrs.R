@@ -51,7 +51,8 @@ cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb 
   df_all_obs = get_all_tcrs(data, chain, remove_duplicates = TRUE) %>%
     mutate(source = "observed") ## get all tcrs in one data frame
   if(is.data.frame(with_vdjdb)) {
-
+    vdj = with_vdjdb
+    df_all = bind_rows(df_all_obs, vdj)
   } else {
     if(with_vdjdb) {
       vdj = TIRTLtools::vdj_db %>% mutate(source = "vdj-db")

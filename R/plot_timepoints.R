@@ -28,7 +28,6 @@ plot_timepoints = function(dt,
     scale_x_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))#+
 }
 
-## column can be "targetSequences" or "aaSeqCDR3" for single chain, "cdr3a", "cdr3b" or "cdr3a+cdr3b" for paired
 compute_fold_change = function(data1, data2,
                                type_column = "auto",
                                value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
@@ -53,9 +52,9 @@ compute_fold_change = function(data1, data2,
 
   if(type_column == "auto") {
     if(is_paired) {
-      type_column = "cdr3a+cdr3b"
+      type_column = "alpha_beta"
     } else {
-      type_column = "aaSeqCDR3"
+      type_column = "targetSequences"
     }
     msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
     cat(msg)
@@ -76,8 +75,8 @@ compute_fold_change = function(data1, data2,
   py = paste(proportion_column, ".y", sep = "")
   join_df$log2FC = log2(join_df[[px]]/join_df[[py]])
   join_df$sign = case_when(
-    join_df$log2FC >= 1.5 ~ "up",
-    join_df$log2FC <= -1.5 ~ "down",
+    join_df$log2FC >= log2_cutoff ~ "up",
+    join_df$log2FC <= -log2_cutoff ~ "down",
     .default = "stable"
   )
   join_df[["avg.x"]] = join_df[[px]]

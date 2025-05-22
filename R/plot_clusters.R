@@ -22,7 +22,7 @@ plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c(
   }
   if("graph" %in% type) {
     set.seed(seed)
-    gr_sub = igraph::graph_from_adjacency_matrix(adj_sub, mode = "undirected", weighted = NULL)
+    #gr_sub = igraph::graph_from_adjacency_matrix(adj_mat, mode = "undirected", weighted = NULL)
     graph_plot = make_graph_many_cluster(df_sub, adj_mat, clusters = largest_clusters$cluster, color_column = color_col)
   }
   if("heatmap" %in% type) {

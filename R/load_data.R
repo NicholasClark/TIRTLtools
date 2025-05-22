@@ -82,10 +82,11 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
     }) %>% setNames(obj_names)
     return(obj)
     }) %>% setNames(files_pre)
-  meta_tmp = lapply(files_pre, function(ff) {
+  meta_tmp = lapply(1:length(files_pre), function(i) {
+    ff = files_pre[i]
     spl = strsplit(ff, split = sep)[[1]]
     df_tmp = list()
-    df_tmp$filename = ff
+    df_tmp$sample_id = ff
     if(length(meta_columns) > 0) {
       for(i in 1:length(meta_columns)) {
         col = meta_columns[i]
@@ -99,7 +100,7 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
       paste(colnames(meta_tmp[-1]), row, sep = ": ", collapse = " | ")
     })
   } else {
-    meta_tmp$label = df_tmp$filename
+    meta_tmp$label = df_tmp$sample_id
   }
   msg = paste("Loaded ", file_counter, " files from ", length(list_tmp), " samples.", "\n", sep = "")
   cat(msg)
