@@ -16,7 +16,7 @@ Authors@R: c(
   )
 Description: A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using TIRTL-seq.
     Contains an efficient GPU implementation of TCRdist (Dash et al., Nature 2017).
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
