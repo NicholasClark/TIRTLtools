@@ -25,14 +25,15 @@ Imports:
     dendsort,
     dtplyr,
     ggplot2,
-    igraph,
+    igraph (>= 2.1.4),
+    irlba (>= 2.3.5.1),
     magrittr,
-    Matrix,
+    Matrix (>= 1.7.3),
     paletteer,
     readr,
-    reticulate (>= 1.4.1),
+    reticulate (>= 1.41.0.1),
     tictoc,
-    uwot
+    uwot (>= 0.2.3)
 Depends: 
     R (>= 3.5)
 RoxygenNote: 7.3.2
