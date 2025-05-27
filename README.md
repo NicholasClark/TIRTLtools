@@ -1,16 +1,47 @@
 # TIRTLtools R package
 
-A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using TIRTL-seq.
+## Overview
 
-Package may change frequently as it is in active development.
+`TIRTLtools` is a suite of tools for analyzing T-cell receptor (TCR) repertoires created using **TIRTL-seq** (**T**hroughput-**I**ntensive **R**apid **T**CR **L**ibrary **seq**uencing) [(Pogorelyy and Kirk et al., bioRxiv 2024)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2).
+We provide functions for analysis of **paired TCR repertoires** as well as **single-chain bulk data**.
+
+In addition to various **analysis and plotting functions**, we provide an **efficient batched GPU implementation of TCRdist** ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).
+
+*Package may change frequently as it is in active development.*
+
+### Package functions
+
+#### Data loading:
+  * `load_tirtlseq()` -- load paired TCR and single-chain data from TIRTL-seq experiments
+  
+#### Repertoire analysis:
+  * `TCRdist()` -- calculate TCRdist via batched GPU calculation
+  * `cluster_tcrs()` -- cluster TCRs (with themselves and with TCRs from VDJ-db) based on pairwise TCRdist
+  * `diversity()` -- calculate repertoire diversity metrics
+  
+#### Plotting:
+  * `sample_overlap()` -- plot overlap/agreement between samples (in terms of most frequent clones)
+  * `plot_sample_vs_sample()` -- scatterplot of readFraction between two samples
+  * `rank_plot()` -- a line plot of clonotype rank vs. readFraction for different samples
+  * `plot_clusters()` -- plot top "n" clusters with the most observed TCRs -- currently outputs a network graph, a umap, and a heatmap
+  * `plot_gene_usage()` -- bar plots of V-gene segment usage (or J-gene segment usage)
+  * `plot_num_partners()` -- plot number of partners for alpha and beta chains in paired data
+  * `plot_clonotype_indices()` -- stacked bar chart with fractions of reads for most frequent clonotypes.
+  * `plot_diversity()` -- bar plots of different diversity metrics
+
+#### Helper functions:
+  * `add_pseudobulk_counts_to_paired_data()` -- add alpha- and beta-chain read counts/fractions to the paired TCR data
+  * `identify_non_functional_seqs()` -- mark cdr3 sequences that have stop codons (*) or frame shifts (_)
+  * `identify_paired()` -- identify which alpha and beta chains in the pseudo-bulk data are found in pairs
+  * `get_all_div_metrics()` -- returns all options for diversity metrics (currently: simpson, gini, gini.simpson, inv.simpson, shannon, berger.parker, richness, d50, dXX, renyi, hill)
 
 ## Installation
 
-You can install the package from GitHub:
+You can install the package directly from GitHub:
 ```R
 remotes::install_github("NicholasClark/TIRTLtools")
 ```
-or you can clone the repository to a local folder
+Alternatively, you may clone the repository to a local folder
 ```
 git clone https://github.com/NicholasClark/TIRTLtools.git
 ```
@@ -23,7 +54,7 @@ devtools::load_all("./TIRTLtools") ### location of cloned repo on your machine
 
 ### TCRdist GPU implementation
 
-This function computes the similarity of two T-cell receptors (TCRs) using TCRdist ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)). The function can efficiently calculate pairwise similarities of thousands or millions of TCRs using a GPU if it is available. It relies on python code using 'cupy' (Nvidia GPUs) or 'mlx' (Apple Silicon GPUs), which is called through the 'reticulate' R package.
+This function computes the similarity of two T-cell receptors (TCRs) using TCRdist ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)). The function can efficiently calculate pairwise similarities of thousands or millions of TCRs using a GPU if it is available. It relies on python code using [cupy](https://cupy.dev/) (Nvidia GPUs) or [mlx](https://opensource.apple.com/projects/mlx/) (Apple Silicon GPUs), which is called through the `reticulate` R package.
 
 The following example computes TCRdist values for all pairs of annotated TCRs in the [VDJdb](https://vdjdb.cdr3.net/) database. It outputs all values with TCRdist <= 90.
 
@@ -119,4 +150,4 @@ as_tibble(meta_df)
 
 ## References
 
-Please see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v1) for details.
+Please see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) for details.
