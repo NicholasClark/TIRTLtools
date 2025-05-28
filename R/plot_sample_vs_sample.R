@@ -1,3 +1,28 @@
+#' @title
+#' Scatterplot of TCR frequency between two samples
+#'
+#' @description
+#' `plot_sample_vs_sample()` returns a scatterplot of read frequencies of TCRs between two samples
+#'
+#' @details
+#' The function labels each TCR as up-regulated, down-regulated, or stable, based on the
+#' log2 fold-change cutoff supplied (default 1.5).
+#'
+#' @param data1 a dataframe for the first sample
+#' @param data2 a dataframe for the second sample
+#' @param log2_cutoff the log2 fold-change cutoff to call a TCR up- or down-regulated (default 1.5)
+#'
+#' @return
+#' A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each
+#' TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
+#'
+#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#'
+#' @export
+#' @examples
+#' # example code
+#'
+#'
 
 plot_sample_vs_sample = function(data1, data2,
                                  type_column = "auto",

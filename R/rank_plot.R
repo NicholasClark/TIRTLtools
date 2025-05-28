@@ -1,4 +1,25 @@
-
+#' @title
+#' Line plot of TCR rank vs. frequency
+#'
+#' @description
+#' `rank_plot()` returns a line plot of TCR rank vs. read fraction for a given sample.
+#'
+#' @details
+#' Fill in later.
+#'
+#' @param param1 the first parameter
+#' @param param2 the second parameter
+#'
+#' @return
+#' A line plot (ggplot object) of TCR rank vs. read fraction
+#'
+#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#'
+#' @export
+#' @examples
+#' # example code
+#'
+#'
 
 rank_plot = function(data, chain=c("alpha", "beta"), column = "readFraction") {
   chain = chain[1]

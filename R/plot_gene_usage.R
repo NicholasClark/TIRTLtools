@@ -1,11 +1,12 @@
 #' @title
-#' Plotting of gene usage
+#' Plotting of V- or J- gene usage
 #'
 #' @description
-#' `plot_v_usage` returns a bar plot of the usage of VA or VB segments.
+#' `plot_gene_usage()` creates a bar chart of gene segment usage for the most common
+#' V- or J- genes.
 #'
 #' @details
-#' This function ...
+#' Fill in later, after updating/finalizing function.
 #'
 #' @param data either a single data frame containing paired TCRs from TIRTL-seq output or a list of
 #' data frames for many experiments
@@ -14,7 +15,8 @@
 #' @param gene the gene of the TCRs to plots
 #' @param n_max the maximum number of V-segments to plot. The top `n_max` most common V-segments will be plotted
 #'
-#' @returns a ggplot object with a bar chart of the most common V-segments.
+#' @return
+#' a ggplot object with a bar chart of the most common V- or J- segments.
 #'
 #' @examples
 #' # example here

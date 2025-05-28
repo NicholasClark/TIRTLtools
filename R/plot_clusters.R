@@ -1,3 +1,36 @@
+#' @title
+#' Plot the top N largest clusters of a set of TCRs
+#'
+#' @description
+#' `plot_clusters()` plots TCRs that were previously clustered by the `cluster_tcrs()` function.
+#'
+#' @details
+#' The function currently returns a list with a UMAP plot, a graph/network plot, and
+#' a heatmap.
+#'
+#' @param obj an object returned by the `cluster_tcrs()` function
+#' @param n_clusters the number of clusters to plot (default 10)
+#' @param seed a number to use as the seed. Using the same number across multiple runs
+#' allows for reproducible results.
+#' @param annotation_cols columns to use for heatmap annotations (default is the cluster
+#' and the source, i.e. your data or vdj-db)
+#' @param color_col a column to use to color nodes in the network visualization (default is "cluster")
+#'
+#' @return
+#' Currently returns a list with three items:
+#' $umap - a umap visualization of the TCRs from the top clusters
+#'
+#' $graph - a graph/network visualization of TCRs from the top clusters
+#'
+#' $heatmap - a heatmap visualization of TCRs from the top clusters
+#'
+#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#'
+#' @export
+#' @examples
+#' # example code
+#'
+
 plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c("cluster", "source"), color_col = "cluster") {
   cluster_summ = obj$df %>% group_by(cluster) %>%
     summarize(n_total = n(), n_vdjdb = sum(source == "vdj-db"), n_obs = sum(source == "observed"))

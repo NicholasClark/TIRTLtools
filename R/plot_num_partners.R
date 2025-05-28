@@ -1,3 +1,34 @@
+#' @title
+#' Plot the number of partners for each single chain that is matched to another chain.
+#'
+#' @description
+#' `plot_num_partners()` creates bar plots for alpha and beta chains showing how many
+#' partners they are paired with by the MAD-HYPE and/or T-shell algorithms.
+#'
+#' @details
+#' For each sample, the function creates stacked bar charts for alpha and beta chains,
+#' showing the proportion of them (among all called pairs) that are paired with 1 chain,
+#' 2 chains, 3 chains, etc.
+#'
+#' @param data a dataset created by `load_tirtlseq()` and possible `filter_dataset()`
+#' @param label_col
+#' @param group_col
+#' @param fraction
+#' @param include_non_functional
+#' @param max_partners
+#' @param return_data
+#'
+#' @return
+#' A bar chart (ggplot object) with facets (sub-plots) for each sample.
+#'
+#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#'
+#' @export
+#' @examples
+#' # example code
+#'
+#'
+
 plot_num_partners = function(data,
                              label_col = NULL, group_col = NULL, fraction = TRUE,
                              include_non_functional = FALSE,
