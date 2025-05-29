@@ -21,12 +21,11 @@
 #' A heatmap with hierarchically clustered rows and columns showing the number of
 #' TCRs shared between each pair of samples, among their top N most frequent TCRs.
 #'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
-#'
 #' @export
 #' @examples
 #' # example code
-#'
+#' # data = load_tirtlseq("your_directory/")
+#' # sample_overlap(data, chain = "paired", n_seq=200)
 #'
 
 sample_overlap = function(data, chain = c("paired", "alpha", "beta"),

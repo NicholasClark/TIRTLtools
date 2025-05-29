@@ -18,6 +18,7 @@
 #' @return
 #' a ggplot object with a bar chart of the most common V- or J- segments.
 #'
+#' @export
 #' @examples
 #' # example here
 

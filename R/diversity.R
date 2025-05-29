@@ -83,8 +83,13 @@
 #' @param tol the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)
 #' @param methods the diversity indices or methods to calculate.
 #'
+#' @seealso [plot_diversity()], [get_all_div_metrics()]
+#'
+#' @export
 #' @examples
 #' # example here
+#' # data = load_tirtlseq("your_directory/")
+#' # div = diversity(data)
 
 #diversity = function(data, meta= NULL, chain = c("paired", "alpha", "beta"),
 diversity = function(data, chain = c("paired", "alpha", "beta"),

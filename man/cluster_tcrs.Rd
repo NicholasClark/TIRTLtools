@@ -4,7 +4,7 @@
 \alias{cluster_tcrs}
 \title{Clustering of TCRs using TCRdist and the Leiden algorithm}
 \usage{
-cluster_tcrs(data, tcrdist_cutoff = 90, resolution = 0.1)
+cluster_tcrs(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE)
 }
 \arguments{
 \item{data}{a list of TIRTLseq TCR data for samples created with `load_tirtlseq()`}
@@ -17,6 +17,9 @@ data, at most NxN where N is the number of unique TCRs.}
 value will produce larger clusters and a higher value will produce smaller clusters.
 Typical values are in the 0.1 - 2.0 range. A higher value may be better for densely
 connected data while a lower value may be better for moderately connected data. Default is 0.1.}
+
+\item{with_vdjdb}{if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
+If parameter is a data frame, the supplied data frame will be used as the database.}
 }
 \value{
 Returns a list with the following elements:
@@ -28,7 +31,7 @@ Returns a list with the following elements:
 * resolution - the resolution parameter used for the Leiden algorithm
 }
 \description{
-The `cluster_tcrs()` aggregates all of the paired TCRs found in the data,
+The `cluster_tcrs()` function aggregates all of the paired TCRs found in the data,
 calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 and clusters the results using the Leiden algorithm.
 }

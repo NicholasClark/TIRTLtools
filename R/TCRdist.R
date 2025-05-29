@@ -39,13 +39,14 @@
 #' "tcr_index" with the (0-indexed) index of each TCR.
 #' $tcr2 - a similar data frame for tcr2, if it was supplied.
 #'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#' @seealso [cluster_tcrs()], [plot_clusters()], and [identify_non_functional_seqs()]
 #'
 #' @export
 #' @examples
 #' # example code
-#'
-#'
+#' # data = load_tirtlseq("your_directory/")
+#' # df = get_all_tcrs(data, chain="paired", remove_duplicates = TRUE)
+#' # out = TCRdist(df, tcrdist_cutoff = 90)
 
 TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=1000, print_res = TRUE, only_lower_tri = TRUE) {
   ### prep R input

@@ -2,16 +2,43 @@
 #' Plotting of clonal diversity metrics
 #'
 #' @description
-#' The `plot_diversity()` function returns...
+#' The `plot_diversity()` plots the requested clonal diversity metric
 #'
 #' @details
-#' This function...
+#' This function can plot a variety of clonal diversity metrics for a dataset (richness,
+#' Simpson diversity index, Shannon-Wiener index, etc.). See [get_all_div_metrics()] for
+#' all available options. By default it return a barplot with one bar for each sample in
+#' the dataset. If a grouping column (of the metadata) is supplied, then samples will be grouped and
+#' bar heights will reflect the average diversity metric across the group, with error bars
+#' showing the standard deviation.
 #'
 #' @param div a list created by the `diversity` function with diversity metrics for each sample
 #' @param metric the diversity metric to use (e.g. shannon, simpson, etc.)
 #' @param q (optional) for 'renyi' and 'hill' metrics, the order q of the diversity index
 #' @param percent (optional) for 'dXX' metric, the percentage 'XX' between 0 and 100
+#' @param group_col (optional) if supplied, a column of the metadata that will be used
+#' to group samples
+#' @param label_col (optional) labels for the samples
+#' @param flip (optional) if TRUE, flip the x and y-axes (default is FALSE)
+#' @param facet (optional) if TRUE, plot with separate facets, or sub-plots for each group (default is FALSE)
+#' @param log_scale (optional) if TRUE, use log-scale for the y-axis (default is FALSE)
+#' @param return_data (optional) if TRUE, return the data used to make the plot (default is FALSE)
 #'
+#' @return
+#' A list with two objects:
+#'
+#' $plot - a ggplot object with the plot of the requested diversity metric
+#'
+#' $data - if return_data is TRUE, the data frame used to make the plot
+#'
+#' @seealso [diversity()], [get_all_div_metrics()]
+#'
+#' @export
+#' @examples
+#' # example code
+#' # data = load_tirtlseq("your_directory/")
+#' # div = diversity(data)
+#' # plot_diversity(div, metric = "richness")
 #'
 
 plot_diversity = function(

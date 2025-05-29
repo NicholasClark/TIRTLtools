@@ -11,17 +11,24 @@
 #' 2 chains, 3 chains, etc.
 #'
 #' @param data a dataset created by `load_tirtlseq()` and possible `filter_dataset()`
-#' @param label_col
-#' @param group_col
-#' @param fraction
-#' @param include_non_functional
-#' @param max_partners
-#' @param return_data
+#' @param group_col a column of the metadata to use to group multiple samples into one bar plot
+#' @param fraction whether to plot the fraction of chains or the total number of chains
+#' (default is TRUE, i.e. plot fractions)
+#' @param include_non_functional whether to include chains with non-functional
+#' cdr3 sequences when tabulating the output.
+#' @param max_partners the maximum number of partners, N, to include in the plots.
+#' All chains with more than N partners will be grouped together under the ">N" category.
+#' @param return_data if TRUE, return the data used to make the plots
 #'
 #' @return
-#' A bar chart (ggplot object) with facets (sub-plots) for each sample.
+#' Either a bar chart (ggplot object) with facets (sub-plots) for each sample or
+#' a list with two objects:
 #'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#' $plot the plot referenced above
+#'
+#' $data the data used to create the plot
+#'
+#' @seealso [identify_non_functional_seqs()]
 #'
 #' @export
 #' @examples
@@ -30,9 +37,12 @@
 #'
 
 plot_num_partners = function(data,
-                             label_col = NULL, group_col = NULL, fraction = TRUE,
+                             #label_col = NULL,
+                             group_col = NULL,
+                             fraction = TRUE,
                              include_non_functional = FALSE,
-                             max_partners = 5, return_data = FALSE) {
+                             max_partners = 5,
+                             return_data = FALSE) {
 
   meta = data$meta
   data = data$data
@@ -58,7 +68,7 @@ plot_num_partners = function(data,
       } else {
         df_tmp$Group = meta[[1]][i]
       }
-      if(!is.null(label_col)) df_tmp$label = meta[[label_col]][i]
+      #if(!is.null(label_col)) df_tmp$label = meta[[label_col]][i]
       return(df_tmp)
       }) %>% bind_rows() %>% group_by(Group, n_partners, chain) %>%
       summarize(Frequency = sum(Frequency), Fraction = mean(Fraction)) ## note this is taking the mean proportion over samples rather than summing all frequencies and dividing by the total
@@ -86,15 +96,18 @@ plot_num_partners = function(data,
 }
 
 get_num_partners_single = function(df, max_partners = 5) {
+  df = remove_dupes_paired()
   alpha_tbl = table(df$alpha_nuc) %>% table() %>% as.data.frame.table() %>%
     magrittr::set_colnames(c("n_partners", "Frequency")) %>%
-    mutate( Fraction = Frequency/sum(Frequency), chain = "alpha" )
+    mutate( Fraction = Frequency/sum(Frequency), chain = "alpha" ) %>%
+    mutate(n_partners = as.integer(as.character(n_partners)))
   beta_tbl = table(df$beta_nuc) %>% table() %>% as.data.frame.table() %>%
     magrittr::set_colnames(c("n_partners", "Frequency")) %>%
-    mutate( Fraction = Frequency/sum(Frequency), chain = "beta" )
-  df_long = bind_rows(alpha_tbl, beta_tbl) %>% mutate(n_partners = as.integer(as.character(n_partners)))
+    mutate( Fraction = Frequency/sum(Frequency), chain = "beta" ) %>%
+    mutate(n_partners = as.integer(as.character(n_partners)))
+  df_long = bind_rows(alpha_tbl, beta_tbl)
   gt_char = paste(">", max_partners, sep = "")
-  df_less_max = df_long %>% filter(n_partners <= max_partners) %>% mutate(n_partners = as.character(n_partners))
+  df_less_max = df_long %>% filter(n_partners <= max_partners)
   df_greater = df_long %>% filter(n_partners > max_partners) %>%
     group_by(chain) %>%
     summarize(Frequency = sum(Frequency), Fraction = sum(Fraction)) %>%

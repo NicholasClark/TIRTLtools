@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_gene_usage.R
 \name{plot_gene_usage}
 \alias{plot_gene_usage}
-\title{Plotting of gene usage}
+\title{Plotting of V- or J- gene usage}
 \usage{
 plot_gene_usage(
   data,
@@ -29,13 +29,14 @@ data frames for many experiments}
 length as data with labels to group the experiments.}
 }
 \value{
-a ggplot object with a bar chart of the most common V-segments.
+a ggplot object with a bar chart of the most common V- or J- segments.
 }
 \description{
-`plot_v_usage` returns a bar plot of the usage of VA or VB segments.
+`plot_gene_usage()` creates a bar chart of gene segment usage for the most common
+V- or J- genes.
 }
 \details{
-This function ...
+Fill in later, after updating/finalizing function.
 }
 \examples{
 # example here

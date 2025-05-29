@@ -24,12 +24,14 @@
 #'
 #' $heatmap - a heatmap visualization of TCRs from the top clusters
 #'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#' @seealso [cluster_tcrs()], [TCRdist()]
 #'
 #' @export
 #' @examples
 #' # example code
-#'
+#' # paired = load_tirtlseq("your_directory/")
+#' # obj = cluster_tcrs(paired)
+#' # plot_clusters(obj)
 
 plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c("cluster", "source"), color_col = "cluster") {
   cluster_summ = obj$df %>% group_by(cluster) %>%

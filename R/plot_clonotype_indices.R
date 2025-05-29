@@ -1,4 +1,41 @@
-
+#' @title
+#' Plotting of read fractions for most frequent clonotypes
+#'
+#' @description
+#' `plot_clonotype_indices()` creates a stacked bar chart containing the fraction of
+#' reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
+#' clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
+#'
+#' @details
+#' Fill in later.
+#'
+#' @param data a dataset created by `load_tirtlseq()` and possible `filter_dataset()`
+#' @param chain < fill in later >
+#' @param type_column < fill in later >
+#' @param proportion_column < fill in later >
+#' @param cutoffs the indices used for the end of each group in the bar chart.
+#' The default is 10^(1:5), i.e. the 10th most-frequent clone, the 100th most-frequent clone,
+#' the 1,000th, the 10,000th, and the 100,000th.
+#' @param group_col (optional) if supplied, a column of the metadata that will be used
+#' to group samples
+#' @param label_col (optional) labels for the samples
+#' @param flip (optional) if TRUE, flip the x and y-axes (default is FALSE)
+#' @param return_data (optional) if TRUE, return the data used to make the plot (default is FALSE)
+#'
+#' @return
+#' A list with two objects:
+#'
+#' $plot - a stacked bar chart of relative frequencies of most-frequent clonotypes
+#'
+#' $data - if return_data is TRUE, the data frame used to create the plot
+#'
+#' @seealso [diversity()], [plot_diversity()]
+#'
+#' @export
+#' @examples
+#' # example code
+#'
+#'
 
 plot_clonotype_indices = function(
   data, chain = c("beta", "alpha"),
