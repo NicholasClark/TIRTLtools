@@ -1,7 +1,24 @@
-
-#' The input 'data' must be a TIRTL-seq data object loaded with the loading function.
-#' i.e. it must be a list of length two, with data$meta and data$data, where
-#' data$data is a list of samples, each having data for paired, alpha, and beta chains.
+#' @title
+#' Add single-chain pseudo-bulk counts/proportions to paired TIRTL-seq data
+#'
+#' @description
+#' The \code{add_single_chain_data()} function adds read counts and proportions
+#' from the single-chain pseudobulk data to the paired data frame for each sample
+#' of a dataset.
+#'
+#' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
+#'
+#' @return
+#' A TIRTLseq dataset object where the paired data frames for each sample have
+#' added columns for read counts and proportions from the single-chain pseudobulk data.
+#'
+#' @seealso \code{\link{load_tirtlseq}()}
+#'
+#' @export
+#' @examples
+#' # example code
+#'
+#'
 add_single_chain_data = function(data) {
   data_tmp = lapply(data$data, function(x) {
     df_out = add_single_chain_data_simple(x)

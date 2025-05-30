@@ -2,14 +2,27 @@
 % Please edit documentation in R/add_pseudobulk_counts_to_paired_data.R
 \name{add_single_chain_data}
 \alias{add_single_chain_data}
-\title{The input 'data' must be a TIRTL-seq data object loaded with the loading function.
-i.e. it must be a list of length two, with data$meta and data$data, where
-data$data is a list of samples, each having data for paired, alpha, and beta chains.}
+\title{Add single-chain pseudo-bulk counts/proportions to paired TIRTL-seq data}
 \usage{
 add_single_chain_data(data)
 }
+\arguments{
+\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
+}
+\value{
+A TIRTLseq dataset object where the paired data frames for each sample have
+added columns for read counts and proportions from the single-chain pseudobulk data.
+}
 \description{
-The input 'data' must be a TIRTL-seq data object loaded with the loading function.
-i.e. it must be a list of length two, with data$meta and data$data, where
-data$data is a list of samples, each having data for paired, alpha, and beta chains.
+The \code{add_single_chain_data()} function adds read counts and proportions
+from the single-chain pseudobulk data to the paired data frame for each sample
+of a dataset.
+}
+\examples{
+# example code
+
+
+}
+\seealso{
+\code{\link{load_tirtlseq}()}
 }
