@@ -17,7 +17,7 @@ plot_clonotype_indices(
 )
 }
 \arguments{
-\item{data}{a dataset created by `load_tirtlseq()` and possible `filter_dataset()`}
+\item{data}{a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}}
 
 \item{chain}{< fill in later >}
 
@@ -41,12 +41,12 @@ to group samples}
 \value{
 A list with two objects:
 
-$plot - a stacked bar chart of relative frequencies of most-frequent clonotypes
+\code{$plot} - a stacked bar chart of relative frequencies of most-frequent clonotypes
 
-$data - if return_data is TRUE, the data frame used to create the plot
+\code{$data} - if return_data is TRUE, the data frame used to create the plot
 }
 \description{
-`plot_clonotype_indices()` creates a stacked bar chart containing the fraction of
+\code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of
 reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
 }
@@ -59,5 +59,5 @@ Fill in later.
 
 }
 \seealso{
-[diversity()], [plot_diversity()]
+\code{\link{diversity()}}, \code{\link{plot_diversity()}}
 }

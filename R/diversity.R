@@ -2,7 +2,7 @@
 #' Calculation of clonal diversity measures from TCR data
 #'
 #' @description
-#' `diversity` returns a number of clonal diversity measures (e.g. Hill numbers,
+#' \code{diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
 #' Shannon and Simpson indices) calculated from supplied data.
 #'
 #' @details
@@ -83,7 +83,7 @@
 #' @param tol the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)
 #' @param methods the diversity indices or methods to calculate.
 #'
-#' @seealso [plot_diversity()], [get_all_div_metrics()]
+#' @seealso \code{\link{plot_diversity()}}, \code{\link{get_all_div_metrics()}}
 #'
 #' @export
 #' @examples

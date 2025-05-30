@@ -2,7 +2,7 @@
 #' Load TIRTLseq data
 #'
 #' @description
-#' `load_tirtlseq()` loads TIRTLseq data from a given directory. It can also automatically
+#' \code{load_tirtlseq()} loads TIRTLseq data from a given directory. It can also automatically
 #' assemble metadata from the filenames.
 #'
 #' @details
@@ -14,38 +14,39 @@
 #' on unique strings at the beginning of filenames (before "_TIRTLoutput.tsv" or similar).
 #' If the filename contains sample metadata, then it can add multiple columns to the metadata
 #' table with this information. For example, if a typical file looks like "cd8_timepoint2_donor1_TIRTLoutput.tsv"
-#' and the user supplies `c("cell_type", "timepoint", "donor")` for `meta_columns` and `"_"` for `sep`,
+#' and the user supplies \code{c("cell_type", "timepoint", "donor")} for \code{meta_columns} and \code{"_"} for \code{sep},
 #' then the metadata table will look like something like this:
-#'
+#'\preformatted{
 #'    sample_id             cell_type   timepoint       donor     label
 #'      <chr>               <chr>         <chr>         <chr>     <chr>
 #' 1 cd8_timepoint2_donor1    cd8       timepoint2      donor1    cell_type: cd8 | timepoint: timepoint2 | donor: donor1
 #' 2 ...
 #' 3 cd4_timepoint1_donor3    cd4       timepoint1      donor3    cell_type: cd4 | timepoint: timepoint1 | donor: donor3
-#'
+#' }
 #'
 #' @param directory the directory to look in for ".tsv" or ".tsv.gz" files
 #' @param chain which chain data to load -- all chains (alpha, beta, and paired) by default.
 #' @param sep (optional) separator in the filename for metadata information ("_" by default)
 #' @param meta_columns (optional) a vector of identifying the metadata contained in filenames,
-#' for example `c("cell_type", "timepoint", "donor")` for files named similar to "cd8_timepoint2_donor1_TIRTLoutput.tsv".
+#' for example \code{c("cell_type", "timepoint", "donor")} for files named similar to "cd8_timepoint2_donor1_TIRTLoutput.tsv".
 #' @param verbose whether to print the name of each file loaded (default is TRUE).
 #' @param n_max the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. no maximum).
 #'
 #' @return
 #' The function returns a list with two objects:
 #'
-#' $meta is a metadata table (data frame)
+#' \code{$meta} - a metadata table (data frame)
 #'
-#' $data is a list with one entry for each sample. Each entry is a list with entries
-#' $alpha, $beta, and $paired, which are data frames for the alpha- and beta-chain
+#' \code{$data} - a list with one entry for each sample. Each entry is a list with entries
+#' \code{$alpha}, \code{$beta}, and \code{$paired}, which are data frames for the alpha- and beta-chain
 #' pseudo-bulk data and the paired data respectively.
 #'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
+#' @seealso \code{\link{filter_dataset()}}
 #'
 #' @export
 #' @examples
 #' # example code
+#' # paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
 #'
 #'
 load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), sep = "_", meta_columns = NULL, verbose = TRUE, n_max = Inf) {

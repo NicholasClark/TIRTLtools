@@ -15,7 +15,7 @@ sample_overlap(
 )
 }
 \arguments{
-\item{data}{the dataset, an object loaded using the `load_tirtlseq()` function}
+\item{data}{the dataset, an object loaded using the \code{\link{load_tirtlseq()}} function}
 
 \item{chain}{which chain to plot: either paired or alpha-/beta-pseudobulk. (default "paired")}
 
@@ -34,7 +34,7 @@ A heatmap with hierarchically clustered rows and columns showing the number of
 TCRs shared between each pair of samples, among their top N most frequent TCRs.
 }
 \description{
-`sample_overlap()` returns a heatmap showing the overlap in most frequent TCRs
+\code{sample_overlap()} returns a heatmap showing the overlap in most frequent TCRs
 among pairs of samples in a dataset
 }
 \details{
@@ -46,4 +46,7 @@ compares their overlap between samples.
 # data = load_tirtlseq("your_directory/")
 # sample_overlap(data, chain = "paired", n_seq=200)
 
+}
+\seealso{
+\code{\link{load_tirtlseq()}}
 }

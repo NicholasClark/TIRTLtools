@@ -2,13 +2,13 @@
 #' Plot the top N largest clusters of a set of TCRs
 #'
 #' @description
-#' `plot_clusters()` plots TCRs that were previously clustered by the `cluster_tcrs()` function.
+#' \code{plot_clusters()} plots TCRs that were previously clustered by the \code{\link{cluster_tcrs()}} function.
 #'
 #' @details
 #' The function currently returns a list with a UMAP plot, a graph/network plot, and
 #' a heatmap.
 #'
-#' @param obj an object returned by the `cluster_tcrs()` function
+#' @param obj an object returned by the \code{\link{cluster_tcrs()}} function
 #' @param n_clusters the number of clusters to plot (default 10)
 #' @param seed a number to use as the seed. Using the same number across multiple runs
 #' allows for reproducible results.
@@ -18,13 +18,13 @@
 #'
 #' @return
 #' Currently returns a list with three items:
-#' $umap - a umap visualization of the TCRs from the top clusters
+#' \code{$umap} - a umap visualization of the TCRs from the top clusters
 #'
-#' $graph - a graph/network visualization of TCRs from the top clusters
+#' \code{$graph} - a graph/network visualization of TCRs from the top clusters
 #'
-#' $heatmap - a heatmap visualization of TCRs from the top clusters
+#' \code{$heatmap} - a heatmap visualization of TCRs from the top clusters
 #'
-#' @seealso [cluster_tcrs()], [TCRdist()]
+#' @seealso \code{\link{cluster_tcrs()}}, \code{\link{TCRdist()}}
 #'
 #' @export
 #' @examples

@@ -15,7 +15,7 @@ rank_plot(data, chain = c("alpha", "beta"), column = "readFraction")
 A line plot (ggplot object) of TCR rank vs. read fraction
 }
 \description{
-`rank_plot()` returns a line plot of TCR rank vs. read fraction for a given sample.
+\code{rank_plot()} returns a line plot of TCR rank vs. read fraction for a given sample.
 }
 \details{
 Fill in later.
@@ -24,7 +24,4 @@ Fill in later.
 # example code
 
 
-}
-\seealso{
-[func1()], [func2()], and [func3()] for similar functions
 }

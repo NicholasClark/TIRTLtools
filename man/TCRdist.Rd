@@ -70,5 +70,5 @@ or `numpy` (no GPU) to calculate TCRdist efficiently.
 # out = TCRdist(df, tcrdist_cutoff = 90)
 }
 \seealso{
-[cluster_tcrs()], [plot_clusters()], and [identify_non_functional_seqs()]
+\code{\link{cluster_tcrs()}}, \code{\link{plot_clusters()}}, and \code{\link{identify_non_functional_seqs()}}
 }

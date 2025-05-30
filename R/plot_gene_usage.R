@@ -2,7 +2,7 @@
 #' Plotting of V- or J- gene usage
 #'
 #' @description
-#' `plot_gene_usage()` creates a bar chart of gene segment usage for the most common
+#' \code{plot_gene_usage()} creates a bar chart of gene segment usage for the most common
 #' V- or J- genes.
 #'
 #' @details
@@ -13,7 +13,7 @@
 #' @param groups (optional) when data is a list of data frames, this may be a vector of the same
 #' length as data with labels to group the experiments.
 #' @param gene the gene of the TCRs to plots
-#' @param n_max the maximum number of V-segments to plot. The top `n_max` most common V-segments will be plotted
+#' @param n_max the maximum number of V-segments to plot. The top \code{n_max} most common V-segments will be plotted
 #'
 #' @return
 #' a ggplot object with a bar chart of the most common V- or J- segments.

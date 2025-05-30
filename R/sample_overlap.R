@@ -2,14 +2,14 @@
 #' Calculate and plot agreement/overlap between samples
 #'
 #' @description
-#' `sample_overlap()` returns a heatmap showing the overlap in most frequent TCRs
+#' \code{sample_overlap()} returns a heatmap showing the overlap in most frequent TCRs
 #' among pairs of samples in a dataset
 #'
 #' @details
 #' The function takes the top N most frequent TCRs found in each dataset (default 200) and
 #' compares their overlap between samples.
 #'
-#' @param data the dataset, an object loaded using the `load_tirtlseq()` function
+#' @param data the dataset, an object loaded using the \code{\link{load_tirtlseq()}} function
 #' @param chain which chain to plot: either paired or alpha-/beta-pseudobulk. (default "paired")
 #' @param n_seq the number of most frequent TCR sequences to use (default 200)
 #' @param show_row_names whether to show row names for the heatmap (default FALSE)
@@ -20,6 +20,8 @@
 #' @return
 #' A heatmap with hierarchically clustered rows and columns showing the number of
 #' TCRs shared between each pair of samples, among their top N most frequent TCRs.
+#'
+#' @seealso \code{\link{load_tirtlseq()}}
 #'
 #' @export
 #' @examples

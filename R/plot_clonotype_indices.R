@@ -2,14 +2,14 @@
 #' Plotting of read fractions for most frequent clonotypes
 #'
 #' @description
-#' `plot_clonotype_indices()` creates a stacked bar chart containing the fraction of
+#' \code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of
 #' reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 #' clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
 #'
 #' @details
 #' Fill in later.
 #'
-#' @param data a dataset created by `load_tirtlseq()` and possible `filter_dataset()`
+#' @param data a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}
 #' @param chain < fill in later >
 #' @param type_column < fill in later >
 #' @param proportion_column < fill in later >
@@ -25,11 +25,11 @@
 #' @return
 #' A list with two objects:
 #'
-#' $plot - a stacked bar chart of relative frequencies of most-frequent clonotypes
+#' \code{$plot} - a stacked bar chart of relative frequencies of most-frequent clonotypes
 #'
-#' $data - if return_data is TRUE, the data frame used to create the plot
+#' \code{$data} - if return_data is TRUE, the data frame used to create the plot
 #'
-#' @seealso [diversity()], [plot_diversity()]
+#' @seealso \code{\link{diversity()}}, \code{\link{plot_diversity()}}
 #'
 #' @export
 #' @examples

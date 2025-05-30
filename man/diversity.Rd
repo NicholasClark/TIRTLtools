@@ -53,7 +53,7 @@ of the data, the percentage (50 or XX) supplied, and the actual percentage of th
 They return a data frame with many rows if supplied with a vector of orders (e.g. 1:5).
 }
 \description{
-`diversity` returns a number of clonal diversity measures (e.g. Hill numbers,
+\code{diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
 Shannon and Simpson indices) calculated from supplied data.
 }
 \details{
@@ -112,5 +112,5 @@ In general, as q increases, less weight is given to rarer species.
 # div = diversity(data)
 }
 \seealso{
-[plot_diversity()], [get_all_div_metrics()]
+\code{\link{plot_diversity()}}, \code{\link{get_all_div_metrics()}}
 }

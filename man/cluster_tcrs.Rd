@@ -7,9 +7,9 @@
 cluster_tcrs(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE)
 }
 \arguments{
-\item{data}{a list of TIRTLseq TCR data for samples created with `load_tirtlseq()`}
+\item{data}{a list of TIRTLseq TCR data for samples created with \code{\link{load_tirtlseq()}}}
 
-\item{tcrdist_cutoff}{the `TCRdist()` function will only record TCRdist values
+\item{tcrdist_cutoff}{the \code{\link{TCRdist()}} function will only record TCRdist values
 less than or equal to the cutoff. Default is 90. Note: Higher cutoffs will return more
 data, at most NxN where N is the number of unique TCRs.}
 
@@ -31,7 +31,7 @@ Returns a list with the following elements:
 * resolution - the resolution parameter used for the Leiden algorithm
 }
 \description{
-The `cluster_tcrs()` function aggregates all of the paired TCRs found in the data,
+The \code{cluster_tcrs()} function aggregates all of the paired TCRs found in the data,
 calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 and clusters the results using the Leiden algorithm.
 }
@@ -53,5 +53,5 @@ will be assigned to the "*01" allele.
 
 }
 \seealso{
-[plot_clusters()], [identify_non_functional_seqs()]
+\code{\link{plot_clusters()}}, \code{\link{identify_non_functional_seqs()}}
 }

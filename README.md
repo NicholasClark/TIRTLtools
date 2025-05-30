@@ -11,8 +11,9 @@ In addition to various **analysis and plotting functions**, we provide an **effi
 
 ### Package functions
 
-#### Data loading:
+#### Data loading and filtering:
   * `load_tirtlseq()` -- load paired TCR and single-chain data from TIRTL-seq experiments
+  * `filter_dataset()` -- subset a TIRTLseq dataset to only the requested samples
   
 #### Repertoire analysis:
   * `TCRdist()` -- calculate TCRdist via batched GPU calculation
@@ -34,6 +35,7 @@ In addition to various **analysis and plotting functions**, we provide an **effi
   * `identify_non_functional_seqs()` -- mark cdr3 sequences that have stop codons (*) or frame shifts (_)
   * `identify_paired()` -- identify which alpha and beta chains in the pseudo-bulk data are found in pairs
   * `get_all_div_metrics()` -- returns all options for diversity metrics (currently: simpson, gini, gini.simpson, inv.simpson, shannon, berger.parker, richness, d50, dXX, renyi, hill)
+  * `get_all_tcrs()` -- aggregate all of the TCRs from all samples in a dataset.
 
 ## Installation
 

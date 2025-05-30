@@ -39,7 +39,7 @@
 #' "tcr_index" with the (0-indexed) index of each TCR.
 #' $tcr2 - a similar data frame for tcr2, if it was supplied.
 #'
-#' @seealso [cluster_tcrs()], [plot_clusters()], and [identify_non_functional_seqs()]
+#' @seealso \code{\link{cluster_tcrs()}}, \code{\link{plot_clusters()}}, and \code{\link{identify_non_functional_seqs()}}
 #'
 #' @export
 #' @examples

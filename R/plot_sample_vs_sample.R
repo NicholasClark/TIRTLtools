@@ -2,7 +2,7 @@
 #' Scatterplot of TCR frequency between two samples
 #'
 #' @description
-#' `plot_sample_vs_sample()` returns a scatterplot of read frequencies of TCRs between two samples
+#' \code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples
 #'
 #' @details
 #' The function labels each TCR as up-regulated, down-regulated, or stable, based on the
@@ -15,8 +15,6 @@
 #' @return
 #' A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each
 #' TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
-#'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
 #'
 #' @export
 #' @examples

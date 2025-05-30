@@ -2,7 +2,7 @@
 #' Plot the number of partners for each single chain that is matched to another chain.
 #'
 #' @description
-#' `plot_num_partners()` creates bar plots for alpha and beta chains showing how many
+#' \code{plot_num_partners()} creates bar plots for alpha and beta chains showing how many
 #' partners they are paired with by the MAD-HYPE and/or T-shell algorithms.
 #'
 #' @details
@@ -10,7 +10,7 @@
 #' showing the proportion of them (among all called pairs) that are paired with 1 chain,
 #' 2 chains, 3 chains, etc.
 #'
-#' @param data a dataset created by `load_tirtlseq()` and possible `filter_dataset()`
+#' @param data a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}
 #' @param group_col a column of the metadata to use to group multiple samples into one bar plot
 #' @param fraction whether to plot the fraction of chains or the total number of chains
 #' (default is TRUE, i.e. plot fractions)
@@ -24,11 +24,11 @@
 #' Either a bar chart (ggplot object) with facets (sub-plots) for each sample or
 #' a list with two objects:
 #'
-#' $plot the plot referenced above
+#' \code{$plot} the plot referenced above
 #'
-#' $data the data used to create the plot
+#' \code{$data} the data used to create the plot
 #'
-#' @seealso [identify_non_functional_seqs()]
+#' @seealso \code{\link{identify_non_functional_seqs()}}
 #'
 #' @export
 #' @examples

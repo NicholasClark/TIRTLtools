@@ -25,7 +25,7 @@ A scatterplot (ggplot object) with read frequencies (proportions), colored by wh
 TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
 }
 \description{
-`plot_sample_vs_sample()` returns a scatterplot of read frequencies of TCRs between two samples
+\code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples
 }
 \details{
 The function labels each TCR as up-regulated, down-regulated, or stable, based on the
@@ -35,7 +35,4 @@ log2 fold-change cutoff supplied (default 1.5).
 # example code
 
 
-}
-\seealso{
-[func1()], [func2()], and [func3()] for similar functions
 }

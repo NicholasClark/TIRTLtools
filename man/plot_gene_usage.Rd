@@ -23,7 +23,7 @@ data frames for many experiments}
 
 \item{gene}{the gene of the TCRs to plots}
 
-\item{n_max}{the maximum number of V-segments to plot. The top `n_max` most common V-segments will be plotted}
+\item{n_max}{the maximum number of V-segments to plot. The top \code{n_max} most common V-segments will be plotted}
 
 \item{groups}{(optional) when data is a list of data frames, this may be a vector of the same
 length as data with labels to group the experiments.}
@@ -32,7 +32,7 @@ length as data with labels to group the experiments.}
 a ggplot object with a bar chart of the most common V- or J- segments.
 }
 \description{
-`plot_gene_usage()` creates a bar chart of gene segment usage for the most common
+\code{plot_gene_usage()} creates a bar chart of gene segment usage for the most common
 V- or J- genes.
 }
 \details{

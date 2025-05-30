@@ -2,7 +2,7 @@
 #' Line plot of TCR rank vs. frequency
 #'
 #' @description
-#' `rank_plot()` returns a line plot of TCR rank vs. read fraction for a given sample.
+#' \code{rank_plot()} returns a line plot of TCR rank vs. read fraction for a given sample.
 #'
 #' @details
 #' Fill in later.
@@ -13,7 +13,6 @@
 #' @return
 #' A line plot (ggplot object) of TCR rank vs. read fraction
 #'
-#' @seealso [func1()], [func2()], and [func3()] for similar functions
 #'
 #' @export
 #' @examples
