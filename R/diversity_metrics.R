@@ -1,5 +1,3 @@
-### all clonal diversity metrics
-
 #' @title
 #' Get all available diversity metrics
 #'

@@ -29,8 +29,8 @@ add_single_chain_data = function(data) {
   return(data)
 }
 
-#' The input 'data' must be a list with 3 items, "alpha", "beta", and "paired"
-#' This looks up readCounts/Fractions of each single chain in the
+
+
 .add_single_chain_data_simple = function(data) {
   dt_pair = data$paired
   dtA = data$alpha
