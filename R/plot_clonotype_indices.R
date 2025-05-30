@@ -9,7 +9,7 @@
 #' @details
 #' Fill in later.
 #'
-#' @param data a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}
+#' @param data a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}
 #' @param chain < fill in later >
 #' @param type_column < fill in later >
 #' @param proportion_column < fill in later >
@@ -29,7 +29,7 @@
 #'
 #' \code{$data} - if return_data is TRUE, the data frame used to create the plot
 #'
-#' @seealso \code{\link{diversity()}}, \code{\link{plot_diversity()}}
+#' @seealso \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 #'
 #' @export
 #' @examples

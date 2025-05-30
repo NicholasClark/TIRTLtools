@@ -112,5 +112,5 @@ In general, as q increases, less weight is given to rarer species.
 # div = diversity(data)
 }
 \seealso{
-\code{\link{plot_diversity()}}, \code{\link{get_all_div_metrics()}}
+\code{\link{plot_diversity}()}, \code{\link{get_all_div_metrics}()}
 }

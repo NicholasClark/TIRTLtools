@@ -41,7 +41,7 @@
 #' \code{$alpha}, \code{$beta}, and \code{$paired}, which are data frames for the alpha- and beta-chain
 #' pseudo-bulk data and the paired data respectively.
 #'
-#' @seealso \code{\link{filter_dataset()}}
+#' @seealso \code{\link{filter_dataset}()}
 #'
 #' @export
 #' @examples

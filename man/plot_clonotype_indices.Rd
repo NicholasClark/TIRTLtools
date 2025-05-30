@@ -17,7 +17,7 @@ plot_clonotype_indices(
 )
 }
 \arguments{
-\item{data}{a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}}
+\item{data}{a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}}
 
 \item{chain}{< fill in later >}
 
@@ -59,5 +59,5 @@ Fill in later.
 
 }
 \seealso{
-\code{\link{diversity()}}, \code{\link{plot_diversity()}}
+\code{\link{diversity}()}, \code{\link{plot_diversity}()}
 }

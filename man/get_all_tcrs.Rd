@@ -11,7 +11,7 @@ get_all_tcrs(
 )
 }
 \arguments{
-\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq()}}}
+\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
 
 \item{chain}{the TCR chain, "alpha", "beta", or "paired" (default is paired)}
 
@@ -36,5 +36,5 @@ function will only return one of these pairs of TCRs.
 
 }
 \seealso{
-\code{\link{load_tirtlseq()}}
+\code{\link{load_tirtlseq}()}
 }

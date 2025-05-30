@@ -83,7 +83,7 @@
 #' @param tol the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)
 #' @param methods the diversity indices or methods to calculate.
 #'
-#' @seealso \code{\link{plot_diversity()}}, \code{\link{get_all_div_metrics()}}
+#' @seealso \code{\link{plot_diversity}()}, \code{\link{get_all_div_metrics}()}
 #'
 #' @export
 #' @examples

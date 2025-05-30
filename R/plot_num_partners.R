@@ -10,7 +10,7 @@
 #' showing the proportion of them (among all called pairs) that are paired with 1 chain,
 #' 2 chains, 3 chains, etc.
 #'
-#' @param data a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}
+#' @param data a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}
 #' @param group_col a column of the metadata to use to group multiple samples into one bar plot
 #' @param fraction whether to plot the fraction of chains or the total number of chains
 #' (default is TRUE, i.e. plot fractions)
@@ -28,7 +28,7 @@
 #'
 #' \code{$data} the data used to create the plot
 #'
-#' @seealso \code{\link{identify_non_functional_seqs()}}
+#' @seealso \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export
 #' @examples

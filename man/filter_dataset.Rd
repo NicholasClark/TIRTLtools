@@ -7,14 +7,14 @@
 filter_dataset(data, samples)
 }
 \arguments{
-\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq()}}}
+\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
 
 \item{samples}{the selected samples. Either1) a numeric vector of indices,
 2) a character vector of sample names, or 3) a character vector of metadata
 conditions where each entry is of the form \code{"column==value"}.}
 }
 \value{
-A dataset object similar to that created by \code{\link{load_tirtlseq()}},
+A dataset object similar to that created by \code{\link{load_tirtlseq}()},
 but with only the selected samples.
 }
 \description{
@@ -39,5 +39,5 @@ the sample metadata.
 
 }
 \seealso{
-\code{\link{load_tirtlseq()}}
+\code{\link{load_tirtlseq}()}
 }

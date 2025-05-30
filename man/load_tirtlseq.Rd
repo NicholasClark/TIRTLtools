@@ -66,5 +66,5 @@ then the metadata table will look like something like this:
 
 }
 \seealso{
-\code{\link{filter_dataset()}}
+\code{\link{filter_dataset}()}
 }

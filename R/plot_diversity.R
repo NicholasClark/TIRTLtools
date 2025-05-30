@@ -6,13 +6,13 @@
 #'
 #' @details
 #' This function can plot a variety of clonal diversity metrics for a dataset (richness,
-#' Simpson diversity index, Shannon-Wiener index, etc.). See \code{\link{get_all_div_metrics()}} for
+#' Simpson diversity index, Shannon-Wiener index, etc.). See \code{\link{get_all_div_metrics}()} for
 #' all available options. By default it return a barplot with one bar for each sample in
 #' the dataset. If a grouping column (of the metadata) is supplied, then samples will be grouped and
 #' bar heights will reflect the average diversity metric across the group, with error bars
 #' showing the standard deviation.
 #'
-#' @param div a list created by the \code{\link{diversity()}} function with diversity metrics for each sample
+#' @param div a list created by the \code{\link{diversity}()} function with diversity metrics for each sample
 #' @param metric the diversity metric to use (e.g. shannon, simpson, etc.)
 #' @param q (optional) for 'renyi' and 'hill' metrics, the order q of the diversity index
 #' @param percent (optional) for 'dXX' metric, the percentage 'XX' between 0 and 100
@@ -31,7 +31,7 @@
 #'
 #' \code{$data} - if return_data is TRUE, the data frame used to make the plot
 #'
-#' @seealso \code{\link{diversity()}}, \code{\link{get_all_div_metrics()}}
+#' @seealso \code{\link{diversity}()}, \code{\link{get_all_div_metrics}()}
 #'
 #' @export
 #' @examples

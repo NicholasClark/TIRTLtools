@@ -14,7 +14,7 @@ plot_num_partners(
 )
 }
 \arguments{
-\item{data}{a dataset created by \code{\link{load_tirtlseq()}} and possibly \code{\link{filter_dataset()}}}
+\item{data}{a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}}
 
 \item{group_col}{a column of the metadata to use to group multiple samples into one bar plot}
 
@@ -52,5 +52,5 @@ showing the proportion of them (among all called pairs) that are paired with 1 c
 
 }
 \seealso{
-\code{\link{identify_non_functional_seqs()}}
+\code{\link{identify_non_functional_seqs}()}
 }

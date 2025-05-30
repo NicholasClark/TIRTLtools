@@ -13,16 +13,16 @@
 #' samples whose \code{cell_type} is \code{cd4} and whose \code{timepoint} is \code{tp2} in
 #' the sample metadata.
 #'
-#' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq()}}
+#' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
 #' @param samples the selected samples. Either1) a numeric vector of indices,
 #' 2) a character vector of sample names, or 3) a character vector of metadata
 #' conditions where each entry is of the form \code{"column==value"}.
 #'
 #' @return
-#' A dataset object similar to that created by \code{\link{load_tirtlseq()}},
+#' A dataset object similar to that created by \code{\link{load_tirtlseq}()},
 #' but with only the selected samples.
 #'
-#' @seealso \code{\link{load_tirtlseq()}}
+#' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export
 #' @examples

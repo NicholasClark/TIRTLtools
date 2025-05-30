@@ -44,13 +44,16 @@ chunk_size of over 7500 resulted in memory errors on some GPUs).}
 }
 \value{
 A list with entries:
-$TCRdist_df - a data frame with three columns: "edge1_0index", "edge2_0index", and "TCRdist".
+
+\code{$TCRdist_df} - a data frame with three columns: "edge1_0index", "edge2_0index", and "TCRdist".
 The first two columns contain the indices (0-indexed) of the TCRs for each pair.
 The last column contains the TCRdist if it is below the cutoff. The output is sparse in that it only contains
 pairs that have TCRdist <= cutoff.
-$tcr1 - a data frame of the TCRs supplied to the function. It contains an additional column
+
+\code{$tcr1} - a data frame of the TCRs supplied to the function. It contains an additional column
 "tcr_index" with the (0-indexed) index of each TCR.
-$tcr2 - a similar data frame for tcr2, if it was supplied.
+
+\code{$tcr2} - a similar data frame for tcr2, if it was supplied.
 }
 \description{
 An efficient, batched version of TCRdist that is compatible with both NVIDIA and Apple Silicon GPUs.
@@ -70,5 +73,5 @@ or `numpy` (no GPU) to calculate TCRdist efficiently.
 # out = TCRdist(df, tcrdist_cutoff = 90)
 }
 \seealso{
-\code{\link{cluster_tcrs()}}, \code{\link{plot_clusters()}}, and \code{\link{identify_non_functional_seqs()}}
+\code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 }

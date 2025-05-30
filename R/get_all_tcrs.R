@@ -10,7 +10,7 @@
 #' the T-SHELL and MAD-HYPE algorithms. If remove_duplicates is TRUE (default) the
 #' function will only return one of these pairs of TCRs.
 #'
-#' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq()}}
+#' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
 #' @param chain the TCR chain, "alpha", "beta", or "paired" (default is paired)
 #' @param remove_duplicates only return one TCR pair for TCRs recognized by both
 #' the T-SHELL and MAD-HYPE algorithms (default is TRUE).
@@ -18,7 +18,7 @@
 #' @return
 #' A dataframe including all of the TCRs in a dataset.
 #'
-#' @seealso \code{\link{load_tirtlseq()}}
+#' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export
 #' @examples

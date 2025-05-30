@@ -15,7 +15,7 @@ sample_overlap(
 )
 }
 \arguments{
-\item{data}{the dataset, an object loaded using the \code{\link{load_tirtlseq()}} function}
+\item{data}{the dataset, an object loaded using the \code{\link{load_tirtlseq}()} function}
 
 \item{chain}{which chain to plot: either paired or alpha-/beta-pseudobulk. (default "paired")}
 
@@ -48,5 +48,5 @@ compares their overlap between samples.
 
 }
 \seealso{
-\code{\link{load_tirtlseq()}}
+\code{\link{load_tirtlseq}()}
 }

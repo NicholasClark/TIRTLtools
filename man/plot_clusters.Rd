@@ -13,7 +13,7 @@ plot_clusters(
 )
 }
 \arguments{
-\item{obj}{an object returned by the \code{\link{cluster_tcrs()}} function}
+\item{obj}{an object returned by the \code{\link{cluster_tcrs}()} function}
 
 \item{n_clusters}{the number of clusters to plot (default 10)}
 
@@ -34,7 +34,7 @@ Currently returns a list with three items:
 \code{$heatmap} - a heatmap visualization of TCRs from the top clusters
 }
 \description{
-\code{plot_clusters()} plots TCRs that were previously clustered by the \code{\link{cluster_tcrs()}} function.
+\code{plot_clusters()} plots TCRs that were previously clustered by the \code{\link{cluster_tcrs}()} function.
 }
 \details{
 The function currently returns a list with a UMAP plot, a graph/network plot, and
@@ -47,5 +47,5 @@ a heatmap.
 # plot_clusters(obj)
 }
 \seealso{
-\code{\link{cluster_tcrs()}}, \code{\link{TCRdist()}}
+\code{\link{cluster_tcrs}()}, \code{\link{TCRdist}()}
 }

@@ -7,9 +7,9 @@
 cluster_tcrs(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE)
 }
 \arguments{
-\item{data}{a list of TIRTLseq TCR data for samples created with \code{\link{load_tirtlseq()}}}
+\item{data}{a list of TIRTLseq TCR data for samples created with \code{\link{load_tirtlseq}()}}
 
-\item{tcrdist_cutoff}{the \code{\link{TCRdist()}} function will only record TCRdist values
+\item{tcrdist_cutoff}{the \code{\link{TCRdist}()} function will only record TCRdist values
 less than or equal to the cutoff. Default is 90. Note: Higher cutoffs will return more
 data, at most NxN where N is the number of unique TCRs.}
 
@@ -23,12 +23,18 @@ If parameter is a data frame, the supplied data frame will be used as the databa
 }
 \value{
 Returns a list with the following elements:
-* df - a data frame with all unique TCRs along with cluster annotations
-* dist_df - a data frame with distances (TCRdist) between TCR pairs in long format
-* sparse_adj_mat - an adjacency matrix (in sparse format) marking TCR pairs with TCRdist <= tcrdist_cutoff
-* graph_adj - an igraph object created from the adjacency matrix
-* tcrdist_cutoff - the cutoff used for TCRdist
-* resolution - the resolution parameter used for the Leiden algorithm
+
+\code{$df} - a data frame with all unique TCRs along with cluster annotations
+
+\code{$dist_df} - a data frame with distances (TCRdist) between TCR pairs in long format
+
+\code{$sparse_adj_mat} - an adjacency matrix (in sparse format) marking TCR pairs with TCRdist <= tcrdist_cutoff
+
+\code{$graph_adj} - an igraph object created from the adjacency matrix
+
+\code{$tcrdist_cutoff} - the cutoff used for TCRdist
+
+\code{$resolution} - the resolution parameter used for the Leiden algorithm
 }
 \description{
 The \code{cluster_tcrs()} function aggregates all of the paired TCRs found in the data,
@@ -53,5 +59,5 @@ will be assigned to the "*01" allele.
 
 }
 \seealso{
-\code{\link{plot_clusters()}}, \code{\link{identify_non_functional_seqs()}}
+\code{\link{plot_clusters}()}, \code{\link{identify_non_functional_seqs}()}, \code{\link{TCRdist}()}
 }

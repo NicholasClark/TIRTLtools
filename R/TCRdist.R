@@ -31,15 +31,18 @@
 #'
 #' @return
 #' A list with entries:
-#' $TCRdist_df - a data frame with three columns: "edge1_0index", "edge2_0index", and "TCRdist".
+#'
+#' \code{$TCRdist_df} - a data frame with three columns: "edge1_0index", "edge2_0index", and "TCRdist".
 #' The first two columns contain the indices (0-indexed) of the TCRs for each pair.
 #' The last column contains the TCRdist if it is below the cutoff. The output is sparse in that it only contains
 #' pairs that have TCRdist <= cutoff.
-#' $tcr1 - a data frame of the TCRs supplied to the function. It contains an additional column
-#' "tcr_index" with the (0-indexed) index of each TCR.
-#' $tcr2 - a similar data frame for tcr2, if it was supplied.
 #'
-#' @seealso \code{\link{cluster_tcrs()}}, \code{\link{plot_clusters()}}, and \code{\link{identify_non_functional_seqs()}}
+#' \code{$tcr1} - a data frame of the TCRs supplied to the function. It contains an additional column
+#' "tcr_index" with the (0-indexed) index of each TCR.
+#'
+#' \code{$tcr2} - a similar data frame for tcr2, if it was supplied.
+#'
+#' @seealso \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export
 #' @examples
