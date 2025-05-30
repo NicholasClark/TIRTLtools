@@ -31,7 +31,7 @@ In addition to various **analysis and plotting functions**, we provide an **effi
   * `plot_diversity()` -- bar plots of different diversity metrics
 
 #### Helper functions:
-  * `add_pseudobulk_counts_to_paired_data()` -- add alpha- and beta-chain read counts/fractions to the paired TCR data
+  * `add_single_chain_data()` -- add alpha- and beta-chain read counts/fractions to the paired TCR data
   * `identify_non_functional_seqs()` -- mark cdr3 sequences that have stop codons (*) or frame shifts (_)
   * `identify_paired()` -- identify which alpha and beta chains in the pseudo-bulk data are found in pairs
   * `get_all_div_metrics()` -- returns all options for diversity metrics (currently: simpson, gini, gini.simpson, inv.simpson, shannon, berger.parker, richness, d50, dXX, renyi, hill)
