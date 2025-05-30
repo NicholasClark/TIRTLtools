@@ -21,7 +21,7 @@
 #'
 add_single_chain_data = function(data) {
   data_tmp = lapply(data$data, function(x) {
-    df_out = add_single_chain_data_simple(x)
+    df_out = .add_single_chain_data_simple(x)
     return(list(alpha = x$alpha, beta=x$beta, paired = df_out))
   })
   data$data = data_tmp
@@ -31,7 +31,7 @@ add_single_chain_data = function(data) {
 
 #' The input 'data' must be a list with 3 items, "alpha", "beta", and "paired"
 #' This looks up readCounts/Fractions of each single chain in the
-add_single_chain_data_simple = function(data) {
+.add_single_chain_data_simple = function(data) {
   dt_pair = data$paired
   dtA = data$alpha
   dtB = data$beta
