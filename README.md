@@ -64,9 +64,7 @@ and load it using devtools:
 devtools::load_all("./TIRTLtools") ### location of cloned repo on your machine
 ```
 
-## Quick start
-
-### TCRdist GPU implementation
+## TCRdist GPU implementation
 
 This function computes the similarity of two T-cell receptors (TCRs) using TCRdist ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)). The function can efficiently calculate pairwise similarities of thousands or millions of TCRs using a GPU if it is available. It relies on python code using [cupy](https://cupy.dev/) (Nvidia GPUs) or [mlx](https://opensource.apple.com/projects/mlx/) (Apple Silicon GPUs), which is called through the `reticulate` R package.
 
@@ -164,10 +162,13 @@ as_tibble(meta_df)
 
 ## References
 
-For details of our pairing pipeline, see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) and our [github repository](https://github.com/pogorely/TIRTL).
+For details on our pairing pipeline, see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) and our [github repository](https://github.com/pogorely/TIRTL).
 
-For details of the MAD-HYPE algorithm, see [Holec and Berleant et al., 2019](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649).
+For details on the MAD-HYPE algorithm, see [Holec and Berleant et al., 2019](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649).
 
-For details of MiXCR, see their [website](https://mixcr.com/) and publications in [Nature Methods (2015)](https://www.nature.com/articles/nmeth.3364) and [Nature Biotechnology (2017)](https://www.nature.com/articles/nbt.3979).
+For details on MiXCR, see their [website](https://mixcr.com/) and publications in [Nature Methods (2015)](https://www.nature.com/articles/nmeth.3364) and [Nature Biotechnology (2017)](https://www.nature.com/articles/nbt.3979).
 
-For details of TCRdist, see [Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)
+For details on TCRdist, see [Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)
+
+<br>
+Written by Mikhail Pogorelyy and Nicholas Clark, [Thomas Lab, St. Jude Children's Research Hospital](https://www.stjude.org/research/labs/thomas-lab.html)
