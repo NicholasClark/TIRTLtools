@@ -1,5 +1,7 @@
 # TIRTLtools R package
 
+***Package is in active development and may change frequently.***
+
 ## Overview
 
 `TIRTLtools` is a suite of tools for analyzing T-cell receptor (TCR) repertoires created using **TIRTL-seq** (**T**hroughput-**I**ntensive **R**apid **T**CR **L**ibrary **seq**uencing) [(Pogorelyy and Kirk et al., bioRxiv 2024)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2).
@@ -7,7 +9,17 @@ We provide functions for analysis of **paired TCR repertoires** as well as **sin
 
 In addition to various **analysis and plotting functions**, we provide an **efficient batched GPU implementation of TCRdist** ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).
 
-*Package may change frequently as it is in active development.*
+### Input data for package
+
+The package requires paired-chain and single-chain "pseudo-bulk" data files created by the [TIRTLseq pipeline](https://github.com/pogorely/TIRTL).
+
+The pipeline reads [MiXCR](https://mixcr.com/) output files from TCR repertoire sequencing for individual wells in a multiwell plate (e.g. 96-well or 384-well plate). It uses two complementary algorithms,  [MAD-HYPE](https://doi.org/10.1093/bioinformatics/bty801) and [T-SHELL](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2), to pair alpha and beta chains. It outputs three files: a .tsv file containing alpha and beta chain pairs predicted by each algorithm (file ending in "TIRTLoutput.tsv"), and two .tsv files containing aggregated single-chain "pseudo-bulk" data for alpha or beta chains from all wells on a plate (files ending in "pseudobulk_TRA.tsv" and "pseudobulk_TRB.tsv").
+
+**MAD-HYPE** (**M**ulticell **A**nalytical **D**econvolution for **H**igh **Y**ield **P**aired-chain **E**valuation, Holec and Berleant et al., 2019) is a Bayesian method that computes the likelihood of alpha and beta chain matches based on their co-occurence patterns in wells on a plate. We re-implemented the MAD-HYPE algorithm for GPU computation, increasing efficiency and speed by two orders of magnitude.
+
+**T-SHELL** (**T**CR ɑβ **S**equence **H**ighly **E**fficient **L**inkage **L**earning, Pogorelyy and Kirk et al., bioRxiv 2024) is an algorithm we developed that uses the correlation between TCRalpha and TCRbeta clonotype relative frequencies across wells in a plate (rather than their presence or absence) to pair them. It works well in the case of the most abundant clones, which are found in all or almost all wells, making it impossible for the MAD-HYPE algorithm to pair them using their co-occurrence patterns.
+
+Example input data for the TIRTLseq pipeline can be found on [Zenodo](https://zenodo.org/records/14010377). For example, the aph17pre_exp_clones.tar.gz (172 MB) and aph17post_exp_clones.tar.gz (1.1 GB) files contain well-level TCR clonotype data (MiXCR output) for pre- and post-antigen-independent T cell expansion experiments.
 
 ### Package functions
 
@@ -152,4 +164,10 @@ as_tibble(meta_df)
 
 ## References
 
-Please see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) for details.
+For details of our pairing pipeline, see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) and our [github repository](https://github.com/pogorely/TIRTL).
+
+For details of the MAD-HYPE algorithm, see [Holec and Berleant et al., 2019](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649).
+
+For details of MiXCR, see their [website](https://mixcr.com/) and publications in [Nature Methods (2015)](https://www.nature.com/articles/nmeth.3364) and [Nature Biotechnology (2017)](https://www.nature.com/articles/nbt.3979).
+
+For details of TCRdist, see [Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)
