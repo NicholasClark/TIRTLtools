@@ -53,8 +53,8 @@
 
 TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=1000, print_res = TRUE, only_lower_tri = TRUE) {
   ### prep R input
-  # tcr1 = add_alleles(tcr1)
-  # tcr1 = filter_alleles(tcr1, params = params)
+  # tcr1 = .add_alleles(tcr1)
+  # tcr1 = .filter_alleles(tcr1, params = params)
   # tcr1 = as.data.frame(tcr1)
   # if(!is.null(tcr2)) tcr2 = as.data.frame(tcr2)
   tcr1 = prep_for_tcrdist(tcr1, params = params)

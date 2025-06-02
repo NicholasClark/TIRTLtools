@@ -31,8 +31,8 @@ rank_plot = function(data, chain=c("alpha", "beta"), column = "readFraction") {
     df_tmp$Sample = names(data)[i]
     return(df_tmp)
   }) %>% bind_rows()
-  xx = get_log_labels_pos(df_all$rank)
-  yy = get_log_labels_neg(df_all[[column]])
+  xx = .get_log_labels_pos(df_all$rank)
+  yy = .get_log_labels_neg(df_all[[column]])
 
   gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample)) +
     xlab("rank") +
@@ -45,10 +45,10 @@ rank_plot = function(data, chain=c("alpha", "beta"), column = "readFraction") {
   return(gg)
 }
 
-rank_plot_simple = function(df) {
+.rank_plot_simple = function(df) {
   df$rank = rank(-df$readFraction)
-  xx = get_log_labels_pos(df$rank)
-  yy = get_log_labels_neg(df$readFraction)
+  xx = .get_log_labels_pos(df$rank)
+  yy = .get_log_labels_neg(df$readFraction)
 
   ggplot(df) + geom_line(aes(x=rank, y=readFraction)) +
     xlab("rank") + ylab("readFraction") +

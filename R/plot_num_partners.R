@@ -54,14 +54,14 @@ plot_num_partners = function(data,
   }
 
 
-  is_paired = is.paired(data)
-  is_list = is.list.only(data)
+  is_paired = .is.paired(data)
+  is_list = .is.list.only(data)
   if(!is_paired) stop("'data' must be paired chain output from TIRTL-seq")
   data = remove_dupes_paired(data)
 
   if(is_list) {
     gg_df = lapply(1:length(data), function(i) {
-      df_tmp = get_num_partners_single(data[[i]], max_partners = max_partners)
+      df_tmp = .get_num_partners_single(data[[i]], max_partners = max_partners)
       df_tmp$sample_num = i
       if(!is.null(group_col)) {
         df_tmp$Group = meta[[group_col]][i]
@@ -73,7 +73,7 @@ plot_num_partners = function(data,
       }) %>% bind_rows() %>% group_by(Group, n_partners, chain) %>%
       summarize(Frequency = sum(Frequency), Fraction = mean(Fraction)) ## note this is taking the mean proportion over samples rather than summing all frequencies and dividing by the total
   } else {
-    gg_df = get_num_partners_single(data)
+    gg_df = .get_num_partners_single(data)
   }
   var = ifelse(fraction, sym("Fraction"), sym("Frequency"))
   char = paste(">", max_partners, sep = "")
@@ -95,8 +95,8 @@ plot_num_partners = function(data,
   return(res)
 }
 
-get_num_partners_single = function(df, max_partners = 5) {
-  df = remove_dupes_paired()
+.get_num_partners_single = function(df, max_partners = 5) {
+  df = remove_dupes_paired(df)
   alpha_tbl = table(df$alpha_nuc) %>% table() %>% as.data.frame.table() %>%
     magrittr::set_colnames(c("n_partners", "Frequency")) %>%
     mutate( Fraction = Frequency/sum(Frequency), chain = "alpha" ) %>%
@@ -107,7 +107,8 @@ get_num_partners_single = function(df, max_partners = 5) {
     mutate(n_partners = as.integer(as.character(n_partners)))
   df_long = bind_rows(alpha_tbl, beta_tbl)
   gt_char = paste(">", max_partners, sep = "")
-  df_less_max = df_long %>% filter(n_partners <= max_partners)
+  df_less_max = df_long %>% filter(n_partners <= max_partners) %>%
+    mutate(n_partners = as.character(n_partners))
   df_greater = df_long %>% filter(n_partners > max_partners) %>%
     group_by(chain) %>%
     summarize(Frequency = sum(Frequency), Fraction = sum(Fraction)) %>%

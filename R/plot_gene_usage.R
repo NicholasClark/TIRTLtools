@@ -38,7 +38,7 @@ plot_gene_usage = function(data, chain = c("paired", "alpha", "beta"),
     groups = NULL
   }
 
-  #labels = get_labels_from_col(meta, label_col)
+  #labels = .get_labels_from_col(meta, label_col)
 
   data = lapply(data, function(x) x[[chain]]) %>% setNames(names(data))
 

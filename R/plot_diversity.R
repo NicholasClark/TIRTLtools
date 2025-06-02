@@ -52,7 +52,7 @@ plot_diversity = function(
   #print(chain)
   ## assume div is a list of diversity metrics for each sample
 
-  vals = get_div_metric(div, metric, q=q, percent=percent)
+  vals = .get_div_metric(div, metric, q=q, percent=percent)
   meta = div$meta
   gg_df = meta %>% mutate(value = vals)
   if(label_col == "Sample") {
@@ -65,17 +65,17 @@ plot_diversity = function(
   y_label = .get_ylabel(metric=metric, q=q, percent=percent)
   y_label = paste(y_label, "|", div$call_args$type_column)
   plot_title = case_when(
-    metric == "simpson" ~ "The Simpson diversity index - the probability that two clones chosen at random represent the same type" %>% split_string_multiline(),
-    metric == "gini" ~ "The Gini index/coefficient" %>% split_string_multiline(),
-    metric == "gini.simpson" ~ "The Gini-Simpson index - the probability that two clones chosen at random represent different types" %>% split_string_multiline(),
-    metric == "inv.simpson" ~ "The Inverse Simpson index - the effective number of types corresponding to the weighted arithmetic mean of proportional abundances" %>% split_string_multiline(),
-    metric == "shannon" ~ "The Shannon-Wiener diversity index - the effective number of types corresponding to the weighted geometric mean of proportional abundances" %>% split_string_multiline(),
-    metric == "berger.parker" ~ "The Berger-Parker index - the proportion of the most abundant type in the dataset" %>% split_string_multiline(),
-    metric == "richness" ~ "The species richness - the total number of unique types observed in the data" %>% split_string_multiline(),
-    metric == "d50" ~ "d50 - The minimum number of types (clones) needed to comprise 50 percent of the data" %>% split_string_multiline(),
-    metric == "dXX" ~ "dXX - The minimum number of types (clones) needed to comprise XX percent of the data" %>% split_string_multiline(),
-    metric == "renyi" ~ "The Renyi entropy - a generalization of Shannon entropy (Shannon-Wiener index)" %>% split_string_multiline(),
-    metric == "hill" ~ "Hill numbers - the 'true diversity' or effective number of types" %>% split_string_multiline(),
+    metric == "simpson" ~ "The Simpson diversity index - the probability that two clones chosen at random represent the same type" %>% .split_string_multiline(),
+    metric == "gini" ~ "The Gini index/coefficient" %>% .split_string_multiline(),
+    metric == "gini.simpson" ~ "The Gini-Simpson index - the probability that two clones chosen at random represent different types" %>% .split_string_multiline(),
+    metric == "inv.simpson" ~ "The Inverse Simpson index - the effective number of types corresponding to the weighted arithmetic mean of proportional abundances" %>% .split_string_multiline(),
+    metric == "shannon" ~ "The Shannon-Wiener diversity index - the effective number of types corresponding to the weighted geometric mean of proportional abundances" %>% .split_string_multiline(),
+    metric == "berger.parker" ~ "The Berger-Parker index - the proportion of the most abundant type in the dataset" %>% .split_string_multiline(),
+    metric == "richness" ~ "The species richness - the total number of unique types observed in the data" %>% .split_string_multiline(),
+    metric == "d50" ~ "d50 - The minimum number of types (clones) needed to comprise 50 percent of the data" %>% .split_string_multiline(),
+    metric == "dXX" ~ "dXX - The minimum number of types (clones) needed to comprise XX percent of the data" %>% .split_string_multiline(),
+    metric == "renyi" ~ "The Renyi entropy - a generalization of Shannon entropy (Shannon-Wiener index)" %>% .split_string_multiline(),
+    metric == "hill" ~ "Hill numbers - the 'true diversity' or effective number of types" %>% .split_string_multiline(),
     .default = ""
   )
   if(is.null(group_col)) {
@@ -131,7 +131,7 @@ plot_diversity = function(
   return(res_list)
 }
 
-get_div_metric = function(div, metric, q=NULL, percent = NULL) {
+.get_div_metric = function(div, metric, q=NULL, percent = NULL) {
   ll= div$result
   if(!is.list(ll[[1]]$diversity[[metric]])) {
     vec = sapply(ll, function(x) x$diversity[[metric]])

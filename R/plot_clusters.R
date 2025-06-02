@@ -58,7 +58,7 @@ plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c(
   if("graph" %in% type) {
     set.seed(seed)
     #gr_sub = igraph::graph_from_adjacency_matrix(adj_mat, mode = "undirected", weighted = NULL)
-    graph_plot = make_graph_many_cluster(df_sub, adj_mat, clusters = largest_clusters$cluster, color_column = color_col)
+    graph_plot = .make_graph_many_cluster(df_sub, adj_mat, clusters = largest_clusters$cluster, color_column = color_col)
   }
   if("heatmap" %in% type) {
     set.seed(seed)
@@ -70,13 +70,13 @@ plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c(
 }
 
 
-plot_igraph = function(g, grps, colbar, vertex.size = 4) {
+.plot_igraph = function(g, grps, colbar, vertex.size = 4) {
   plot(g, vertex.size = vertex.size, vertex.label = NA)
   legend('topleft', grps, pch=21, col="#777777", pt.bg=colbar, pt.cex=1, cex=.8,
          bty="n", ncol=1)
 }
 
-make_graph_many_cluster = function(df, adj_mat, clusters, pdf_name = "", seed = NULL, color_column = "cluster", vertex.size = 4) {
+.make_graph_many_cluster = function(df, adj_mat, clusters, pdf_name = "", seed = NULL, color_column = "cluster", vertex.size = 4) {
   df_clus = df %>% filter(cluster %in% clusters)
   # dist_df_sub = adj_mat %>% ## get all edges in the cluster
   #   filter(edge1_clone_name %in% df_clus$clone_name,
@@ -93,15 +93,15 @@ make_graph_many_cluster = function(df, adj_mat, clusters, pdf_name = "", seed = 
   grps = as.character(unique(grp_vec))
   grps = grps[!is.na(grps)]
   n_grps = length(grps)
-  colbar = get_colors_12()[1:length(grps)] %>% setNames(grps)
+  colbar = .get_colors_12()[1:length(grps)] %>% setNames(grps)
   igraph::V(g)$color = colbar[grp_vec]
   #igraph::V(g)$size <- degree(g)
   if(pdf_name != "") {
     pdf(pdf_name, width = 9, height = 9)
     if(!is.null(seed)) set.seed(seed)
-    plot_igraph(g, grps, colbar, vertex.size = vertex.size)
+    .plot_igraph(g, grps, colbar, vertex.size = vertex.size)
     dev.off()
   }
   if(!is.null(seed)) set.seed(seed)
-  plot_igraph(g, grps, colbar, vertex.size = vertex.size)
+  .plot_igraph(g, grps, colbar, vertex.size = vertex.size)
 }

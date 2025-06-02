@@ -1,4 +1,4 @@
-pad_center <- function(seq, target_length) {
+.pad_center <- function(seq, target_length) {
   seq = unlist(strsplit(seq, split = ""))
   seq_length <- length(seq)
   if (seq_length >= target_length) {
@@ -11,7 +11,7 @@ pad_center <- function(seq, target_length) {
   }
 }
 
-get_log_labels_neg = function(x) {
+.get_log_labels_neg = function(x) {
   y1 = min(x) %>% log10() %>% floor()
   y2 = -1
   y_breaks = y1:y2
@@ -23,7 +23,7 @@ get_log_labels_neg = function(x) {
   return(list(brks = 10^y_breaks, labels = labels_y))
 }
 
-get_log_labels_pos = function(x) {
+.get_log_labels_pos = function(x) {
   max_rank = max(x) %>% log10() %>% ceiling()
   x_breaks = 0:max_rank
   expr_list = sapply(x_breaks, function(x) {
@@ -34,34 +34,34 @@ get_log_labels_pos = function(x) {
   return(list(brks = 10^x_breaks, labels = labels_x))
 }
 
-geta<-function(dtlist){
+.geta<-function(dtlist){
   dtlist[grepl("TRA",names(dtlist))]
 }
 
-getb<-function(dtlist){
+.getb<-function(dtlist){
   dtlist[grepl("TRB",names(dtlist))]
 }
 
-geta_sm<-function(dtlist){ #same, but smaller files!
+.geta_sm<-function(dtlist){ #same, but smaller files!
   lapply(dtlist[grepl("TRA",names(dtlist))],function(x)x[,.(readCount,readFraction,targetSequences),])
 }
 
-getb_sm<-function(dtlist){ #same, but smaller files!
+.getb_sm<-function(dtlist){ #same, but smaller files!
   lapply(dtlist[grepl("TRB",names(dtlist))],function(x)x[,.(readCount,readFraction,targetSequences),])
 }
 
-get_well_subset<-function(row_range=1:16,col_range=1:24){
+.get_well_subset<-function(row_range=1:16,col_range=1:24){
   unlist(sapply(LETTERS[row_range],function(x)paste(x,col_range,sep=""),simplify = F))
 }
 
-is.dtplyr = function(data) {
+.is.dtplyr = function(data) {
   num = class(data) %>% grepl("dtplyr", .) %>% sum()
   check = num > 0
   return(check)
 }
 
-is.paired = function(data) {
-  is_data_frame = is.data.frame(data) || is.dtplyr(data)
+.is.paired = function(data) {
+  is_data_frame = is.data.frame(data) || .is.dtplyr(data)
   is_list = is.list(data) && !is_data_frame
   if(!(is_list || is_data_frame)) stop("'data' needs to be a data frame or a list of data frames")
   if(is_data_frame) is_paired = "wij" %in% colnames(data)
@@ -69,11 +69,11 @@ is.paired = function(data) {
   return(is_paired)
 }
 
-is.list.only = function(data) {
+.is.list.only = function(data) {
   return( is.list(data) && !is.data.frame(data) )
 }
 
-get_labels_from_col = function(meta, label_col) {
+.get_labels_from_col = function(meta, label_col) {
   ### get labels for samples
   if(label_col == "Sample") {
     labels = meta[[1]]
@@ -84,13 +84,13 @@ get_labels_from_col = function(meta, label_col) {
   return(labels)
 }
 
-split_string_multiline = function(string, width = 65) {
+.split_string_multiline = function(string, width = 65) {
   lines = strwrap(string, width = width, simplify = TRUE)
   result = paste(lines, collapse = "\n")
   return(result)
 }
 
-add_newline = function(string) {
+.add_newline = function(string) {
   return(paste(string, "\n", sep = ""))
 }
 
@@ -112,7 +112,7 @@ remove_dupes_paired = function(data) {
 }
 
 
-get_type_column = function(type_column, is_paired) {
+.get_type_column = function(type_column, is_paired) {
   if(type_column == "auto") {
     if(is_paired) type_column = "alpha_beta"
     if(!is_paired) type_column = "targetSequences"
@@ -122,7 +122,7 @@ get_type_column = function(type_column, is_paired) {
   return(type_column)
 }
 
-get_proportion_column = function(proportion_column, is_paired, is_annotated) {
+.get_proportion_column = function(proportion_column, is_paired, is_annotated) {
   if(proportion_column == "auto") {
     if(is_paired) {
       if(is.null(is_annotated) || is_annotated) {
@@ -151,7 +151,7 @@ get_all_tcrs = function(data, chain = c("paired", "alpha", "beta"), remove_dupli
 }
 
 ### add alleles ("*01") to va and vb if necessary (needed for TCRdist)
-add_alleles = function(df) {
+.add_alleles = function(df) {
   has_allele_va = grepl("\\*", df$va)
   has_allele_vb = grepl("\\*", df$vb)
   df$va_orig = df$va
@@ -165,14 +165,14 @@ add_alleles = function(df) {
 }
 
 ### filter data frame so that va and vb alleles are found in the parameters for tcrdist
-filter_alleles = function(df, params=NULL) {
+.filter_alleles = function(df, params=NULL) {
   if(is.null(params)) params = TIRTLtools::params
   df = df %>% filter(va %in% params$feature, vb %in% params$feature)
   return(df)
 }
 
 ### check that va and vb are found in the parameters for tcrdist (but don't remove them)
-check_alleles = function(df, params=NULL) {
+.check_alleles = function(df, params=NULL) {
   if(is.null(params)) params = TIRTLtools::params
   df = df %>% mutate(va_allowed = va %in% params$feature, vb_allowed = vb %in% params$feature) %>%
     mutate(va_and_vb_allowed = va_allowed & vb_allowed)
@@ -183,8 +183,8 @@ check_alleles = function(df, params=NULL) {
 prep_for_tcrdist = function(df, params=NULL) {
   if(is.null(df)) return(df)
   if(is.null(params)) params = TIRTLtools::params
-  df = add_alleles(df) # add "*01" as allele for va and vb if necessary
-  df = filter_alleles(df, params = params) # remove alleles not found in the parameter data frame
+  df = .add_alleles(df) # add "*01" as allele for va and vb if necessary
+  df = .filter_alleles(df, params = params) # remove alleles not found in the parameter data frame
   df = df %>% filter(nchar(cdr3a) > 5, nchar(cdr3b) > 5)
   #if(!"is_functional" %in% colnames(df))
   df = identify_non_functional_seqs(df)
@@ -193,7 +193,7 @@ prep_for_tcrdist = function(df, params=NULL) {
   return(df)
 }
 
-get_colors_25 = function() {
+.get_colors_25 = function() {
   c25 <- c(
     "dodgerblue2", "#E31A1C", # red
     "green4",
@@ -212,7 +212,7 @@ get_colors_25 = function() {
   return(c25)
 }
 
-get_colors_12 = function() {
+.get_colors_12 = function() {
   c12 =  c(
     "dodgerblue2", "#E31A1C",
     "green4","deeppink1",

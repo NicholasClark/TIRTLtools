@@ -51,11 +51,11 @@ plot_clonotype_indices = function(
   if(!chain %in% c("alpha","beta")) stop("'chain' must be 'alpha' or 'beta'")
 
   data3 = lapply(data2, function(x) x[[chain]]) %>% setNames(names(data2))
-  labels = get_labels_from_col(meta, label_col)
+  labels = .get_labels_from_col(meta, label_col)
 
-  is_paired = is.paired(data3[[1]])
-  type_column = get_type_column(type_column, is_paired)
-  proportion_column = get_proportion_column(proportion_column, is_paired, is_annotated)
+  is_paired = .is.paired(data3[[1]])
+  type_column = .get_type_column(type_column, is_paired)
+  proportion_column = .get_proportion_column(proportion_column, is_paired, is_annotated)
 
   if(is.null(group_col)) {
     meta$Group = meta[[1]]
@@ -65,10 +65,10 @@ plot_clonotype_indices = function(
     meta$Group = apply(meta[, group_col], 1, paste, collapse = " | ")
   }
   if(chain == "paired") data3 = remove_dupes_paired(data3)
-  #props_list = calculate_proportions_list(data3, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
+  #props_list = .calculate_proportions_list(data3, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
 
   gg_df = lapply(1:length(data3), function(i) {
-    tmp_df = summarize_clonotype_indices_single(data3[[i]],
+    tmp_df = .summarize_clonotype_indices_single(data3[[i]],
                                                 proportion_column = proportion_column, cutoffs = cutoffs)
     tmp_df$Sample = labels[i]
     if(!is.null(group_col)) {
@@ -119,7 +119,7 @@ plot_clonotype_indices = function(
 }
 
 
-summarize_clonotype_indices_single = function(data, proportion_column="auto", cutoffs = 10^(1:4), normalize = FALSE) {
+.summarize_clonotype_indices_single = function(data, proportion_column="auto", cutoffs = 10^(1:4), normalize = FALSE) {
   starts = c(1, cutoffs+1)
   ends = c(cutoffs, Inf)
   grps = paste("[",starts, ":", ends, "]", sep = "")

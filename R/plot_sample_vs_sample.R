@@ -26,12 +26,12 @@ plot_sample_vs_sample = function(data1, data2,
                                  type_column = "auto",
                                  value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
                                  log2_cutoff = 1.5) {
-  gg_df = compute_fold_change(data1, data2, type_column=type_column, value_type = value_type, log2_cutoff = log2_cutoff)
-  gg = plot_timepoints(gg_df)
+  gg_df = .compute_fold_change(data1, data2, type_column=type_column, value_type = value_type, log2_cutoff = log2_cutoff)
+  gg = .plot_timepoints(gg_df)
   return(gg)
 }
 
-plot_timepoints = function(dt,
+.plot_timepoints = function(dt,
                            labelx="Frequency on timepoint 1",
                            labely="Frequency on timepoint 2"
                            ) {
@@ -51,15 +51,15 @@ plot_timepoints = function(dt,
     scale_x_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))#+
 }
 
-compute_fold_change = function(data1, data2,
+.compute_fold_change = function(data1, data2,
                                type_column = "auto",
                                value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
                                log2_cutoff = 1.5
 ) {
   value_type = value_type[1]
   proportion_column = value_type
-  is_paired1 = is.paired(data1)
-  is_paired2 = is.paired(data2)
+  is_paired1 = .is.paired(data1)
+  is_paired2 = .is.paired(data2)
   is_paired = is_paired1
   if(is_paired1 != is_paired2) stop("Error: 'data1' and 'data2' need to be the same type -- either both paired or both single-chain.")
 

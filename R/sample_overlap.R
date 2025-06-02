@@ -39,7 +39,7 @@ sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
   data = data$data
   chain = chain[1]
 
-  #labels = get_labels_from_col(meta, label_col)
+  #labels = .get_labels_from_col(meta, label_col)
 
   df_list = lapply(data, function(x) x[[chain]]) %>% setNames(names(data))
   seq_list = lapply(df_list, function(df_tmp) {

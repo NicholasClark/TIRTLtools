@@ -100,8 +100,8 @@ cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb 
   g10 = sum(tab >= 10)
   g50 = sum(tab >= 50)
   g100 = sum(tab >= 100)
-  msg1 = paste("Out of ", dim(dist_input)[1], " valid TCRs, ", g2, " clusters detected and ", single, " singleton TCRs.", sep = "") %>% add_newline()
-  msg2 = paste(g10, " clusters of size >= 10, ", g50, " clusters of size >= 50, ", g100, " clusters of size >=100.", sep = "") %>% add_newline()
+  msg1 = paste("Out of ", dim(dist_input)[1], " valid TCRs, ", g2, " clusters detected and ", single, " singleton TCRs.", sep = "") %>% .add_newline()
+  msg2 = paste(g10, " clusters of size >= 10, ", g50, " clusters of size >= 50, ", g100, " clusters of size >=100.", sep = "") %>% .add_newline()
   cat(msg1); cat(msg2)
   out = list(
     df = dist_input,

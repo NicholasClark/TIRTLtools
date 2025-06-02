@@ -109,7 +109,7 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
   }
   # is_data_frame = is.data.frame(data[[chain]])
   # is_list = is.list(data[[chain]]) && !is_data_frame
-  # is_paired = is.paired(data[[chain]])
+  # is_paired = .is.paired(data[[chain]])
   is_paired = chain == "paired"
 
   if(proportion_column == "auto") {
@@ -161,15 +161,15 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
                              methods = get_all_div_metrics()
 ) {
   data = data[[chain]]
-  prop_df = calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
+  prop_df = .calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
   res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods)
   out = list(diversity = res, prop_df = prop_df)
   return(out)
 }
 
 ### helper function to summarize clones by some column(s) and calculate proportions for each sample
-# calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto", return_list = FALSE) {
-#   is_paired = is.paired(data_list)
+# .calculate_proportions_list = function(data_list, type_column = "auto", proportion_column="auto", return_list = FALSE) {
+#   is_paired = .is.paired(data_list)
 #   if(type_column == "auto") {
 #     if(is_paired) {
 #       type_column = "alpha_beta"
@@ -195,7 +195,7 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 #   print(length(data_list))
 #   list_all = lapply(1:length(data_list), function(i) {
 #     x = data_list[[i]]
-#     tmp = calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
+#     tmp = .calculate_proportions(data = x, type_column = type_column, proportion_column = proportion_column) %>%
 #       mutate(sample_num = i)
 #     })
 #   if(return_list) {
@@ -207,10 +207,10 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 # }
 
 ### helper function to summarize clones by some column(s) for a single data frame
-calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
-#calculate_proportions = function(data, type_column, proportion_column) {
-  is_paired = is.paired(data)
-  if(is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
+.calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
+#.calculate_proportions = function(data, type_column, proportion_column) {
+  is_paired = .is.paired(data)
+  if(.is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
   if(type_column == "auto") {
     if(is_paired) {
       type_column = "alpha_beta"
