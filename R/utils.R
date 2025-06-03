@@ -242,3 +242,35 @@ dist_obj_to_matrix = function(obj, idx_keep) {
   tmp = dist_df_to_matrix(obj$dist_df, n_vertices_all = dim(obj$df)[1], idx_keep = idx_keep)
   return(tmp)
 }
+
+
+get_dataset_info = function(dataset = "minimal") {
+  ds_options = c("minimal")
+  dataset = dataset[1]
+  if(!dataset %in% ds_options) stop("dataset not available")
+  if(dataset == "minimal") {
+    files = gh("GET /repos/:owner/:repo/contents/:path",
+               owner = "NicholasClark",
+               repo = "TIRTLtools_data",
+               path = "SJTRC_minimal_dataset")
+
+    file_info = lapply(files, function(x) list(name = x$name, download_url = x$download_url))
+    file_info = do.call(rbind, lapply(file_info, as.data.frame))
+    return(file_info)
+  }
+}
+
+download_minimal_dataset = function(directory = "SJTRC_TIRTLseq_minimal") {
+  file_info = get_dataset_info()
+  dir.create(directory, showWarnings = FALSE)
+
+  for (i in 1:dim(file_info)[1]) {
+    url = file_info$download_url[i]
+    file_name = file_info$name[i]
+    msg = paste("Downloading file:", file_name, " to directory: ", directory) %>% .add_newline()
+    cat(msg)
+    dest = file.path(directory, basename(url))
+    download.file(url, destfile = dest, mode = "wb")
+  }
+  return(invisible(NULL))
+}
