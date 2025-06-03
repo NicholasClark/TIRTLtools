@@ -22,13 +22,18 @@
 #' @examples
 #' # example here
 
-plot_gene_usage = function(data, chain = c("paired", "alpha", "beta"),
-                           group_col=NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
-#                           groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
-                        value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
-                        agg_func = c("sum", "max"),
-                        log_scale = FALSE,
-                        style = c("barplot", "boxplot")) {
+plot_gene_usage = function(
+    data,
+    chain = c("paired", "alpha", "beta"),
+    group_col=NULL,
+    gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
+#   groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
+    value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
+    agg_func = c("sum", "max"),
+    log_scale = FALSE,
+    style = c("barplot", "boxplot"),
+    color_scheme = NULL
+) {
   meta = data$meta
   data = data$data
   chain = chain[1]
@@ -93,10 +98,11 @@ plot_gene_usage = function(data, chain = c("paired", "alpha", "beta"),
   data_summ[[gene]] = factor(data_summ[[gene]], levels = rev(c(top_genes, "other")))
   ### plot
   if(is_list && !is.null(groups)) {
-    gg = ggplot(data_summ) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = group), position = "dodge", color = "grey20")
+    gg = ggplot(data_summ) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = !!sym(value_type)), position = "dodge", color = "grey20") +
+      facet_wrap(~group)
   } else {
-    gg = ggplot(data_summ) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = !!sym(value_type)), color = "grey20") +
-      paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
+    gg = ggplot(data_summ) + geom_col(aes(x=!!sym(value_type), y = !!sym(gene), fill = !!sym(value_type)), color = "grey20")# +
+      #paletteer::scale_fill_paletteer_c("ggthemes::Orange-Blue-White Diverging", direction = -1)
   }
   gg = gg + ylab("") +theme_classic()
   if(log_scale) {
@@ -104,6 +110,7 @@ plot_gene_usage = function(data, chain = c("paired", "alpha", "beta"),
   } else {
     gg = gg + scale_x_continuous(labels = scales::label_number_auto())
   }
+  gg = gg + scale_fill_gradientn(colors = .tirtl_colors_gradient(palette=color_scheme))
   return(gg)
 
   # ### for list of data frames input -----------------

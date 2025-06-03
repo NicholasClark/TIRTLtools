@@ -41,7 +41,9 @@ plot_clonotype_indices = function(
   data, chain = c("beta", "alpha"),
   type_column = "auto", proportion_column="auto",
   cutoffs = 10^(1:5), group_col = NULL, label_col = "Sample", flip = FALSE,
-  return_data = FALSE) {
+  return_data = FALSE,
+  color_scheme = NULL
+  ) {
 
   is_annotated = data$is_annotated
   meta = data$meta
@@ -113,6 +115,7 @@ plot_clonotype_indices = function(
   #if(flip) gg = gg + coord_flip()
   gg = gg + ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
   gg = gg + theme_classic()
+  gg = gg + scale_fill_manual(values = .tirtl_colors_distinct(palette=color_scheme))
   res_list = list(plot = gg)
   if(return_data) res_list$data = gg_df
   return(res_list)

@@ -42,9 +42,16 @@
 #'
 
 plot_diversity = function(
-    div, metric=get_all_div_metrics(), q=2, percent=90, group_col = NULL,
-    label_col = "Sample", flip = FALSE, facet = FALSE, log_scale = FALSE,
-    return_data = FALSE
+    div, metric=get_all_div_metrics(),
+    q=2,
+    percent=90,
+    group_col = NULL,
+    label_col = "Sample",
+    flip = FALSE,
+    facet = FALSE,
+    log_scale = FALSE,
+    return_data = FALSE,
+    color_scheme = NULL
     ) {
   metric = metric[1]
   #print(metric)
@@ -126,6 +133,7 @@ plot_diversity = function(
   #if(log_scale) gg = gg + scale_y_log10(labels = scales::label_log())
   #if(flip) gg = gg + coord_flip()
   gg = gg + ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
+  gg = gg + scale_fill_manual(values = .tirtl_colors_distinct(palette=color_scheme))
   res_list = list(plot = gg)
   if(return_data) res_list$data = gg_df
   return(res_list)

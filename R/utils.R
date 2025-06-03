@@ -274,3 +274,123 @@ download_minimal_dataset = function(directory = "SJTRC_TIRTLseq_minimal") {
   }
   return(invisible(NULL))
 }
+
+.tirtl_colors_gradient = function(palette = c("sea1", "sea_multicolor"), n=20) {
+  default = "sea1"
+  if(is.null(palette))  palette = "sea1"
+  palette = palette[1]
+  palettes = c("sea1", "sea_multicolor")
+  if(!palette %in% palettes) palette = default
+
+  ### Color gradients
+  sea1 <- colorRampPalette(c(
+    "#001f23",  # Deep sea teal (very dark)
+    "#014d64",  # Ocean Deep
+    "#2e8c85",  # Tidepool Teal
+    "#49a9a1",  # Sea Glass
+    "#79d4c4",  # Seafoam
+    "#b0ebe8"   # Aqua Light (brightest tint)
+  ))
+
+  sea_multicolor <- colorRampPalette(c(
+    "#001219",  # Abyssal Ink (deep ocean)
+    "#014d64",  # Ocean Deep (dark teal)
+    "#2e8c85",  # Tidepool Teal
+    "#79d4c4",  # Seafoam
+    "#b0ebe8",  # Aqua Light
+    "#6a8e3a",  # Seagrass Green
+    "#a2c523",  # Sunlit Algae
+    "#f2c28b",  # Coral Sand
+    "#f4b6b6",  # Shell Pink
+    "#b49d79",  # Driftwood
+    "#5b4e2d"   # Turtle Shell (earthy end)
+  ))
+
+  col_fun = get(palette)
+  cols = do.call(col_fun, args = list(n))
+  return(cols)
+}
+
+.tirtl_colors_distinct = function(palette = c("sea", "sea_alt", "tirtl"),n=Inf, verbose = FALSE) {
+  default = "sea"  ## use sea as default
+  if(is.null(palette)) palette = default
+  palette = palette[1]
+  palettes = c("sea", "sea_alt", "tirtl")
+  if(!palette %in% palettes) palette = default
+
+  ### Distinct color palettes
+  sea <- c(
+    "#5b4e2d",  # Turtle Shell (earthy, dark brown)
+    "#49a9d9",  # Lagoon Blue (bright blue)
+    "#6a8e3a",  # Seagrass Green (earthy green)
+    "#fa7268",  # Reef Coral (vivid red-orange)
+    "#b0ebe8",  # Aqua Light (bright cyan)
+    "#395c3b",  # Kelp Forest (deep green)
+    "#f2c28b",  # Coral Sand (warm beach tone)
+    "#2e8c85",  # Tidepool Teal (blue-green)
+    "#b24030",  # Crustacean Red (burnt red)
+    "#79d4c4",  # Seafoam (pale green-cyan)
+    "#78804b",  # Olive Turtle (neutral olive)
+    "#014d64",  # Ocean Deep (dark teal)
+    "#f4b6b6",  # Shell Pink (soft pink)
+    "#a2c523",  # Sunlit Algae (bright yellow-green)
+    "#cfd8d7",  # Foam Grey (cool light gray)
+    "#b49d79",  # Driftwood (desaturated beige)
+    "#1c5d99",  # Marine Blue (rich mid blue)
+    "#e6d2ae",  # Soft Sand (light tan)
+    "#001219",  # Abyssal Ink (near-black blue)
+    "#f5f3e7"   # Shell White (warm off-white)
+  )
+
+  sea_alt = c(
+    "#014d64",  # Ocean Deep
+    "#79d4c4",  # Seafoam
+    "#5b4e2d",  # Turtle Shell
+    "#f2c28b",  # Coral Sand
+    "#6a8e3a",  # Seagrass Green
+    "#fa7268",  # Reef Coral
+    "#49a9d9",  # Lagoon Blue
+    "#b49d79",  # Driftwood
+    "#f5f3e7",  # Shell White
+    "#2e8c85",  # Tidepool Teal
+    "#78804b",  # Olive Turtle
+    "#1c5d99",  # Marine Blue
+    "#395c3b",  # Kelp Forest
+    "#e6d2ae",  # Soft Sand
+    "#b0ebe8",  # Aqua Light
+    "#f4b6b6",  # Shell Pink
+    "#001219",  # Abyssal Ink
+    "#b24030",  # Crustacean Red
+    "#cfd8d7",  # Foam Grey
+    "#a2c523"   # Sunlit Algae
+  )
+
+  tirtl = c(
+    "#beab5c",
+    "#87c529",
+    "#b4ccd5",
+    "#a0ad61",
+    "#25d8b9",
+    "#6c4f3a",
+    "#346c04",
+    "#e9dfae",
+    "#222d4d",
+    "#e2600f",
+    "#4e5930",
+    "#5d5b6f",
+    "#64bc51",
+    "#94d092",
+    "#9ba91a",
+    "#7e7e77",
+    "#8c9cbc"
+    )
+
+  cols = get(palette)
+  if(n>length(cols)) {
+    if(verbose) warning(paste("Returning all", length(cols), "colors"))
+    n=length(cols)
+  }
+  return(cols[1:n])
+}
+
+

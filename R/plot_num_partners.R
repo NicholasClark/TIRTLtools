@@ -42,7 +42,9 @@ plot_num_partners = function(data,
                              fraction = TRUE,
                              include_non_functional = FALSE,
                              max_partners = 5,
-                             return_data = FALSE) {
+                             return_data = FALSE,
+                             color_scheme = NULL
+                             ) {
 
   meta = data$meta
   data = data$data
@@ -80,9 +82,10 @@ plot_num_partners = function(data,
   lvls = c(1:max_partners, char) %>% rev()
   gg_df$n_partners = factor(gg_df$n_partners, levels = lvls)
   gg = ggplot(gg_df) +
-    geom_col(aes(x = chain, y = !!var, fill = n_partners)) +
+    geom_col(aes(x = chain, y = !!var, fill = n_partners), color="black", size = 0.25) +
     xlab("") +
     theme_classic()
+  gg = gg + scale_fill_manual(values = .tirtl_colors_distinct(palette=color_scheme))
   if(is_list) {
     #facet_formula = as.formula(paste("~",group_col, sep = ""))
     gg = gg + facet_wrap(~Group)

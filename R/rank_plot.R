@@ -20,7 +20,12 @@
 #'
 #'
 
-rank_plot = function(data, chain=c("alpha", "beta"), column = "readFraction") {
+rank_plot = function(
+    data,
+    chain=c("alpha", "beta"),
+    column = "readFraction",
+    color_scheme = NULL
+    ) {
   chain = chain[1]
   if(chain=="paired") stop("This function currently only works with alpha or beta chains")
   data=data$data
@@ -34,7 +39,7 @@ rank_plot = function(data, chain=c("alpha", "beta"), column = "readFraction") {
   xx = .get_log_labels_pos(df_all$rank)
   yy = .get_log_labels_neg(df_all[[column]])
 
-  gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample)) +
+  gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample), size = 1.5) +
     xlab("rank") +
     #ylab("readFraction") +
     theme_classic() +
@@ -42,6 +47,7 @@ rank_plot = function(data, chain=c("alpha", "beta"), column = "readFraction") {
     theme(text = element_text(size = 16)) +
     scale_y_log10(breaks=yy$brks,labels=yy$labels) +
     scale_x_log10(breaks=xx$brks,labels=xx$labels)
+  gg = gg + scale_color_manual(values = .tirtl_colors_distinct(palette=color_scheme))
   return(gg)
 }
 
