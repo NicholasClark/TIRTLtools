@@ -65,23 +65,23 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
 
   if(length(file_exts) > 1) stop("All files need to be either .tsv or .tsv.gz")
   if(file_exts == "tsv") {
-    alpha_post = "_pseudobulk_TRA\\.tsv"
-    beta_post = "_pseudobulk_TRB\\.tsv"
-    paired_post = "_TIRTLoutput\\.tsv"
+    alpha_post = "_pseudobulk_TRA.tsv"
+    beta_post = "_pseudobulk_TRB.tsv"
+    paired_post = "_TIRTLoutput.tsv"
   } else {
-    alpha_post = "_pseudobulk_TRA\\.tsv\\.gz"
-    beta_post = "_pseudobulk_TRB\\.tsv\\.gz"
-    paired_post = "_TIRTLoutput\\.tsv\\.gz"
+    alpha_post = "_pseudobulk_TRA.tsv.gz"
+    beta_post = "_pseudobulk_TRB.tsv.gz"
+    paired_post = "_TIRTLoutput.tsv.gz"
   }
 
 
-  files_alpha = dir(directory, pattern = paste("*",alpha_post,sep="") )
-  files_beta = dir(directory, pattern = paste("*",beta_post,sep="") )
-  files_paired = dir(directory, pattern = paste("*",paired_post,sep="") )
+  files_alpha = dir(directory, pattern = alpha_post )
+  files_beta = dir(directory, pattern = beta_post )
+  files_paired = dir(directory, pattern = paired_post )
 
-  files_pre_paired = gsub(paired_post, "",files_paired)
-  files_pre_alpha = gsub(alpha_post, "",files_alpha)
-  files_pre_beta = gsub(beta_post, "",files_beta)
+  files_pre_paired = gsub(paired_post, "",files_paired, fixed = TRUE)
+  files_pre_alpha = gsub(alpha_post, "",files_alpha, fixed = TRUE)
+  files_pre_beta = gsub(beta_post, "",files_beta, fixed = TRUE)
 
   files_pre = case_when(
     chain == "all" ~ unique(c(files_pre_paired, files_pre_alpha, files_pre_beta)),
@@ -95,7 +95,9 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
     msg = paste("Loading first ", n_max, " files:", "\n", sep = "")
     cat(msg)
   }
+
   file_counter = 0
+  ### loop over each experiment to load files
   list_tmp = lapply(files_pre, function(ff_pre) {
     if(verbose) {
       msg = paste("-- Loading files for sample: ", ff_pre, "...",  "\n", sep = "")
@@ -107,6 +109,7 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
     obj_names = c("alpha", "beta", "paired")
     obj_desc = c("Pseudobulk (alpha chain)", "Pseudobulk (beta chain) ", "TIRTLseq (paired chain) ")
     ff_all = c(fa, fb, fp)
+    ### load files for one experiment
     obj = lapply(1:length(ff_all), function(i) {
       desc = obj_desc[i]
       chain_tmp = obj_names[i]
@@ -130,25 +133,32 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
     }) %>% setNames(obj_names)
     return(obj)
     }) %>% setNames(files_pre)
-  meta_tmp = lapply(1:length(files_pre), function(i) {
-    ff = files_pre[i]
-    spl = strsplit(ff, split = sep)[[1]]
-    df_tmp = list()
-    df_tmp$sample_id = ff
-    if(length(meta_columns) > 0) {
-      for(i in 1:length(meta_columns)) {
-        col = meta_columns[i]
-        df_tmp[[ col ]] = spl[i]
-      }
-    }
-    return(df_tmp)
-  }) %>% bind_rows()
-  if(length(meta_columns) > 0) {
-    meta_tmp$label = apply(meta_tmp[-1], 1, function(row) {
-      paste(colnames(meta_tmp[-1]), row, sep = ": ", collapse = " | ")
-    })
+  ### make metadata table
+  if(is.null(meta_columns)) {
+    meta_tmp = tibble(sample_id = files_pre, label = files_pre)
   } else {
-    meta_tmp$label = df_tmp$sample_id
+    meta_tmp = lapply(1:length(files_pre), function(i) {
+      ff = files_pre[i]
+      spl = strsplit(ff, split = sep)[[1]]
+      df_tmp = list()
+      df_tmp$sample_id = ff
+      if(length(meta_columns) > 0) {
+        for(i in 1:length(meta_columns)) {
+          col = meta_columns[i]
+          df_tmp[[ col ]] = spl[i]
+        }
+      }
+      return(df_tmp)
+    }) %>% bind_rows()
+
+    if(length(meta_columns) > 0) {
+      meta_tmp$label = apply(meta_tmp[-1], 1, function(row) {
+        paste(colnames(meta_tmp[-1]), row, sep = ": ", collapse = " | ")
+      })
+    } else {
+      meta_tmp$label = df_tmp$sample_id
+    }
+
   }
   msg = paste("Loaded ", file_counter, " files from ", length(list_tmp), " samples.", "\n", sep = "")
   cat(msg)
