@@ -22,14 +22,59 @@
 #' @examples
 #' # example here
 
-plot_gene_usage = function(
+gene_usage = function(data) {
+
+}
+
+.gene_usage_single = function(data,
+                      chain = c("paired", "alpha", "beta"),
+                      gene = c("va", "vb", "ja", "jb", "v","j"),
+                      n_max = 25,
+                      value_type = c("readFraction", "readCount")
+                      ) {
+  chain = chain[1]
+  gene = gene[1]
+  value_type = value_type[1]
+  df = data[[chain]]
+
+
+}
+
+plot_gene_usage = function(data,
+                           chain = c("paired", "alpha", "beta"),
+                           #group_col=NULL,
+                           gene = c("va", "vb", "ja", "jb", "v","j"),
+                           n_max = 25,
+                           value_type = c("readFraction", "readCount"),
+                           #log_scale = FALSE,
+                           #style = c("barplot", "boxplot"),
+                           color_scheme = NULL) {
+  meta = data$meta
+  data = data$data
+  chain = chain[1]
+  gene = gene[1]
+  style = match.arg(style)
+  value_type = match.arg(value_type)
+  # if(!is.null(group_col)) {
+  #   groups = meta[[group_col]]
+  # } else {
+  #   groups = NULL
+  # }
+
+
+}
+
+
+.plot_gene_usage_old = function(
     data,
     chain = c("paired", "alpha", "beta"),
     group_col=NULL,
-    gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
-#   groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"), n_max = 25,
-    value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
-    agg_func = c("sum", "max"),
+    gene = c("va", "vb", "ja", "jb", "v","j"),
+    n_max = 25,
+    value_type = c("readFraction", "readCount"),
+#   groups = NULL, gene = c("va", "vb", "ja", "jb", "v","j"),
+    #value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
+    #agg_func = c("sum", "max"),
     log_scale = FALSE,
     style = c("barplot", "boxplot"),
     color_scheme = NULL
@@ -37,6 +82,11 @@ plot_gene_usage = function(
   meta = data$meta
   data = data$data
   chain = chain[1]
+  gene = gene[1]
+  style = match.arg(style)
+  value_type = match.arg(value_type)
+  #agg_func = get(agg_func[1])
+
   if(!is.null(group_col)) {
     groups = meta[[group_col]]
   } else {
@@ -46,26 +96,6 @@ plot_gene_usage = function(
   #labels = .get_labels_from_col(meta, label_col)
 
   data = lapply(data, function(x) x[[chain]]) %>% setNames(names(data))
-
-  gene = gene[1]
-  #gene = match.arg(gene)
-  style = match.arg(style)
-  value_type = match.arg(value_type)
-  agg_func = get(agg_func[1])
-
-  is_data_frame = is.data.frame(data)
-  is_list = is.list(data) && !is_data_frame
-  if(!(is_list || is_data_frame)) stop("'data' needs to be a data frame or a list of data frames")
-  if(is_data_frame) is_paired = "wij" %in% colnames(data)
-  if(is_list) is_paired = "wij" %in% colnames(data[[1]])
-
-  if(value_type == "auto") {
-    if(is_paired) {
-      value_type = "n_wells"
-    } else {
-      value_type = "readFraction"
-    }
-  }
 
   ### get top genes
   if(is_list) {

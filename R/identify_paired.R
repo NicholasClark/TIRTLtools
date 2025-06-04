@@ -27,20 +27,99 @@
 #' # paired = identify_paired(paired)
 #'
 identify_paired = function(data) {
-  data$data = lapply(data$data, function(x) .identify_paired_single(x))
+  data$data = lapply(data$data, function(x) .annotate_paired_single(x))
   return(data)
 }
 
+.get_pair_stats_single = function(data) {
+  if(!"is_paired" %in% colnames(data$beta)) {
+    data = .annotate_paired_single(data)
+  }
 
+}
+
+
+.annotate_paired_single = function(data) {
+  ll = .identify_paired_single(data)
+  data$alpha = ll$alpha
+  data$beta = ll$beta
+  data$paired_alt = ll$paired_alt ## paired data frame w/ no duplicates
+  return(data)
+}
+
+#' for input of a single sample/experiment, returns alpha, beta, and
+#' paired (with no duplicates) data frames with methods (madhype and tshell) annotated
 .identify_paired_single = function(data) {
   paired_tmp = data$paired %>% remove_dupes_paired()
-  counts_alpha = paired_tmp[, .N, by = alpha_nuc] %>% dplyr::rename(n_paired = N, targetSequences = alpha_nuc)
-  counts_beta = paired_tmp[, .N, by = beta_nuc] %>% dplyr::rename(n_paired = N, targetSequences = beta_nuc)
-  data$alpha = left_join(data$alpha, counts_alpha) %>%
+  paired_tmp_madhype = data$paired %>% filter(method == "madhype")
+  paired_tmp_tshell = data$paired %>% filter(method == "tshell")
+
+  counts_alpha_madhype = paired_tmp_madhype[, .N, by = alpha_nuc] %>%
+    dplyr::rename(n_paired_madhype = N, targetSequences = alpha_nuc)
+  counts_beta_madhype = paired_tmp_madhype[, .N, by = beta_nuc] %>%
+    dplyr::rename(n_paired_madhype = N, targetSequences = beta_nuc)
+
+
+  counts_alpha_tshell = paired_tmp_tshell[, .N, by = alpha_nuc] %>%
+    dplyr::rename(n_paired_tshell = N, targetSequences = alpha_nuc)
+  counts_beta_tshell = paired_tmp_tshell[, .N, by = beta_nuc] %>%
+    dplyr::rename(n_paired_tshell = N, targetSequences = beta_nuc)
+
+  counts_alpha = paired_tmp[, .N, by = alpha_nuc] %>%
+    dplyr::rename(n_paired = N, targetSequences = alpha_nuc)
+  counts_beta = paired_tmp[, .N, by = beta_nuc] %>%
+    dplyr::rename(n_paired = N, targetSequences = beta_nuc)
+
+  tmp_alpha = data$alpha %>%
+    left_join(counts_alpha_madhype) %>%
+    left_join(counts_alpha_tshell) %>%
+    left_join(counts_alpha) %>%
     mutate(n_paired = ifelse(is.na(n_paired), 0, n_paired)) %>%
-    mutate(is_paired = n_paired != 0)
-  data$beta = left_join(data$beta, counts_beta) %>%
+    mutate(is_paired = n_paired != 0) %>%
+    mutate(n_paired_tshell = ifelse(is.na(n_paired_tshell), 0, n_paired_tshell)) %>%
+    mutate(is_paired_tshell = n_paired_tshell != 0) %>%
+    mutate(n_paired_madhype = ifelse(is.na(n_paired_madhype), 0, n_paired_madhype)) %>%
+    mutate(is_paired_madhype = n_paired_madhype != 0) %>%
+    mutate(paired_status = case_when(
+      is_paired_madhype & is_paired_tshell ~ "both",
+      is_paired_madhype & !is_paired_tshell ~ "MAD-HYPE only",
+      is_paired_tshell & !is_paired_madhype ~ "T-SHELL only",
+      .default = "error"
+    ))
+
+  tmp_beta = data$beta %>%
+    left_join(counts_beta_madhype) %>%
+    left_join(counts_beta_tshell) %>%
+    left_join(counts_beta) %>%
     mutate(n_paired = ifelse(is.na(n_paired), 0, n_paired)) %>%
-    mutate(is_paired = n_paired != 0)
-  return(data)
+    mutate(is_paired = n_paired != 0) %>%
+    mutate(n_paired_tshell = ifelse(is.na(n_paired_tshell), 0, n_paired_tshell)) %>%
+    mutate(is_paired_tshell = n_paired_tshell != 0) %>%
+    mutate(n_paired_madhype = ifelse(is.na(n_paired_madhype), 0, n_paired_madhype)) %>%
+    mutate(is_paired_madhype = n_paired_madhype != 0)  %>%
+    mutate(paired_status = case_when(
+      is_paired_madhype & is_paired_tshell ~ "both",
+      is_paired_madhype & !is_paired_tshell ~ "MAD-HYPE only",
+      is_paired_tshell & !is_paired_madhype ~ "T-SHELL only",
+      (!is_paired_tshell) & (!is_paired_madhype) ~ "neither",
+      .default = "error"
+    ))
+
+  paired_tmp = paired_tmp %>%
+    mutate(method = NULL) %>%
+    mutate(is_paired_madhype = alpha_beta %in% paired_tmp_madhype$alpha_beta) %>%
+    mutate(is_paired_tshell = alpha_beta %in% paired_tmp_tshell$alpha_beta) %>%
+    mutate(paired_status = case_when(
+      is_paired_madhype & is_paired_tshell ~ "both",
+      is_paired_madhype & !is_paired_tshell ~ "MAD-HYPE only",
+      is_paired_tshell & !is_paired_madhype ~ "T-SHELL only",
+      (!is_paired_tshell) & (!is_paired_madhype) ~ "neither",
+      .default = "error"
+    )) ## paired data frame with no duplicates, labeled by method
+
+  return(list(alpha = tmp_alpha, beta = tmp_beta, paired_alt = paired_tmp))
+}
+
+.identify_paired_method = function(paired_df, method) {
+
 }

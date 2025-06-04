@@ -38,9 +38,14 @@
 #'
 
 plot_clonotype_indices = function(
-  data, chain = c("beta", "alpha"),
-  type_column = "auto", proportion_column="auto",
-  cutoffs = 10^(1:5), group_col = NULL, label_col = "Sample", flip = FALSE,
+  data,
+  chain = c("beta", "alpha"),
+  type_column = "auto",
+  proportion_column = "auto",
+  cutoffs = 10^(1:5),
+  group_col = NULL,
+  label_col = "Sample",
+  flip = FALSE,
   return_data = FALSE,
   color_scheme = NULL
   ) {

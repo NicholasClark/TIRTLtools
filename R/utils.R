@@ -275,11 +275,11 @@ download_minimal_dataset = function(directory = "SJTRC_TIRTLseq_minimal") {
   return(invisible(NULL))
 }
 
-.tirtl_colors_gradient = function(palette = c("sea1", "sea_multicolor"), n=20) {
-  default = "sea1"
-  if(is.null(palette))  palette = "sea1"
+.tirtl_colors_gradient = function(palette = c("sea_green","sea1", "sea_multicolor"), n=20) {
+  default = "sea_green"
+  if(is.null(palette))  palette = default
   palette = palette[1]
-  palettes = c("sea1", "sea_multicolor")
+  palettes = c("sea_green","sea1", "sea_multicolor")
   if(!palette %in% palettes) palette = default
 
   ### Color gradients
@@ -290,6 +290,15 @@ download_minimal_dataset = function(directory = "SJTRC_TIRTLseq_minimal") {
     "#49a9a1",  # Sea Glass
     "#79d4c4",  # Seafoam
     "#b0ebe8"   # Aqua Light (brightest tint)
+  ))
+
+  sea_green <- colorRampPalette(c(
+    "#003220",  # Deep algae green (very dark)
+    "#1b5e4a",  # Turtle green
+    "#2e8c85",  # Seaweed teal
+    "#49a97a",  # Marine green
+    "#79d4a2",  # Light green-seafoam
+    "#b0f0c2"   # Pale seafoam green
   ))
 
   sea_multicolor <- colorRampPalette(c(
@@ -393,4 +402,30 @@ download_minimal_dataset = function(directory = "SJTRC_TIRTLseq_minimal") {
   return(cols[1:n])
 }
 
+.get_proportion_column = function(proportion_column, is_paired) {
+  if(proportion_column == "auto") {
+    if(is_paired) {
+      proportion_column = "wij"
+    } else {
+      proportion_column = "readFraction"
+    }
+    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
+    cat(msg)
+  }
+}
 
+.get_value_type = function(data) {
+  is_data_frame = is.data.frame(data)
+  is_list = is.list(data) && !is_data_frame
+  if(!(is_list || is_data_frame)) stop("'data' needs to be a data frame or a list of data frames")
+  if(is_data_frame) is_paired = "wij" %in% colnames(data)
+  if(is_list) is_paired = "wij" %in% colnames(data[[1]])
+
+  if(value_type == "auto") {
+    if(is_paired) {
+      value_type = "n_wells"
+    } else {
+      value_type = "readFraction"
+    }
+  }
+}
