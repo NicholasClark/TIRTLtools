@@ -31,11 +31,25 @@ identify_paired = function(data) {
   return(data)
 }
 
+## input is data for one sample/experiment
 .get_pair_stats_single = function(data) {
   if(!"is_paired" %in% colnames(data$beta)) {
     data = .annotate_paired_single(data)
   }
-
+  paired_df = data$paired_alt$paired_status %>% table() %>%
+    as.data.frame.table() %>% as_tibble() %>%
+    set_colnames(c("category", "Freq")) %>%
+    mutate(chain = "paired")
+  alpha_df = data$alpha$paired_status %>% table() %>%
+    as.data.frame.table() %>% as_tibble() %>%
+    set_colnames(c("category", "Freq")) %>%
+    mutate(chain = "alpha")
+  beta_df = data$beta$paired_status %>% table() %>%
+    as.data.frame.table() %>% as_tibble() %>%
+    set_colnames(c("category", "Freq"))  %>%
+    mutate(chain = "beta")
+  all_df = bind_rows(list(paired_df, alpha_df, beta_df))
+  return(all_df)
 }
 
 

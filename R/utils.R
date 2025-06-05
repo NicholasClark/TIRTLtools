@@ -394,6 +394,13 @@ download_minimal_dataset = function(directory = "SJTRC_TIRTLseq_minimal") {
     "#8c9cbc"
     )
 
+  trek1 = c("#8B799CFF", "#3C999CFF", "#C86C18FF", "#E2ED50FF",
+            "#13A4EBFF", "#FFF7A3FF", "#944D40FF", "#524559FF",
+            "#CA480DFF", "#2F7270FF", "#F9AB3CFF",
+            "#2E7BC5FF", "#BFCAFEFF", "#66FFFFFF", "#B46356FF",
+            "#7A4B42FF", "#D78017FF", "#8BEAFFFF",
+            "#9B5928FF", "#A1B3E2FF", "#FFE705FF")
+
   cols = get(palette)
   if(n>length(cols)) {
     if(verbose) warning(paste("Returning all", length(cols), "colors"))
