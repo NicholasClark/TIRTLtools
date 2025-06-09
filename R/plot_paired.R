@@ -1,6 +1,11 @@
 ### df is output from get_pair_stats()
-plot_paired = function(df, chain = c("paired", "alpha", "beta")) {
+plot_paired = function(df, chain = c("paired", "alpha", "beta"), color_scheme = NULL) {
   chain1 = chain[1]
+  df$log10Freq = log10(df$Freq)
   df_sub = df %>% filter(chain == chain1)
-  ggplot(df_sub) + geom_col(aes(x=sample_id, y=Freq, fill = category))
+  #y_col = sym("Freq")
+  #if(log_scale) y_col = sym("log10Freq")
+  gg = ggplot(df_sub) + geom_col(aes(x=sample_id, y=Freq, fill = category)) + theme_classic() +
+    scale_fill_manual(values = .tirtl_colors_gradient(palette=color_scheme, n=length(unique(df_sub$category)) ))
+  return(gg)
 }

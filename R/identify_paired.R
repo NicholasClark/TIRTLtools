@@ -98,6 +98,7 @@ identify_paired = function(data) {
       is_paired_madhype & is_paired_tshell ~ "both",
       is_paired_madhype & !is_paired_tshell ~ "MAD-HYPE only",
       is_paired_tshell & !is_paired_madhype ~ "T-SHELL only",
+      (!is_paired_tshell) & (!is_paired_madhype) ~ "neither",
       .default = "error"
     ))
 
