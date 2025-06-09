@@ -29,7 +29,6 @@ Imports:
     irlba (>= 2.3.5.1),
     magrittr,
     Matrix (>= 1.7.3),
-    paletteer,
     readr,
     reticulate (>= 1.41.0.1),
     tictoc,

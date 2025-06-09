@@ -40,8 +40,8 @@
 plot_clonotype_indices = function(
   data,
   chain = c("beta", "alpha"),
-  type_column = "auto",
-  proportion_column = "auto",
+  #type_column = "auto",
+  #proportion_column = "auto",
   cutoffs = 10^(1:5),
   group_col = NULL,
   label_col = "Sample",
@@ -61,8 +61,10 @@ plot_clonotype_indices = function(
   labels = .get_labels_from_col(meta, label_col)
 
   is_paired = .is.paired(data3[[1]])
-  type_column = .get_type_column(type_column, is_paired)
-  proportion_column = .get_proportion_column(proportion_column, is_paired, is_annotated)
+  #type_column = .get_type_column(type_column, is_paired)
+  #proportion_column = .get_proportion_column(proportion_column, is_paired, is_annotated)
+  type_column = "targetSequences"
+  proportion_column = "readFraction"
 
   if(is.null(group_col)) {
     meta$Group = meta[[1]]
@@ -120,7 +122,8 @@ plot_clonotype_indices = function(
   #if(flip) gg = gg + coord_flip()
   gg = gg + ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
   gg = gg + theme_classic()
-  gg = gg + scale_fill_manual(values = .tirtl_colors_distinct(palette=color_scheme))
+  n=length(cutoffs)+1
+  gg = gg + scale_fill_manual(values = .tirtl_colors_gradient(palette=color_scheme, n=n))
   res_list = list(plot = gg)
   if(return_data) res_list$data = gg_df
   return(res_list)

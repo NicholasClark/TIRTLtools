@@ -85,7 +85,7 @@ plot_num_partners = function(data,
     geom_col(aes(x = chain, y = !!var, fill = n_partners), color="black", size = 0.25) +
     xlab("") +
     theme_classic()
-  gg = gg + scale_fill_manual(values = .tirtl_colors_distinct(palette=color_scheme))
+  gg = gg + scale_fill_manual(values = .tirtl_colors_gradient(palette=color_scheme,length(lvls) ))
   if(is_list) {
     #facet_formula = as.formula(paste("~",group_col, sep = ""))
     gg = gg + facet_wrap(~Group)
