@@ -47,11 +47,15 @@ sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
       #top_seqs = df_tmp[order(readCount, decreasing = TRUE)]$targetSequences[1:n_seq]
       data.table::setkey(df_tmp, readCount)
       n_row = dim(df_tmp)[1]
-      top_seqs = df_tmp$targetSequences[(n_row-n_seq+1):n_row]
+      start = n_row-n_seq+1
+      if(start < 1) start = 1
+      top_seqs = df_tmp$targetSequences[start:n_row]
     } else if("wij" %in% colnames(df_tmp)) { ### paired TIRTL-seq data
       data.table::setkey(df_tmp, wij)
       n_row = dim(df_tmp)[1]
-      top_seqs = df_tmp$alpha_beta[(n_row-n_seq+1):n_row]
+      start = n_row-n_seq+1
+      if(start < 1) start = 1
+      top_seqs = df_tmp$alpha_beta[start:n_row]
     }
     return(top_seqs)
   })

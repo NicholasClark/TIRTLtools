@@ -145,6 +145,7 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
       df_tmp$sample_id = ff
       if(length(meta_columns) > 0) {
         for(i in 1:length(meta_columns)) {
+          if(i > length(spl)) next
           col = meta_columns[i]
           df_tmp[[ col ]] = spl[i]
         }
