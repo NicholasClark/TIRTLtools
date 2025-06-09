@@ -11,9 +11,10 @@
   }
 }
 
-.get_log_labels_neg = function(x) {
-  y1 = min(x) %>% log10() %>% floor()
-  y2 = -1
+.get_log_labels_neg = function(x, pseudo = 1e-6) {
+  max_val = max(x+pseudo)
+  y1 = min(x+pseudo) %>% log10() %>% floor()
+  y2 = ifelse(max_val >= 0.1, 0, -1)
   y_breaks = y1:y2
   expr_list = sapply(y_breaks, function(x) {
     if(x %in% c(0,-1,-2)) return(as.character(10^x))

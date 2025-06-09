@@ -82,7 +82,9 @@ compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
                            ) {
   TIRTL_pallette = .get_tirtl_pallette()
   #col="#C5CBD3"
-  dt$sign = factor(dt$sign, levels = c("stable", "down", ""))
+  dt$sign = factor(dt$sign, levels = c("stable", "down", "up"))
+  log_labs_x = .get_log_labels_neg(dt$avg.x, pseudo1)
+  log_labs_y = .get_log_labels_neg(dt$avg.y, pseudo2)
   ggplot(dt[dt$sign=="stable",], aes ((avg.x+pseudo1), (avg.y+pseudo2), color = sign))+
     geom_point(alpha=0.6, size=2)+
     geom_point(data=dt[dt$sign!="stable",], aes ((avg.x+pseudo1), (avg.y+pseudo2),color=sign), alpha=0.6, size=2)+
@@ -93,7 +95,8 @@ compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
     #  scale_color_manual(values=clrs[c(8,1,3)])+
     #theme(legend.position = "none")+
     scale_color_manual(values = c(stable = "grey70", down = TIRTL_pallette[10], up = TIRTL_pallette[7]))+
-    scale_y_log10() + scale_x_log10()
+    scale_x_log10(breaks = log_labs_x$brks, labels = log_labs_x$labels) +
+    scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels)
     # scale_y_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))+
     # scale_x_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))#+
 }
