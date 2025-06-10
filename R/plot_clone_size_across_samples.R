@@ -6,7 +6,8 @@ plot_clone_size_across_samples = function(
     pseudo = 1e-6,
     group_vec = NULL,
     sum_readFraction = TRUE,
-    samples=NULL
+    samples=NULL,
+    return_data = FALSE
     ) {
   chain = chain[1]
   group_is_null = is.null(group_vec)
@@ -14,30 +15,44 @@ plot_clone_size_across_samples = function(
   check1 = length(clones) == length(group_vec)
   if(!check1) stop("'group_vec' needs to be the same length as 'clones'")
   if(is.null(samples)) samples = names(data$data)
-  gg_df = lapply(1:length(samples), function(i) {
+  df = lapply(1:length(samples), function(i) {
     sample = samples[i]
     df_tmp = data$data[[sample]][[chain]]
     out_tmp = tibble(targetSequences = clones,
                      group = group_vec,
                      readFraction = df_tmp$readFraction[match(clones, df_tmp$targetSequences)]) %>%
-      mutate(readFraction = na_to0(readFraction) + pseudo, source = sample)
+      mutate(readFraction = na_to0(readFraction), source = sample)
   }) %>% bind_rows()
-  grp = sym("targetSequences")
-  if(sum_readFraction && !group_is_null) {
-    gg_df = gg_df %>% group_by(group, source) %>%
-    summarize(readFraction = sum(readFraction),
-              sd_readFraction = sd(readFraction),
-              n = n()
-              ) %>%
-    ungroup() %>%
-    mutate(se_readFraction = sd_readFraction/sqrt(n))
+  if(sum_readFraction && (!group_is_null)) {
+    gg_df = df %>%
+      group_by(group, source) %>%
+      summarize(sum_readFraction = sum(readFraction),
+                n = n()
+                ) %>%
+      ungroup() %>%
+      mutate(
+        log10_sum_readFraction = log10(sum_readFraction),
+        sd_log10_sum_readFraction = sd(log10_sum_readFraction),
+             ) %>%
+      mutate(se_readFraction = sd_log10_sum_readFraction/sqrt(n))
     grp = sym("group")
+    y_col = sym("sum_readFraction")
+  } else {
+    gg_df = df
+    grp = sym("targetSequences")
+    y_col = sym("readFraction")
   }
-  gg = ggplot(gg_df, aes(x=source, y=readFraction)) +
-    geom_path(aes(group = !!grp, color = group)) +
+  log_labs_y = .get_log_labels_neg(gg_df[[as.character(y_col)]], pseudo)
+  gg = ggplot(gg_df, aes(x=source, y=!!y_col+pseudo)) +
+    geom_line(aes(group = !!grp, color = group)) +
     geom_point(aes(group = !!grp, color = group)) +
     scale_y_log10() + theme_classic() +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
-
-  return(gg)
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+    scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels)
+  res = list(plot = gg)
+  if(return_data) {
+    res$plot_data = gg_df
+    res$all_data = df
+  }
+  return(res)
 }
