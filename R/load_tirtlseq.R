@@ -29,6 +29,7 @@
 #' @param sep (optional) separator in the filename for metadata information ("_" by default)
 #' @param meta_columns (optional) a vector of identifying the metadata contained in filenames,
 #' for example \code{c("cell_type", "timepoint", "donor")} for files named similar to "cd8_timepoint2_donor1_TIRTLoutput.tsv".
+#' @param samples (optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).
 #' @param verbose whether to print the name of each file loaded (default is TRUE).
 #' @param n_max the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. no maximum).
 #'
@@ -49,7 +50,14 @@
 #' # paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
 #'
 #'
-load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), sep = "_", meta_columns = NULL, verbose = TRUE, n_max = Inf) {
+load_tirtlseq = function(
+    directory,
+    chain = c("all","paired","alpha", "beta"),
+    sep = "_",
+    meta_columns = NULL,
+    samples = NULL,
+    verbose = TRUE,
+    n_max = Inf) {
   tictoc::tic()
   chain = chain[1]
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
@@ -94,6 +102,10 @@ load_tirtlseq = function(directory, chain = c("all","paired","alpha", "beta"), s
     files_pre = files_pre[1:n_max]
     msg = paste("Loading first ", n_max, " files:", "\n", sep = "")
     cat(msg)
+  }
+
+  if(!is.null(samples)) {
+    files_pre = samples
   }
 
   file_counter = 0

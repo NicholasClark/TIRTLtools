@@ -27,7 +27,11 @@
 #' # paired = identify_paired(paired)
 #'
 identify_paired = function(data) {
-  data$data = lapply(data$data, function(x) .annotate_paired_single(x))
+  data$data = lapply(1:length(data$data), function(i) {
+    print(i)
+    x=data$data[[i]]
+    .annotate_paired_single(x)
+    }) %>% set_names(names(data$data))
   return(data)
 }
 
