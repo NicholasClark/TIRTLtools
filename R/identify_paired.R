@@ -26,9 +26,12 @@
 #' # paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
 #' # paired = identify_paired(paired)
 #'
-identify_paired = function(data) {
+identify_paired = function(data, verbose = TRUE) {
   data$data = lapply(1:length(data$data), function(i) {
-    print(i)
+    if(verbose) {
+      msg = paste("Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample", i) %>% .add_newline()
+      cat(msg)
+    }
     x=data$data[[i]]
     .annotate_paired_single(x)
     }) %>% set_names(names(data$data))

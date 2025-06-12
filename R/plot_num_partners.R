@@ -42,12 +42,19 @@ plot_num_partners = function(data,
                              fraction = TRUE,
                              include_non_functional = FALSE,
                              max_partners = 5,
+                             samples = NULL,
                              return_data = FALSE,
                              color_scheme = NULL
                              ) {
 
   meta = data$meta
   data = data$data
+
+  if(!is.null(samples)) {
+    ind = match(samples, names(data))
+    data = data[ind]
+    meta = meta[ind,]
+  }
 
   if(include_non_functional) {
     data = lapply(data, function(x) x[["paired"]]) %>% setNames(names(data))

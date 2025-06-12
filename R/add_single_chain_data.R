@@ -19,11 +19,16 @@
 #' # example code
 #'
 #'
-add_single_chain_data = function(data) {
-  data_tmp = lapply(data$data, function(x) {
+add_single_chain_data = function(data, verbose = TRUE) {
+  data_tmp = lapply(1:length(data$data), function(x) {
+    x = data$data[[i]]
+    if(verbose) {
+      msg = paste("Adding single-chain data to paired dataframe for sample", i) %>% .add_newline()
+      cat(msg)
+    }
     df_out = .add_single_chain_data_simple(x)
     return(list(alpha = x$alpha, beta=x$beta, paired = df_out))
-  })
+  }) %>% set_names(names(data$data))
   data$data = data_tmp
   data$is_annotated = TRUE
   return(data)
