@@ -14,6 +14,8 @@ summarize_data = function(data) {
   n_beta_clones = dim(data$beta)[1]
   df_paired_no_dupes = remove_dupes_paired(data$paired)
   n_pairs = dim(df_paired_no_dupes)[1]
-  out = tibble(n_alpha = n_alpha_clones, n_beta = n_beta_clones, n_pairs = n_pairs)
+  n_reads_beta = sum(data$beta$readCount)
+  n_reads_alpha = sum(data$alpha$readCount)
+  out = tibble(n_alpha = n_alpha_clones, n_beta = n_beta_clones, n_pairs = n_pairs, n_reads_alpha = n_reads_alpha, n_reads_beta = n_reads_beta)
   return(out)
 }
