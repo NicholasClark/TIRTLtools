@@ -4,7 +4,6 @@
 
 ### data is a list of tirtlseq samples, created by load_tirtlseq()
 plot_paired_by_read_fraction_range = function(df, freq=FALSE, samples = NULL, color_scheme = NULL) {
-  chain = chain[1]
   #gg_df = get_paired_by_read_fraction_range(data)
   #gg_df = left_join(gg_df, data$meta)
   if(!is.null(samples)) df = df %>% filter(sample_id %in% samples)
