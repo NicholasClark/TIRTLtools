@@ -13,9 +13,9 @@ plot_n_reads = function(data, chain = c("both","beta", "alpha"), samples = NULL,
     brks = .get_log_labels_pos(df[[n_reads_col]])
     gg = ggplot(df) + geom_col(aes(x=sample_id, y=!!sym(n_reads_col), fill = !!sym(n_reads_col))) +
       scale_y_log10(breaks = brks$brks, labels = brks$labels) +
-      facet_wrap(~chain) +
       theme_classic() +
       scale_fill_gradientn(colors = .tirtl_colors_gradient(palette=color_scheme)) +
       rotate_x_labels()
+  if(chain == "both") gg = gg + facet_wrap(~chain)
   return(gg)
 }

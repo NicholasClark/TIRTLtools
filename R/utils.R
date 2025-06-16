@@ -95,6 +95,10 @@
   return(paste(string, "\n", sep = ""))
 }
 
+.prepend_newline = function(string) {
+  return(paste("\n", string, sep = ""))
+}
+
 #' Remove duplicates from paired chain data.
 #'
 #' There will be duplicates in paired chain data when a pair is called by both

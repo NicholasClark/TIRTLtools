@@ -29,7 +29,7 @@
 identify_paired = function(data, verbose = TRUE) {
   data$data = lapply(1:length(data$data), function(i) {
     if(verbose) {
-      msg = paste("Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample", i) %>% .add_newline()
+      msg = paste("Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample", i) %>% .prepend_newline()
       cat(msg)
     }
     x=data$data[[i]]

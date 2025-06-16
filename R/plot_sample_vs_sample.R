@@ -28,12 +28,17 @@ plot_sample_vs_sample = function(data1, data2,
                                  #value_type = c("auto","readFraction", "readCount", "n_wells", "readCount_max", "readCount_median", "avg", "n"),
                                  log2fc_cutoff = 3,
                                  sem_cutoff = 2.5,
+                                 smooth_sem = c("window", "none"),
+                                 window_size = 30,
+                                 end_window_size = 5,
                                  pseudo1 = 1e-6,
                                  pseudo2 = 1e-6,
                                  labelx="Frequency on timepoint 1",
-                                 labely="Frequency on timepoint 2"
+                                 labely="Frequency on timepoint 2",
+                                 return_data = FALSE
                                  ) {
   chain = chain[1]
+  smooth_sem = smooth_sem[1]
   # if(chain == "paired") {
   #   df1 = .add_single_chain_data_simple(data1) %>%
   #     mutate(readFraction = beta_readFraction,
@@ -56,11 +61,16 @@ plot_sample_vs_sample = function(data1, data2,
   # gg_df = add_sign(gg_df, pseudo1 = pseudo1, pseudo2 = pseudo2,
   #                  sem_threshold = sem_cutoff, log2FC_threshold = log2fc_cutoff
   #                  )
+  if(smooth_sem == "window") {
+    df1 = smooth_sem_window(df1)
+    df2 = smooth_sem_window(df2)
+  }
   gg_df = compute_log2fc(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2,
                          sem_cutoff = sem_cutoff, log2fc_cutoff = log2fc_cutoff
                          )
   gg = .plot_timepoints(gg_df, pseudo1 = pseudo1, pseudo2 = pseudo2,
                         labelx = labelx, labely = labely)
+  if(return_data) return(gg_df)
   return(gg)
 }
 
@@ -72,6 +82,45 @@ compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
                    sem_threshold = sem_cutoff, log2FC_threshold = log2fc_cutoff
   )
   return(df)
+}
+
+.moving_avg_closest <- function(x, window_size = 30, end_window_size=5) {
+  n <- length(x)
+  half_win <- floor(window_size / 2)
+
+
+  out = sapply(1:length(x), function(i) {
+    if(i >= length(x)-10) {
+      half_win_end = floor(end_window_size / 2) ## smaller window for largest clones
+      start = max(1, i - half_win_end)
+      end   = min(n, i + half_win_end)
+    } else {
+      start = max(1, i - half_win)
+      end   = min(n, i + half_win)
+    }
+    mean(x[start:end])
+  })
+}
+
+smooth_sem_window = function(df, window_size = 30, end_window_size=5) {
+  df$sem_orig = df$sem
+  df$sem_log10 = .moving_avg_closest(log10(df$sem), window_size = window_size, end_window_size = end_window_size)
+  df$sem = 10^(df$sem_log10)
+  return(df)
+}
+
+## df is the pseudobulk data frame (beta or alpha) for a sample
+plot_SEM_vs_read_fraction = function(df, window_size = 30, end_window_size=5) {
+  if(!"sem_smoothed" %in% colnames(df)) df = smooth_sem_window(df, window_size = window_size, end_window_size = end_window_size)
+
+  ggplot(df, aes(x=log10(readFraction), y=log10(sem_orig))) +
+    #geom_density_2d() +
+    geom_hex(bins = 100) +
+    geom_point(aes(x=log10(readFraction), y=log10(sem)), shape=1, alpha =0.5, color = "green") +
+    #geom_point(shape = 1, alpha = 0.25) +
+    #scale_x_log10() + scale_y_log10() +
+    scale_fill_continuous(type = "viridis", limits = c(0, 500)) +
+    theme_bw()
 }
 
 .plot_timepoints = function(dt,

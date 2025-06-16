@@ -50,6 +50,7 @@ plot_diversity = function(
     flip = FALSE,
     facet = FALSE,
     log_scale = FALSE,
+    samples = NULL,
     return_data = FALSE,
     color_scheme = NULL
     ) {
@@ -62,6 +63,11 @@ plot_diversity = function(
   vals = .get_div_metric(div, metric, q=q, percent=percent)
   meta = div$meta
   gg_df = meta %>% mutate(value = vals)
+  if(!is.null(samples)) {
+    ind = match(samples, meta$sample_id)
+    gg_df = gg_df[ind,]
+    meta = meta[ind,]
+  }
   if(label_col == "Sample") {
     labels = meta[[1]]
   } else {
@@ -134,9 +140,8 @@ plot_diversity = function(
   #if(flip) gg = gg + coord_flip()
   gg = gg + ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
   gg = gg + scale_fill_manual(values = .tirtl_colors_distinct(palette=color_scheme))
-  res_list = list(plot = gg)
-  if(return_data) res_list$data = gg_df
-  return(res_list)
+  if(return_data) return(gg_df)
+  return(gg)
 }
 
 .get_div_metric = function(div, metric, q=NULL, percent = NULL) {

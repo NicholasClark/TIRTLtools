@@ -43,14 +43,17 @@ plot_clone_size_across_samples = function(
     y_col = sym("readFraction")
   }
   log_labs_y = .get_log_labels_neg(gg_df[[as.character(y_col)]], pseudo)
+
+  gg_df = gg_df %>% mutate(sample_id = source) %>% left_join(., data$meta)
   gg = ggplot(gg_df, aes(x=source, y=!!y_col+pseudo)) +
     geom_line(aes(group = !!grp, color = group)) +
     geom_point(aes(group = !!grp, color = group)) +
     scale_y_log10() + theme_classic() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
     scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels)
-  res = list(plot = gg)
+  res = gg
   if(return_data) {
+    res = list(plot = gg)
     res$plot_data = gg_df
     res$all_data = df
   }
