@@ -22,7 +22,7 @@
 #' @examples
 #' # example here
 
-gene_usage = function(data) {
+.gene_usage = function(data) { ### remove "." to unhide after re-writing
 
 }
 
@@ -40,7 +40,7 @@ gene_usage = function(data) {
 
 }
 
-plot_gene_usage = function(data,
+.plot_gene_usage = function(data, ### remove "." to unhide after re-writing
                            chain = c("paired", "alpha", "beta"),
                            #group_col=NULL,
                            gene = c("va", "vb", "ja", "jb", "v","j"),
