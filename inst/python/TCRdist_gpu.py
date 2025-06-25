@@ -182,6 +182,8 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
                 if (i + 1) in milestones:
                     percent = round((i + 1) * 100 / n_chunks)
                     print(f"{percent}% done")
+                    end_time_chunk = time.time()
+                    print(f"Time taken so far: {end_time_chunk - start_time:.6f} seconds")
     if return_data:
         res = pd.concat(res_list)
         res.reset_index(inplace=True)
@@ -196,5 +198,5 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
     else:
         out = None
     end_time = time.time()
-    print(f"Time taken: {end_time - start_time:.6f} seconds")
+    print(f"Total time taken: {end_time - start_time:.6f} seconds")
     return(out)
