@@ -51,7 +51,7 @@
 #' # df = get_all_tcrs(data, chain="paired", remove_duplicates = TRUE)
 #' # out = TCRdist(df, tcrdist_cutoff = 90)
 
-TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=1000, print_res = TRUE, only_lower_tri = TRUE, return_data = TRUE, write_to_tsv = FALSE) {
+TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=10, print_res = TRUE, only_lower_tri = TRUE, return_data = TRUE, write_to_tsv = FALSE) {
   ### prep R input
   # tcr1 = .add_alleles(tcr1)
   # tcr1 = .filter_alleles(tcr1, params = params)

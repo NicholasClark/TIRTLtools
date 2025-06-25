@@ -98,7 +98,7 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
 ### TCRdist function for GPU with batching for tcr1 and tcr2 lists and sparse output
 ### Returns a pandas data frame of all edges with TCRdist less than cutoff (default = 90)
 ### Returns dataframe with 3 columns: 'row' (row_index), 'col' (column index), and 'TCRdist' (TCRdist value)
-def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_size=1000, chunk_size_col = None, print_chunk_size=1000, print_res = True, only_lower_tri = True, write_to_tsv=False, output_folder = ".", return_data = True):
+def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_size=1000, chunk_size_col = None, print_chunk_size=10, print_res = True, only_lower_tri = True, write_to_tsv=False, output_folder = ".", return_data = True):
     #chunk_size = np.int64(chunk_size)
     #print_chunk_size = np.int64(print_chunk_size)
     if write_to_tsv:
@@ -130,22 +130,34 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
     else:
         chunk_size_col = min(chunk_size_col, n2)
     num_chunks2 = np.int64(np.ceil(n2//chunk_size_col))
-    if print_res:
-        print('total number of chunks (rows):', num_chunks1)
-        print('total number of chunks (cols):', num_chunks2)
+    # if print_res:
+    #     print('total number of chunks (rows):', num_chunks1)
+    #     print('total number of chunks (cols):', num_chunks2)
     start_time = time.time()
     res_list = []
     first_write = True
+    i=0
+    n_chunks = len(range(0, n1, chunk_size))*len(range(0, n2, chunk_size_col))
+    if compare_to_self and only_lower_tri:
+        n_chunks = np.int64(np.floor((n_chunks - len(range(0, n1, chunk_size)))/2))
+    print('Number of chunks: ' + str(n_chunks))
+    print_chunk_size = int(print_chunk_size)
+    if 1 <= print_chunk_size <= 99:
+        milestones = {int(n_chunks * p / 100) for p in range(print_chunk_size, 101, print_chunk_size)}
+    else:
+        milestones = {int(n_chunks * p / 100) for p in range(10, 101, 10)}  # positions for 10%, 20%, ..
     for ch in range(0, n1, chunk_size):
-        if print_res:
-            if ch % print_chunk_size == 0:
-                print('Processing chunk (rows)', ch)
+        # if print_res:
+        #     if ch % print_chunk_size == 0:
+        #         print('Processing chunk (rows)', ch)
         chunk_end = min(ch + chunk_size, n1)
         row_range1 = slice(ch, chunk_end)
         tcr1_tmp = tcr1_mx[row_range1,:]
         for ch2 in range(0, n2, chunk_size_col):
             if compare_to_self and ch < ch2 and only_lower_tri:
                 continue
+            i = i + 1
+            n_percent = np.floor(n_chunks/i)
             chunk_end2 = min(ch2 + chunk_size_col, n2)
             row_range2 = slice(ch2, chunk_end2)
             tcr2_tmp = tcr2_mx[row_range2,:]
@@ -164,6 +176,12 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
                 first_write=False
             if return_data:
                 res_list.append(edges_tmp)
+            if print_res:
+                # if i % print_chunk_size == 0:
+                #     print(f"Processing chunk {i}")
+                if (i + 1) in milestones:
+                    percent = round((i + 1) * 100 / n_chunks)
+                    print(f"{percent}% done")
     if return_data:
         res = pd.concat(res_list)
         res.reset_index(inplace=True)
