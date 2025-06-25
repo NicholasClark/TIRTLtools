@@ -98,9 +98,17 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
 ### TCRdist function for GPU with batching for tcr1 and tcr2 lists and sparse output
 ### Returns a pandas data frame of all edges with TCRdist less than cutoff (default = 90)
 ### Returns dataframe with 3 columns: 'row' (row_index), 'col' (column index), and 'TCRdist' (TCRdist value)
-def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_size=1000, chunk_size_col = None, print_chunk_size=1000, print_res = True, only_lower_tri = True):
+def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_size=1000, chunk_size_col = None, print_chunk_size=1000, print_res = True, only_lower_tri = True, write_to_tsv=False, output_folder = ".", return_data = True):
     #chunk_size = np.int64(chunk_size)
     #print_chunk_size = np.int64(print_chunk_size)
+    if write_to_tsv:
+        os.makedirs(output_folder, exist_ok=True)
+        output_file_edges = os.path.join(output_folder, 'TCRdist_df.tsv')
+        output_file_tcr1 = os.path.join(output_folder, 'tcr1.tsv')
+        if tcr2 is not None:
+            output_file_tcr2 = os.path.join(output_folder, 'tcr2.tsv')
+            tcr2.to_csv(output_file_tcr2, sep='\t', header=True, index=False)
+        tcr1.to_csv(output_file_tcr1, sep='\t', header=True, index=False)
     compare_to_self = False
     submat = mx.array(submat, dtype = mx.uint8)
     params_vec = dict(zip(params_df["feature"], params_df["value"]))
@@ -127,6 +135,7 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
         print('total number of chunks (cols):', num_chunks2)
     start_time = time.time()
     res_list = []
+    first_write = True
     for ch in range(0, n1, chunk_size):
         if print_res:
             if ch % print_chunk_size == 0:
@@ -144,23 +153,30 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
                                        tcrdist_cutoff=tcrdist_cutoff,
                                        ch1=ch, ch2=ch2, output="edge_list", only_lower_tri = only_lower_tri,
                                        compare_to_self = compare_to_self)
-            res_list.append(edges_tmp)
-    res = pd.concat(res_list)
-    res.reset_index(inplace=True)
-    res = res.drop('index', axis=1)
-    end_time = time.time()
-    if print_res:
-        res
-        print(f"Time taken: {end_time - start_time:.6f} seconds")
-    if compare_to_self:
-        res_dict = {
-            'TCRdist_df': res,
-            'tcr1': tcr1
-        }
+            if write_to_tsv:
+                edges_tmp.to_csv(
+                    output_file_edges,
+                    sep='\t',
+                    mode='a',       # append mode
+                    header=first_write,  # write header only on the first iteration
+                    index=False
+                )
+                first_write=False
+            if return_data:
+                res_list.append(edges_tmp)
+    if return_data:
+        res = pd.concat(res_list)
+        res.reset_index(inplace=True)
+        res = res.drop('index', axis=1)
+        if print_res and return_data:
+            res
+        if compare_to_self:
+            res_dict = {'TCRdist_df': res, 'tcr1': tcr1}
+        else:
+            res_dict = { 'TCRdist_df': res, 'tcr1': tcr1, 'tcr2': tcr2}
+        out = res_dict
     else:
-        res_dict = {
-            'TCRdist_df': res,
-            'tcr1': tcr1,
-            'tcr2': tcr2
-        }
-    return(res_dict)
+        out = None
+    end_time = time.time()
+    print(f"Time taken: {end_time - start_time:.6f} seconds")
+    return(out)
