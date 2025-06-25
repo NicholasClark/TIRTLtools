@@ -33,8 +33,8 @@
     has_nvidia_gpu <- FALSE
     if (!is_macos) {
       # Try system call to 'nvidia-smi'
-      nvidia_smi <- suppressWarnings(system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE))
-      if (length(nvidia_smi) > 0) {
+      nvidia_smi <- try(suppressWarnings(system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE)))
+      if (length(nvidia_smi) > 0 && class(nvidia_smi) != "try-error") {
         has_nvidia_gpu <- TRUE
         if (! reticulate::py_module_available("cupy") ) {
           message("NVIDIA GPU detected. Will attempt to install 'cupy'.")
@@ -80,8 +80,8 @@
     has_nvidia_gpu <- FALSE
     if (!is_macos) {
       # Try system call to 'nvidia-smi'
-      nvidia_smi <- suppressWarnings(system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE))
-      if (length(nvidia_smi) > 0) {
+      nvidia_smi <- try(suppressWarnings(system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE)))
+      if (length(nvidia_smi) > 0 && class(nvidia_smi) != "try-error") {
         has_nvidia_gpu <- TRUE
         if (! reticulate::py_module_available("cupy") ) {
           #message("NVIDIA GPU detected. Will attempt to install 'cupy'.")
