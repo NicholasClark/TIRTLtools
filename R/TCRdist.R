@@ -51,7 +51,7 @@
 #' # df = get_all_tcrs(data, chain="paired", remove_duplicates = TRUE)
 #' # out = TCRdist(df, tcrdist_cutoff = 90)
 
-TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=1000, print_res = TRUE, only_lower_tri = TRUE, return_data = TRUE, write_to_csv = FALSE) {
+TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=1000, print_res = TRUE, only_lower_tri = TRUE, return_data = TRUE, write_to_tsv = FALSE) {
   ### prep R input
   # tcr1 = .add_alleles(tcr1)
   # tcr1 = .filter_alleles(tcr1, params = params)
@@ -78,6 +78,6 @@ TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_c
     tcr2_py = reticulate::r_to_py(tcr2, convert = TRUE)
   }
   ### call python TCRdist_batch function
-  res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_csv = write_to_csv)
+  res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_tsv = write_to_tsv)
   return(res)
 }
