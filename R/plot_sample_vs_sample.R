@@ -104,8 +104,9 @@ compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
 
 smooth_sem_window = function(df, window_size = 30, end_window_size=5) {
   df$sem_orig = df$sem
-  df$sem_log10 = .moving_avg_closest(log10(df$sem), window_size = window_size, end_window_size = end_window_size)
-  df$sem = 10^(df$sem_log10)
+  df$sem = .moving_avg_closest(df$sem, window_size = window_size, end_window_size = end_window_size)
+  #df$sem_log10 = .moving_avg_closest(log10(df$sem), window_size = window_size, end_window_size = end_window_size)
+  #df$sem = 10^(df$sem_log10)
   return(df)
 }
 

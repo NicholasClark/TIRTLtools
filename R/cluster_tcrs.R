@@ -27,6 +27,7 @@
 #' connected data while a lower value may be better for moderately connected data. Default is 0.1.
 #' @param with_vdjdb if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
 #' If parameter is a data frame, the supplied data frame will be used as the database.
+#' @param allow_self_edges (default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db
 #'
 #' @return
 #' Returns a list with the following elements:
@@ -51,11 +52,15 @@
 #' # paired = load_tirtlseq("your_directory/")
 #' # obj = cluster_tcrs(paired)
 #'
-cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE) {
+cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE, allow_self_edges = TRUE) {
   cluster.type = "leiden"
   chain = "paired"
-  df_all_obs = get_all_tcrs(data, chain, remove_duplicates = TRUE) %>%
-    mutate(source = "observed") ## get all tcrs in one data frame
+  if(.is.list.only(data)) { ### if an object loaded by load_tirtlseq
+    df_all_obs = get_all_tcrs(data, chain, remove_duplicates = TRUE) %>%
+      mutate(source = "observed") ## get all tcrs in one data frame
+  } else { ### if a dataframe with TCRs
+    df_all_obs = data %>% mutate(source = "observed")
+  }
   if(is.data.frame(with_vdjdb)) {
     vdj = with_vdjdb
     df_all = bind_rows(df_all_obs, vdj)
@@ -68,7 +73,11 @@ cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb 
     }
   }
 
-  dist = TCRdist(df_all, tcrdist_cutoff = tcrdist_cutoff)
+  if( (!allow_self_edges) && with_vdjdb ) {
+    dist = TCRdist(tcr1 = df_all_obs, tcr2 = vdj, tcrdist_cutoff = tcrdist_cutoff)
+  } else {
+    dist = TCRdist(df_all, tcrdist_cutoff = tcrdist_cutoff)
+  }
   dist_df = dist$TCRdist_df
   dist_input = dist$tcr1
 

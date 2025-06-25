@@ -53,7 +53,7 @@ plot_gene_usage = function(data,
   data = data$data
   chain = chain[1]
   gene = gene[1]
-  style = match.arg(style)
+  #style = match.arg(style)
   value_type = match.arg(value_type)
   # if(!is.null(group_col)) {
   #   groups = meta[[group_col]]

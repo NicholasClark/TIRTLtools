@@ -25,7 +25,7 @@ plot_pairs_with_eachother = function(
   df_pair$rank_alpha = df_alpha$rank[match(df_pair$alpha_nuc, df_alpha$targetSequences)]
   df_pair = df_pair %>% filter(!is.na(rank_beta), !is.na(rank_alpha))
 
-  df$n_paired_factor = factor(df$n_paired, levels = sort(unique(df$n_paired)))
+  df$n_paired_factor = factor(df$n_paired, levels = sort( union(0:2, unique(df$n_paired)) ) )
   color_col = ifelse(show_num_partners, "n_paired_factor", "paired_status")
   df$paired_status = factor(df$paired_status, levels = c("T-SHELL only", "MAD-HYPE only", "both", "neither") )
   gg = ggplot() +

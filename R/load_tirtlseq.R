@@ -68,7 +68,7 @@ load_tirtlseq = function(
   # if(chain == "alpha") ptn = "*TRA.tsv.gz"
   # if(chain == "beta") ptn = "*TRB.tsv.gz"
   # if(chain == "paired") ptn = "*TIRTLoutput.tsv.gz"
-  all_files = dir(directory)
+  all_files = dir(directory, pattern = ".*(_pseudobulk_TRA\\.tsv|_pseudobulk_TRB\\.tsv|_TIRTLoutput\\.tsv)")
   file_exts = all_files %>% tools::file_ext() %>% unique()
 
   if(length(file_exts) > 1) stop("All files need to be either .tsv or .tsv.gz")
