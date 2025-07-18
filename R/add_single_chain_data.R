@@ -20,7 +20,7 @@
 #'
 #'
 add_single_chain_data = function(data, verbose = TRUE) {
-  data_tmp = lapply(1:length(data$data), function(x) {
+  data_tmp = lapply(1:length(data$data), function(i) {
     x = data$data[[i]]
     if(verbose) {
       msg = paste("Adding single-chain data to paired dataframe for sample", i) %>% .add_newline()
