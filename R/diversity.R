@@ -95,8 +95,12 @@
 diversity = function(data, chain = c("paired", "alpha", "beta"),
                      type_column = "auto", proportion_column="auto",
                      q=0:6, percent = seq(10,90,10), tol = 1e-10,
+                     samples = NULL,
                      methods = get_all_div_metrics()
                      ) {
+  if(!is.null(samples)) {
+    data = filter_dataset(data, samples)
+  }
   meta = data$meta
   data = data$data
   chain = chain[1]
@@ -137,6 +141,7 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
   call_args$type_column = type_column
   call_args$proportion_column = proportion_column
   call_args$chain = chain
+  call_args$samples = NULL
 
   n_samples = length(data)
   #if(is_list) {

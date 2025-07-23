@@ -56,6 +56,7 @@ load_tirtlseq = function(
     sep = "_",
     meta_columns = NULL,
     samples = NULL,
+    nThread = data.table::getDTthreads(),
     verbose = TRUE,
     n_max = Inf) {
   tictoc::tic()
@@ -132,7 +133,7 @@ load_tirtlseq = function(
         if(verbose) {
           msg = paste("---- Loading file -- ", desc, " -- ", ff, "...", "\n", sep = "")
           cat(msg)
-          df_tmp =  data.table::fread(file_long) # %>% dtplyr::lazy_dt()
+          df_tmp =  data.table::fread(file_long, nThread = nThread) # %>% dtplyr::lazy_dt()
           #if(chain %in% c("alpha", "beta")) setkey(df_tmp, targetSequences)
           df_tmp = identify_non_functional_seqs(df_tmp)
           file_counter <<- file_counter + 1

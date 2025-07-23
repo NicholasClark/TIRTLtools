@@ -34,7 +34,9 @@ sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
                           n_seq = 200,
                           show_row_names = FALSE, show_column_names = FALSE,
                           label_col = "Sample",
-                          title = "") {
+                          title = "",
+                          return_data = FALSE
+                          ) {
   meta = data$meta
   data = data$data
   chain = chain[1]
@@ -75,6 +77,8 @@ sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
   labels = rownames(meta)
   rownames(olap_mat) = labels
   colnames(olap_mat) = labels
+
+  if(return_data) return(olap_mat)
 
   jaccard_mat = sapply(seq_list, function(x) {
     sapply(seq_list, function(y) {
