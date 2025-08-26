@@ -92,9 +92,14 @@
 #' # div = diversity(data)
 
 #diversity = function(data, meta= NULL, chain = c("paired", "alpha", "beta"),
-diversity = function(data, chain = c("paired", "alpha", "beta"),
-                     type_column = "auto", proportion_column="auto",
-                     q=0:6, percent = seq(10,90,10), tol = 1e-10,
+diversity = function(data,
+                     chain = c("paired", "alpha", "beta"),
+                     type_column = "auto",
+                     proportion_column="auto",
+                     q=0:6,
+                     percent = seq(10,90,10),
+                     n=10,
+                     tol = 1e-10,
                      samples = NULL,
                      methods = get_all_div_metrics()
                      ) {
@@ -162,12 +167,12 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 
 ### helper function - calculates diversity metrics for a single data frame
 .diversity_single = function(data, chain, type_column = "auto", proportion_column="auto",
-                             q=0:6, percent = seq(10,90,10), tol = 1e-10,
+                             q=0:6, percent = seq(10,90,10), n = 10, tol = 1e-10,
                              methods = get_all_div_metrics()
 ) {
   data = data[[chain]]
   prop_df = .calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
-  res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods)
+  res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods, n = n)
   out = list(diversity = res, prop_df = prop_df)
   return(out)
 }
@@ -257,6 +262,7 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
 
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.
 .calc_all_diversity = function(proportions, q=0:6, percent = seq(10,90,10), tol = 1e-14,
+                               n=10,
                             methods = get_all_div_metrics() ) {
   data = proportions[!is.na(proportions)]
   data = data[data != 0]
@@ -283,7 +289,10 @@ diversity = function(data, chain = c("paired", "alpha", "beta"),
     d50 = list(.d50(data)),
     dXX = list( .dxx_multi(p=data, xx=percent) ),
     renyi = list( .renyi_multi(p=data, q=q) ),
-    hill = list( .hill_multi(p=data, q=q) )
+    hill = list( .hill_multi(p=data, q=q) ),
+    top10fraction = .top10fraction(data),
+    top100fraction = .top100fraction(data),
+    topNfraction = list( .topNfraction(data, n) )
   )
   res = res[methods]
   return(res)

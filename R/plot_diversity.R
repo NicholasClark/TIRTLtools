@@ -89,6 +89,9 @@ plot_diversity = function(
     metric == "dXX" ~ "dXX - The minimum number of types (clones) needed to comprise XX percent of the data" %>% .split_string_multiline(),
     metric == "renyi" ~ "The Renyi entropy - a generalization of Shannon entropy (Shannon-Wiener index)" %>% .split_string_multiline(),
     metric == "hill" ~ "Hill numbers - the 'true diversity' or effective number of types" %>% .split_string_multiline(),
+    metric == "top10fraction" ~ "The total fraction made up by the 10 most frequent types" %>% .split_string_multiline(),
+    metric == "top100fraction" ~ "The total fraction made up by the 100 most frequent types" %>% .split_string_multiline(),
+    metric == "topNfraction" ~ "The total fraction made up by the N most frequent types" %>% .split_string_multiline(),
     .default = ""
   )
   if(is.null(group_col)) {
@@ -163,6 +166,11 @@ plot_diversity = function(
       vec = sapply(ll, function(x) {
         tbl = x$diversity[[metric]][[1]]
         tbl$value[match(q, tbl[["q"]])]
+      })
+    } else if(metric == "topNfraction") {
+      vec = sapply(ll, function(x) {
+        tbl = x$diversity[[metric]][[1]]
+        tbl$value
       })
     }
   }

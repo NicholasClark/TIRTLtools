@@ -13,7 +13,8 @@
 #'
 get_all_div_metrics = function() {
   div_metrics = c("simpson","gini","gini.simpson","inv.simpson","shannon",
-    "berger.parker", "richness", "d50", "dXX", "renyi", "hill")
+    "berger.parker", "richness", "d50", "dXX", "renyi", "hill", "top10fraction",
+    "top100fraction", "topNfraction")
   return(div_metrics)
 }
 
@@ -95,6 +96,21 @@ get_all_div_metrics = function() {
 ## return number of species required to equal or surpass 50 percent of sample
 .d50 = function(p) {
   .dxx(p, 50)
+}
+
+.topNfraction = function(p, n) {
+  p = sort(p, decreasing = TRUE)
+  m = min(n, length(p))
+  #return(sum(p[1:n]))
+  list(value = sum(p[1:m]), n=n)
+}
+
+.top10fraction = function(p) {
+  .topNfraction(p, 10)$value
+}
+
+.top100fraction = function(p) {
+  .topNfraction(p, 100)$value
 }
 
 # rarefaction = function(p, step, quantile) {
