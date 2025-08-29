@@ -171,7 +171,7 @@ load_tirtlseq = function(
         paste(colnames(meta_tmp[-1]), row, sep = ": ", collapse = " | ")
       })
     } else {
-      meta_tmp$label = df_tmp$sample_id
+      meta_tmp$label = meta_tmp$sample_id
     }
 
   }

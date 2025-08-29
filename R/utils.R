@@ -11,14 +11,23 @@
   }
 }
 
-.get_log_labels_neg = function(x, pseudo = 1e-6) {
-  max_val = max(x+pseudo)
-  y1 = min(x+pseudo) %>% log10() %>% floor()
+.get_log_labels_neg = function(x, pseudo = 1e-6, max_val = NULL, min_val = NULL, label_zero = FALSE) {
+  if(is.null(max_val)) max_val = max(x+pseudo)
+  #y1 = min(x+pseudo) %>% log10() %>% floor()
+  if(!is.null(min_val)) {
+    y1 = min_val
+  } else {
+    y1 = pseudo %>% log10() %>% floor()
+  }
   y2 = ifelse(max_val >= 0.1, 0, -1)
   y_breaks = y1:y2
   expr_list = sapply(y_breaks, function(x) {
     if(x %in% c(0,-1,-2)) return(as.character(10^x))
-    bquote("10"^.(as.character(x)))
+    if(x == y1 && label_zero) {
+      return(bquote("0"))
+    } else {
+      return(bquote("10"^.(as.character(x))))
+    }
   })
   labels_y <- do.call("expression", expr_list)
   return(list(brks = 10^y_breaks, labels = labels_y))

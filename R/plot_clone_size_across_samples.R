@@ -7,7 +7,8 @@ plot_clone_size_across_samples = function(
     group_vec = NULL,
     sum_readFraction = TRUE,
     samples=NULL,
-    return_data = FALSE
+    return_data = FALSE,
+    label_zero = FALSE
     ) {
   chain = chain[1]
   group_is_null = is.null(group_vec)
@@ -42,15 +43,19 @@ plot_clone_size_across_samples = function(
     grp = sym("targetSequences")
     y_col = sym("readFraction")
   }
-  log_labs_y = .get_log_labels_neg(gg_df[[as.character(y_col)]], pseudo)
-
-  gg_df = gg_df %>% mutate(sample_id = source) %>% left_join(., data$meta)
+  log_labs_y = .get_log_labels_neg(gg_df[[as.character(y_col)]], pseudo, label_zero = label_zero, max_val = 1)
+  #print(log_labs_y)
+  gg_df = gg_df %>%
+    mutate(source = factor(source, levels = samples)) %>%
+    mutate(sample_id = source) %>%
+    left_join(., data$meta)
   gg = ggplot(gg_df, aes(x=source, y=!!y_col+pseudo)) +
     geom_line(aes(group = !!grp, color = group)) +
     geom_point(aes(group = !!grp, color = group)) +
-    scale_y_log10() + theme_classic() +
+    #scale_y_log10() +
+    theme_classic() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
-    scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels)
+    scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels, limits = c(min(log_labs_y$brks), max(log_labs_y$brks)) )
   res = gg
   if(return_data) {
     res = list(plot = gg)
