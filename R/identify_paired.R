@@ -92,9 +92,9 @@ identify_paired = function(data, verbose = TRUE) {
     dplyr::rename(n_paired = N, targetSequences = beta_nuc)
 
   tmp_alpha = data$alpha %>%
-    left_join(counts_alpha_madhype) %>%
-    left_join(counts_alpha_tshell) %>%
-    left_join(counts_alpha) %>%
+    left_join(counts_alpha_madhype, by = "targetSequences") %>%
+    left_join(counts_alpha_tshell, by = "targetSequences") %>%
+    left_join(counts_alpha, by = "targetSequences") %>%
     mutate(n_paired = ifelse(is.na(n_paired), 0, n_paired)) %>%
     mutate(is_paired = n_paired != 0) %>%
     mutate(n_paired_tshell = ifelse(is.na(n_paired_tshell), 0, n_paired_tshell)) %>%
@@ -110,9 +110,9 @@ identify_paired = function(data, verbose = TRUE) {
     ))
 
   tmp_beta = data$beta %>%
-    left_join(counts_beta_madhype) %>%
-    left_join(counts_beta_tshell) %>%
-    left_join(counts_beta) %>%
+    left_join(counts_beta_madhype, by = "targetSequences") %>%
+    left_join(counts_beta_tshell, by = "targetSequences") %>%
+    left_join(counts_beta, by = "targetSequences") %>%
     mutate(n_paired = ifelse(is.na(n_paired), 0, n_paired)) %>%
     mutate(is_paired = n_paired != 0) %>%
     mutate(n_paired_tshell = ifelse(is.na(n_paired_tshell), 0, n_paired_tshell)) %>%
