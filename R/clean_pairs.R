@@ -1,0 +1,84 @@
+
+clean_pairs = function(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE) {
+  if(is.null(data$is_annotated)) {
+    data = add_single_chain_data(data, verbose = FALSE)
+  }
+  data_tmp = lapply(1:length(data$data), function(i) {
+    x = data$data[[i]]
+    if(verbose) {
+      msg = paste("Cleaning paired dataframe for sample", i) %>% .add_newline()
+      cat(msg)
+    }
+    paired_out = .clean_pairs_single(x$paired, n_max_alpha = n_max_alpha, n_max_beta = n_max_beta)
+    if(!is.null(x$paired_alt)) {
+      paired_alt_out = .clean_pairs_single(x$paired_alt, n_max_alpha = n_max_alpha, n_max_beta = n_max_beta)
+      return(list(alpha = x$alpha, beta=x$beta, paired = paired_out, paired_alt = paired_alt_out))
+    } else {
+      return(list(alpha = x$alpha, beta=x$beta, paired = paired_out))
+    }
+  }) %>% set_names(names(data$data))
+  data$data = data_tmp
+  data$pairs_cleaned = TRUE
+  return(data)
+}
+
+
+
+#' input is one data frame of paired TCRs
+#' output is a "cleaned" data frame where each alpha chain has its matches pruned to
+#' at most one beta chain and each beta chain has its matches pruned to at most two alpha chains.
+.clean_pairs_single = function(df, n_max_alpha = 2, n_max_beta = 1) {
+  df_orig = df
+  df = df %>% remove_dupes_paired()
+  cleaned_df = df %>%
+    group_by(beta_nuc, vb, jb, va, ja) %>%
+    ## if multiple alphas with same va + ja are paired with same beta, assume most frequent is real and rest are sequencing errors
+    slice_max(alpha_readFraction, n=1) %>% ## take top alpha for each unique beta + va + ja
+    ungroup() %>%
+    group_by(beta_nuc, vb, jb) %>%
+    slice_max(alpha_readFraction, n=n_max_alpha) %>% ## take at most 2 of those alphas for each beta
+    ungroup() %>%
+    ## if multiple betas with same vb + jb are paired with same alpha, assume most frequent is real and rest are sequencing errors
+    group_by(alpha_nuc, va, ja, vb, jb) %>%
+    slice_max(beta_readFraction, n=1) %>% ## take top beta for each unique alpha + vb + jb
+    ungroup() %>%
+    group_by(alpha_nuc, va, ja) %>%
+    slice_max(beta_readFraction, n=n_max_beta) %>% ## take top beta for each alpha
+    ungroup()
+
+  df_orig = df_orig %>% filter(alpha_beta %in% cleaned_df$alpha_beta)
+  return(df_orig)
+}
+
+## input is one data frame of paired TCRs
+.count_pairs_single = function(df) {
+  ### one alpha with many betas
+  multi_alpha = df %>%
+    group_by(alpha_nuc, cdr3a, va, ja) %>%
+    summarize(n_pairs_alpha = n()) %>%
+    ungroup() %>%
+    arrange(desc(n_pairs_alpha))
+
+  df_alpha = df %>%
+    left_join(multi_alpha) %>%
+    arrange(desc(n_pairs_alpha), desc(cdr3a), desc(beta_readCount)) %>%
+    select(cdr3b, vb, jb, cdr3a, va, ja, alpha_readFraction, beta_readFraction, alpha_readCount, beta_readCount, wa, wb, n_pairs_alpha, beta_nuc, alpha_nuc, everything())
+
+  ### one beta with many alphas
+  multi_beta = df %>%
+    group_by(beta_nuc, cdr3b, vb, jb) %>%
+    summarize(n_pairs_beta = n()) %>%
+    ungroup() %>%
+    arrange(desc(n_pairs_beta))
+
+  df_beta = df %>%
+    left_join(multi_beta) %>%
+    arrange(desc(n_pairs_beta), desc(cdr3b), desc(alpha_readCount)) %>%
+    select(cdr3b, vb, jb, cdr3a, va, ja, alpha_readFraction, beta_readFraction, alpha_readCount, beta_readCount, wa, wb, n_pairs_beta, beta_nuc, alpha_nuc, everything())
+
+  df_ret = df %>%
+    left_join(multi_beta) %>%
+    left_join(multi_alpha) %>%
+    arrange(desc(n_pairs_beta), desc(cdr3b), desc(alpha_readCount)) %>%
+    select(cdr3b, vb, jb, cdr3a, va, ja, alpha_readFraction, beta_readFraction, alpha_readCount, beta_readCount, wa, wb, n_pairs_alpha, n_pairs_beta, beta_nuc, alpha_nuc, everything())
+}
