@@ -33,6 +33,7 @@ Imports:
     reticulate (>= 1.41.0.1),
     stringdist,
     tictoc,
+    tidyr,
     uwot (>= 0.2.3)
 Depends: 
     R (>= 3.5)

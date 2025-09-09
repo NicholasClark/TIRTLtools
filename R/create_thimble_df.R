@@ -1,12 +1,15 @@
 ## input df is a data frame with TCR pairs, named in our normal way
 create_thimble_df = function(df, preset = c("default", "none"), TCR_names = "TCR",
-                             exclude_non_functional = TRUE,
+                             exclude_non_functional = TRUE, verbose = TRUE,
                              Linker = NULL, Link_order = NULL, TRAC = NULL, TRBC = NULL,
                              TRA_leader = NULL, TRB_leader = NULL, TRA_5_prime_seq = NULL,
                              TRA_3_prime_seq = NULL, TRB_5_prime_seq = NULL, TRB_3_prime_seq = NULL) {
   preset = preset[1]
   if(exclude_non_functional) {
     df = identify_non_functional_seqs(df)
+    sum_nonfunc = sum(!df$is_functional)
+    msg1 = paste("Note: Removed", sum_nonfunc, "TCRs with non-functional CDR3 sequences.")
+    if(verbose) message(msg1)
     df = df %>% filter(is_functional)
   }
   cols = c("TCR_name", "TRAV", "TRAJ", "TRA_CDR3", "TRBV", "TRBJ", "TRB_CDR3",
@@ -36,5 +39,7 @@ create_thimble_df = function(df, preset = c("default", "none"), TCR_names = "TCR
   if(length(TCR_names) == 1) TCR_names = paste(TCR_names, 1:(dim(df_tmp)[1]), sep = "_")
   df_tmp$TCR_name = TCR_names
   df_tmp$TCR_name = make.unique(df_tmp$TCR_name, sep = "_")
+  chk1 = sum( grepl("^m", df_tmp$TRAC) | grepl("^m", df_tmp$TRBC) ) > 0 ## check for mouse genes in TRAC and TRBC
+  if(chk1) message("Note: You may need to run stitchr with the '-xg' option for 'additional/custom genes' since your TRAC or TRBC uses a mouse gene.")
   return(df_tmp)
 }
