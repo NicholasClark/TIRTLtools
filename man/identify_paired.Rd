@@ -4,7 +4,7 @@
 \alias{identify_paired}
 \title{Identify single chains that are paired in the pseudo-bulk data}
 \usage{
-identify_paired(data)
+identify_paired(data, verbose = TRUE)
 }
 \arguments{
 \item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}

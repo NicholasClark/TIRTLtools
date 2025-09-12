@@ -14,7 +14,9 @@ plot_diversity(
   flip = FALSE,
   facet = FALSE,
   log_scale = FALSE,
-  return_data = FALSE
+  samples = NULL,
+  return_data = FALSE,
+  color_scheme = NULL
 )
 }
 \arguments{

@@ -9,6 +9,8 @@ load_tirtlseq(
   chain = c("all", "paired", "alpha", "beta"),
   sep = "_",
   meta_columns = NULL,
+  samples = NULL,
+  nThread = data.table::getDTthreads(),
   verbose = TRUE,
   n_max = Inf
 )
@@ -22,6 +24,8 @@ load_tirtlseq(
 
 \item{meta_columns}{(optional) a vector of identifying the metadata contained in filenames,
 for example \code{c("cell_type", "timepoint", "donor")} for files named similar to "cd8_timepoint2_donor1_TIRTLoutput.tsv".}
+
+\item{samples}{(optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).}
 
 \item{verbose}{whether to print the name of each file loaded (default is TRUE).}
 

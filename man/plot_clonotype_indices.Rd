@@ -7,23 +7,18 @@
 plot_clonotype_indices(
   data,
   chain = c("beta", "alpha"),
-  type_column = "auto",
-  proportion_column = "auto",
   cutoffs = 10^(1:5),
   group_col = NULL,
   label_col = "Sample",
   flip = FALSE,
-  return_data = FALSE
+  return_data = FALSE,
+  color_scheme = NULL
 )
 }
 \arguments{
 \item{data}{a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}}
 
 \item{chain}{< fill in later >}
-
-\item{type_column}{< fill in later >}
-
-\item{proportion_column}{< fill in later >}
 
 \item{cutoffs}{the indices used for the end of each group in the bar chart.
 The default is 10^(1:5), i.e. the 10th most-frequent clone, the 100th most-frequent clone,
@@ -37,6 +32,10 @@ to group samples}
 \item{flip}{(optional) if TRUE, flip the x and y-axes (default is FALSE)}
 
 \item{return_data}{(optional) if TRUE, return the data used to make the plot (default is FALSE)}
+
+\item{type_column}{< fill in later >}
+
+\item{proportion_column}{< fill in later >}
 }
 \value{
 A list with two objects:

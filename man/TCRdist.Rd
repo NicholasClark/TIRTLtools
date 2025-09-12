@@ -11,9 +11,11 @@ TCRdist(
   submat = NULL,
   tcrdist_cutoff = 90,
   chunk_size = 1000,
-  print_chunk_size = 1000,
+  print_chunk_size = 10,
   print_res = TRUE,
-  only_lower_tri = TRUE
+  only_lower_tri = TRUE,
+  return_data = TRUE,
+  write_to_tsv = FALSE
 )
 }
 \arguments{

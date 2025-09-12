@@ -7,16 +7,23 @@
 plot_sample_vs_sample(
   data1,
   data2,
-  type_column = "auto",
-  value_type = c("auto", "readFraction", "readCount", "n_wells", "readCount_max",
-    "readCount_median", "avg", "n"),
-  log2_cutoff = 1.5
+  chain = c("beta", "alpha"),
+  log2fc_cutoff = 3,
+  sem_cutoff = 2.5,
+  smooth_sem = c("window", "none"),
+  window_size = 30,
+  end_window_size = 5,
+  pseudo1 = 1e-06,
+  pseudo2 = 1e-06,
+  labelx = "Frequency on timepoint 1",
+  labely = "Frequency on timepoint 2",
+  return_data = FALSE
 )
 }
 \arguments{
-\item{data1}{a dataframe for the first sample}
+\item{data1}{a list of three data frames (alpha, beta, and paired) for one sample}
 
-\item{data2}{a dataframe for the second sample}
+\item{data2}{a list of three data frames (alpha, beta, and paired) for one sample}
 
 \item{log2_cutoff}{the log2 fold-change cutoff to call a TCR up- or down-regulated (default 1.5)}
 }

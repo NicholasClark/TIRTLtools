@@ -4,7 +4,13 @@
 \alias{cluster_tcrs}
 \title{Clustering of TCRs using TCRdist and the Leiden algorithm}
 \usage{
-cluster_tcrs(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE)
+cluster_tcrs(
+  data,
+  tcrdist_cutoff = 90,
+  resolution = 0.1,
+  with_vdjdb = TRUE,
+  allow_self_edges = TRUE
+)
 }
 \arguments{
 \item{data}{a list of TIRTLseq TCR data for samples created with \code{\link{load_tirtlseq}()}}
@@ -20,6 +26,8 @@ connected data while a lower value may be better for moderately connected data. 
 
 \item{with_vdjdb}{if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
 If parameter is a data frame, the supplied data frame will be used as the database.}
+
+\item{allow_self_edges}{(default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db}
 }
 \value{
 Returns a list with the following elements:

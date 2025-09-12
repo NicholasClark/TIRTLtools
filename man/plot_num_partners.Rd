@@ -10,7 +10,9 @@ plot_num_partners(
   fraction = TRUE,
   include_non_functional = FALSE,
   max_partners = 5,
-  return_data = FALSE
+  samples = NULL,
+  return_data = FALSE,
+  color_scheme = NULL
 )
 }
 \arguments{

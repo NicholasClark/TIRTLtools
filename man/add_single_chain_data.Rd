@@ -4,7 +4,7 @@
 \alias{add_single_chain_data}
 \title{Add single-chain pseudo-bulk counts/proportions to paired TIRTL-seq data}
 \usage{
-add_single_chain_data(data)
+add_single_chain_data(data, verbose = TRUE)
 }
 \arguments{
 \item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
