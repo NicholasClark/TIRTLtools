@@ -11,6 +11,7 @@ read_well_data = function(folder_path, wells = get_well_subset(1:16,1:24),
   files = list.files(path = folder_path, full.names = F)
   files_full = file.path(folder_path, files)
   files_no_ending = gsub("\\.tsv", "", files)
+  #files_no_ending = gsub("\\.", "_", files_no_ending) ## replace periods with underscores if necessary
 
   wells_all = sapply(strsplit(files_no_ending, "_"), function(x) x[[well_pos]])
   ## make sure wells in the string are 2-3 characters long and only alphanumeric -- necessary for some data

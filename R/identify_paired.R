@@ -141,7 +141,3 @@ identify_paired = function(data, verbose = TRUE) {
 
   return(list(alpha = tmp_alpha, beta = tmp_beta, paired_alt = paired_tmp))
 }
-
-.identify_paired_method = function(paired_df, method) {
-
-}

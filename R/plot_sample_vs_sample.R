@@ -56,16 +56,16 @@ plot_sample_vs_sample = function(data1, data2,
   df1 = data1[[chain]]
   df2 = data2[[chain]]
 
-  # gg_df = merge_TIRTL_pseudo(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2)
+  # gg_df = .merge_TIRTL_pseudo(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2)
   # #gg_df = .compute_fold_change(df1, df2, log2_cutoff = log2_cutoff, sem_cutoff = sem_cutoff)
-  # gg_df = add_sign(gg_df, pseudo1 = pseudo1, pseudo2 = pseudo2,
+  # gg_df = .add_sign(gg_df, pseudo1 = pseudo1, pseudo2 = pseudo2,
   #                  sem_threshold = sem_cutoff, log2FC_threshold = log2fc_cutoff
   #                  )
   if(smooth_sem == "window") {
-    df1 = smooth_sem_window(df1)
-    df2 = smooth_sem_window(df2)
+    df1 = .smooth_sem_window(df1)
+    df2 = .smooth_sem_window(df2)
   }
-  gg_df = compute_log2fc(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2,
+  gg_df = .compute_log2fc(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2,
                          sem_cutoff = sem_cutoff, log2fc_cutoff = log2fc_cutoff
                          )
   gg = .plot_timepoints(gg_df, pseudo1 = pseudo1, pseudo2 = pseudo2,
@@ -74,11 +74,11 @@ plot_sample_vs_sample = function(data1, data2,
   return(gg)
 }
 
-compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
+.compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
                           sem_cutoff = 2.5, log2fc_cutoff = 3
                           ) {
-  df = merge_TIRTL_pseudo(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2)
-  df = add_sign(df, pseudo1 = pseudo1, pseudo2 = pseudo2,
+  df = .merge_TIRTL_pseudo(df1, df2, pseudo1 = pseudo1, pseudo2 = pseudo2)
+  df = .add_sign(df, pseudo1 = pseudo1, pseudo2 = pseudo2,
                    sem_threshold = sem_cutoff, log2FC_threshold = log2fc_cutoff
   )
   return(df)
@@ -102,7 +102,7 @@ compute_log2fc = function(df1, df2, pseudo1 = 1e-6, pseudo2 = 1e-6,
   })
 }
 
-smooth_sem_window = function(df, window_size = 30, end_window_size=5) {
+.smooth_sem_window = function(df, window_size = 30, end_window_size=5) {
   df$sem_orig = df$sem
   df$sem = .moving_avg_closest(df$sem, window_size = window_size, end_window_size = end_window_size)
   #df$sem_log10 = .moving_avg_closest(log10(df$sem), window_size = window_size, end_window_size = end_window_size)
@@ -111,8 +111,8 @@ smooth_sem_window = function(df, window_size = 30, end_window_size=5) {
 }
 
 ## df is the pseudobulk data frame (beta or alpha) for a sample
-plot_SEM_vs_read_fraction = function(df, window_size = 30, end_window_size=5) {
-  if(!"sem_smoothed" %in% colnames(df)) df = smooth_sem_window(df, window_size = window_size, end_window_size = end_window_size)
+.plot_SEM_vs_read_fraction = function(df, window_size = 30, end_window_size=5) {
+  if(!"sem_smoothed" %in% colnames(df)) df = .smooth_sem_window(df, window_size = window_size, end_window_size = end_window_size)
 
   ggplot(df, aes(x=log10(readFraction), y=log10(sem_orig))) +
     #geom_density_2d() +
@@ -151,26 +151,23 @@ plot_SEM_vs_read_fraction = function(df, window_size = 30, end_window_size=5) {
     # scale_x_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))#+
 }
 
-merge_TIRTL_pseudo = function(tp1,tp2,thres1=4,thres2=4,pseudo1=1e-6,pseudo2=1e-6,mreads_thres=0)
+.merge_TIRTL_pseudo = function(tp1,tp2,thres1=4,thres2=4,pseudo1=1e-6,pseudo2=1e-6,mreads_thres=0)
 {
-  tmpm<-na_to0(merge(tp1[readCount_median>mreads_thres,avg:=readFraction,],tp2[readCount_median>mreads_thres,avg:=readFraction,],by="targetSequences",all=T))[n_wells.x>thres1|n_wells.y>thres2,]
+  tmpm<-.na_to0(merge(tp1[readCount_median>mreads_thres,avg:=readFraction,],tp2[readCount_median>mreads_thres,avg:=readFraction,],by="targetSequences",all=T))[n_wells.x>thres1|n_wells.y>thres2,]
   tmpm[(n_wells.x<3),]$sem.x=mean(tmpm[n_wells.x==3,]$sem.x)*2
   tmpm[(n_wells.y<3),]$sem.y=mean(tmpm[n_wells.y==3,]$sem.y)*2
   tmpm[,log2FC:=log2((avg.y+pseudo1)/(avg.x+pseudo2)),]
   return(tmpm)
 }
 
-add_sign<-function(tirtl_m,sem_threshold=2.5,log2FC_threshold=3,pseudo1=1e-6,pseudo2=1e-6){
+.add_sign<-function(tirtl_m,sem_threshold=2.5,log2FC_threshold=3,pseudo1=1e-6,pseudo2=1e-6){
   tirtl_m[,sign:="stable",]
   tirtl_m[log2FC<(-log2FC_threshold)&((avg.y+pseudo2+sem_threshold*sem.y)<(avg.x+pseudo1-sem_threshold*sem.x)),sign:="down",]
   tirtl_m[log2FC>(log2FC_threshold)&((avg.x+pseudo1+sem_threshold*sem.x)<(avg.y+pseudo2-sem_threshold*sem.y)),sign:="up",]
   return(tirtl_m)
 }
 
-na_to0<-function (x) {
-  x[is.na(x)]<-0
-  x
-}
+
 
 # .compute_fold_change = function(data1, data2,
 #                                 log2_cutoff = 3,

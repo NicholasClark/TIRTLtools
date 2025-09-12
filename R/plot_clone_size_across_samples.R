@@ -22,7 +22,7 @@ plot_clone_size_across_samples = function(
     out_tmp = tibble(targetSequences = clones,
                      group = group_vec,
                      readFraction = df_tmp$readFraction[match(clones, df_tmp$targetSequences)]) %>%
-      mutate(readFraction = na_to0(readFraction), source = sample)
+      mutate(readFraction = .na_to0(readFraction), source = sample)
   }) %>% bind_rows()
   if(sum_readFraction && (!group_is_null)) {
     gg_df = df %>%
