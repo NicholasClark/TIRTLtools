@@ -9,11 +9,11 @@ plot_paired_vs_rank = function(
   chain = chain[1]
   y_axis = y_axis[1]
 
-  if(chain == "alpha") df_melt = make_df_pair_vs_rank(data$alpha, n_max, value = y_axis) %>% mutate(chain = "alpha")
-  if(chain == "beta") df_melt = make_df_pair_vs_rank(data$beta, n_max, value = y_axis) %>% mutate(chain = "beta")
+  if(chain == "alpha") df_melt = .make_df_pair_vs_rank(data$alpha, n_max, value = y_axis) %>% mutate(chain = "alpha")
+  if(chain == "beta") df_melt = .make_df_pair_vs_rank(data$beta, n_max, value = y_axis) %>% mutate(chain = "beta")
   if(chain == "both") {
-    df_melt_alpha = make_df_pair_vs_rank(data$alpha, n_max, value = y_axis) %>% mutate(chain = "alpha")
-    df_melt_beta = make_df_pair_vs_rank(data$beta, n_max, value = y_axis) %>% mutate(chain = "beta")
+    df_melt_alpha = .make_df_pair_vs_rank(data$alpha, n_max, value = y_axis) %>% mutate(chain = "alpha")
+    df_melt_beta = .make_df_pair_vs_rank(data$beta, n_max, value = y_axis) %>% mutate(chain = "beta")
     df_melt = bind_rows(df_melt_alpha, df_melt_beta)
   }
 
@@ -30,7 +30,7 @@ plot_paired_vs_rank = function(
 }
 
 
-make_df_pair_vs_rank = function(df, n_max = 1000, return_melted = TRUE, value = c("n_not_paired", "n_paired")) {
+.make_df_pair_vs_rank = function(df, n_max = 1000, return_melted = TRUE, value = c("n_not_paired", "n_paired")) {
   value = value[1]
   if(value == "n_not_paired") { ### make dataframe of number of chains NOT PAIRED
     df = df %>%

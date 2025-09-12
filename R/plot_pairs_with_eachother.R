@@ -11,10 +11,10 @@ plot_pairs_with_eachother = function(
     df_pair = .add_single_chain_data_simple(data)
   }
 
-  df_alpha = make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>%
+  df_alpha = .make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>%
     mutate(chain = "alpha") %>%
     mutate(rank = -rank)
-  df_beta = make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>%
+  df_beta = .make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>%
     mutate(chain = "beta")
   df = bind_rows(df_alpha, df_beta)
 

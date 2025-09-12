@@ -8,11 +8,11 @@ plot_read_fraction_vs_pair_status = function(
   ) {
   chain = chain[1]
 
-  if(chain == "alpha") df = make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>% mutate(chain = "alpha")
-  if(chain == "beta") df = make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>% mutate(chain = "beta")
+  if(chain == "alpha") df = .make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>% mutate(chain = "alpha")
+  if(chain == "beta") df = .make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>% mutate(chain = "beta")
   if(chain == "both") {
-    df_alpha = make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>% mutate(chain = "alpha")
-    df_beta = make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>% mutate(chain = "beta")
+    df_alpha = .make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>% mutate(chain = "alpha")
+    df_beta = .make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>% mutate(chain = "beta")
     df = bind_rows(df_alpha, df_beta)
   }
 
