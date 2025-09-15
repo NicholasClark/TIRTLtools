@@ -1,10 +1,16 @@
 ## input df is a data frame with TCR pairs, named in our normal way
 create_thimble_df = function(df, preset = c("default", "none"), TCR_names = "TCR",
-                             exclude_non_functional = TRUE, verbose = TRUE,
+                             exclude_non_functional = TRUE, remove_duplicates = TRUE, verbose = TRUE,
                              Linker = NULL, Link_order = NULL, TRAC = NULL, TRBC = NULL,
                              TRA_leader = NULL, TRB_leader = NULL, TRA_5_prime_seq = NULL,
                              TRA_3_prime_seq = NULL, TRB_5_prime_seq = NULL, TRB_3_prime_seq = NULL) {
   preset = preset[1]
+  if(remove_duplicates) {
+    dupes = duplicated(paste(df$va, df$vb, df$ja, df$jb, df$cdr3a, df$cdr3b))
+    df = df[!dupes,]
+    msg0 = paste("Note: Removed",sum(dupes), "duplicate TCRs.")
+    if(verbose) message(msg0)
+  }
   if(exclude_non_functional) {
     df = identify_non_functional_seqs(df)
     sum_nonfunc = sum(!df$is_functional)
