@@ -9,3 +9,6 @@ import(data.table)
 import(dtplyr)
 
 export("%>%")
+importFrom(Rcpp, sourceCpp)
+importFrom(RcppParallel, RcppParallelLibs)
+useDynLib(TIRTLtools, .registration = TRUE)

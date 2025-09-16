@@ -29,6 +29,8 @@ Imports:
     irlba (>= 2.3.5.1),
     magrittr,
     Matrix (>= 1.7.3),
+    Rcpp,
+    RcppParallel,
     readr,
     reticulate (>= 1.41.0.1),
     stringdist,
@@ -39,3 +41,7 @@ Depends:
     R (>= 3.5)
 biocViews: 
 RoxygenNote: 7.3.2
+LinkingTo: 
+    Rcpp,
+    RcppParallel
+SystemRequirements: GNU make

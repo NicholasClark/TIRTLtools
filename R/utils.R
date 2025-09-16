@@ -1,45 +1,3 @@
-### prep data for tcrdist python function
-prep_for_tcrdist = function(df, params=NULL) {
-  if(is.null(df)) return(df)
-  if(is.null(params)) params = TIRTLtools::params
-  df = .add_alleles(df) # add "*01" as allele for va and vb if necessary
-  df = .filter_alleles(df, params = params) # remove alleles not found in the parameter data frame
-  df = df %>% filter(nchar(cdr3a) > 5, nchar(cdr3b) > 5)
-  #if(!"is_functional" %in% colnames(df))
-  df = identify_non_functional_seqs(df)
-  df = df %>% filter(is_functional) # remove seqs w/ stop codons (*) or frameshifts (_)
-  df = as.data.frame(df) ## convert to standard data frame
-  return(df)
-}
-
-tcrdist_to_matrix = function(tcr_obj) {
-  n_vert = dim(tcr_obj$tcr1)[1]
-  dist_df = tcr_obj$TCRdist_df %>% mutate %>%
-    mutate(edge1_1index = edge1_0index+1L,
-           edge2_1index = edge2_0index+1L
-    )
-  dist_df_to_matrix(dist_df, n_vert, 1:n_vert)
-}
-
-dist_df_to_matrix = function(dist_df, n_vertices_all, idx_keep) {
-  ## temporarily switch zeros with -1
-  dist_df$TCRdist_mod = ifelse(dist_df$TCRdist == 0L, -1L, dist_df$TCRdist)
-  ## convert to sparse matrix
-  sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
-                                            x=dist_df$TCRdist_mod, symmetric = TRUE,
-                                            dims = c(n_vertices_all, n_vertices_all))
-  tmp = sparse_tcrdist_mat[idx_keep, idx_keep] %>% as.matrix()
-  mode(tmp) <- "integer"
-  #tmp[tmp==0L] = cutoff
-  tmp[tmp==0L] = NA
-  tmp[tmp==-1L] = 0
-  return(tmp)
-}
-
-dist_obj_to_matrix = function(obj, idx_keep) {
-  tmp = dist_df_to_matrix(obj$dist_df, n_vertices_all = dim(obj$df)[1], idx_keep = idx_keep)
-  return(tmp)
-}
 
 get_well_subset = function(row_range=1:16,col_range=1:24){
   unlist(sapply(LETTERS[row_range],function(x)paste(x,col_range,sep=""),simplify = F))
@@ -242,6 +200,10 @@ remove_dupes_paired = function(data) {
     second_half <- seq[(floor(seq_length / 2) + 1):seq_length]
     return(paste(c(first_half, rep("_", total_padding), second_half), collapse = "" ))
   }
+}
+
+.pad_center_vec <- function(seqs, target_length) {
+  sapply(seqs, function(x) .pad_center(x, target_length))
 }
 
 .prepend_newline = function(string) {
