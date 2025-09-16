@@ -11,7 +11,8 @@
     reticulate::use_condaenv(envname)
 
     # non-gpu packages needed
-    py_packages = c("numpy", "scipy", "pandas", "time", "os", "subprocess", "platform", "importlib")
+    #py_packages = c("numpy", "scipy", "pandas", "time", "os", "subprocess", "platform", "importlib")
+    py_packages = c("numpy", "scipy", "pandas")
     install_pkgs <- py_packages[!vapply(py_packages, reticulate::py_module_available, logical(1))]
 
     # Detect OS and GPU support
@@ -58,7 +59,8 @@
   install_python_deps_no_conda <- function(envname = "TIRTLtools") {
     reticulate::py_available(initialize = TRUE)
     # non-gpu packages needed
-    py_packages = c("numpy", "scipy", "pandas", "time", "os", "subprocess", "platform", "importlib")
+    #py_packages = c("numpy", "scipy", "pandas", "time", "os", "subprocess", "platform", "importlib")
+    py_packages = c("numpy", "scipy", "pandas")
     install_pkgs <- py_packages[!vapply(py_packages, reticulate::py_module_available, logical(1))]
 
     # Detect OS and GPU support
