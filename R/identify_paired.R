@@ -68,8 +68,8 @@ identify_paired = function(data, verbose = TRUE) {
   return(data)
 }
 
-#' for input of a single sample/experiment, returns alpha, beta, and
-#' paired (with no duplicates) data frames with methods (madhype and tshell) annotated
+# for input of a single sample/experiment, returns alpha, beta, and
+# paired (with no duplicates) data frames with methods (madhype and tshell) annotated
 .identify_paired_single = function(data) {
   paired_tmp = data$paired %>% remove_dupes_paired()
   paired_tmp_madhype = data$paired %>% filter(method == "madhype")

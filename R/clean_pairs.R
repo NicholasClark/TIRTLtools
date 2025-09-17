@@ -24,9 +24,9 @@ clean_pairs = function(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE) {
 
 
 
-#' input is one data frame of paired TCRs
-#' output is a "cleaned" data frame where each alpha chain has its matches pruned to
-#' at most one beta chain and each beta chain has its matches pruned to at most two alpha chains.
+# input is one data frame of paired TCRs
+# output is a "cleaned" data frame where each alpha chain has its matches pruned to
+# at most one beta chain and each beta chain has its matches pruned to at most two alpha chains.
 .clean_pairs_single = function(df, n_max_alpha = 2, n_max_beta = 1) {
   df_orig = df
   df = df %>% remove_dupes_paired()

@@ -1,26 +1,26 @@
-#' @title
-#' Plotting of V- or J- gene usage
-#'
-#' @description
-#' \code{plot_gene_usage()} creates a bar chart of gene segment usage for the most common
-#' V- or J- genes.
-#'
-#' @details
-#' Fill in later, after updating/finalizing function.
-#'
-#' @param data either a single data frame containing paired TCRs from TIRTL-seq output or a list of
-#' data frames for many experiments
-#' @param groups (optional) when data is a list of data frames, this may be a vector of the same
-#' length as data with labels to group the experiments.
-#' @param gene the gene of the TCRs to plots
-#' @param n_max the maximum number of V-segments to plot. The top \code{n_max} most common V-segments will be plotted
-#'
-#' @return
-#' a ggplot object with a bar chart of the most common V- or J- segments.
-#'
-#' @export
-#' @examples
-#' # example here
+.plot_gene_usage = function(data, ### remove "." to unhide after re-writing
+                            chain = c("paired", "alpha", "beta"),
+                            #group_col=NULL,
+                            gene = c("va", "vb", "ja", "jb", "v","j"),
+                            n_max = 25,
+                            value_type = c("readFraction", "readCount"),
+                            #log_scale = FALSE,
+                            #style = c("barplot", "boxplot"),
+                            color_scheme = NULL) {
+  meta = data$meta
+  data = data$data
+  chain = chain[1]
+  gene = gene[1]
+  #style = match.arg(style)
+  value_type = match.arg(value_type)
+  # if(!is.null(group_col)) {
+  #   groups = meta[[group_col]]
+  # } else {
+  #   groups = NULL
+  # }
+
+
+}
 
 .gene_usage = function(data) { ### remove "." to unhide after re-writing
 
@@ -39,31 +39,6 @@
 
 
 }
-
-.plot_gene_usage = function(data, ### remove "." to unhide after re-writing
-                           chain = c("paired", "alpha", "beta"),
-                           #group_col=NULL,
-                           gene = c("va", "vb", "ja", "jb", "v","j"),
-                           n_max = 25,
-                           value_type = c("readFraction", "readCount"),
-                           #log_scale = FALSE,
-                           #style = c("barplot", "boxplot"),
-                           color_scheme = NULL) {
-  meta = data$meta
-  data = data$data
-  chain = chain[1]
-  gene = gene[1]
-  #style = match.arg(style)
-  value_type = match.arg(value_type)
-  # if(!is.null(group_col)) {
-  #   groups = meta[[group_col]]
-  # } else {
-  #   groups = NULL
-  # }
-
-
-}
-
 
 .plot_gene_usage_old = function(
     data,
