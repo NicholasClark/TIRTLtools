@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 tcrdist_cpp <- function(all_mat1, all_mat2, submat, tcr2_equals_tcr1) {
-    .Call('_TIRTLtools_tcrdist_cpp', PACKAGE = 'TIRTLtools', all_mat1, all_mat2, submat, tcr2_equals_tcr1)
+    .Call(`_TIRTLtools_tcrdist_cpp`, all_mat1, all_mat2, submat, tcr2_equals_tcr1)
 }
 
 tcrdist_parallel <- function(all_mat1, all_mat2, submat, tcr2_equals_tcr1) {
-    .Call('_TIRTLtools_tcrdist_parallel', PACKAGE = 'TIRTLtools', all_mat1, all_mat2, submat, tcr2_equals_tcr1)
+    .Call(`_TIRTLtools_tcrdist_parallel`, all_mat1, all_mat2, submat, tcr2_equals_tcr1)
 }
 

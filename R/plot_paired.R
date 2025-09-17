@@ -1,5 +1,6 @@
 ### df is output from get_pair_stats()
 plot_paired = function(df, chain = c("paired", "alpha", "beta"), samples = NULL, color_scheme = NULL) {
+  if(.is.list.only(df)) df = get_pair_stats(df, verbose = FALSE)
   chain1 = chain[1]
   df$log10Freq = log10(df$Freq)
   df_sub = df %>% filter(chain == chain1)

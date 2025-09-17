@@ -42,7 +42,8 @@
 #'
 
 plot_diversity = function(
-    div, metric=get_all_div_metrics(),
+    div,
+    metric=get_all_div_metrics(),
     q=2,
     percent=90,
     group_col = NULL,

@@ -8,6 +8,6 @@ get_pair_stats = function(data, verbose = TRUE) {
     }
     df = .get_pair_stats_single(x) %>% mutate(sample_id = sample_name)
   }) %>% bind_rows()
-  pair_stats = pair_stats %>% left_join(data$meta)
+  pair_stats = pair_stats %>% left_join(data$meta, by = "sample_id")
   return(pair_stats)
 }

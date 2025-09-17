@@ -20,7 +20,7 @@
 #'
 #'
 
-rank_plot = function(
+plot_ranks = function(
     data,
     chain=c("alpha", "beta"),
     column = "readFraction",

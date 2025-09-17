@@ -42,7 +42,7 @@ plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c(
   ### testing plotting umap or graph of largest clusters
   df_sub = obj$df %>% filter(cluster %in% largest_clusters$cluster) %>% mutate(cluster = factor(cluster %>% as.character() , levels = cluster %>% as.character() %>% unique() %>% as.integer() %>% sort() %>% as.character() ) )
   idx_keep = unique(df_sub$idx_1index)
-  dist_mat = dist_obj_to_matrix(obj, idx_keep)
+  dist_mat = .dist_obj_to_matrix(obj, idx_keep)
   dist_mat_noNA = dist_mat
   dist_mat_noNA[is.na(dist_mat_noNA)] = obj$tcrdist_cutoff
   adj_mat = !is.na(dist_mat)

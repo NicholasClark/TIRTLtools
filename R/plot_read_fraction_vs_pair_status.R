@@ -1,12 +1,17 @@
 
 plot_read_fraction_vs_pair_status = function(
     data,
+    sample = 1,
     chain = c("both","beta", "alpha"),
     n_max = 100,
     show_num_partners = F,
     color_scheme = NULL
   ) {
   chain = chain[1]
+
+  if(!"is_paired" %in% colnames(data$data[[1]])) data = identify_paired(data, verbose = FALSE)
+  if(is.numeric(sample)) sample = names(data$data)[[sample]]
+  data = data$data[[sample]]
 
   if(chain == "alpha") df = .make_df_pair_vs_rank(data$alpha, n_max, return_melted = FALSE) %>% mutate(chain = "alpha")
   if(chain == "beta") df = .make_df_pair_vs_rank(data$beta, n_max, return_melted = FALSE) %>% mutate(chain = "beta")
@@ -31,6 +36,7 @@ plot_read_fraction_vs_pair_status = function(
     scale_y_log10(breaks=yy$brks,labels=yy$labels) +
     facet_wrap(~chain) +
     theme_classic() +
+    ggtitle(sample) +
     scale_shape_manual(values = 3) +
     #scale_color_manual(values = .tirtl_colors_distinct(palette=color_scheme))
     scale_color_manual(values = .tirtl_colors_gradient(palette=color_scheme, n=length(unique(df[[color_col]]))) %>% rev() )

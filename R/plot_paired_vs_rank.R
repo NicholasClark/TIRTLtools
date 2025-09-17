@@ -1,13 +1,17 @@
-### data is a single sample from a loaded tirtlseq object
+### data is a tirtlseq object
 plot_paired_vs_rank = function(
     data,
+    sample = 1,
     y_axis = c("n_not_paired", "n_paired"),
     chain = c("both", "beta", "alpha"),
-    n_max = 1000,
+    n_max = 100,
     color_scheme = NULL
     ) {
   chain = chain[1]
   y_axis = y_axis[1]
+  if(!"is_paired" %in% colnames(data$data[[1]])) data = identify_paired(data, verbose = FALSE)
+  if(is.numeric(sample)) sample = names(data$data)[[sample]]
+  data = data$data[[sample]]
 
   if(chain == "alpha") df_melt = .make_df_pair_vs_rank(data$alpha, n_max, value = y_axis) %>% mutate(chain = "alpha")
   if(chain == "beta") df_melt = .make_df_pair_vs_rank(data$beta, n_max, value = y_axis) %>% mutate(chain = "beta")
@@ -25,6 +29,7 @@ plot_paired_vs_rank = function(
     #geom_point(aes(shape = method, color = method)) +
     facet_wrap(~chain) +
     theme_classic() +
+    ggtitle(sample) +
     scale_color_manual(values = .tirtl_colors_distinct(palette=color_scheme))
   return(gg)
 }

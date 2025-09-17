@@ -1,10 +1,16 @@
-### input is a sample loaded by load_tirtlseq, and annotated with paired and single-chain data
+### input is a dataset loaded by load_tirtlseq
 plot_pairs_with_eachother = function(
     data,
+    sample = 1,
     n_max = 100,
     show_num_partners = FALSE,
     color_scheme = NULL
   ) {
+
+  if(!"is_paired" %in% colnames(data$data[[1]])) data = identify_paired(data, verbose = FALSE)
+  if(is.numeric(sample)) sample = names(data$data)[[sample]]
+  data = data$data[[sample]]
+
   if("beta_readFraction" %in% colnames(data$paired)) {
     df_pair = data$paired
   } else {
@@ -41,6 +47,7 @@ plot_pairs_with_eachother = function(
     geom_vline(xintercept = 0, linetype = "dashed") +
     scale_y_log10(breaks=yy$brks,labels=yy$labels) +
     theme_classic() +
+    ggtitle(sample) +
     scale_shape_manual(values = 3) +
     #scale_color_manual(values = .tirtl_colors_distinct(palette=color_scheme))
     scale_color_manual(values = .tirtl_colors_gradient(palette=color_scheme, n=length(levels(df[[color_col]]))) %>% set_names(levels(df[[color_col]])) )
