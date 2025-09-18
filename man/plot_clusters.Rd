@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_clusters.R
 \name{plot_clusters}
 \alias{plot_clusters}
-\title{Plot the top N largest clusters of a set of TCRs}
+\title{Plot clusters of similar TCRs}
 \usage{
 plot_clusters(
   obj,
@@ -48,4 +48,20 @@ a heatmap.
 }
 \seealso{
 \code{\link{cluster_tcrs}()}, \code{\link{TCRdist}()}
+
+Other plotting: 
+\code{\link{plot_clone_size_across_samples}()},
+\code{\link{plot_clonotype_indices}()},
+\code{\link{plot_diversity}()},
+\code{\link{plot_n_reads}()},
+\code{\link{plot_num_partners}()},
+\code{\link{plot_paired}()},
+\code{\link{plot_paired_by_read_fraction_range}()},
+\code{\link{plot_paired_vs_rank}()},
+\code{\link{plot_pairs_with_eachother}()},
+\code{\link{plot_ranks}()},
+\code{\link{plot_read_fraction_vs_pair_status}()},
+\code{\link{plot_sample_overlap}()},
+\code{\link{plot_sample_vs_sample}()}
 }
+\concept{plotting}

@@ -1,5 +1,5 @@
 #' @title
-#' Calculate and plot agreement/overlap between samples
+#' Plot the overlap/agreement between samples (in terms of most frequent clones)
 #'
 #' @description
 #' \code{plot_sample_overlap()} returns a heatmap showing the overlap in most frequent TCRs
@@ -21,6 +21,7 @@
 #' A heatmap with hierarchically clustered rows and columns showing the number of
 #' TCRs shared between each pair of samples, among their top N most frequent TCRs.
 #'
+#' @family plotting
 #' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export

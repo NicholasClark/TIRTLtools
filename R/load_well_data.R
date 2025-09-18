@@ -1,8 +1,7 @@
-### function for individual well files from a folder
-
-# test = read_well_data(folder_path = "/Users/nclark52/git/TIRTL_nick/data/exp3_clones/TCR_clones_ID03/", wells = get_well_subset(1:2,1:2), chain = "beta")
-
-read_well_data = function(folder_path, wells = get_well_subset(1:16,1:24),
+#' Load well-level TIRTLseq data
+#'
+#' @family well
+load_well_data = function(folder_path, wells = get_well_subset(1:16,1:24),
                           well_pos=3, chain = c("both", "alpha", "beta"), nproc = 1L,
                           columns = NULL,
                           max_files = Inf) {

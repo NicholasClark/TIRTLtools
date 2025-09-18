@@ -1,5 +1,4 @@
-#' @title
-#' Identify single chains that are paired in the pseudo-bulk data
+#' Identify which alpha and beta chains were able to be paired and which were not paired
 #'
 #' @description
 #' For each sample in the dataset, \code{identify_paired()} annotates the alpha
@@ -18,6 +17,7 @@
 #' paired data. \code{n_paired} is the number of distinct chains that the particular
 #' chain is paired with.
 #'
+#' @family data_processing
 #' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export
@@ -71,7 +71,7 @@ identify_paired = function(data, verbose = TRUE) {
 # for input of a single sample/experiment, returns alpha, beta, and
 # paired (with no duplicates) data frames with methods (madhype and tshell) annotated
 .identify_paired_single = function(data) {
-  paired_tmp = data$paired %>% remove_dupes_paired()
+  paired_tmp = data$paired %>% remove_duplicates()
   paired_tmp_madhype = data$paired %>% filter(method == "madhype")
   paired_tmp_tshell = data$paired %>% filter(method == "tshell")
 

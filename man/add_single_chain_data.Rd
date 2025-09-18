@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_single_chain_data.R
 \name{add_single_chain_data}
 \alias{add_single_chain_data}
-\title{Add single-chain pseudo-bulk counts/proportions to paired TIRTL-seq data}
+\title{Add alpha- and beta-chain read counts and read fractions to the paired TCR data}
 \usage{
 add_single_chain_data(data, verbose = TRUE)
 }
@@ -24,5 +24,12 @@ of a dataset.
 
 }
 \seealso{
-\code{\link{load_tirtlseq}()}
+Other data_processing: 
+\code{\link{TIRTL_process}()},
+\code{\link{clean_pairs}()},
+\code{\link{identify_non_functional_seqs}()},
+\code{\link{identify_paired}()},
+\code{\link{prep_for_tcrdist}()},
+\code{\link{remove_duplicates}()}
 }
+\concept{data_processing}

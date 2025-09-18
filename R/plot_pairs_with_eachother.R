@@ -1,4 +1,9 @@
-### input is a dataset loaded by load_tirtlseq
+#' Point plot of read fraction vs. rank for the N most frequent alpha (left, mirrored)
+#' and beta (right) chains with lines between alpha and beta chains indicating a
+#' pair and a cross indicating an unpaired single-chain
+#'
+#' @family plotting
+#'
 plot_pairs_with_eachother = function(
     data,
     sample = 1,

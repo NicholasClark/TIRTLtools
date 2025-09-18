@@ -2,7 +2,7 @@
 % Please edit documentation in R/identify_paired.R
 \name{identify_paired}
 \alias{identify_paired}
-\title{Identify single chains that are paired in the pseudo-bulk data}
+\title{Identify which alpha and beta chains were able to be paired and which were not paired}
 \usage{
 identify_paired(data, verbose = TRUE)
 }
@@ -32,4 +32,13 @@ is paired with any partners.
 }
 \seealso{
 \code{\link{load_tirtlseq}()}
+
+Other data_processing: 
+\code{\link{TIRTL_process}()},
+\code{\link{add_single_chain_data}()},
+\code{\link{clean_pairs}()},
+\code{\link{identify_non_functional_seqs}()},
+\code{\link{prep_for_tcrdist}()},
+\code{\link{remove_duplicates}()}
 }
+\concept{data_processing}

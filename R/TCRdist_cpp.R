@@ -1,3 +1,7 @@
+#' Parallelized C++ implementation of TCRdist (no GPU required)
+#'
+#' @family repertoire_analysis
+#'
 TCRdist_cpp = function(tcr1, tcr2=NULL, tcrdist_cutoff = 90) {
 
   submat = TIRTLtools::submat

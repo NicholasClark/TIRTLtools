@@ -1,4 +1,7 @@
-
+#' Alternative point plot of read fraction vs. rank for the N most frequent alpha
+#' and beta chains, with a cross indicating an unpaired single-chain
+#'
+#' @family plotting
 plot_read_fraction_vs_pair_status = function(
     data,
     sample = 1,

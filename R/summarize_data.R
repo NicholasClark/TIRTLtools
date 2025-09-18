@@ -1,4 +1,7 @@
-## input is an object loaded by load_tirtlseq()
+#' Creates a summary table with number of reads and unique alpha/beta chains observed for each sample
+#'
+#' @family repertoire_analysis
+#'
 summarize_data = function(data) {
   df = lapply(1:length(data$data), function(i) {
     x = data$data[[i]]
@@ -12,7 +15,7 @@ summarize_data = function(data) {
 .summarize_data_single = function(data) {
   n_alpha_clones = dim(data$alpha)[1]
   n_beta_clones = dim(data$beta)[1]
-  df_paired_no_dupes = remove_dupes_paired(data$paired)
+  df_paired_no_dupes = remove_duplicates(data$paired)
   n_pairs = dim(df_paired_no_dupes)[1]
   n_reads_beta = sum(data$beta$readCount)
   n_reads_alpha = sum(data$alpha$readCount)

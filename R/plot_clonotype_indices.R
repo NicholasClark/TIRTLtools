@@ -1,5 +1,4 @@
-#' @title
-#' Plotting of read fractions for most frequent clonotypes
+#' Stacked bar chart with fractions of reads attributed to the most frequent clonotypes
 #'
 #' @description
 #' \code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of
@@ -29,6 +28,7 @@
 #'
 #' \code{$data} - if return_data is TRUE, the data frame used to create the plot
 #'
+#' @family plotting
 #' @seealso \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 #'
 #' @export
@@ -73,7 +73,7 @@ plot_clonotype_indices = function(
   } else {
     meta$Group = apply(meta[, group_col], 1, paste, collapse = " | ")
   }
-  if(chain == "paired") data3 = remove_dupes_paired(data3)
+  if(chain == "paired") data3 = remove_duplicates(data3)
   #props_list = .calculate_proportions_list(data3, type_column=type_column, proportion_column=proportion_column, return_list = TRUE)
 
   gg_df = lapply(1:length(data3), function(i) {

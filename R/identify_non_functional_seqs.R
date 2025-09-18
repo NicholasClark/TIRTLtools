@@ -1,5 +1,4 @@
-#' @title
-#' Identify non-functional CDR3 nucleotide sequences
+#' Identify TCRs that contain non-functional CDR3 sequences, i.e. those that contain stop codons (*) or frame shifts (_)
 #'
 #' @description
 #' \code{identify_non_functional_seqs()} identifies CDR3 nucleotide sequences in
@@ -18,6 +17,8 @@
 #' The columns \code{has_stop_codon} and \code{has_frameshift} are similar, but specific to
 #' each kind of coding error. Other columns identify if the alpha chain or beta chain has
 #' a stop codon or frameshift, and if it is functional.
+#'
+#' @family data_processing
 #'
 #' @seealso \code{\link{TCRdist}()}, \code{\link{plot_num_partners}()}
 #'

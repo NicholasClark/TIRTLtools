@@ -2,3 +2,40 @@ url: https://nicholasclark.github.io/TIRTLtools/
 template:
   bootstrap: 5
 
+authors:
+  Nicholas Clark:
+    href: https://github.com/NicholasClark/
+  Mikhail Pogorelyy:
+    href: https://scholar.google.com/citations?user=oiypK_UAAAAJ
+
+reference:
+- title: Bulk TIRTLseq data
+
+- subtitle: Data loading and wrangling
+  contents:
+  - has_concept("data_wrangling")
+- subtitle: Data processing and cleaning
+  contents:
+  - has_concept("data_processing")
+- subtitle: TCR repertoire analysis
+  contents:
+  - has_concept("repertoire_analysis")
+- subtitle: Plotting
+  contents:
+  - has_concept("plotting")
+- subtitle: Export for external tools
+  contents:
+  - has_concept("stitchr")
+- subtitle: Well-level data functions
+  contents:
+  - has_concept("well")
+- subtitle: Download datasets
+  contents:
+  - has_concept("download")
+- subtitle: Data
+  contents:
+  - has_concept("data")
+
+- title: Single-cell TIRTLseq data
+  contents:
+  - has_concept("single-cell")

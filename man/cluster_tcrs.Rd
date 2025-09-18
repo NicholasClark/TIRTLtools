@@ -2,7 +2,7 @@
 % Please edit documentation in R/cluster_tcrs.R
 \name{cluster_tcrs}
 \alias{cluster_tcrs}
-\title{Clustering of TCRs using TCRdist and the Leiden algorithm}
+\title{Cluster TCRs (using the Leiden algorithm) based on their pairwise TCRdist values}
 \usage{
 cluster_tcrs(
   data,
@@ -68,4 +68,15 @@ will be assigned to the "*01" allele.
 }
 \seealso{
 \code{\link{plot_clusters}()}, \code{\link{identify_non_functional_seqs}()}, \code{\link{TCRdist}()}
+
+Other repertoire_analysis: 
+\code{\link{TCRdist}()},
+\code{\link{TCRdist_cpp}()},
+\code{\link{calculate_diversity}()},
+\code{\link{get_all_div_metrics}()},
+\code{\link{get_all_tcrs}()},
+\code{\link{get_pair_stats}()},
+\code{\link{get_paired_by_read_fraction_range}()},
+\code{\link{summarize_data}()}
 }
+\concept{repertoire_analysis}

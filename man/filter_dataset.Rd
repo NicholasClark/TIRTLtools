@@ -2,7 +2,7 @@
 % Please edit documentation in R/filter_dataset.R
 \name{filter_dataset}
 \alias{filter_dataset}
-\title{Create a new dataset object with selected samples}
+\title{Subset a TIRTLseqData object to only the requested samples}
 \usage{
 filter_dataset(data, samples)
 }
@@ -39,5 +39,9 @@ the sample metadata.
 
 }
 \seealso{
-\code{\link{load_tirtlseq}()}
+Other data_wrangling: 
+\code{\link{add_metadata}()},
+\code{\link{load_tirtlseq}()},
+\code{\link{reorder_samples}()}
 }
+\concept{data_wrangling}

@@ -1,5 +1,4 @@
-#' @title
-#' Load TIRTLseq data
+#' Load paired-TCR and pseudo-bulk data from TIRTLseq experiments into a TIRTLseqData object
 #'
 #' @description
 #' \code{load_tirtlseq()} loads TIRTLseq data from a given directory. It can also automatically
@@ -42,7 +41,7 @@
 #' \code{$alpha}, \code{$beta}, and \code{$paired}, which are data frames for the alpha- and beta-chain
 #' pseudo-bulk data and the paired data respectively.
 #'
-#' @seealso \code{\link{filter_dataset}()}
+#' @family data_wrangling
 #'
 #' @export
 #' @examples

@@ -2,7 +2,7 @@
 % Please edit documentation in R/identify_non_functional_seqs.R
 \name{identify_non_functional_seqs}
 \alias{identify_non_functional_seqs}
-\title{Identify non-functional CDR3 nucleotide sequences}
+\title{Identify TCRs that contain non-functional CDR3 sequences, i.e. those that contain stop codons (*) or frame shifts (_)}
 \usage{
 identify_non_functional_seqs(df)
 }
@@ -31,4 +31,13 @@ would indicate a non-functional chain.
 }
 \seealso{
 \code{\link{TCRdist}()}, \code{\link{plot_num_partners}()}
+
+Other data_processing: 
+\code{\link{TIRTL_process}()},
+\code{\link{add_single_chain_data}()},
+\code{\link{clean_pairs}()},
+\code{\link{identify_paired}()},
+\code{\link{prep_for_tcrdist}()},
+\code{\link{remove_duplicates}()}
 }
+\concept{data_processing}

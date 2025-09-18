@@ -2,7 +2,7 @@
 % Please edit documentation in R/TCRdist.R
 \name{TCRdist}
 \alias{TCRdist}
-\title{Calculation of pairwise TCRdist}
+\title{GPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs}
 \usage{
 TCRdist(
   tcr1 = NULL,
@@ -76,4 +76,15 @@ or `numpy` (no GPU) to calculate TCRdist efficiently.
 }
 \seealso{
 \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
+
+Other repertoire_analysis: 
+\code{\link{TCRdist_cpp}()},
+\code{\link{calculate_diversity}()},
+\code{\link{cluster_tcrs}()},
+\code{\link{get_all_div_metrics}()},
+\code{\link{get_all_tcrs}()},
+\code{\link{get_pair_stats}()},
+\code{\link{get_paired_by_read_fraction_range}()},
+\code{\link{summarize_data}()}
 }
+\concept{repertoire_analysis}

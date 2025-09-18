@@ -1,5 +1,4 @@
-#' @title
-#' Create a new dataset object with selected samples
+#' Subset a TIRTLseqData object to only the requested samples
 #'
 #' @description
 #' The \code{filter_dataset()} function is used to select a subset of samples from
@@ -22,7 +21,8 @@
 #' A dataset object similar to that created by \code{\link{load_tirtlseq}()},
 #' but with only the selected samples.
 #'
-#' @seealso \code{\link{load_tirtlseq}()}
+#' @concept data_wrangling
+#' @family data_wrangling
 #'
 #' @export
 #' @examples

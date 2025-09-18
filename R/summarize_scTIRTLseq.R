@@ -1,3 +1,9 @@
+#' Returns a summary of single-cell TIRTLseq data, printing the total number of
+#' wells with data, number of wells missing an alpha/beta chain, number of wells
+#' with a second alpha chain, etc.
+#'
+#'
+#' @family single-cell
 summarize_scTIRTLseq = function(df) {
   n_wells_total = dim(df)[1]
   n_wells_both = sum( (!is.na(df$aaSeqCDR3u_alpha)) & (!is.na(df$aaSeqCDR3u_beta)) )

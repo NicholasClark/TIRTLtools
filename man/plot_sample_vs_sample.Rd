@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_sample_vs_sample.R
 \name{plot_sample_vs_sample}
 \alias{plot_sample_vs_sample}
-\title{Scatterplot of TCR frequency between two samples}
+\title{Scatterplot of TCR clone read fraction of clones between two samples}
 \usage{
 plot_sample_vs_sample(
   data1,
@@ -43,3 +43,20 @@ log2 fold-change cutoff supplied (default 1.5).
 
 
 }
+\seealso{
+Other plotting: 
+\code{\link{plot_clone_size_across_samples}()},
+\code{\link{plot_clonotype_indices}()},
+\code{\link{plot_clusters}()},
+\code{\link{plot_diversity}()},
+\code{\link{plot_n_reads}()},
+\code{\link{plot_num_partners}()},
+\code{\link{plot_paired}()},
+\code{\link{plot_paired_by_read_fraction_range}()},
+\code{\link{plot_paired_vs_rank}()},
+\code{\link{plot_pairs_with_eachother}()},
+\code{\link{plot_ranks}()},
+\code{\link{plot_read_fraction_vs_pair_status}()},
+\code{\link{plot_sample_overlap}()}
+}
+\concept{plotting}

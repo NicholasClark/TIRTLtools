@@ -1,3 +1,7 @@
+#' Imputes missing alpha and beta chains where possible for single-cell TIRTLseq data
+#'
+#' @family single-cell
+#'
 clean_scTIRTLseq = function(df, verbose = TRUE, keep_all_columns = FALSE) {
   df = df %>%
     mutate(id = 1:nrow(df))

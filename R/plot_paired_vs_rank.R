@@ -1,4 +1,6 @@
-### data is a tirtlseq object
+#' Line plot of the number of unpaired single-chains for the N most frequent single-chains
+#'
+#' @family plotting
 plot_paired_vs_rank = function(
     data,
     sample = 1,

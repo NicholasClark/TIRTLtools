@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_diversity.R
 \name{plot_diversity}
 \alias{plot_diversity}
-\title{Plotting of clonal diversity metrics}
+\title{Bar plot of clonal diversity metrics}
 \usage{
 plot_diversity(
   div,
@@ -68,4 +68,20 @@ showing the standard deviation.
 }
 \seealso{
 \code{\link{diversity}()}, \code{\link{get_all_div_metrics}()}
+
+Other plotting: 
+\code{\link{plot_clone_size_across_samples}()},
+\code{\link{plot_clonotype_indices}()},
+\code{\link{plot_clusters}()},
+\code{\link{plot_n_reads}()},
+\code{\link{plot_num_partners}()},
+\code{\link{plot_paired}()},
+\code{\link{plot_paired_by_read_fraction_range}()},
+\code{\link{plot_paired_vs_rank}()},
+\code{\link{plot_pairs_with_eachother}()},
+\code{\link{plot_ranks}()},
+\code{\link{plot_read_fraction_vs_pair_status}()},
+\code{\link{plot_sample_overlap}()},
+\code{\link{plot_sample_vs_sample}()}
 }
+\concept{plotting}

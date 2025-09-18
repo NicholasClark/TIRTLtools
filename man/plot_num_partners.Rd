@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_num_partners.R
 \name{plot_num_partners}
 \alias{plot_num_partners}
-\title{Plot the number of partners for each single chain that is matched to another chain.}
+\title{Stacked bar plot of the fraction of single-chains with different numbers of partners for each sample}
 \usage{
 plot_num_partners(
   data,
@@ -55,4 +55,20 @@ showing the proportion of them (among all called pairs) that are paired with 1 c
 }
 \seealso{
 \code{\link{identify_non_functional_seqs}()}
+
+Other plotting: 
+\code{\link{plot_clone_size_across_samples}()},
+\code{\link{plot_clonotype_indices}()},
+\code{\link{plot_clusters}()},
+\code{\link{plot_diversity}()},
+\code{\link{plot_n_reads}()},
+\code{\link{plot_paired}()},
+\code{\link{plot_paired_by_read_fraction_range}()},
+\code{\link{plot_paired_vs_rank}()},
+\code{\link{plot_pairs_with_eachother}()},
+\code{\link{plot_ranks}()},
+\code{\link{plot_read_fraction_vs_pair_status}()},
+\code{\link{plot_sample_overlap}()},
+\code{\link{plot_sample_vs_sample}()}
 }
+\concept{plotting}

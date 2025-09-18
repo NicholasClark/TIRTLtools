@@ -1,4 +1,7 @@
-
+#' Line plot of clone read fraction across multiple samples
+#'
+#' @family plotting
+#'
 plot_clone_size_across_samples = function(
     data,
     clones,

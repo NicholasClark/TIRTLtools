@@ -1,4 +1,9 @@
-### prep data for tcrdist python function
+#' Prepares paired TCRs for TCRdist calculation, adding alleles to V-segments
+#' (i.e. "*01") if they are missing and removing TCRs with unrecognized V-segments
+#' or non-functional CDR3 sequences
+#'
+#' @family data_processing
+#'
 prep_for_tcrdist = function(df, params=NULL) {
   if(is.null(df)) return(df)
   if(is.null(params)) params = TIRTLtools::params

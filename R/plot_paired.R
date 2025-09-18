@@ -1,4 +1,7 @@
-### df is output from get_pair_stats()
+#' Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm
+#'
+#' @family plotting
+#'
 plot_paired = function(df, chain = c("paired", "alpha", "beta"), samples = NULL, color_scheme = NULL) {
   if(.is.list.only(df)) df = get_pair_stats(df, verbose = FALSE)
   chain1 = chain[1]

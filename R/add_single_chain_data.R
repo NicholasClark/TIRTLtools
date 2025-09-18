@@ -1,5 +1,4 @@
-#' @title
-#' Add single-chain pseudo-bulk counts/proportions to paired TIRTL-seq data
+#' Add alpha- and beta-chain read counts and read fractions to the paired TCR data
 #'
 #' @description
 #' The \code{add_single_chain_data()} function adds read counts and proportions
@@ -12,7 +11,7 @@
 #' A TIRTLseq dataset object where the paired data frames for each sample have
 #' added columns for read counts and proportions from the single-chain pseudobulk data.
 #'
-#' @seealso \code{\link{load_tirtlseq}()}
+#' @family data_processing
 #'
 #' @export
 #' @examples

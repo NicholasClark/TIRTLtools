@@ -1,5 +1,4 @@
-#' @title
-#' Aggregate all of the T-cell receptors from a dataset
+#' Returns all of the paired TCRs from all samples in a dataset
 #'
 #' @description
 #' The \code{get_all_tcrs()} function aggregates the TCRs from all samples of a dataset
@@ -18,6 +17,7 @@
 #' @return
 #' A dataframe including all of the TCRs in a dataset.
 #'
+#' @family repertoire_analysis
 #' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export
@@ -33,6 +33,6 @@ get_all_tcrs = function(data, chain = c("paired", "alpha", "beta"), remove_dupli
     sample_df = bind_cols(sample_df, data$meta[i,])
     return(sample_df)
   }) %>% bind_rows()
-  if(chain == "paired" && remove_duplicates) df_all = remove_dupes_paired(df_all)
+  if(chain == "paired" && remove_duplicates) df_all = remove_duplicates(df_all)
   return(df_all)
 }

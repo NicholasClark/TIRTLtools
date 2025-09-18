@@ -1,5 +1,4 @@
-#' @title
-#' Scatterplot of TCR frequency between two samples
+#' Scatterplot of TCR clone read fraction of clones between two samples
 #'
 #' @description
 #' \code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples
@@ -16,6 +15,7 @@
 #' A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each
 #' TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
 #'
+#' @family plotting
 #' @export
 #' @examples
 #' # example code
@@ -182,8 +182,8 @@ plot_sample_vs_sample = function(data1, data2,
 #   if(!is_paired) join_col = "targetSequences"
 #
 #   if(is_paired) {
-#     data1 = remove_dupes_paired(data1)
-#     data2 = remove_dupes_paired(data2)
+#     data1 = remove_duplicates(data1)
+#     data2 = remove_duplicates(data2)
 #   }
 #
 #   join_df = inner_join(data1, data2, by = join_col)

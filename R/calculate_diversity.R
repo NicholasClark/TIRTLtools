@@ -1,5 +1,4 @@
-#' @title
-#' Calculation of clonal diversity measures from TCR data
+#' Calculate TCR repertoire diversity metrics (Shannon diversity index, Simpson diversity index, etc.)
 #'
 #' @description
 #' \code{calculate_diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
@@ -83,6 +82,7 @@
 #' @param tol the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)
 #' @param methods the diversity indices or methods to calculate.
 #'
+#' @family repertoire_analysis
 #' @seealso \code{\link{plot_diversity}()}, \code{\link{get_all_div_metrics}()}
 #'
 #' @export

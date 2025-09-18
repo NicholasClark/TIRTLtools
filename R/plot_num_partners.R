@@ -1,5 +1,4 @@
-#' @title
-#' Plot the number of partners for each single chain that is matched to another chain.
+#' Stacked bar plot of the fraction of single-chains with different numbers of partners for each sample
 #'
 #' @description
 #' \code{plot_num_partners()} creates bar plots for alpha and beta chains showing how many
@@ -28,6 +27,7 @@
 #'
 #' \code{$data} the data used to create the plot
 #'
+#' @family plotting
 #' @seealso \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export
@@ -66,7 +66,7 @@ plot_num_partners = function(data,
   is_paired = .is.paired(data)
   is_list = .is.list.only(data)
   if(!is_paired) stop("'data' must be paired chain output from TIRTL-seq")
-  data = remove_dupes_paired(data)
+  data = remove_duplicates(data)
 
   if(is_list) {
     gg_df = lapply(1:length(data), function(i) {
@@ -106,7 +106,7 @@ plot_num_partners = function(data,
 }
 
 .get_num_partners_single = function(df, max_partners = 5) {
-  df = remove_dupes_paired(df)
+  df = remove_duplicates(df)
   alpha_tbl = table(df$alpha_nuc) %>% table() %>% as.data.frame.table() %>%
     magrittr::set_colnames(c("n_partners", "Frequency")) %>%
     mutate( Fraction = Frequency/sum(Frequency), chain = "alpha" ) %>%

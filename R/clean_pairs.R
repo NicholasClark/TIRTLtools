@@ -1,4 +1,8 @@
-
+#' Clean paired TCR data, keeping at most one beta-chain partner for each
+#' individual alpha-chain and at most two alpha-chain partners for each individual beta-chain
+#'
+#' @family data_processing
+#'
 clean_pairs = function(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE) {
   if(is.null(data$is_annotated)) {
     data = add_single_chain_data(data, verbose = FALSE)
@@ -29,7 +33,7 @@ clean_pairs = function(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE) {
 # at most one beta chain and each beta chain has its matches pruned to at most two alpha chains.
 .clean_pairs_single = function(df, n_max_alpha = 2, n_max_beta = 1) {
   df_orig = df
-  df = df %>% remove_dupes_paired()
+  df = df %>% remove_duplicates()
   cleaned_df = df %>%
     group_by(beta_nuc, vb, jb, va, ja) %>%
     ## if multiple alphas with same va + ja are paired with same beta, assume most frequent is real and rest are sequencing errors

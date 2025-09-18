@@ -1,3 +1,7 @@
+#' Count the number of alpha chains and beta chains that were paired by each pairing algorithm
+#'
+#' @family repertoire_analysis
+#'
 get_pair_stats = function(data, verbose = TRUE) {
   pair_stats = lapply(1:length(data$data), function(i) {
     x = data$data[[i]]

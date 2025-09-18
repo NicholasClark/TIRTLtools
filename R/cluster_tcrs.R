@@ -1,5 +1,4 @@
-#' @title
-#' Clustering of TCRs using TCRdist and the Leiden algorithm
+#' Cluster TCRs (using the Leiden algorithm) based on their pairwise TCRdist values
 #'
 #' @description
 #' The \code{cluster_tcrs()} function aggregates all of the paired TCRs found in the data,
@@ -44,6 +43,7 @@
 #'
 #' \code{$resolution} - the resolution parameter used for the Leiden algorithm
 #'
+#' @family repertoire_analysis
 #' @seealso \code{\link{plot_clusters}()}, \code{\link{identify_non_functional_seqs}()}, \code{\link{TCRdist}()}
 #'
 #' @export

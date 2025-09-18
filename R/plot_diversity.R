@@ -1,5 +1,4 @@
-#' @title
-#' Plotting of clonal diversity metrics
+#' Bar plot of clonal diversity metrics
 #'
 #' @description
 #' The \code{plot_diversity()} plots the requested clonal diversity metric
@@ -31,6 +30,7 @@
 #'
 #' \code{$data} - if return_data is TRUE, the data frame used to make the plot
 #'
+#' @family plotting
 #' @seealso \code{\link{diversity}()}, \code{\link{get_all_div_metrics}()}
 #'
 #' @export

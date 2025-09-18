@@ -1,4 +1,6 @@
-## input is a data frame with data from all wells
+#' Remove rare clones from well-level TIRTLseq data
+#'
+#' @family well
 filter_well_data = function(well_data_df, min_fraction = 1e-6) {
   well_data_df = well_data_df %>%
     mutate(v = get_segments_all(allVHitsWithScore), j = get_segments_all(allJHitsWithScore))  %>%

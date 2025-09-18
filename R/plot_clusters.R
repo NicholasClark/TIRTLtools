@@ -1,5 +1,4 @@
-#' @title
-#' Plot the top N largest clusters of a set of TCRs
+#' Plot clusters of similar TCRs
 #'
 #' @description
 #' \code{plot_clusters()} plots TCRs that were previously clustered by the \code{\link{cluster_tcrs}()} function.
@@ -24,6 +23,7 @@
 #'
 #' \code{$heatmap} - a heatmap visualization of TCRs from the top clusters
 #'
+#' @family plotting
 #' @seealso \code{\link{cluster_tcrs}()}, \code{\link{TCRdist}()}
 #'
 #' @export

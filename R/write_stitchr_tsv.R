@@ -1,4 +1,6 @@
-
+#' Write a tab-separated "thimble" text file for use with Stitchr
+#'
+#' @family stitchr
 write_stitchr_tsv = function(df, output_name, output_folder = "") {
   cols = c("TCR_name", "TRAV", "TRAJ", "TRA_CDR3", "TRBV", "TRBJ", "TRB_CDR3",
            "TRAC", "TRBC", "TRA_leader", "TRB_leader", "Linker", "Link_order",

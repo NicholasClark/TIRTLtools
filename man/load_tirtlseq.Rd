@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_tirtlseq.R
 \name{load_tirtlseq}
 \alias{load_tirtlseq}
-\title{Load TIRTLseq data}
+\title{Load paired-TCR and pseudo-bulk data from TIRTLseq experiments into a TIRTLseqData object}
 \usage{
 load_tirtlseq(
   directory,
@@ -70,5 +70,9 @@ then the metadata table will look like something like this:
 
 }
 \seealso{
-\code{\link{filter_dataset}()}
+Other data_wrangling: 
+\code{\link{add_metadata}()},
+\code{\link{filter_dataset}()},
+\code{\link{reorder_samples}()}
 }
+\concept{data_wrangling}

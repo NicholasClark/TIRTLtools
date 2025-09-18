@@ -1,3 +1,6 @@
+#' Download TIRTLseq datasets
+#'
+#' @family download
 download_dataset = function(dataset = "SJTRC_TIRTLseq_minimal") {
 
   file_info = .get_dataset_info(dataset)

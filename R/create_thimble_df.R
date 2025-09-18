@@ -1,4 +1,7 @@
-## input df is a data frame with TCR pairs, named in our normal way
+#' Convert paired TCRs to a "thimble" data frame for stitching together TCR nucleotide coding sequences with the Stitchr Python package
+#'
+#' @family stitchr
+#'
 create_thimble_df = function(df, preset = c("default", "none"), TCR_names = "TCR",
                              exclude_non_functional = TRUE, remove_duplicates = TRUE, verbose = TRUE,
                              Linker = NULL, Link_order = NULL, TRAC = NULL, TRBC = NULL,

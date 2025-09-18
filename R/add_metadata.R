@@ -1,4 +1,8 @@
-### add metadata to tirtlseq data
+#' Add missing metadata to a TIRTLseqData object.
+#'
+#'
+#' @family data_wrangling
+#'
 add_metadata = function(obj, sep="_", meta_columns) {
   samples = names(obj$data)
   meta_tmp = lapply(1:length(samples), function(i) {

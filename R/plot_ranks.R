@@ -1,23 +1,9 @@
-#' @title
-#' Line plot of TCR rank vs. frequency
+#' Line plot of clonotype rank vs. read fraction for each sample
 #'
 #' @description
 #' \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 #'
-#' @details
-#' Fill in later.
-#'
-#' @param param1 the first parameter
-#' @param param2 the second parameter
-#'
-#' @return
-#' A line plot (ggplot object) of TCR rank vs. read fraction
-#'
-#'
-#' @export
-#' @examples
-#' # example code
-#'
+#' @family plotting
 #'
 
 plot_ranks = function(
