@@ -45,3 +45,4 @@ LinkingTo:
     Rcpp,
     RcppParallel
 SystemRequirements: GNU make
+URL: https://nicholasclark.github.io/TIRTLtools/
