@@ -6,10 +6,12 @@
 #' would indicate a non-functional chain.
 #'
 #'
-#' @param df a dataframe of TIRTLseq data, either paired or single-chain pseudobulk for one sample
+#' @param data a TIRTLseqData object
 #'
 #' @return
-#' A dataframe with added columns that identify whether the CDR3 alpha and beta
+#' A TIRTLseqData object with modified pseudobulk and paired data frames for each
+#' sample. Each dataframe in the ouptut object has added columns that identify
+#' whether the CDR3 alpha and beta
 #' nucleotide sequences contain any stop codons (*) or frame shifts (_) that would
 #' indicate a non-functional chain.
 #'
@@ -28,7 +30,16 @@
 #'
 #'
 
-identify_non_functional_seqs = function(df) {
+
+identify_non_functional_seqs = function(data) {
+  data_out = lapply(data$data, function(x) {
+    lapply(x, .identify_non_functional_seqs_single)
+  })
+  data$data = data_out
+  return(data)
+}
+
+.identify_non_functional_seqs_single = function(df) {
   if("cdr3a" %in% colnames(df) && "cdr3b" %in% colnames(df)) {
     ### for paired data
     df_out = df %>%

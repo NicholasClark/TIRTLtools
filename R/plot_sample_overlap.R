@@ -31,12 +31,15 @@
 #' # plot_sample_overlap(data, chain = "paired", n_seq=200)
 #'
 
-plot_sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
-                          n_seq = 200,
-                          show_row_names = FALSE, show_column_names = FALSE,
-                          label_col = "Sample",
-                          title = "",
-                          return_data = FALSE
+plot_sample_overlap = function(
+    data,
+    chain = c("paired", "alpha", "beta"),
+    n_seq = 200,
+    show_row_names = FALSE,
+    show_column_names = FALSE,
+    label_col = "Sample",
+    title = "",
+    return_data = FALSE
 ) {
   meta = data$meta
   data = data$data
@@ -69,10 +72,10 @@ plot_sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
   })
   if(label_col == "Sample") {
     meta = meta %>% as.data.frame() %>% tibble::column_to_rownames(colnames(meta)[1])
-    meta$label = NULL
+    if(ncol(meta) > 1) meta$label = NULL
   } else {
     meta = meta %>% as.data.frame() %>% tibble::column_to_rownames(label_col)
-    meta$label = NULL
+    if(ncol(meta) > 1) meta$label = NULL
   }
 
   labels = rownames(meta)
@@ -88,13 +91,15 @@ plot_sample_overlap = function(data, chain = c("paired", "alpha", "beta"),
   })
   rownames(jaccard_mat) = labels
   colnames(jaccard_mat) = labels
+
   row_ann = ComplexHeatmap::rowAnnotation(df = meta)
 
   col_hc <- hclust(as.dist(1-jaccard_mat), method = "average")
   row_hc = col_hc
   #row_hc <- hclust(as.dist(1-jaccard_mat), method = "average")
 
-  ComplexHeatmap::Heatmap(olap_mat, left_annotation = row_ann,
+  ComplexHeatmap::Heatmap(olap_mat,
+                          left_annotation = row_ann,
                           show_row_names = show_row_names,
                           show_column_names = show_column_names,
                           #clustering_distance_columns = as.dist(1-jaccard_mat),

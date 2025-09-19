@@ -2,10 +2,11 @@
 #'
 #' @family data_processing
 #'
-TIRTL_process = function(data) {
+TIRTL_process = function(data, clean = FALSE) {
+  if(clean) data = data %>% clean_pairs()
   data = data %>%
     add_single_chain_data() %>%
-    clean_pairs() %>%
-    identify_paired()
+    identify_paired() %>%
+    identify_non_functional_seqs()
   return(data)
 }

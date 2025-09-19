@@ -134,7 +134,7 @@ load_tirtlseq = function(
           cat(msg)
           df_tmp =  data.table::fread(file_long, nThread = nThread) # %>% dtplyr::lazy_dt()
           #if(chain %in% c("alpha", "beta")) setkey(df_tmp, targetSequences)
-          df_tmp = identify_non_functional_seqs(df_tmp)
+          #df_tmp = identify_non_functional_seqs(df_tmp)
           file_counter <<- file_counter + 1
         }
         return(df_tmp)

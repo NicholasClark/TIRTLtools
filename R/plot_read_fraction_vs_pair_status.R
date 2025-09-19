@@ -12,7 +12,7 @@ plot_read_fraction_vs_pair_status = function(
   ) {
   chain = chain[1]
 
-  if(!"is_paired" %in% colnames(data$data[[1]])) data = identify_paired(data, verbose = FALSE)
+  if(!"is_paired" %in% colnames(data$data[[1]]$beta)) data = identify_paired(data, verbose = FALSE)
   if(is.numeric(sample)) sample = names(data$data)[[sample]]
   data = data$data[[sample]]
 
