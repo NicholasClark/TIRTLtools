@@ -13,7 +13,9 @@ plot_sample_overlap(
   show_column_names = FALSE,
   label_col = "Sample",
   title = "",
-  return_data = FALSE
+  return_data = FALSE,
+  cluster_rows = TRUE,
+  cluster_cols = TRUE
 )
 
 sample_overlap(...)

@@ -2,15 +2,17 @@
 % Please edit documentation in R/identify_non_functional_seqs.R
 \name{identify_non_functional_seqs}
 \alias{identify_non_functional_seqs}
-\title{Identify TCRs that contain non-functional CDR3 sequences, i.e. those that contain stop codons (*) or frame shifts (_)}
+\title{Identify TCRs that contain non-functional CDR3 sequences}
 \usage{
-identify_non_functional_seqs(df)
+identify_non_functional_seqs(data)
 }
 \arguments{
-\item{df}{a dataframe of TIRTLseq data, either paired or single-chain pseudobulk for one sample}
+\item{data}{a TIRTLseqData object}
 }
 \value{
-A dataframe with added columns that identify whether the CDR3 alpha and beta
+A TIRTLseqData object with modified pseudobulk and paired data frames for each
+sample. Each dataframe in the ouptut object has added columns that identify
+whether the CDR3 alpha and beta
 nucleotide sequences contain any stop codons (*) or frame shifts (_) that would
 indicate a non-functional chain.
 
@@ -21,8 +23,8 @@ a stop codon or frameshift, and if it is functional.
 }
 \description{
 \code{identify_non_functional_seqs()} identifies CDR3 nucleotide sequences in
-the data that contain errors, either stop codons (*) or frame shifts (_) that
-would indicate a non-functional chain.
+the data that contain either stop codons (*) or frame shifts (_) that
+would indicate a non-functional protein product.
 }
 \examples{
 # example code
@@ -36,6 +38,7 @@ Other data_processing:
 \code{\link{TIRTL_process}()},
 \code{\link{add_single_chain_data}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_mait}()},
 \code{\link{identify_paired}()},
 \code{\link{prep_for_tcrdist}()},
 \code{\link{remove_duplicates}()}

@@ -1,11 +1,18 @@
 ### helper function - calculates diversity metrics for a single data frame
-.diversity_single = function(data, chain, type_column = "auto", proportion_column="auto",
-                             q=0:6, percent = seq(10,90,10), n = 10, tol = 1e-10,
-                             methods = get_all_div_metrics()
+.diversity_single = function(
+    data,
+    chain,
+    type_column = "auto",
+    proportion_column="auto",
+    q=0:6,
+    percent = seq(10,90,10),
+    n = 10,
+    tol = 1e-10,
+    metrics = get_all_div_metrics()
 ) {
   data = data[[chain]]
   prop_df = .calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
-  res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, methods = methods, n = n)
+  res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, metrics = metrics, n = n)
   out = list(diversity = res, prop_df = prop_df)
   return(out)
 }
@@ -96,7 +103,7 @@
 ### helper function - calculates diversity metrics given a vector of proportions summing to one.
 .calc_all_diversity = function(proportions, q=0:6, percent = seq(10,90,10), tol = 1e-14,
                                n=10,
-                               methods = get_all_div_metrics() ) {
+                               metrics = get_all_div_metrics() ) {
   data = proportions[!is.na(proportions)]
   data = data[data != 0]
   sum_data = sum(data)
@@ -110,7 +117,7 @@
     ss = paste(c(s1, s2), collapse = " ")
     stop(ss)
   }
-  ### return diversity indices for the requested methods
+  ### return diversity indices for the requested metrics
   res = list(
     simpson = .simpson(data),
     gini = .gini(data),
@@ -127,6 +134,6 @@
     top100fraction = .top100fraction(data),
     topNfraction = list( .topNfraction(data, n) )
   )
-  res = res[methods]
+  res = res[metrics]
   return(res)
 }

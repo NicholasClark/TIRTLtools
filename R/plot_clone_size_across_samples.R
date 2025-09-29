@@ -11,7 +11,8 @@ plot_clone_size_across_samples = function(
     sum_readFraction = TRUE,
     samples=NULL,
     return_data = FALSE,
-    label_zero = FALSE
+    label_zero = FALSE,
+    show_legend = TRUE
     ) {
   chain = chain[1]
   group_is_null = is.null(group_vec)
@@ -59,6 +60,7 @@ plot_clone_size_across_samples = function(
     theme_classic() +
     theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
     scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels, limits = c(min(log_labs_y$brks), max(log_labs_y$brks)) )
+  if(!show_legend) gg = gg + theme(legend.position = "none")
   res = gg
   if(return_data) {
     res = list(plot = gg)

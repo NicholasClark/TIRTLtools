@@ -5,8 +5,9 @@
 \title{GPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs}
 \usage{
 TCRdist(
-  tcr1 = NULL,
+  tcr1,
   tcr2 = NULL,
+  remove_MAIT = FALSE,
   params = NULL,
   submat = NULL,
   tcrdist_cutoff = 90,
@@ -33,8 +34,8 @@ combination of amino acids or va/vb segments (default is NULL, which uses TIRTLt
 
 \item{tcrdist_cutoff}{(optional) discard all TCRdist values above this cutoff (default is 90).}
 
-\item{chunk_size}{(optional) what size chunks to use in calculation of TCRdist (default 1000). If set at n,
-we calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
+\item{chunk_size}{(optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
+it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
 (in our testing, a chunk_size of 1000 to 5000 provided the fastest runtime and
 chunk_size of over 7500 resulted in memory errors on some GPUs).}
 
@@ -43,6 +44,11 @@ chunk_size of over 7500 resulted in memory errors on some GPUs).}
 \item{print_res}{(optional) print summary of results (default is TRUE)}
 
 \item{only_lower_tri}{(optional) return one TCRdist value for each pair (like the lower triangle of a symmetric matrix). Default is TRUE.}
+
+\item{return_data}{(optional) whether to return the output result from the function.
+With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)}
+
+\item{write_tsv}{(optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)}
 }
 \value{
 A list with entries:

@@ -1,8 +1,12 @@
 #' Parallelized C++ implementation of TCRdist (no GPU required)
 #'
+#' @param tcr1 a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"
+#' @param tcr2 (optional) another data frame of TCRs. If supplied, TCRdist will be calculated
+#' for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
+#' for every pair of TCRs in tcr1.
 #' @family repertoire_analysis
 #'
-TCRdist_cpp = function(tcr1, tcr2=NULL, tcrdist_cutoff = 90) {
+TCRdist_cpp = function(tcr1, tcr2=NULL) {
 
   submat = TIRTLtools::submat
   params = TIRTLtools::params
@@ -40,7 +44,7 @@ TCRdist_cpp = function(tcr1, tcr2=NULL, tcrdist_cutoff = 90) {
   all_mat1 = cbind(tcr1_cdr3a_num, tcr1_cdr3b_num, tcr1_segments_num)
   all_mat2 = cbind(tcr2_cdr3a_num, tcr2_cdr3b_num, tcr2_segments_num)
 
-  tcrdist_mat <- tcrdist_parallel(all_mat1, all_mat2, submat, tcr2_equals_tcr1, tcrdist_cutoff)
+  tcrdist_mat <- tcrdist_parallel(all_mat1, all_mat2, submat, tcr2_equals_tcr1)
   mode(tcrdist_mat) <- "integer"
 
 
@@ -48,7 +52,7 @@ TCRdist_cpp = function(tcr1, tcr2=NULL, tcrdist_cutoff = 90) {
 }
 
 
-# TCRdist_cpp = function(tcr1, tcr2=NULL) {
+# TCRdist_cpp_noparallel = function(tcr1, tcr2=NULL) {
 #
 #   submat = TIRTLtools::submat
 #   params = TIRTLtools::params

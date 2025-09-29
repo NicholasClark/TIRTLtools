@@ -1,9 +1,15 @@
-#' Add missing metadata to a TIRTLseqData object.
+#' Add metadata to a TIRTLseqData object
+#'
+#' @param obj a TIRTLseqData object
+#' @param meta_columns (optional) a vector of names for metadata for each field in the sample names.
+#' @param sep (optional) the character separating fields in the sample names of the data
+#' For example \code{c("marker", "timepoint", "donor")} for samples named something
+#' like "cd8_timepoint2_donor1".
 #'
 #'
 #' @family data_wrangling
 #'
-add_metadata = function(obj, sep="_", meta_columns) {
+add_metadata = function(obj, meta_columns = NULL, sep="_") {
   samples = names(obj$data)
   meta_tmp = lapply(1:length(samples), function(i) {
     ff = samples[i]

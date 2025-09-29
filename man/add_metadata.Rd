@@ -2,12 +2,21 @@
 % Please edit documentation in R/add_metadata.R
 \name{add_metadata}
 \alias{add_metadata}
-\title{Add missing metadata to a TIRTLseqData object.}
+\title{Add metadata to a TIRTLseqData object}
 \usage{
-add_metadata(obj, sep = "_", meta_columns)
+add_metadata(obj, meta_columns = NULL, sep = "_")
+}
+\arguments{
+\item{obj}{a TIRTLseqData object}
+
+\item{meta_columns}{(optional) a vector of names for metadata for each field in the sample names.}
+
+\item{sep}{(optional) the character separating fields in the sample names of the data
+For example \code{c("marker", "timepoint", "donor")} for samples named something
+like "cd8_timepoint2_donor1".}
 }
 \description{
-Add missing metadata to a TIRTLseqData object.
+Add metadata to a TIRTLseqData object
 }
 \seealso{
 Other data_wrangling: 

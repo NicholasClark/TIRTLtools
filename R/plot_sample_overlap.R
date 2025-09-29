@@ -39,7 +39,9 @@ plot_sample_overlap = function(
     show_column_names = FALSE,
     label_col = "Sample",
     title = "",
-    return_data = FALSE
+    return_data = FALSE,
+    cluster_rows = TRUE,
+    cluster_cols = TRUE
 ) {
   meta = data$meta
   data = data$data
@@ -98,13 +100,16 @@ plot_sample_overlap = function(
   row_hc = col_hc
   #row_hc <- hclust(as.dist(1-jaccard_mat), method = "average")
 
+  if(cluster_rows) cluster_rows = dendsort::dendsort(as.dendrogram(row_hc), type="average")
+  if(cluster_cols) cluster_cols = dendsort::dendsort(as.dendrogram(col_hc), type="average")
+
   ComplexHeatmap::Heatmap(olap_mat,
                           left_annotation = row_ann,
                           show_row_names = show_row_names,
                           show_column_names = show_column_names,
                           #clustering_distance_columns = as.dist(1-jaccard_mat),
                           #clustering_distance_rows = as.dist(1-jaccard_mat),
-                          cluster_rows = dendsort::dendsort(as.dendrogram(row_hc), type="average"),
-                          cluster_columns = dendsort::dendsort(as.dendrogram(col_hc), type="average"),
+                          cluster_rows = cluster_rows,
+                          cluster_columns = cluster_cols,
                           column_title = title)
 }

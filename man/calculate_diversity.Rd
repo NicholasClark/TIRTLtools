@@ -3,47 +3,35 @@
 \name{calculate_diversity}
 \alias{calculate_diversity}
 \alias{diversity}
-\title{Calculate TCR repertoire diversity metrics (Shannon diversity index, Simpson diversity index, etc.)}
+\title{Calculate TCR repertoire diversity metrics}
 \usage{
 calculate_diversity(
   data,
-  chain = c("paired", "alpha", "beta"),
-  type_column = "auto",
-  proportion_column = "auto",
+  chain = c("beta", "alpha"),
+  metrics = get_all_div_metrics(),
+  samples = NULL,
   q = 0:6,
   percent = seq(10, 90, 10),
-  n = 10,
-  tol = 1e-10,
-  samples = NULL,
-  methods = get_all_div_metrics()
+  n = 10
 )
 
 diversity(...)
 }
 \arguments{
-\item{data}{either a single data frame containing paired TCRs from TIRTL-seq output or a list of
-data frames for many experiments}
+\item{data}{a TIRTLseqData object}
 
-\item{type_column}{the column from the TIRTLseq paired or pseudobulk output that determines
-clonotype uniqueness. The default is "auto", which will use single-chain nucleotide sequence for pseudobulk and paired chain nucleotide sequence for paired data.
-for paired results.}
+\item{chain}{the chain to use when calculating metrics, alpha or beta (default is "beta")}
 
-\item{proportion_column}{the column from the TIRTLseq paired or pseudobulk data that will be used to
-calculate the total proportion of each clonotype. The default is "readFraction". If no suitable
-column is given, the proportion of occurences of each clonotype in the data will be used to
-calculate diversity.}
+\item{metrics}{the diversity indices or metrics to calculate.}
+
+\item{samples}{the samples to calculate diversity metrics for (default is NULL, all samples)}
 
 \item{q}{a vector of integers specifying which "orders" to calculate for Hill numbers and Renyi entropy.}
 
 \item{percent}{a percentage (out of 100) or a vector of percentages to use when calculating dXX values,
 i.e. the minimum number of clones needed to cover XX percent of the sample.}
 
-\item{tol}{the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)}
-
-\item{methods}{the diversity indices or methods to calculate.}
-
-\item{meta}{a dataframe of metadata for all of the samples in data. The first column is
-expected to have unique sample names.}
+\item{n}{the number of most frequent clones to use for the topNfraction metric.}
 }
 \value{
 returns a list with the requested indices. "simpson", "gini", "gini.simpson", "inv.simpson",

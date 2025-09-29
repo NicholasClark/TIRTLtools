@@ -2,14 +2,14 @@
 % Please edit documentation in R/filter_dataset.R
 \name{filter_dataset}
 \alias{filter_dataset}
-\title{Subset a TIRTLseqData object to only the requested samples}
+\title{Subset a TIRTLseqData object}
 \usage{
 filter_dataset(data, samples)
 }
 \arguments{
-\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
+\item{data}{a TIRTLseqData object created by \code{\link{load_tirtlseq}()}}
 
-\item{samples}{the selected samples. Either1) a numeric vector of indices,
+\item{samples}{the selected samples. Either 1) a numeric vector of indices,
 2) a character vector of sample names, or 3) a character vector of metadata
 conditions where each entry is of the form \code{"column==value"}.}
 }

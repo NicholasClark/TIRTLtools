@@ -2,22 +2,25 @@
 % Please edit documentation in R/remove_duplicates.R
 \name{remove_duplicates}
 \alias{remove_duplicates}
-\title{Removes duplicate paired TCRs (by default, paired TCRs are listed twice if they
-were called by both pairing algorithms)}
+\title{Removes duplicate paired TCRs}
 \usage{
 remove_duplicates(data)
 }
+\arguments{
+\item{data}{either a single data frame (paired chain) or a list
+of data frames}
+}
 \description{
-There will be duplicates in paired chain data when a pair is called by both
-the T-SHELL and MAD-HYPE algorithms.
-The input 'data' needs to be either a single data frame (paired chain) or a list
-of data frames (paired chain)
+By default, paired TCRs are listed twice in the paired chain data
+if they were called by both the T-SHELL and MAD-HYPE pairing algorithms. This
+function removes duplicate TCRs and returns a data frame with only one of each pair.
 }
 \seealso{
 Other data_processing: 
 \code{\link{TIRTL_process}()},
 \code{\link{add_single_chain_data}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_mait}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{identify_paired}()},
 \code{\link{prep_for_tcrdist}()}

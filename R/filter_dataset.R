@@ -1,4 +1,4 @@
-#' Subset a TIRTLseqData object to only the requested samples
+#' Subset a TIRTLseqData object
 #'
 #' @description
 #' The \code{filter_dataset()} function is used to select a subset of samples from
@@ -12,8 +12,8 @@
 #' samples whose \code{cell_type} is \code{cd4} and whose \code{timepoint} is \code{tp2} in
 #' the sample metadata.
 #'
-#' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
-#' @param samples the selected samples. Either1) a numeric vector of indices,
+#' @param data a TIRTLseqData object created by \code{\link{load_tirtlseq}()}
+#' @param samples the selected samples. Either 1) a numeric vector of indices,
 #' 2) a character vector of sample names, or 3) a character vector of metadata
 #' conditions where each entry is of the form \code{"column==value"}.
 #'

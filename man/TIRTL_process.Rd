@@ -2,17 +2,26 @@
 % Please edit documentation in R/TIRTL_process.R
 \name{TIRTL_process}
 \alias{TIRTL_process}
-\title{Run the other data processing functions in a sequence (add_single_chain_data, clean_pairs, and identify_paired)}
+\title{Run data processing functions on a TIRTLseqData object}
 \usage{
-TIRTL_process(data)
+TIRTL_process(data, clean = FALSE)
+}
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{clean}{(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
+excess pairs for individual alpha and beta chains (default is FALSE).}
 }
 \description{
-Run the other data processing functions in a sequence (add_single_chain_data, clean_pairs, and identify_paired)
+This function runs annotation and data cleaning functions on a
+TIRTLseqData object. Specifically, it calls the functions \code{add_single_chain_data()},
+\code{identify_paired()}, \code{identify_non_functional_seqs()}, and (optionally) \code{clean_pairs()}.
 }
 \seealso{
 Other data_processing: 
 \code{\link{add_single_chain_data}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_mait}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{identify_paired}()},
 \code{\link{prep_for_tcrdist}()},

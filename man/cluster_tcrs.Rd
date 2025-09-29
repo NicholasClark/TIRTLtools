@@ -8,8 +8,10 @@ cluster_tcrs(
   data,
   tcrdist_cutoff = 90,
   resolution = 0.1,
-  with_vdjdb = TRUE,
-  allow_self_edges = TRUE
+  with_db = TRUE,
+  db = TIRTLtools::vdj_db,
+  allow_self_edges = TRUE,
+  remove_MAIT = TRUE
 )
 }
 \arguments{
@@ -24,8 +26,10 @@ value will produce larger clusters and a higher value will produce smaller clust
 Typical values are in the 0.1 - 2.0 range. A higher value may be better for densely
 connected data while a lower value may be better for moderately connected data. Default is 0.1.}
 
-\item{with_vdjdb}{if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
-If parameter is a data frame, the supplied data frame will be used as the database.}
+\item{with_db}{if TRUE, observed clones will be compared and clustered with a dataframe of
+annotated clones. By default, a dataframe with VDJ-db annotations is used.}
+
+\item{db}{a data frame with annotated TCRs. The default is a dataframe with VDJ-db annotations.}
 
 \item{allow_self_edges}{(default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db}
 }

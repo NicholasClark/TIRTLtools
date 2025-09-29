@@ -2,22 +2,31 @@
 % Please edit documentation in R/prep_for_tcrdist.R
 \name{prep_for_tcrdist}
 \alias{prep_for_tcrdist}
-\title{Prepares paired TCRs for TCRdist calculation, adding alleles to V-segments
-(i.e. "*01") if they are missing and removing TCRs with unrecognized V-segments
-or non-functional CDR3 sequences}
+\title{Prepare paired TCRs for TCRdist calculation}
 \usage{
-prep_for_tcrdist(df, params = NULL)
+prep_for_tcrdist(df, params = NULL, remove_MAIT = TRUE, verbose = TRUE)
+}
+\arguments{
+\item{df}{a data frame of paired TCRs}
+
+\item{params}{(optional) a data frame with permissible amino acids and V-segments.
+By default, the TIRTLtools::params data frame is used.}
+
+\item{remove_MAIT}{(optional) whether or not to remove MAIT cells from the data frame (default is TRUE).}
+
+\item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \description{
-Prepares paired TCRs for TCRdist calculation, adding alleles to V-segments
-(i.e. "*01") if they are missing and removing TCRs with unrecognized V-segments
-or non-functional CDR3 sequences
+This function prepares a paired TCR data frame for running TCRdist,
+adding alleles to V-segments (i.e. "*01") if they are missing and removing
+TCRs with unrecognized V-segments or non-functional CDR3 sequences.
 }
 \seealso{
 Other data_processing: 
 \code{\link{TIRTL_process}()},
 \code{\link{add_single_chain_data}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_mait}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{identify_paired}()},
 \code{\link{remove_duplicates}()}

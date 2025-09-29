@@ -1,4 +1,4 @@
-#' Calculate TCR repertoire diversity metrics (Shannon diversity index, Simpson diversity index, etc.)
+#' Calculate TCR repertoire diversity metrics
 #'
 #' @description
 #' \code{calculate_diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
@@ -65,22 +65,15 @@
 #' (or Renyi) number of order 'q', and the other contains the value of the corresponding 'q'.
 #' They return a data frame with many rows if supplied with a vector of orders (e.g. 1:5).
 #'
-#' @param data either a single data frame containing paired TCRs from TIRTL-seq output or a list of
-#' data frames for many experiments
-#' @param meta a dataframe of metadata for all of the samples in data. The first column is
-#' expected to have unique sample names.
-#' @param type_column the column from the TIRTLseq paired or pseudobulk output that determines
-#' clonotype uniqueness. The default is "auto", which will use single-chain nucleotide sequence for pseudobulk and paired chain nucleotide sequence for paired data.
-#' for paired results.
-#' @param proportion_column the column from the TIRTLseq paired or pseudobulk data that will be used to
-#' calculate the total proportion of each clonotype. The default is "readFraction". If no suitable
-#' column is given, the proportion of occurences of each clonotype in the data will be used to
-#' calculate diversity.
+#' @param data a TIRTLseqData object
+#' @param chain the chain to use when calculating metrics, alpha or beta (default is "beta")
+#' @param metrics the diversity indices or metrics to calculate.
+#' @param samples the samples to calculate diversity metrics for (default is NULL, all samples)
 #' @param q a vector of integers specifying which "orders" to calculate for Hill numbers and Renyi entropy.
 #' @param percent a percentage (out of 100) or a vector of percentages to use when calculating dXX values,
 #' i.e. the minimum number of clones needed to cover XX percent of the sample.
-#' @param tol the tolerance used to check that the proportions of all clones sum to 1 (default 10^-10)
-#' @param methods the diversity indices or methods to calculate.
+#' @param n the number of most frequent clones to use for the topNfraction metric.
+#'
 #'
 #' @family repertoire_analysis
 #' @seealso \code{\link{plot_diversity}()}, \code{\link{get_all_div_metrics}()}
@@ -91,76 +84,40 @@
 #' # data = load_tirtlseq("your_directory/")
 #' # div = calculate_diversity(data)
 
-#calculate_diversity = function(data, meta= NULL, chain = c("paired", "alpha", "beta"),
-calculate_diversity = function(data,
-                     chain = c("paired", "alpha", "beta"),
-                     type_column = "auto",
-                     proportion_column="auto",
-                     q=0:6,
-                     percent = seq(10,90,10),
-                     n=10,
-                     tol = 1e-10,
-                     samples = NULL,
-                     methods = get_all_div_metrics()
+calculate_diversity = function(
+  data,
+  chain = c("beta", "alpha"),
+  metrics = get_all_div_metrics(),
+  samples = NULL,
+  q=0:6,
+  percent = seq(10,90,10),
+  n=10
 ) {
-  if(!is.null(samples)) {
-    data = filter_dataset(data, samples)
-  }
+
+  if(!is.null(samples)) data = filter_dataset(data, samples)
   meta = data$meta
   data = data$data
   chain = chain[1]
-  if(!chain %in% names(data[[1]])) {
-    msg = paste("Error: 'data' object supplied does not include data for chain: ", chain, "\n", sep = "")
-    stop(msg)
-  } else {
-    msg = paste("Calculating diversity for chain: ", chain, "\n", sep = "")
-    cat(msg)
-  }
-  # is_data_frame = is.data.frame(data[[chain]])
-  # is_list = is.list(data[[chain]]) && !is_data_frame
-  # is_paired = .is.paired(data[[chain]])
-  is_paired = chain == "paired"
 
-  if(proportion_column == "auto") {
-    if(is_paired) {
-      proportion_column = "wij"
-    } else {
-      proportion_column = "readFraction"
-    }
-    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
-    cat(msg)
-  }
-
-  if(type_column == "auto") {
-    if(is_paired) {
-      type_column = "alpha_beta"
-    } else {
-      type_column = "targetSequences"
-    }
-    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
-    cat(msg)
-  }
-
-  call_args = as.list(match.call())[-1]
-  call_args$meta = NULL
-  call_args$type_column = type_column
-  call_args$proportion_column = proportion_column
-  call_args$chain = chain
-  call_args$samples = NULL
-
+  type_column = "targetSequences"
+  proportion_column = "readFraction"
   n_samples = length(data)
-  #if(is_list) {
+
   res = lapply(1:length(data), function(i) {
     msg = paste("\n", "-- Calculating diversity indices for sample ", i, " of ", n_samples,".", sep = "")
     cat(msg)
-    # x=data[[chain]][[i]]
     x=data[[i]]
-    call_args$data = x
-    do.call(.diversity_single, call_args)
+    .diversity_single(
+      data=data,
+      chain=chain,
+      type_column = type_column,
+      proportion_column = proportion_column,
+      q=q,
+      percent = percent,
+      n = n,
+      tol = 1e-10,
+      metrics = metrics)
   }) %>% setNames(names(data))
-  #} else {
-  #  res = do.call(.diversity_single, call_args)
-  #}
   out = list(result = res, meta = meta, call_args = call_args)
   return(out)
 }

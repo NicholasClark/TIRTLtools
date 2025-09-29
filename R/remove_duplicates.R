@@ -1,10 +1,13 @@
-#' Removes duplicate paired TCRs (by default, paired TCRs are listed twice if they
-#' were called by both pairing algorithms)
+#' Removes duplicate paired TCRs
 #'
-#' @description There will be duplicates in paired chain data when a pair is called by both
-#' the T-SHELL and MAD-HYPE algorithms.
-#' The input 'data' needs to be either a single data frame (paired chain) or a list
-#' of data frames (paired chain)
+#' @description By default, paired TCRs are listed twice in the paired chain data
+#' if they were called by both the T-SHELL and MAD-HYPE pairing algorithms. This
+#' function removes duplicate TCRs and returns a data frame with only one of each pair.
+#'
+#'
+#' @param data either a single data frame (paired chain) or a list
+#' of data frames
+#'
 #'
 #' @family data_processing
 remove_duplicates = function(data) {

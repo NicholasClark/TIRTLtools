@@ -6,6 +6,13 @@
 \usage{
 reorder_samples(data, samples)
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{samples}{the samples of 'data', in their desired order. Either 1) a numeric vector of indices,
+2) a character vector of sample names, or 3) a character vector of metadata
+conditions where each entry is of the form \code{"column==value"}.}
+}
 \description{
 Change the order of samples in a TIRTLseqData object
 }

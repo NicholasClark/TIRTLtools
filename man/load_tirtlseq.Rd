@@ -2,7 +2,7 @@
 % Please edit documentation in R/load_tirtlseq.R
 \name{load_tirtlseq}
 \alias{load_tirtlseq}
-\title{Load paired-TCR and pseudo-bulk data from TIRTLseq experiments into a TIRTLseqData object}
+\title{Load data from TIRTLseq experiments}
 \usage{
 load_tirtlseq(
   directory,
@@ -16,20 +16,22 @@ load_tirtlseq(
 )
 }
 \arguments{
-\item{directory}{the directory to look in for ".tsv" or ".tsv.gz" files}
+\item{directory}{the directory to look in for ".tsv" or ".tsv.gz" files of TIRTLseq data}
 
-\item{chain}{which chain data to load -- all chains (alpha, beta, and paired) by default.}
+\item{chain}{which TCR chain data to load data for -- "all" chains (alpha, beta, and paired) by default.}
 
 \item{sep}{(optional) separator in the filename for metadata information ("_" by default)}
 
-\item{meta_columns}{(optional) a vector of identifying the metadata contained in filenames,
-for example \code{c("cell_type", "timepoint", "donor")} for files named similar to "cd8_timepoint2_donor1_TIRTLoutput.tsv".}
+\item{meta_columns}{(optional) a vector of names identifying the metadata contained in the filenames,
+for example \code{c("marker", "timepoint", "donor")} for files named something like "cd8_timepoint2_donor1 ... .tsv".}
 
 \item{samples}{(optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).}
 
-\item{verbose}{whether to print the name of each file loaded (default is TRUE).}
+\item{nThread}{(optional) number of cpu threads to use for}
 
-\item{n_max}{the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. no maximum).}
+\item{verbose}{(optional) whether to print the name of each file loaded (default is TRUE).}
+
+\item{n_max}{(optional) the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. read all files).}
 }
 \value{
 The function returns a list with two objects:
@@ -41,8 +43,8 @@ The function returns a list with two objects:
 pseudo-bulk data and the paired data respectively.
 }
 \description{
-\code{load_tirtlseq()} loads TIRTLseq data from a given directory. It can also automatically
-assemble metadata from the filenames.
+\code{load_tirtlseq()} loads paired-TCR and pseudo-bulk data from TIRTLseq experiments
+from a given directory. It can also automatically assemble metadata from filenames.
 }
 \details{
 The function expects ".tsv" (or ".tsv.gz") files. It looks for files ending in

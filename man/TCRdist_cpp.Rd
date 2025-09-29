@@ -4,7 +4,14 @@
 \alias{TCRdist_cpp}
 \title{Parallelized C++ implementation of TCRdist (no GPU required)}
 \usage{
-TCRdist_cpp(tcr1, tcr2 = NULL, tcrdist_cutoff = 90)
+TCRdist_cpp(tcr1, tcr2 = NULL)
+}
+\arguments{
+\item{tcr1}{a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"}
+
+\item{tcr2}{(optional) another data frame of TCRs. If supplied, TCRdist will be calculated
+for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
+for every pair of TCRs in tcr1.}
 }
 \description{
 Parallelized C++ implementation of TCRdist (no GPU required)

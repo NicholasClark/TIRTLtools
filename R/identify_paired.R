@@ -1,4 +1,4 @@
-#' Identify which alpha and beta chains were able to be paired and which were not paired
+#' Identify which single chains were paired
 #'
 #' @description
 #' For each sample in the dataset, \code{identify_paired()} annotates the alpha
@@ -7,6 +7,7 @@
 #' is paired with any partners.
 #'
 #' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
+#' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'
 #' @return
 #' A dataset similar to that created by \code{\link{load_tirtlseq}()}, but

@@ -1,9 +1,9 @@
-#' Identify TCRs that contain non-functional CDR3 sequences, i.e. those that contain stop codons (*) or frame shifts (_)
+#' Identify TCRs that contain non-functional CDR3 sequences
 #'
 #' @description
 #' \code{identify_non_functional_seqs()} identifies CDR3 nucleotide sequences in
-#' the data that contain errors, either stop codons (*) or frame shifts (_) that
-#' would indicate a non-functional chain.
+#' the data that contain either stop codons (*) or frame shifts (_) that
+#' would indicate a non-functional protein product.
 #'
 #'
 #' @param data a TIRTLseqData object

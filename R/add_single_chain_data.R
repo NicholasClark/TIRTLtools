@@ -1,4 +1,4 @@
-#' Add alpha- and beta-chain read counts and read fractions to the paired TCR data
+#' Add single-chain read counts/fractions to the paired TCR data
 #'
 #' @description
 #' The \code{add_single_chain_data()} function adds read counts and proportions
@@ -6,6 +6,7 @@
 #' of a dataset.
 #'
 #' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
+#' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'
 #' @return
 #' A TIRTLseq dataset object where the paired data frames for each sample have

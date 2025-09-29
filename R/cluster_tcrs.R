@@ -24,8 +24,9 @@
 #' value will produce larger clusters and a higher value will produce smaller clusters.
 #' Typical values are in the 0.1 - 2.0 range. A higher value may be better for densely
 #' connected data while a lower value may be better for moderately connected data. Default is 0.1.
-#' @param with_vdjdb if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
-#' If parameter is a data frame, the supplied data frame will be used as the database.
+#' @param with_db if TRUE, observed clones will be compared and clustered with a dataframe of
+#' annotated clones. By default, a dataframe with VDJ-db annotations is used.
+#' @param db a data frame with annotated TCRs. The default is a dataframe with VDJ-db annotations.
 #' @param allow_self_edges (default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db
 #'
 #' @return
@@ -52,7 +53,15 @@
 #' # paired = load_tirtlseq("your_directory/")
 #' # obj = cluster_tcrs(paired)
 #'
-cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb = TRUE, allow_self_edges = TRUE) {
+cluster_tcrs = function(
+    data,
+    tcrdist_cutoff = 90,
+    resolution = 0.1,
+    with_db = TRUE,
+    db = TIRTLtools::vdj_db,
+    allow_self_edges = TRUE,
+    remove_MAIT = TRUE
+    ) {
   cluster.type = "leiden"
   chain = "paired"
   if(.is.list.only(data)) { ### if an object loaded by load_tirtlseq
@@ -61,23 +70,31 @@ cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb 
   } else { ### if a dataframe with TCRs
     df_all_obs = data %>% mutate(source = "observed")
   }
-  if(is.data.frame(with_vdjdb)) {
-    vdj = with_vdjdb
-    df_all = bind_rows(df_all_obs, vdj)
+  if(with_db && is.data.frame(db)) {
+    df_all = bind_rows(df_all_obs, db)
   } else {
-    if(with_vdjdb) {
-      vdj = TIRTLtools::vdj_db %>% mutate(source = "vdj-db")
-      df_all = bind_rows(df_all_obs, vdj)
-    } else {
-      df_all = df_all_obs
-    }
+    df_all = df_all_obs
   }
 
-  if( (!allow_self_edges) && with_vdjdb ) {
-    dist = TCRdist(tcr1 = df_all_obs, tcr2 = vdj, tcrdist_cutoff = tcrdist_cutoff)
+  if(remove_MAIT) {
+    df_all = filter_mait(df_all)
+    df_all_obs = filter_mait(df_all_obs)
+  }
+
+  if( (!allow_self_edges) && with_db ) {
+    dist = TCRdist(tcr1 = df_all_obs, tcr2 = db, tcrdist_cutoff = tcrdist_cutoff)
   } else {
     dist = TCRdist(df_all, tcrdist_cutoff = tcrdist_cutoff)
   }
+  out = .cluster_tcrs_from_dist_obj(dist, tcrdist_cutoff = tcrdist_cutoff, resolution = resolution)
+  return(out)
+}
+
+.cluster_tcrs_from_dist_obj = function(
+    dist,
+    tcrdist_cutoff = 90,
+    resolution = 0.1
+) {
   dist_df = dist$TCRdist_df
   dist_input = dist$tcr1
 
@@ -87,7 +104,13 @@ cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb 
   )
   dist_df$weight_binary = 1
   #dist_df$TCRdist_mod = ifelse(dist_df$TCRdist_mod == 0, -1, dist_df$TCRdist_mod)
-  n_valid = dim(dist_input)[1]
+
+  if(!is.null(dist$tcr2)) {
+    dist_df$edge2_1index = dist_df$edge2_1index + nrow(dist$tcr1)
+    dist_input = bind_rows(dist$tcr1, dist$tcr2)
+    n_valid = nrow(dist_input)
+  }
+  n_valid = nrow(dist_input)
   sparse_weight_mat_binary = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
                                                   x=dist_df$weight_binary, symmetric = TRUE,
                                                   dims = c(n_valid, n_valid))
@@ -120,6 +143,6 @@ cluster_tcrs = function(data, tcrdist_cutoff = 90, resolution = 0.1, with_vdjdb 
     graph_adj = gr_binary,
     tcrdist_cutoff = tcrdist_cutoff,
     resolution = resolution
-    )
+  )
   return(out)
 }

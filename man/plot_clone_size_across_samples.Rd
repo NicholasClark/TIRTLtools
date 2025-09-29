@@ -13,7 +13,8 @@ plot_clone_size_across_samples(
   sum_readFraction = TRUE,
   samples = NULL,
   return_data = FALSE,
-  label_zero = FALSE
+  label_zero = FALSE,
+  show_legend = TRUE
 )
 }
 \description{

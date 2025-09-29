@@ -2,12 +2,14 @@
 % Please edit documentation in R/add_single_chain_data.R
 \name{add_single_chain_data}
 \alias{add_single_chain_data}
-\title{Add alpha- and beta-chain read counts and read fractions to the paired TCR data}
+\title{Add single-chain read counts/fractions to the paired TCR data}
 \usage{
 add_single_chain_data(data, verbose = TRUE)
 }
 \arguments{
 \item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
+
+\item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \value{
 A TIRTLseq dataset object where the paired data frames for each sample have
@@ -27,6 +29,7 @@ of a dataset.
 Other data_processing: 
 \code{\link{TIRTL_process}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_mait}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{identify_paired}()},
 \code{\link{prep_for_tcrdist}()},

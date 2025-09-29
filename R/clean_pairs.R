@@ -1,5 +1,26 @@
-#' Clean paired TCR data, keeping at most one beta-chain partner for each
-#' individual alpha-chain and at most two alpha-chain partners for each individual beta-chain
+#' Remove excess pairs for individual single chains
+#'
+#' @description This function filters the paired TCR data, keeping at most one beta-chain partner for each
+#' individual alpha-chain and at most two alpha-chain partners for each individual beta-chain.
+#'
+#' @details Excess partners for an individual chain are often sequencing errors of the true partner.
+#' The sequencing error-derived chains often share the same V/J segment as the true partner, but are
+#' found at much lower read fractions.
+#'
+#' As a heuristic, to mitigate this phenomenon,
+#' for each unique beta chain we group the partner alpha chains by their V/J segments and keep only
+#' the alpha chains with the highest read fraction for each group. Out of the remaining alpha chain
+#' partners, we keep up to two chains (can be changed with n_max_alpha) with the highest read fractions.
+#'
+#' We go through a similar process with each unique alpha chain, grouping partner beta
+#' chains by their V/J segments. However, we keep only one beta chain (can be changed with n_max_beta).
+#'
+#' @param data a TIRTLseqData object
+#' @param n_max_alpha (optional) the maximum number of alpha chains allowed
+#' paired with an individual beta chain (default 2)
+#' @param n_max_beta (optional) the maximum number of beta chains allowed
+#' paired with an individual alpha chain (default 1)
+#' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'
 #' @family data_processing
 #'

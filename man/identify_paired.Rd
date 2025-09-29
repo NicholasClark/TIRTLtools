@@ -2,12 +2,14 @@
 % Please edit documentation in R/identify_paired.R
 \name{identify_paired}
 \alias{identify_paired}
-\title{Identify which alpha and beta chains were able to be paired and which were not paired}
+\title{Identify which single chains were paired}
 \usage{
 identify_paired(data, verbose = TRUE)
 }
 \arguments{
 \item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
+
+\item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \value{
 A dataset similar to that created by \code{\link{load_tirtlseq}()}, but
@@ -37,6 +39,7 @@ Other data_processing:
 \code{\link{TIRTL_process}()},
 \code{\link{add_single_chain_data}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_mait}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{prep_for_tcrdist}()},
 \code{\link{remove_duplicates}()}

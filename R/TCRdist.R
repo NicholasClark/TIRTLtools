@@ -20,13 +20,16 @@
 #' @param submat (optional) a substitution matrix with mismatch penalties for each
 #' combination of amino acids or va/vb segments (default is NULL, which uses TIRTLtools::submat).
 #' @param tcrdist_cutoff (optional) discard all TCRdist values above this cutoff (default is 90).
-#' @param chunk_size (optional) what size chunks to use in calculation of TCRdist (default 1000). If set at n,
-#' we calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
+#' @param chunk_size (optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
+#' it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
 #' (in our testing, a chunk_size of 1000 to 5000 provided the fastest runtime and
 #' chunk_size of over 7500 resulted in memory errors on some GPUs).
 #' @param print_chunk_size (optional) print a line of output for every n TCRs processed (default 1000)
 #' @param print_res (optional) print summary of results (default is TRUE)
 #' @param only_lower_tri (optional) return one TCRdist value for each pair (like the lower triangle of a symmetric matrix). Default is TRUE.
+#' @param return_data (optional) whether to return the output result from the function.
+#' With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)
+#' @param write_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
 #'
 #' @return
 #' A list with entries:
@@ -51,14 +54,22 @@
 #' # df = get_all_tcrs(data, chain="paired", remove_duplicates = TRUE)
 #' # out = TCRdist(df, tcrdist_cutoff = 90)
 
-TCRdist = function(tcr1=NULL, tcr2=NULL, params = NULL, submat = NULL, tcrdist_cutoff=90, chunk_size=1000, print_chunk_size=10, print_res = TRUE, only_lower_tri = TRUE, return_data = TRUE, write_to_tsv = FALSE) {
-  ### prep R input
-  # tcr1 = .add_alleles(tcr1)
-  # tcr1 = .filter_alleles(tcr1, params = params)
-  # tcr1 = as.data.frame(tcr1)
-  # if(!is.null(tcr2)) tcr2 = as.data.frame(tcr2)
-  tcr1 = prep_for_tcrdist(tcr1, params = params)
-  tcr2 = prep_for_tcrdist(tcr2, params = params)
+TCRdist = function(
+    tcr1,
+    tcr2=NULL,
+    remove_MAIT = FALSE,
+    params = NULL,
+    submat = NULL,
+    tcrdist_cutoff=90,
+    chunk_size=1000,
+    print_chunk_size=10,
+    print_res = TRUE,
+    only_lower_tri = TRUE,
+    return_data = TRUE,
+    write_to_tsv = FALSE
+    ) {
+  tcr1 = prep_for_tcrdist(tcr1, params = params, remove_MAIT = remove_MAIT)
+  if(!is.null(tcr2)) tcr2 = prep_for_tcrdist(tcr2, params = params, remove_MAIT = remove_MAIT)
   chunk_size = as.integer(chunk_size)
   print_chunk_size = as.integer(print_chunk_size)
   ### load python packages/scripts
