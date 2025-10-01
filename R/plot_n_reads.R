@@ -1,5 +1,10 @@
 #' Bar plot of the number of single-chain reads for each sample
 #'
+#' @param data a TIRTLseqData object
+#' @param chain the TCR chain to plot (default is both "alpha" and "beta")
+#' @param samples (optional) which samples to plot (default is all samples)
+#' @param color_scheme a color scheme for the plot
+#'
 #' @family plotting
 #'
 plot_n_reads = function(data, chain = c("both","beta", "alpha"), samples = NULL, color_scheme = NULL) {

@@ -11,11 +11,11 @@ get_all_tcrs(
 )
 }
 \arguments{
-\item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
+\item{data}{a TIRTLseqData object created by \code{\link{load_tirtlseq}()}}
 
 \item{chain}{the TCR chain, "alpha", "beta", or "paired" (default is paired)}
 
-\item{remove_duplicates}{only return one TCR pair for TCRs recognized by both
+\item{remove_duplicates}{only return one TCR for TCRs paired by both
 the T-SHELL and MAD-HYPE algorithms (default is TRUE).}
 }
 \value{

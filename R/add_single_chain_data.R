@@ -20,6 +20,12 @@
 #'
 #'
 add_single_chain_data = function(data, verbose = TRUE) {
+  if(!is.null(data$is_annotated)) {
+    if(data$is_annotated) {
+      message("Single-chain data already added")
+      return(data)
+    }
+  }
   data_tmp = lapply(1:length(data$data), function(i) {
     x = data$data[[i]]
     if(verbose) {

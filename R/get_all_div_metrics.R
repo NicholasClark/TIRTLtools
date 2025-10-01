@@ -1,7 +1,7 @@
-#' Returns all diversity metric options for `calculate_diversity()`
+#' Returns all diversity metric options for \code{\link{calculate_diversity}()}
 #'
 #' @return
-#' A vector of all available diversity metrics for the \code{\link{diversity}()} function.
+#' A vector of all available diversity metrics for the \code{\link{calculate_diversity}()} function.
 #'
 #' @family repertoire_analysis
 #' @seealso \code{\link{diversity}()}, \code{\link{plot_diversity}()}

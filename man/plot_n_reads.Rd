@@ -11,6 +11,15 @@ plot_n_reads(
   color_scheme = NULL
 )
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{chain}{the TCR chain to plot (default is both "alpha" and "beta")}
+
+\item{samples}{(optional) which samples to plot (default is all samples)}
+
+\item{color_scheme}{a color scheme for the plot}
+}
 \description{
 Bar plot of the number of single-chain reads for each sample
 }

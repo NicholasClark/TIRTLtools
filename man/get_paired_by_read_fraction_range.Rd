@@ -2,8 +2,8 @@
 % Please edit documentation in R/get_paired_by_read_fraction_range.R
 \name{get_paired_by_read_fraction_range}
 \alias{get_paired_by_read_fraction_range}
-\title{Calculates the number and fraction of single chains that were paired within
-different read fraction ranges for each sample.}
+\title{Calculate the number and fraction of single chains that were paired within
+different read fraction ranges}
 \usage{
 get_paired_by_read_fraction_range(
   data,
@@ -11,9 +11,16 @@ get_paired_by_read_fraction_range(
   cutoffs = 10^(-6:-1)
 )
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{chain}{the TCR chain to use for read fraction (default is "beta")}
+
+\item{cutoffs}{a vector of cutoffs for the read fraction ranges}
+}
 \description{
-Calculates the number and fraction of single chains that were paired within
-different read fraction ranges for each sample.
+Calculate the number and fraction of single chains that were paired within
+different read fraction ranges
 }
 \seealso{
 Other repertoire_analysis: 

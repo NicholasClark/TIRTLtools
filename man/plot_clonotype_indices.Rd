@@ -16,9 +16,9 @@ plot_clonotype_indices(
 )
 }
 \arguments{
-\item{data}{a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}}
+\item{data}{a TIRTLseqData object}
 
-\item{chain}{< fill in later >}
+\item{chain}{the TCR chain to use (default is "beta")}
 
 \item{cutoffs}{the indices used for the end of each group in the bar chart.
 The default is 10^(1:5), i.e. the 10th most-frequent clone, the 100th most-frequent clone,
@@ -33,9 +33,7 @@ to group samples}
 
 \item{return_data}{(optional) if TRUE, return the data used to make the plot (default is FALSE)}
 
-\item{type_column}{< fill in later >}
-
-\item{proportion_column}{< fill in later >}
+\item{color_scheme}{(optional) a color scheme to use}
 }
 \value{
 A list with two objects:
@@ -48,9 +46,6 @@ A list with two objects:
 \code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of
 reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
-}
-\details{
-Fill in later.
 }
 \examples{
 # example code

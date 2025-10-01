@@ -40,8 +40,8 @@ reference:
   contents:
   - has_concept("single-cell")
 
-articles:
-- title: Plot examples
-  navbar: ~
-  contents:
-  - plot_examples
+# articles:
+# - title: Plot examples
+#   navbar: ~
+#   contents:
+#   - plot_examples

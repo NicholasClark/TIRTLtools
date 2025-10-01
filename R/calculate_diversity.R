@@ -108,7 +108,7 @@ calculate_diversity = function(
     cat(msg)
     x=data[[i]]
     .diversity_single(
-      data=data,
+      data=x,
       chain=chain,
       type_column = type_column,
       proportion_column = proportion_column,
@@ -118,6 +118,6 @@ calculate_diversity = function(
       tol = 1e-10,
       metrics = metrics)
   }) %>% setNames(names(data))
-  out = list(result = res, meta = meta, call_args = call_args)
+  out = list(result = res, meta = meta)
   return(out)
 }

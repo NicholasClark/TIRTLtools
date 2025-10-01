@@ -39,7 +39,11 @@ to group samples}
 
 \item{log_scale}{(optional) if TRUE, use log-scale for the y-axis (default is FALSE)}
 
+\item{samples}{(optional) the samples to include in the plot (default is all samples)}
+
 \item{return_data}{(optional) if TRUE, return the data used to make the plot (default is FALSE)}
+
+\item{color_scheme}{(optional) a color scheme for the plot}
 }
 \value{
 A list with two objects:

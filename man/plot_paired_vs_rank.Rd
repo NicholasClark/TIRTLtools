@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_paired_vs_rank.R
 \name{plot_paired_vs_rank}
 \alias{plot_paired_vs_rank}
-\title{Line plot of the number of unpaired single-chains for the N most frequent single-chains}
+\title{A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains}
 \usage{
 plot_paired_vs_rank(
   data,
@@ -13,8 +13,21 @@ plot_paired_vs_rank(
   color_scheme = NULL
 )
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{sample}{the sample to plot}
+
+\item{y_axis}{whether to plot the cumulative number of paired or un-paired single-chains (default is "n_not_paired")}
+
+\item{chain}{the TCR chain to plot (default is both alpha and beta)}
+
+\item{n_max}{the number of most frequent single-chains to plot}
+
+\item{color_scheme}{(optional) the color scheme for the plot}
+}
 \description{
-Line plot of the number of unpaired single-chains for the N most frequent single-chains
+A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains
 }
 \seealso{
 Other plotting: 

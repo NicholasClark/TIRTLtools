@@ -1,5 +1,17 @@
 #' Line plot of clone read fraction across multiple samples
 #'
+#' @param data a TIRTLseqData object
+#' @param clones a list of nucleotide sequences of TCR clones
+#' @param chain the TCR chain used (default is "beta")
+#' @param pseudo the value of the pseudocount added to all read fractions (default is 10^-6)
+#' @param group_vec (optional) a vector of "groups" for the clones
+#' @param sum_readFraction if TRUE, plot the sum of read fractions of clones in each group.
+#' If FALSE, plot each clone with a separate line.
+#' @param samples (optional) which samples to use in the plot (default is all samples)
+#' @param return_data whether to return the data used for plotting (default is FALSE)
+#' @param label_zero whether to label zero on the y-axis (default is FALSE)
+#' @param show_legend whether to show the legend (default is TRUE)
+#'
 #' @family plotting
 #'
 plot_clone_size_across_samples = function(

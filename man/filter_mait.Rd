@@ -6,6 +6,11 @@
 \usage{
 filter_mait(df, verbose = TRUE)
 }
+\arguments{
+\item{df}{data frame with paired TCRs}
+
+\item{verbose}{whether to print number of MAIT TCRs removed}
+}
 \description{
 Remove MAIT (Mucosal-Associated Invariant T cells) TCRs
 }

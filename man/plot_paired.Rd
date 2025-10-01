@@ -5,11 +5,20 @@
 \title{Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm}
 \usage{
 plot_paired(
-  df,
+  data,
   chain = c("paired", "alpha", "beta"),
   samples = NULL,
   color_scheme = NULL
 )
+}
+\arguments{
+\item{data}{a TIRTLseqData object or a data frame created using \code{\link{get_pair_stats}()}}
+
+\item{chain}{the TCR chain to plot (default is "paired")}
+
+\item{samples}{(optional) the samples to include in the plot (default is all)}
+
+\item{color_scheme}{(optional) the color scheme for the plot}
 }
 \description{
 Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm

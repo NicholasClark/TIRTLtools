@@ -2,15 +2,15 @@
 % Please edit documentation in R/get_all_div_metrics.R
 \name{get_all_div_metrics}
 \alias{get_all_div_metrics}
-\title{Returns all diversity metric options for `calculate_diversity()`}
+\title{Returns all diversity metric options for \code{\link{calculate_diversity}()}}
 \usage{
 get_all_div_metrics()
 }
 \value{
-A vector of all available diversity metrics for the \code{\link{diversity}()} function.
+A vector of all available diversity metrics for the \code{\link{calculate_diversity}()} function.
 }
 \description{
-Returns all diversity metric options for `calculate_diversity()`
+Returns all diversity metric options for \code{\link{calculate_diversity}()}
 }
 \examples{
 # example code

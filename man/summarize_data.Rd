@@ -2,12 +2,15 @@
 % Please edit documentation in R/summarize_data.R
 \name{summarize_data}
 \alias{summarize_data}
-\title{Creates a summary table with number of reads and unique alpha/beta chains observed for each sample}
+\title{Create a summary table with number of reads and unique alpha/beta chains observed for each sample}
 \usage{
 summarize_data(data)
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+}
 \description{
-Creates a summary table with number of reads and unique alpha/beta chains observed for each sample
+Create a summary table with number of reads and unique alpha/beta chains observed for each sample
 }
 \seealso{
 Other repertoire_analysis: 

@@ -1,5 +1,9 @@
-#' Calculates the number and fraction of single chains that were paired within
-#' different read fraction ranges for each sample.
+#' Calculate the number and fraction of single chains that were paired within
+#' different read fraction ranges
+#'
+#' @param data a TIRTLseqData object
+#' @param chain the TCR chain to use for read fraction (default is "beta")
+#' @param cutoffs a vector of cutoffs for the read fraction ranges
 #'
 #' @family repertoire_analysis
 get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1)) {

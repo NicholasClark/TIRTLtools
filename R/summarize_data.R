@@ -1,4 +1,6 @@
-#' Creates a summary table with number of reads and unique alpha/beta chains observed for each sample
+#' Create a summary table with number of reads and unique alpha/beta chains observed for each sample
+#'
+#' @param data a TIRTLseqData object
 #'
 #' @family repertoire_analysis
 #'

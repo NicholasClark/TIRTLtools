@@ -2,12 +2,17 @@
 % Please edit documentation in R/get_pair_stats.R
 \name{get_pair_stats}
 \alias{get_pair_stats}
-\title{Count the number of alpha chains and beta chains that were paired by each pairing algorithm}
+\title{Count the number of single-chains that were paired by each algorithm}
 \usage{
 get_pair_stats(data, verbose = TRUE)
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
+}
 \description{
-Count the number of alpha chains and beta chains that were paired by each pairing algorithm
+Count the number of single-chains that were paired by each algorithm
 }
 \seealso{
 Other repertoire_analysis: 

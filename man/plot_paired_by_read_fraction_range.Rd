@@ -6,13 +6,27 @@
 read fraction ranges for each sample.}
 \usage{
 plot_paired_by_read_fraction_range(
-  df,
+  data,
   chain = c("beta", "alpha"),
   cutoffs = 10^(-6:-1),
   freq = FALSE,
   samples = NULL,
   color_scheme = NULL
 )
+}
+\arguments{
+\item{data}{a TIRTLseqData object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}}
+
+\item{chain}{the TCR chain to plot (default is "beta")}
+
+\item{cutoffs}{a vector of cutoffs for the read fraction ranges}
+
+\item{freq}{if TRUE, plot the number of pairs, if FALSE plot the fraction paired
+(default is FALSE, plot the fraction paired)}
+
+\item{samples}{(optional) the samples to include in the plot}
+
+\item{color_scheme}{(optional) the color scheme to use in the plot}
 }
 \description{
 Bar plot of the fraction of single chains that were paired within different

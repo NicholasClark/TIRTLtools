@@ -21,7 +21,9 @@
 #' @param flip (optional) if TRUE, flip the x and y-axes (default is FALSE)
 #' @param facet (optional) if TRUE, plot with separate facets, or sub-plots for each group (default is FALSE)
 #' @param log_scale (optional) if TRUE, use log-scale for the y-axis (default is FALSE)
+#' @param samples (optional) the samples to include in the plot (default is all samples)
 #' @param return_data (optional) if TRUE, return the data used to make the plot (default is FALSE)
+#' @param color_scheme (optional) a color scheme for the plot
 #'
 #' @return
 #' A list with two objects:
@@ -77,7 +79,7 @@ plot_diversity = function(
   if(length(unique(labels)) != dim(meta)[1]) labels = paste(1:dim(meta)[1], labels)
   gg_df$Sample = factor(labels, levels = labels)
   y_label = .get_ylabel(metric=metric, q=q, percent=percent)
-  y_label = paste(y_label, "|", div$call_args$type_column)
+  #y_label = paste(y_label, "|", div$call_args$type_column)
   plot_title = case_when(
     metric == "simpson" ~ "The Simpson diversity index - the probability that two clones chosen at random represent the same type" %>% .split_string_multiline(),
     metric == "gini" ~ "The Gini index/coefficient" %>% .split_string_multiline(),

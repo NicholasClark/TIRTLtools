@@ -2,8 +2,8 @@
 .diversity_single = function(
     data,
     chain,
-    type_column = "auto",
-    proportion_column="auto",
+    type_column = "targetSequences",
+    proportion_column="readFraction",
     q=0:6,
     percent = seq(10,90,10),
     n = 10,
@@ -57,32 +57,10 @@
 # }
 
 ### helper function to summarize clones by some column(s) for a single data frame
-.calculate_proportions = function(data, type_column = "auto", proportion_column="auto") {
-  #.calculate_proportions = function(data, type_column, proportion_column) {
-  is_paired = .is.paired(data)
-  if(.is.list.only(data)) stop("Error: 'data' needs to be a single data frame.")
-  if(type_column == "auto") {
-    if(is_paired) {
-      type_column = "alpha_beta"
-    } else {
-      type_column = "targetSequences"
-    }
-    msg = paste("\n", "Using ", type_column ," for 'type_column'", sep = "")
-    cat(msg)
-  }
+.calculate_proportions = function(data, type_column = "targetSequences", proportion_column="readFraction") {
 
   cols = strsplit(type_column, "\\+")[[1]]
   sym_type_col = syms(cols)
-
-  if(proportion_column == "auto") {
-    if(is_paired) {
-      proportion_column = "wij"
-    } else {
-      proportion_column = "readFraction"
-    }
-    msg = paste("\n", "Using ", proportion_column ," for 'proportion_column'", sep = "")
-    cat(msg)
-  }
 
   if(!proportion_column %in% colnames(data)) {
     warning("'proportion_column' not found in the data, using proportion of occurrences to measure diversity")

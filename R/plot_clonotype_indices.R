@@ -5,13 +5,9 @@
 #' reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 #' clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
 #'
-#' @details
-#' Fill in later.
 #'
-#' @param data a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}
-#' @param chain < fill in later >
-#' @param type_column < fill in later >
-#' @param proportion_column < fill in later >
+#' @param data a TIRTLseqData object
+#' @param chain the TCR chain to use (default is "beta")
 #' @param cutoffs the indices used for the end of each group in the bar chart.
 #' The default is 10^(1:5), i.e. the 10th most-frequent clone, the 100th most-frequent clone,
 #' the 1,000th, the 10,000th, and the 100,000th.
@@ -20,6 +16,7 @@
 #' @param label_col (optional) labels for the samples
 #' @param flip (optional) if TRUE, flip the x and y-axes (default is FALSE)
 #' @param return_data (optional) if TRUE, return the data used to make the plot (default is FALSE)
+#' @param color_scheme (optional) a color scheme to use
 #'
 #' @return
 #' A list with two objects:
@@ -40,8 +37,6 @@
 plot_clonotype_indices = function(
   data,
   chain = c("beta", "alpha"),
-  #type_column = "auto",
-  #proportion_column = "auto",
   cutoffs = 10^(1:5),
   group_col = NULL,
   label_col = "Sample",
@@ -60,7 +55,7 @@ plot_clonotype_indices = function(
   data3 = lapply(data2, function(x) x[[chain]]) %>% setNames(names(data2))
   labels = .get_labels_from_col(meta, label_col)
 
-  is_paired = .is.paired(data3[[1]])
+  #is_paired = .is.paired(data3[[1]])
   #type_column = .get_type_column(type_column, is_paired)
   #proportion_column = .get_proportion_column(proportion_column, is_paired, is_annotated)
   type_column = "targetSequences"

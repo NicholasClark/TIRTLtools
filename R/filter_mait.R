@@ -1,5 +1,9 @@
 #' Remove MAIT (Mucosal-Associated Invariant T cells) TCRs
 #'
+#'
+#' @param df data frame with paired TCRs
+#' @param verbose whether to print number of MAIT TCRs removed
+#'
 #' @family data_processing
 #'
 filter_mait = function(df, verbose = TRUE) {

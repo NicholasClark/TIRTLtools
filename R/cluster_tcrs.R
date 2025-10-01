@@ -26,8 +26,11 @@
 #' connected data while a lower value may be better for moderately connected data. Default is 0.1.
 #' @param with_db if TRUE, observed clones will be compared and clustered with a dataframe of
 #' annotated clones. By default, a dataframe with VDJ-db annotations is used.
-#' @param db a data frame with annotated TCRs. The default is a dataframe with VDJ-db annotations.
-#' @param allow_self_edges (default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db
+#' @param db a data frame with annotated TCRs. The default is the VDJ-db database.
+#' @param allow_self_edges if FALSE, only calculate TCRdist between input data TCRs
+#' and the TCR annotation database (db). If TRUE, calculate pairwise TCRdist for all
+#' of the data including the input and the annotated TCRs.
+#' @param remove_MAIT remove MAIT TCRs before clustering (default is TRUE)
 #'
 #' @return
 #' Returns a list with the following elements:

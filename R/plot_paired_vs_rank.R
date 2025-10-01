@@ -1,4 +1,12 @@
-#' Line plot of the number of unpaired single-chains for the N most frequent single-chains
+#' A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains
+#'
+#' @param data a TIRTLseqData object
+#' @param sample the sample to plot
+#' @param y_axis whether to plot the cumulative number of paired or un-paired single-chains (default is "n_not_paired")
+#' @param chain the TCR chain to plot (default is both alpha and beta)
+#' @param n_max the number of most frequent single-chains to plot
+#' @param color_scheme (optional) the color scheme for the plot
+#'
 #'
 #' @family plotting
 plot_paired_vs_rank = function(

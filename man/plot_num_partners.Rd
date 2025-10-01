@@ -16,7 +16,7 @@ plot_num_partners(
 )
 }
 \arguments{
-\item{data}{a dataset created by \code{\link{load_tirtlseq}()} and possibly \code{\link{filter_dataset}()}}
+\item{data}{a TIRTLseqData object}
 
 \item{group_col}{a column of the metadata to use to group multiple samples into one bar plot}
 
@@ -29,7 +29,11 @@ cdr3 sequences when tabulating the output.}
 \item{max_partners}{the maximum number of partners, N, to include in the plots.
 All chains with more than N partners will be grouped together under the ">N" category.}
 
+\item{samples}{(optional) which samples to plot}
+
 \item{return_data}{if TRUE, return the data used to make the plots}
+
+\item{color_scheme}{the color scheme to use for the plot}
 }
 \value{
 Either a bar chart (ggplot object) with facets (sub-plots) for each sample or

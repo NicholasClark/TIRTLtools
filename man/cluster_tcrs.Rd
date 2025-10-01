@@ -29,9 +29,13 @@ connected data while a lower value may be better for moderately connected data. 
 \item{with_db}{if TRUE, observed clones will be compared and clustered with a dataframe of
 annotated clones. By default, a dataframe with VDJ-db annotations is used.}
 
-\item{db}{a data frame with annotated TCRs. The default is a dataframe with VDJ-db annotations.}
+\item{db}{a data frame with annotated TCRs. The default is the VDJ-db database.}
 
-\item{allow_self_edges}{(default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db}
+\item{allow_self_edges}{if FALSE, only calculate TCRdist between input data TCRs
+and the TCR annotation database (db). If TRUE, calculate pairwise TCRdist for all
+of the data including the input and the annotated TCRs.}
+
+\item{remove_MAIT}{remove MAIT TCRs before clustering (default is TRUE)}
 }
 \value{
 Returns a list with the following elements:

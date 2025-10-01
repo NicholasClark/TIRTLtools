@@ -1,4 +1,7 @@
-#' Count the number of alpha chains and beta chains that were paired by each pairing algorithm
+#' Count the number of single-chains that were paired by each algorithm
+#'
+#' @param data a TIRTLseqData object
+#' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'
 #' @family repertoire_analysis
 #'

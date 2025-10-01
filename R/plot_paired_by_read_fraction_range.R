@@ -1,10 +1,26 @@
 #' Bar plot of the fraction of single chains that were paired within different
 #' read fraction ranges for each sample.
 #'
+#' @param data a TIRTLseqData object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}
+#' @param chain the TCR chain to plot (default is "beta")
+#' @param cutoffs a vector of cutoffs for the read fraction ranges
+#' @param freq if TRUE, plot the number of pairs, if FALSE plot the fraction paired
+#' (default is FALSE, plot the fraction paired)
+#' @param samples (optional) the samples to include in the plot
+#' @param color_scheme (optional) the color scheme to use in the plot
+#'
+#'
 #' @family plotting
-plot_paired_by_read_fraction_range = function(df, chain = c("beta","alpha"), cutoffs = 10^(-6:-1), freq=FALSE, samples = NULL, color_scheme = NULL) {
+plot_paired_by_read_fraction_range = function(
+    data,
+    chain = c("beta","alpha"),
+    cutoffs = 10^(-6:-1),
+    freq=FALSE,
+    samples = NULL,
+    color_scheme = NULL
+    ) {
   chain = chain[1]
-  if(.is.list.only(df)) df = get_paired_by_read_fraction_range(df, chain, cutoffs)
+  if(.is.list.only(data)) data = get_paired_by_read_fraction_range(data, chain, cutoffs)
   #gg_df = get_paired_by_read_fraction_range(data)
   #gg_df = left_join(gg_df, data$meta)
   if(!is.null(samples)) df = df %>% filter(sample_id %in% samples)
