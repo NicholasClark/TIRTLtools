@@ -51,19 +51,19 @@
           <code><a href="add_metadata.html">add_metadata()</a></code>
 
         </dt>
-        <dd>Add missing metadata to a TIRTLseqData object.</dd>
+        <dd>Add metadata to a TIRTLseqData object</dd>
       </dl><dl><dt>
 
           <code><a href="filter_dataset.html">filter_dataset()</a></code>
 
         </dt>
-        <dd>Subset a TIRTLseqData object to only the requested samples</dd>
+        <dd>Subset a TIRTLseqData object</dd>
       </dl><dl><dt>
 
           <code><a href="load_tirtlseq.html">load_tirtlseq()</a></code>
 
         </dt>
-        <dd>Load paired-TCR and pseudo-bulk data from TIRTLseq experiments into a TIRTLseqData object</dd>
+        <dd>Load data from TIRTLseq experiments</dd>
       </dl><dl><dt>
 
           <code><a href="reorder_samples.html">reorder_samples()</a></code>
@@ -86,43 +86,49 @@
           <code><a href="TIRTL_process.html">TIRTL_process()</a></code>
 
         </dt>
-        <dd>Run the other data processing functions in a sequence (add_single_chain_data, clean_pairs, and identify_paired)</dd>
+        <dd>Run data processing functions on a TIRTLseqData object</dd>
       </dl><dl><dt>
 
           <code><a href="add_single_chain_data.html">add_single_chain_data()</a></code>
 
         </dt>
-        <dd>Add alpha- and beta-chain read counts and read fractions to the paired TCR data</dd>
+        <dd>Add single-chain read counts/fractions to the paired TCR data</dd>
       </dl><dl><dt>
 
           <code><a href="clean_pairs.html">clean_pairs()</a></code>
 
         </dt>
-        <dd>Clean paired TCR data, keeping at most one beta-chain partner for each individual alpha-chain and at most two alpha-chain partners for each individual beta-chain</dd>
+        <dd>Remove excess pairs for individual single chains</dd>
+      </dl><dl><dt>
+
+          <code><a href="filter_mait.html">filter_mait()</a></code>
+
+        </dt>
+        <dd>Remove MAIT (Mucosal-Associated Invariant T cells) TCRs</dd>
       </dl><dl><dt>
 
           <code><a href="identify_non_functional_seqs.html">identify_non_functional_seqs()</a></code>
 
         </dt>
-        <dd>Identify TCRs that contain non-functional CDR3 sequences, i.e. those that contain stop codons (*) or frame shifts (_)</dd>
+        <dd>Identify TCRs that contain non-functional CDR3 sequences</dd>
       </dl><dl><dt>
 
           <code><a href="identify_paired.html">identify_paired()</a></code>
 
         </dt>
-        <dd>Identify which alpha and beta chains were able to be paired and which were not paired</dd>
+        <dd>Identify which single chains were paired</dd>
       </dl><dl><dt>
 
           <code><a href="prep_for_tcrdist.html">prep_for_tcrdist()</a></code>
 
         </dt>
-        <dd>Prepares paired TCRs for TCRdist calculation, adding alleles to V-segments (i.e. "*01") if they are missing and removing TCRs with unrecognized V-segments or non-functional CDR3 sequences</dd>
+        <dd>Prepare paired TCRs for TCRdist calculation</dd>
       </dl><dl><dt>
 
           <code><a href="remove_duplicates.html">remove_duplicates()</a></code>
 
         </dt>
-        <dd>Removes duplicate paired TCRs (by default, paired TCRs are listed twice if they were called by both pairing algorithms)</dd>
+        <dd>Removes duplicate paired TCRs</dd>
       </dl></div><div class="section level2">
 
       <h3 id="tcr-repertoire-analysis">TCR repertoire analysis<a class="anchor" aria-label="anchor" href="#tcr-repertoire-analysis"></a></h3>
@@ -151,7 +157,7 @@
           <code><a href="calculate_diversity.html">calculate_diversity()</a></code> <code><a href="calculate_diversity.html">diversity()</a></code>
 
         </dt>
-        <dd>Calculate TCR repertoire diversity metrics (Shannon diversity index, Simpson diversity index, etc.)</dd>
+        <dd>Calculate TCR repertoire diversity metrics</dd>
       </dl><dl><dt>
 
           <code><a href="cluster_tcrs.html">cluster_tcrs()</a></code>
@@ -163,7 +169,7 @@
           <code><a href="get_all_div_metrics.html">get_all_div_metrics()</a></code>
 
         </dt>
-        <dd>Returns all diversity metric options for `calculate_diversity()`</dd>
+        <dd>Returns all diversity metric options for <code><a href="../reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
       </dl><dl><dt>
 
           <code><a href="get_all_tcrs.html">get_all_tcrs()</a></code>
@@ -175,19 +181,19 @@
           <code><a href="get_pair_stats.html">get_pair_stats()</a></code>
 
         </dt>
-        <dd>Count the number of alpha chains and beta chains that were paired by each pairing algorithm</dd>
+        <dd>Count the number of single-chains that were paired by each algorithm</dd>
       </dl><dl><dt>
 
           <code><a href="get_paired_by_read_fraction_range.html">get_paired_by_read_fraction_range()</a></code>
 
         </dt>
-        <dd>Calculates the number and fraction of single chains that were paired within different read fraction ranges for each sample.</dd>
+        <dd>Calculate the number and fraction of single chains that were paired within different read fraction ranges</dd>
       </dl><dl><dt>
 
           <code><a href="summarize_data.html">summarize_data()</a></code>
 
         </dt>
-        <dd>Creates a summary table with number of reads and unique alpha/beta chains observed for each sample</dd>
+        <dd>Create a summary table with number of reads and unique alpha/beta chains observed for each sample</dd>
       </dl></div><div class="section level2">
 
       <h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a></h3>
@@ -252,7 +258,7 @@
           <code><a href="plot_paired_vs_rank.html">plot_paired_vs_rank()</a></code>
 
         </dt>
-        <dd>Line plot of the number of unpaired single-chains for the N most frequent single-chains</dd>
+        <dd>A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains</dd>
       </dl><dl><dt>
 
           <code><a href="plot_pairs_with_eachother.html">plot_pairs_with_eachother()</a></code>

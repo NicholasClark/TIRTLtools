@@ -37,9 +37,23 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">TCRdist_cpp</span><span class="op">(</span><span class="va">tcr1</span>, tcr2 <span class="op">=</span> <span class="cn">NULL</span>, tcrdist_cutoff <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">TCRdist_cpp</span><span class="op">(</span><span class="va">tcr1</span>, tcr2 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-tcr-">tcr1<a class="anchor" aria-label="anchor" href="#arg-tcr-"></a></dt>
+<dd><p>a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"</p></dd>
+
+
+<dt id="arg-tcr-">tcr2<a class="anchor" aria-label="anchor" href="#arg-tcr-"></a></dt>
+<dd><p>(optional) another data frame of TCRs. If supplied, TCRdist will be calculated
+for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
+for every pair of TCRs in tcr1.</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other repertoire_analysis:

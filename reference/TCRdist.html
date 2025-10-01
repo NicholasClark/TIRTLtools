@@ -38,8 +38,9 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">TCRdist</span><span class="op">(</span></span>
-<span>  tcr1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">tcr1</span>,</span>
 <span>  tcr2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  remove_MAIT <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  params <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  submat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tcrdist_cutoff <span class="op">=</span> <span class="fl">90</span>,</span>
@@ -81,8 +82,8 @@ combination of amino acids or va/vb segments (default is NULL, which uses TIRTLt
 
 
 <dt id="arg-chunk-size">chunk_size<a class="anchor" aria-label="anchor" href="#arg-chunk-size"></a></dt>
-<dd><p>(optional) what size chunks to use in calculation of TCRdist (default 1000). If set at n,
-we calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
+<dd><p>(optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
+it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
 (in our testing, a chunk_size of 1000 to 5000 provided the fastest runtime and
 chunk_size of over 7500 resulted in memory errors on some GPUs).</p></dd>
 
@@ -97,6 +98,15 @@ chunk_size of over 7500 resulted in memory errors on some GPUs).</p></dd>
 
 <dt id="arg-only-lower-tri">only_lower_tri<a class="anchor" aria-label="anchor" href="#arg-only-lower-tri"></a></dt>
 <dd><p>(optional) return one TCRdist value for each pair (like the lower triangle of a symmetric matrix). Default is TRUE.</p></dd>
+
+
+<dt id="arg-return-data">return_data<a class="anchor" aria-label="anchor" href="#arg-return-data"></a></dt>
+<dd><p>(optional) whether to return the output result from the function.
+With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)</p></dd>
+
+
+<dt id="arg-write-tsv">write_tsv<a class="anchor" aria-label="anchor" href="#arg-write-tsv"></a></dt>
+<dd><p>(optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)</p></dd>
 
 </dl></div>
     <div class="section level2">

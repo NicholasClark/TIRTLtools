@@ -47,8 +47,10 @@ and clusters the results using the Leiden algorithm.</p>
 <span>  <span class="va">data</span>,</span>
 <span>  tcrdist_cutoff <span class="op">=</span> <span class="fl">90</span>,</span>
 <span>  resolution <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  with_vdjdb <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  allow_self_edges <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  with_db <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  db <span class="op">=</span> <span class="fu">TIRTLtools</span><span class="fu">::</span><span class="va">vdj_db</span>,</span>
+<span>  allow_self_edges <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  remove_MAIT <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -73,13 +75,23 @@ Typical values are in the 0.1 - 2.0 range. A higher value may be better for dens
 connected data while a lower value may be better for moderately connected data. Default is 0.1.</p></dd>
 
 
-<dt id="arg-with-vdjdb">with_vdjdb<a class="anchor" aria-label="anchor" href="#arg-with-vdjdb"></a></dt>
-<dd><p>if TRUE, observed clones will be compared and clustered with annotated clones from VDJ-db.
-If parameter is a data frame, the supplied data frame will be used as the database.</p></dd>
+<dt id="arg-with-db">with_db<a class="anchor" aria-label="anchor" href="#arg-with-db"></a></dt>
+<dd><p>if TRUE, observed clones will be compared and clustered with a dataframe of
+annotated clones. By default, a dataframe with VDJ-db annotations is used.</p></dd>
+
+
+<dt id="arg-db">db<a class="anchor" aria-label="anchor" href="#arg-db"></a></dt>
+<dd><p>a data frame with annotated TCRs. The default is the VDJ-db database.</p></dd>
 
 
 <dt id="arg-allow-self-edges">allow_self_edges<a class="anchor" aria-label="anchor" href="#arg-allow-self-edges"></a></dt>
-<dd><p>(default TRUE) if FALSE, only calculate TCRdist between members of the input data and vdj_db</p></dd>
+<dd><p>if FALSE, only calculate TCRdist between input data TCRs
+and the TCR annotation database (db). If TRUE, calculate pairwise TCRdist for all
+of the data including the input and the annotated TCRs.</p></dd>
+
+
+<dt id="arg-remove-mait">remove_MAIT<a class="anchor" aria-label="anchor" href="#arg-remove-mait"></a></dt>
+<dd><p>remove MAIT TCRs before clustering (default is TRUE)</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -46,10 +46,56 @@
 <span>  sum_readFraction <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  return_data <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  label_zero <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  label_zero <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  show_legend <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>a TIRTLseqData object</p></dd>
+
+
+<dt id="arg-clones">clones<a class="anchor" aria-label="anchor" href="#arg-clones"></a></dt>
+<dd><p>a list of nucleotide sequences of TCR clones</p></dd>
+
+
+<dt id="arg-chain">chain<a class="anchor" aria-label="anchor" href="#arg-chain"></a></dt>
+<dd><p>the TCR chain used (default is "beta")</p></dd>
+
+
+<dt id="arg-pseudo">pseudo<a class="anchor" aria-label="anchor" href="#arg-pseudo"></a></dt>
+<dd><p>the value of the pseudocount added to all read fractions (default is 10^-6)</p></dd>
+
+
+<dt id="arg-group-vec">group_vec<a class="anchor" aria-label="anchor" href="#arg-group-vec"></a></dt>
+<dd><p>(optional) a vector of "groups" for the clones</p></dd>
+
+
+<dt id="arg-sum-readfraction">sum_readFraction<a class="anchor" aria-label="anchor" href="#arg-sum-readfraction"></a></dt>
+<dd><p>if TRUE, plot the sum of read fractions of clones in each group.
+If FALSE, plot each clone with a separate line.</p></dd>
+
+
+<dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
+<dd><p>(optional) which samples to use in the plot (default is all samples)</p></dd>
+
+
+<dt id="arg-return-data">return_data<a class="anchor" aria-label="anchor" href="#arg-return-data"></a></dt>
+<dd><p>whether to return the data used for plotting (default is FALSE)</p></dd>
+
+
+<dt id="arg-label-zero">label_zero<a class="anchor" aria-label="anchor" href="#arg-label-zero"></a></dt>
+<dd><p>whether to label zero on the y-axis (default is FALSE)</p></dd>
+
+
+<dt id="arg-show-legend">show_legend<a class="anchor" aria-label="anchor" href="#arg-show-legend"></a></dt>
+<dd><p>whether to show the legend (default is TRUE)</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other plotting:
