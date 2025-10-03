@@ -24,6 +24,7 @@
 #' @param samples (optional) the samples to include in the plot (default is all samples)
 #' @param return_data (optional) if TRUE, return the data used to make the plot (default is FALSE)
 #' @param color_scheme (optional) a color scheme for the plot
+#' @param x_var (optional) the variable to show on the x-axis, if other than "sample_id"
 #'
 #' @return
 #' A list with two objects:
@@ -55,7 +56,8 @@ plot_diversity = function(
     log_scale = FALSE,
     samples = NULL,
     return_data = FALSE,
-    color_scheme = NULL
+    color_scheme = NULL,
+    x_var = NULL
     ) {
   metric = metric[1]
   #print(metric)
@@ -97,9 +99,11 @@ plot_diversity = function(
     metric == "topNfraction" ~ "The total fraction made up by the N most frequent types" %>% .split_string_multiline(),
     .default = ""
   )
+  xx = sym("Sample")
+  if(!is.null(x_var)) xx = sym(x_var)
   if(is.null(group_col)) {
     gg = ggplot(gg_df) +
-      geom_col(aes(y=value, x= Sample)) +
+      geom_col(aes(y=value, x= !!xx)) +
       ylab(y_label) +
       ggtitle(plot_title) +
       theme_classic()
@@ -110,7 +114,7 @@ plot_diversity = function(
       gg_df$Group = apply(gg_df[, group_col], 1, paste, collapse = " | ")
     }
     if(facet) { ### separate panels for each group
-      gg = ggplot(gg_df, aes(y=value, x= Sample)) +
+      gg = ggplot(gg_df, aes(y=value, x= !!xx)) +
         geom_col(aes(fill = Group)) +
         ylab(y_label) +
         theme_classic()

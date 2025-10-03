@@ -23,6 +23,7 @@ plot_paired_by_read_fraction_range = function(
   if(.is.list.only(data)) data = get_paired_by_read_fraction_range(data, chain, cutoffs)
   #gg_df = get_paired_by_read_fraction_range(data)
   #gg_df = left_join(gg_df, data$meta)
+  df = data
   if(!is.null(samples)) df = df %>% filter(sample_id %in% samples)
   n=length(unique(df$range))
   if(!freq) {

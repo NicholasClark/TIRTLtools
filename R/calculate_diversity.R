@@ -94,6 +94,11 @@ calculate_diversity = function(
   n=10
 ) {
 
+  if(sum(!metrics %in% get_all_div_metrics()) > 0) {
+    mets = metrics[which(!metrics %in% get_all_div_metrics())]
+    msg = paste("Requested diversity metrics are not available:", paste(mets, collapse = " "))
+    stop(msg)
+  }
   if(!is.null(samples)) data = filter_dataset(data, samples)
   meta = data$meta
   data = data$data

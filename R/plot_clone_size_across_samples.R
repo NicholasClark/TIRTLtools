@@ -11,6 +11,7 @@
 #' @param return_data whether to return the data used for plotting (default is FALSE)
 #' @param label_zero whether to label zero on the y-axis (default is FALSE)
 #' @param show_legend whether to show the legend (default is TRUE)
+#' @param log_scale (optional) if TRUE, use log-scale for the y-axis (default is FALSE)
 #'
 #' @family plotting
 #'
@@ -24,7 +25,9 @@ plot_clone_size_across_samples = function(
     samples=NULL,
     return_data = FALSE,
     label_zero = FALSE,
-    show_legend = TRUE
+    show_legend = TRUE,
+    log_scale = TRUE,
+    x_var = NULL
     ) {
   chain = chain[1]
   group_is_null = is.null(group_vec)
@@ -65,13 +68,16 @@ plot_clone_size_across_samples = function(
     mutate(source = factor(source, levels = samples)) %>%
     mutate(sample_id = source) %>%
     left_join(., data$meta)
-  gg = ggplot(gg_df, aes(x=source, y=!!y_col+pseudo)) +
+  xx = sym("source")
+  if(!is.null(x_var)) xx = sym(x_var)
+  gg = ggplot(gg_df, aes(x=!!xx, y=!!y_col+pseudo)) +
     geom_line(aes(group = !!grp, color = group)) +
     geom_point(aes(group = !!grp, color = group)) +
-    #scale_y_log10() +
     theme_classic() +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
-    scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels, limits = c(min(log_labs_y$brks), max(log_labs_y$brks)) )
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+  if(log_scale) {
+    gg = gg + scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels, limits = c(min(log_labs_y$brks), max(log_labs_y$brks)) )
+  }
   if(!show_legend) gg = gg + theme(legend.position = "none")
   res = gg
   if(return_data) {
