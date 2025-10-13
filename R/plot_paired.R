@@ -6,7 +6,11 @@
 #' @param color_scheme (optional) the color scheme for the plot
 #' @family plotting
 #'
-plot_paired = function(data, chain = c("paired", "alpha", "beta"), samples = NULL, color_scheme = NULL) {
+plot_paired = function(
+    data,
+    chain = c("paired", "alpha", "beta"),
+    samples = NULL,
+    color_scheme = NULL) {
   if(.is.list.only(data)) data = get_pair_stats(data, verbose = FALSE)
   chain1 = chain[1]
   data$log10Freq = log10(data$Freq)

@@ -7,7 +7,11 @@
 #'
 #' @family plotting
 #'
-plot_n_reads = function(data, chain = c("both","beta", "alpha"), samples = NULL, color_scheme = NULL) {
+plot_n_reads = function(
+    data,
+    chain = c("both","beta", "alpha"),
+    samples = NULL,
+    color_scheme = NULL) {
   chain = chain[1]
   df = summarize_data(data)
   if(!is.null(samples)) df = df %>% filter(sample_id %in% samples)

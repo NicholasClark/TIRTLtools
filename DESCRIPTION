@@ -20,11 +20,15 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    Biostrings,
     ComplexHeatmap,
     data.table,
+    DelayedDataFrame,
     dendsort,
-    dtplyr,
+    DFplyr,
+    duckdb,
     ggplot2,
+    HDF5Array,
     igraph (>= 2.1.4),
     irlba (>= 2.3.5.1),
     magrittr,
@@ -33,6 +37,8 @@ Imports:
     RcppParallel,
     readr,
     reticulate (>= 1.41.0.1),
+    rhdf5,
+    S4Vectors,
     stringdist,
     tictoc,
     tidyr,
