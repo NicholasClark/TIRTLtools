@@ -7,6 +7,8 @@ import(dplyr)
 import(magrittr)
 import(data.table)
 import(dtplyr)
+import(HDF5Array)
+import(rhdf5)
 
 export("%>%")
 importFrom(Rcpp, sourceCpp)

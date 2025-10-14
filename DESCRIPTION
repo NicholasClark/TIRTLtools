@@ -26,6 +26,7 @@ Imports:
     DelayedDataFrame,
     dendsort,
     DFplyr,
+    dtplyr,
     ggplot2,
     HDF5Array,
     igraph (>= 2.1.4),
