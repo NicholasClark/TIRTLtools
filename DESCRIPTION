@@ -23,10 +23,12 @@ Imports:
     Biostrings,
     ComplexHeatmap,
     data.table,
+    dbplyr,
     DelayedDataFrame,
     dendsort,
     DFplyr,
     dtplyr,
+    duckdb,
     ggplot2,
     HDF5Array,
     igraph (>= 2.1.4),
@@ -42,7 +44,8 @@ Imports:
     stringdist,
     tictoc,
     tidyr,
-    uwot (>= 0.2.3)
+    uwot (>= 0.2.3),
+    vctrs
 Depends: 
     R (>= 3.5)
 biocViews: 

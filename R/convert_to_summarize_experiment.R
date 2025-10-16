@@ -43,7 +43,7 @@ convert_to_summarized_experiment = function(data) {
 # }
 
 
-save_TIRTL_meta = function(se_list, prefix, chains = c("alpha", "beta", "paired"), type = c("HDF5", "parquet")) {
+save_TIRTL_meta = function(se_list, prefix, chains = c("alpha", "beta", "paired"), type = c("parquet", "HDF5")) {
   type = type[1]
   sample_meta = colData(se_list[[1]])
   if(type == "parquet") {
@@ -56,18 +56,43 @@ save_TIRTL_meta = function(se_list, prefix, chains = c("alpha", "beta", "paired"
     }
   } else {
     cols = colnames(sample_meta)
+    file = paste(prefix,".h5",sep="")
+    grp = "col_meta"
+    if(!file.exists(file)) h5createFile(file)
+    h5_df = h5ls(file)
+    if(!paste("/", grp, sep = "") %in% h5_df$group) h5createGroup(file, grp)
     for(col in cols) {
       print(col)
-      writeHDF5Array(sample_meta[[col]] %>% as.matrix(),  paste(prefix,".h5",sep=""), name = paste("metadata", "column", col, sep = "_"))
+      h5write(sample_meta[[col]], file, paste(grp, col, sep = "/"))
+      #writeHDF5Array(sample_meta[[col]] %>% as.matrix(),  file, name = paste("metadata", "column", col, sep = "_"))
     }
 
     for(chain in chains) {
       print(chain)
       #cols = rowData(se_list[[chain]]) %>% colnames()
       cols = .get_metadata_cols(chain)
+      grp1 = chain
+      h5createGroup(file, grp1)
+      grp = paste(chain, "row_meta", sep = "/")
+      #h5createFile(file)
+      h5_df = h5ls(file)
+      print(h5_df)
+      string = paste("/", grp, sep = "")
+      if(!string %in% h5_df$group) h5createGroup(file, grp)
+      print("test")
       for(col in cols) {
         print(col)
-        writeHDF5Array(rowData(se_list[[chain]])[[col]] %>% as.matrix(),  paste(prefix,".h5",sep=""), name = paste("metadata", "row", chain, col, sep = "_"))
+        vec = rowData(se_list[[chain]])[[col]]
+        h5createDataset(
+          file = file,
+          dataset = paste(grp, col, sep = "/"),
+          dims = length(vec),
+          storage.mode = storage.mode(vec),
+          size = max(nchar(vec)),       # max string length (important!)
+          chunk = 1e5      # number of elements per chunk
+        )
+        h5write(vec, file, paste(grp, col, sep = "/"))
+        #writeHDF5Array(rowData(se_list[[chain]])[[col]] %>% as.matrix(),  paste(prefix,".h5",sep=""), name = paste("metadata", "row", chain, col, sep = "_"))
       }
     }
   }
@@ -111,7 +136,7 @@ save_TIRTL_to_HDF5_10x = function(se_list, prefix, chains = c("alpha", "beta", "
   return(cols)
 }
 
-load_TIRTL_HDF5_10x = function(prefix, meta_type = c("HDF5", "parquet")) {
+load_TIRTL_HDF5_10x = function(prefix, meta_type = c("parquet", "HDF5")) {
   meta_type = meta_type[1]
   file = paste(prefix, ".h5", sep = "")
   vals = .get_assay_names("single")
@@ -131,17 +156,17 @@ load_TIRTL_HDF5_10x = function(prefix, meta_type = c("HDF5", "parquet")) {
   msg = paste("Reading metadata...")
   if(meta_type == "parquet") {
     df_list = read_meta_parquet(prefix)
+    ll = df_list$df
   } else {
-    df_list = read_meta_HDF5(prefix)
+    ll = read_meta_HDF5(prefix)
   }
-  ll = df_list$df
-  se_alpha = SummarizedExperiment(colData = ll$col, rowData = ll$alpha, assays = a_list)
-  #metadata(se_alpha)$row_data_file <- df_list$file[["alpha"]]
-  se_beta = SummarizedExperiment(colData = ll$col, rowData = ll$beta, assays = b_list)
-  #metadata(se_beta)$row_data_file <- df_list$file[["beta"]]
-  se_paired = SummarizedExperiment(colData = ll$col, rowData = ll$paired, assays = paired_list)
-  #metadata(se_paired)$row_data_file <- df_list$file[["paired"]]
-  se_list <- SimpleList(
+  se_alpha = SummarizedExperiment::SummarizedExperiment(colData = ll$col, rowData = ll$alpha, assays = a_list)
+  metadata(se_alpha)$row_data_file <- df_list$file[["alpha"]]
+  se_beta = SummarizedExperiment::SummarizedExperiment(colData = ll$col, rowData = ll$beta, assays = b_list)
+  metadata(se_beta)$row_data_file <- df_list$file[["beta"]]
+  se_paired = SummarizedExperiment::SummarizedExperiment(colData = ll$col, rowData = ll$paired, assays = paired_list)
+  metadata(se_paired)$row_data_file <- df_list$file[["paired"]]
+  se_list <- S4Vectors::SimpleList(
     alpha = se_alpha,
     beta = se_beta,
     paired = se_paired
@@ -152,19 +177,19 @@ load_TIRTL_HDF5_10x = function(prefix, meta_type = c("HDF5", "parquet")) {
 get_row_data = function(se, backend = c("duckdb", "arrow")) {
   backend = backend[1]
   file = metadata(se)$row_data_file
-  if(backend == "arrow") df = open_dataset(file)
+  if(backend == "arrow") df = arrow::open_dataset(file)
   if(backend == "duckdb") {
-    con <- dbConnect(duckdb())
+    con <- duckdb::dbConnect(duckdb::duckdb())
     call = paste("read_parquet(", "'", file, "'", ")", sep = "")
     #tbl <- tbl(con, "read_parquet('alpha_test.parquet')")
-    df <- tbl(con, call)
+    df <- dplyr::tbl(con, call)
   }
   return(df)
 }
 
 show_row_data = function(se, n=6, backend = c("duckdb", "arrow")) {
-  df_tmp = open_dataset(metadata(se)$row_data_file)
-  dims = dim(df_tmp)
+  df_tmp = arrow::open_dataset(metadata(se)$row_data_file)
+  dims = dim(df_tmp) %>% sapply(function(x) format(x, big.mark=","))
   backend = backend[1]
   df = get_row_data(se, backend)
   txt <- format(df %>% head(n) %>% collect() )
@@ -201,12 +226,12 @@ read_meta_parquet = function(prefix, cols = "row_id") {
   ll = lapply(1:length(files), function(i) {
     message(paste("Loading ", list_names[i], "...", sep = ""))
     if(list_names[i] %in% c("alpha", "beta")) {
-      df = read_parquet(files[i], col_select = cols)
+      df = arrow::read_parquet(files[i], col_select = cols)
       #df = DataFrame(df)
       #df$targetSequences = DNAStringSet(df$targetSequences)
       #df$aaSeqCDR3 = BStringSet(df$aaSeqCDR3)
     } else {
-      df = read_parquet(files[i])
+      df = arrow::read_parquet(files[i])
     }
   }) %>% set_names(list_names)
   names(files) = list_names
@@ -215,30 +240,46 @@ read_meta_parquet = function(prefix, cols = "row_id") {
 
 read_meta_HDF5 = function(prefix) {
   h5 = paste(prefix, ".h5", sep = "")
-  df_alpha = read_pattern_h5_df(h5, "metadata_row_alpha")
-  df_beta = read_pattern_h5_df(h5, "metadata_row_beta")
-  df_paired = read_pattern_h5_df(h5, "metadata_row_paired")
-  df_col_meta = read_pattern_h5_df(h5, "metadata_column")
+  df_alpha = read_h5_df(h5, "alpha/row_meta")
+  df_beta = read_h5_df(h5, "beta/row_meta")
+  df_paired = read_h5_df(h5, "paired/row_meta")
+  df_col_meta = read_h5_df(h5, "col_meta")
+  #df_alpha = read_pattern_h5_df(h5, "metadata_row_alpha")
+  #df_beta = read_pattern_h5_df(h5, "metadata_row_beta")
+  #df_paired = read_pattern_h5_df(h5, "metadata_row_paired")
+  #df_col_meta = read_pattern_h5_df(h5, "metadata_column")
   ll = list(alpha = df_alpha, beta = df_beta, paired = df_paired, col = df_col_meta)
   files = rep(h5, 4) %>% set_names(c("alpha","beta","paired", "col"))
-  return(list(df = ll, files = files))
+  return(ll)
 }
 
-read_pattern_h5_df = function(h5, pattern) {
-  col_h5_names = h5ls(h5) %>% as_tibble() %>% filter(grepl(pattern, name)) %>% extract2("name")
-  col_names = gsub(paste(pattern, "_", sep = ""), "", col_h5_names)
-  df = read_h5_df(h5, col_h5_names, col_names)
-  return(df)
-}
-
-read_h5_df = function(h5, h5_names, col_names) {
-  ll = lapply(h5_names, function(x) {
-    HDF5Array(file = h5, name = x)
+read_h5_df = function(h5, grp) {
+  cols = h5ls(h5) %>% filter(group == paste("/", grp, sep = "")) %>% extract2("name")
+  ll = lapply(cols, function(col) {
+    HDF5DataFrame::HDF5ColumnVector(h5, name = grp, column = col)
   })
-  ddf = DelayedDataFrame(ll)
-  colnames(ddf) = col_names
+  ddf = DelayedDataFrame::DelayedDataFrame(ll)
+  colnames(ddf) = cols
   return(ddf)
 }
+
+# read_pattern_h5_df = function(h5, pattern) {
+#   col_h5_names = h5ls(h5) %>% as_tibble() %>% filter(grepl(pattern, name)) %>% extract2("name")
+#   col_names = gsub(paste(pattern, "_", sep = ""), "", col_h5_names)
+#   df = read_h5_df(h5, col_h5_names, col_names)
+#   return(df)
+# }
+#
+# read_h5_df = function(h5, h5_names, col_names) {
+#   ll = lapply(h5_names, function(x) {
+#     #HDF5Array(file = h5, name = x)
+#     #HDF5ColumnVector(h5, name = ?? (group), column = ?? (column name))
+#   })
+#   ddf = DelayedDataFrame::DelayedDataFrame(ll)
+#   #ddf = do.call(get("cbind", envir = asNamespace("DelayedDataFrame")), ll)
+#   colnames(ddf) = col_names
+#   return(ddf)
+# }
 
 save_TIRTL_to_HDF5_sparse = function(se_list, file, chains = c("alpha", "beta", "paired"), assays = NULL) {
   h5createFile(file)
@@ -287,7 +328,7 @@ load_TIRTL_HDF5_sparse = function(file) {
 }
 
 # load_TIRTL_SE = function(dir, prefix) {
-#   se = SummarizedExperiment(assays = mat_list, rowData = df_row_meta, colData = meta)
+#   se = SummarizedExperiment::SummarizedExperiment(assays = mat_list, rowData = df_row_meta, colData = meta)
 # }
 
 .bind_all_samples = function(data, chain) {
@@ -349,7 +390,7 @@ load_TIRTL_HDF5_sparse = function(file) {
   #df_row_meta$aaSeqCDR3 = Biostrings::BStringSet(df_row_meta$aaSeqCDR3)
   #df_row_meta$v = factor(df_row_meta$v)
   #df_row_meta$j = factor(df_row_meta$j)
-  se = SummarizedExperiment(assays = mat_list, rowData = df_row_meta, colData = meta)
+  se = SummarizedExperiment::SummarizedExperiment(assays = mat_list, rowData = df_row_meta, colData = meta)
   return(se)
   #return(list(matrices = mat_list, row_data = df_row_meta, col_data = meta))
 }
@@ -388,7 +429,7 @@ load_TIRTL_HDF5_sparse = function(file) {
         dims = c(max(df$row_id), max(df$col_id))
       )
   }) %>% set_names(cols_to_2d)
-  se = SummarizedExperiment(assays = mat_list, rowData = df_row_meta, colData = meta)
+  se = SummarizedExperiment::SummarizedExperiment(assays = mat_list, rowData = df_row_meta, colData = meta)
   return(se)
 }
 

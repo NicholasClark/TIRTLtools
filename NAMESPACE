@@ -9,6 +9,8 @@ import(data.table)
 import(dtplyr)
 import(HDF5Array)
 import(rhdf5)
+import(SummarizedExperiment)
+import(S4Vectors)
 
 export("%>%")
 importFrom(Rcpp, sourceCpp)
