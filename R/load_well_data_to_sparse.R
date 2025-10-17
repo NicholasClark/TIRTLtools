@@ -61,6 +61,7 @@ load_well_data_to_sparse_multi = function(
     max_files = Inf) {
   chain = chain[1]
   ll = lapply(1:length(folder_path_list), function(i) {
+    print(i)
     list_tmp = load_well_data(folder_path = folder_path_list[[i]], wells = wells_list[[i]], well_pos = well_pos_list[[i]],
                    chain = chain, nproc = nproc, columns = columns, max_files = max_files) %>%
       bind_rows() %>% mutate(sample_id = sample_names_list[[i]], sample_num = i)
