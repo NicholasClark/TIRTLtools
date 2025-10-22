@@ -11,6 +11,7 @@ import(HDF5Array)
 import(rhdf5)
 import(SummarizedExperiment)
 import(S4Vectors)
+import(Biostrings)
 
 export("%>%")
 importFrom(Rcpp, sourceCpp)
