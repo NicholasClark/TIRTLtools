@@ -153,7 +153,8 @@ plot_sample_vs_sample = function(data1, data2,
 
 .merge_TIRTL_pseudo = function(tp1,tp2,thres1=4,thres2=4,pseudo1=1e-6,pseudo2=1e-6,mreads_thres=0)
 {
-  tmpm<-.na_to0(merge(tp1[readCount_median>mreads_thres,avg:=readFraction,],tp2[readCount_median>mreads_thres,avg:=readFraction,],by="targetSequences",all=T))[n_wells.x>thres1|n_wells.y>thres2,]
+  #tmpm<-.na_to0(merge(tp1[readCount_median>mreads_thres,avg:=readFraction,],tp2[readCount_median>mreads_thres,avg:=readFraction,],by="targetSequences",all=T))[n_wells.x>thres1|n_wells.y>thres2,]
+  tmpm<-.na_to0(merge(tp1[readCount_median>mreads_thres,avg:=readFraction,],tp2[readCount_median>mreads_thres,avg:=readFraction,],by=c("targetSequences", "aaSeqCDR3", "v", "j"),all=T))[n_wells.x>thres1|n_wells.y>thres2,]
   tmpm[(n_wells.x<3),]$sem.x=mean(tmpm[n_wells.x==3,]$sem.x)*2
   tmpm[(n_wells.y<3),]$sem.y=mean(tmpm[n_wells.y==3,]$sem.y)*2
   tmpm[,log2FC:=log2((avg.y+pseudo1)/(avg.x+pseudo2)),]
