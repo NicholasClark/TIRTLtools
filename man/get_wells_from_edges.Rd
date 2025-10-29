@@ -17,6 +17,7 @@ Get well names from top left and bottom right wells
 Other well: 
 \code{\link{filter_well_data}()},
 \code{\link{get_well_subset}()},
-\code{\link{load_well_data}()}
+\code{\link{load_well_data}()},
+\code{\link{load_well_data_to_sparse_multi}()}
 }
 \concept{well}

@@ -10,8 +10,12 @@ load_tirtlseq(
   sep = "_",
   meta_columns = NULL,
   samples = NULL,
-  nThread = data.table::getDTthreads(),
+  pseudobulk_columns = "auto",
+  paired_columns = "auto",
+  n_threads = data.table::getDTthreads(),
+  compress_strings = FALSE,
   verbose = TRUE,
+  stringsAsFactors = FALSE,
   n_max = Inf
 )
 }
@@ -27,9 +31,21 @@ for example \code{c("marker", "timepoint", "donor")} for files named something l
 
 \item{samples}{(optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).}
 
-\item{nThread}{(optional) number of cpu threads to use for}
+\item{pseudobulk_columns}{(optional) the columns of the pseudobulk .tsv(.gz) to read. Either
+a list of columns or one of "auto", "all", or "minimal". "auto" (default) loads all columns except for
+some redundant ones. "all" loads all columns. "minimal" loads a small number of the most important columns.}
+
+\item{paired_columns}{(optional) the columns of the paired .tsv(.gz) to read. Either
+a list of columns or one of "auto", "all", or "minimal". "auto" (default) loads all columns except for
+some redundant ones. "all" loads all columns. "minimal" loads a small number of the most important columns.}
+
+\item{n_threads}{(optional) number of CPU threads to use for reading .tsv(.gz) files}
+
+\item{compress_strings}{(optional) whether to compress nucleotide and amino acid sequences using the Biostrings package.}
 
 \item{verbose}{(optional) whether to print the name of each file loaded (default is TRUE).}
+
+\item{stringsAsFactors}{(optional) read character strings in as factors}
 
 \item{n_max}{(optional) the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. read all files).}
 }
@@ -43,6 +59,8 @@ The function returns a list with two objects:
 pseudo-bulk data and the paired data respectively.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+
 \code{load_tirtlseq()} loads paired-TCR and pseudo-bulk data from TIRTLseq experiments
 from a given directory. It can also automatically assemble metadata from filenames.
 }
@@ -66,9 +84,9 @@ then the metadata table will look like something like this:
 }
 }
 \examples{
-# example code
-# paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
-
+\dontrun{
+paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
+}
 
 }
 \seealso{

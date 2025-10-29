@@ -2,13 +2,15 @@
 % Please edit documentation in R/summarize_scTIRTLseq.R
 \name{summarize_scTIRTLseq}
 \alias{summarize_scTIRTLseq}
-\title{Returns a summary of single-cell TIRTLseq data, printing the total number of
-wells with data, number of wells missing an alpha/beta chain, number of wells
-with a second alpha chain, etc.}
+\title{Summarize single-cell TIRTLseq data}
 \usage{
 summarize_scTIRTLseq(df)
 }
+\arguments{
+\item{df}{a data frame with single-cell TIRTLseq data}
+}
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Returns a summary of single-cell TIRTLseq data, printing the total number of
 wells with data, number of wells missing an alpha/beta chain, number of wells
 with a second alpha chain, etc.

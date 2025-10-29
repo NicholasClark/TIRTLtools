@@ -21,6 +21,7 @@ Load well-level TIRTLseq data
 Other well: 
 \code{\link{filter_well_data}()},
 \code{\link{get_well_subset}()},
-\code{\link{get_wells_from_edges}()}
+\code{\link{get_wells_from_edges}()},
+\code{\link{load_well_data_to_sparse_multi}()}
 }
 \concept{well}

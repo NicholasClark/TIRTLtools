@@ -14,7 +14,7 @@ for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it 
 for every pair of TCRs in tcr1.}
 }
 \description{
-Parallelized C++ implementation of TCRdist (no GPU required)
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other repertoire_analysis: 

@@ -71,8 +71,8 @@ This function calculates pairwise TCRdist (Dash et al., Nature 2017) for a set o
 (or between two sets of TCRs) and returns a sparse output with the TCRdist and indices of all pairs
 that have TCRdist less than or equal to a desired cutoff (default cutoff is 90).
 
-The function uses the `reticulate` package to call a python script that uses `cupy` (NVIDIA GPUs), `mlx` (Apple Silicon GPUs),
-or `numpy` (no GPU) to calculate TCRdist efficiently.
+The function uses the \code{reticulate} package to call a python script that uses \code{cupy} (NVIDIA GPUs), \code{mlx} (Apple Silicon GPUs),
+or \code{numpy} (no GPU) to calculate TCRdist efficiently.
 }
 \examples{
 # example code

@@ -14,7 +14,9 @@ plot_clone_size_across_samples(
   samples = NULL,
   return_data = FALSE,
   label_zero = FALSE,
-  show_legend = TRUE
+  show_legend = TRUE,
+  log_scale = TRUE,
+  x_var = NULL
 )
 }
 \arguments{
@@ -38,6 +40,8 @@ If FALSE, plot each clone with a separate line.}
 \item{label_zero}{whether to label zero on the y-axis (default is FALSE)}
 
 \item{show_legend}{whether to show the legend (default is TRUE)}
+
+\item{log_scale}{(optional) if TRUE, use log-scale for the y-axis (default is FALSE)}
 }
 \description{
 Line plot of clone read fraction across multiple samples

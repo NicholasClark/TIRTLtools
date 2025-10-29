@@ -174,7 +174,7 @@ load_TIRTL_HDF5_10x = function(prefix, meta_type = c("parquet", "HDF5")) {
   return(se_list)
 }
 
-get_row_data = function(se, backend = c("duckdb", "arrow")) {
+get_row_data = function(se, backend = c("duckdb", "arrow", "duckplyr")) {
   backend = backend[1]
   file = metadata(se)$row_data_file
   if(backend == "arrow") df = arrow::open_dataset(file)
@@ -184,6 +184,7 @@ get_row_data = function(se, backend = c("duckdb", "arrow")) {
     #tbl <- tbl(con, "read_parquet('alpha_test.parquet')")
     df <- dplyr::tbl(con, call)
   }
+  if(backend == "duckplyr") df = duckplyr::read_parquet_duckdb(file)
   return(df)
 }
 

@@ -61,9 +61,11 @@ and clusters the results using the Leiden algorithm.
 The function also filters the dataset to TCRs that are valid for TCRdist.
 
 The following TCRs are removed:
- - TCRs that contain stop codons (*) or frame shifts (_) in their cdr3a or cdr3b regions
- - TCRs that contain a cdr3 region with 5 or less amino acids
- - TCRs that contain a v segment allele not found in our parameter table
+\itemize{
+\item TCRs that contain stop codons (*) or frame shifts (_) in their cdr3a or cdr3b regions
+\item TCRs that contain a cdr3 region with 5 or less amino acids
+\item TCRs that contain a v segment allele not found in our parameter table
+}
 
 V-segments that do not specify an allele (e.g. "TRAV1-2" instead of "TRAV1-2*01")
 will be assigned to the "*01" allele.

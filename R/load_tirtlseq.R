@@ -1,6 +1,8 @@
 #' Load data from TIRTLseq experiments
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
+#'
 #' \code{load_tirtlseq()} loads paired-TCR and pseudo-bulk data from TIRTLseq experiments
 #' from a given directory. It can also automatically assemble metadata from filenames.
 #'
@@ -54,9 +56,9 @@
 #'
 #' @export
 #' @examples
-#' # example code
-#' # paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
-#'
+#' \dontrun{
+#' paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
+#' }
 #'
 load_tirtlseq = function(
     directory,

@@ -7,12 +7,13 @@
 filter_well_data(well_data_df, min_fraction = 1e-06)
 }
 \description{
-Remove rare clones from well-level TIRTLseq data
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other well: 
 \code{\link{get_well_subset}()},
 \code{\link{get_wells_from_edges}()},
-\code{\link{load_well_data}()}
+\code{\link{load_well_data}()},
+\code{\link{load_well_data_to_sparse_multi}()}
 }
 \concept{well}

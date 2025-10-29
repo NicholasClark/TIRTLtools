@@ -16,7 +16,8 @@ plot_diversity(
   log_scale = FALSE,
   samples = NULL,
   return_data = FALSE,
-  color_scheme = NULL
+  color_scheme = NULL,
+  x_var = NULL
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ to group samples}
 \item{return_data}{(optional) if TRUE, return the data used to make the plot (default is FALSE)}
 
 \item{color_scheme}{(optional) a color scheme for the plot}
+
+\item{x_var}{(optional) the variable to show on the x-axis, if other than "sample_id"}
 }
 \value{
 A list with two objects:

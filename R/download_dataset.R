@@ -1,5 +1,10 @@
 #' Download TIRTLseq datasets
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#' @param dataset The TIRTLseq dataset to download
+#'
 #' @family download
 download_dataset = function(dataset = "SJTRC_TIRTLseq_minimal") {
 

@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r}
+library(devtools)
+library(here)
+#reticulate::use_condaenv("TIRTLtools")
+#load_all(here())
+library(TIRTLtools)
+library(magrittr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+#download_dataset("SJTRC_TIRTLseq_minimal")
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder)
+sjtrc = TIRTL_process(sjtrc, clean = FALSE)
+```
+
+```{r}
+top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% extract2("targetSequences")
+top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% extract2("targetSequences")
+
+plot_clone_size_across_samples(sjtrc, clones = c(top_clones1, top_clones2), chain = "beta")
+```
+
+```{r}
+plot_clonotype_indices(sjtrc)
+```
+
+```{r}
+div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+plot_diversity(div, metric = "d50")
+```
+```{r}
+plot_n_reads(sjtrc)
+```
+
+```{r}
+plot_num_partners(sjtrc)
+```
+
+```{r}
+plot_paired(sjtrc)
+```
+```{r}
+plot_paired_by_read_fraction_range(sjtrc, chain = "beta")
+```
+```{r}
+plot_paired_vs_rank(sjtrc, sample = 1)
+```
+
+```{r}
+plot_pairs_with_eachother(sjtrc, sample = 1)
+```
+```{r}
+plot_ranks(sjtrc)
+```
+```{r}
+plot_read_fraction_vs_pair_status(sjtrc, sample = 1)
+```
+```{r}
+plot_sample_overlap(sjtrc, chain = "beta")
+```
+
+```{r}
+plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2)
+```
+

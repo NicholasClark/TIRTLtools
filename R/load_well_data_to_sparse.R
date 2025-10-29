@@ -106,8 +106,9 @@ load_well_data_to_df_single = function(folder_path, wells = get_well_subset(1:16
   print(paste(dim(meta_tmp)[1], "files total"))
   n_files = min(max_files, dim(meta_tmp)[1])
   print(paste("Loading", n_files, "files"))
+  cat("\n")
   df = parallel::mclapply(1:n_files, function(i) {
-    print(i)
+    cat("|")
     file_full_tmp = meta_tmp$file_full[i]
     file_short_tmp = meta_tmp$file_short[i]
     well_tmp = meta_tmp$well[i]

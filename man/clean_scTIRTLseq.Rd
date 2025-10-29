@@ -6,8 +6,15 @@
 \usage{
 clean_scTIRTLseq(df, verbose = TRUE, keep_all_columns = FALSE)
 }
+\arguments{
+\item{df}{a data frame with single-cell TIRTLseq data}
+
+\item{verbose}{print a before and after summary of clonotypes (default TRUE)}
+
+\item{keep_all_columns}{keep intermediate columns created by the function (default FALSE)}
+}
 \description{
-Imputes missing alpha and beta chains where possible for single-cell TIRTLseq data
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other single-cell: 

@@ -1,5 +1,9 @@
 #' Parallelized C++ implementation of TCRdist (no GPU required)
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param tcr1 a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"
 #' @param tcr2 (optional) another data frame of TCRs. If supplied, TCRdist will be calculated
 #' for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist

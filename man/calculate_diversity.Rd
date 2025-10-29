@@ -58,7 +58,7 @@ It is the inverse of the Hill number of order 2.
 
 gini - The Gini index/coefficient... (https://en.wikipedia.org/wiki/Gini_coefficient).
 
-gini.simpson - The Gini-Simpson index (https://en.wikipedia.org/wiki/Diversity_index#Gini%E2%80%93Simpson_index). Equal to 1-Simpson_index. This equals the probability that two entities taken at random from the dataset represent different types.
+gini.simpson - The Gini-Simpson index (https://en.wikipedia.org/wiki/Diversity_index#Gini\%E2\%80\%93Simpson_index). Equal to 1-Simpson_index. This equals the probability that two entities taken at random from the dataset represent different types.
 
 inv.simpson - The Inverse-Simpson index - i.e. the reciprocal of the Simpson index, which measures the effective
 number of types when the weighted arithmetic mean is used to calculate diversity. It is equivalent to the
@@ -68,7 +68,7 @@ shannon - The Shannon diversity index, also known as the Shannon-Wiener index or
 It is equivalent to the Renyi entropy when 'q' = 1.
 (https://en.wikipedia.org/wiki/Diversity_index#Shannon_index)
 
-berger.parker - The Berger-Parker index, i.e. the proportion of the most abundant type in the dataset. (https://en.wikipedia.org/wiki/Diversity_index#Berger%E2%80%93Parker_index)
+berger.parker - The Berger-Parker index, i.e. the proportion of the most abundant type in the dataset. (https://en.wikipedia.org/wiki/Diversity_index#Berger\%E2\%80\%93Parker_index)
 
 richness - The species richness, i.e. the total number of unique types observed in the data (https://en.wikipedia.org/wiki/Diversity_index#Richness).
 
@@ -81,7 +81,7 @@ The formula for Renyi entropy is undefined at q=1, but it is defined as its limi
 When q=0, it is simply the natural logarithm of the richness or total number of types.
 When q=Inf, it is defined by its limit, which is equal to the negative of the natural logarithm
 of the proportion of the most abundant type.
-(https://en.wikipedia.org/wiki/Diversity_index#R%C3%A9nyi_entropy)
+(https://en.wikipedia.org/wiki/Diversity_index#R\%C3\%A9nyi_entropy)
 
 hill - The Hill numbers of order q, also known as the true diversity or the effective number of types.
 This is the number of equally abundant types needed for the average proportional abundance of types to equal
