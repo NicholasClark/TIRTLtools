@@ -129,6 +129,14 @@
   return(is_paired)
 }
 
+.is.DataFrame = function(data) {
+  "DFrame" %in% class(data)
+}
+
+.is_df = function(data) {
+  .is.DataFrame(data) || is.data.frame(data) || .is.dtplyr(data)
+}
+
 .na_to0<-function (x) {
   x[is.na(x)]<-0
   x

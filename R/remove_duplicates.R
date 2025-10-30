@@ -11,7 +11,7 @@
 #'
 #' @family data_processing
 remove_duplicates = function(data) {
-  if(is.data.frame(data)) {
+  if(.is_df(data)) {
     out = data[!duplicated(data$alpha_beta),]
   } else {
     out = lapply(data, function(x) {

@@ -17,7 +17,7 @@ clean_scTIRTLseq = function(df, verbose = TRUE, keep_all_columns = FALSE) {
     mutate(across(c(aaSeqCDR3u_beta, bestV_beta, bestJ_beta, nSeqCDR3_beta,
                     aaSeqCDR3u_alpha, bestV_alpha, bestJ_alpha, nSeqCDR3_alpha,
                     aaSeqCDR3u_alpha_second, bestV_alpha_second, bestJ_alpha_second, nSeqCDR3_alpha_second
-    ), ~replace_na(., ""), .names = "noNA_{.col}")) %>%
+    ), ~tidyr::replace_na(., ""), .names = "noNA_{.col}")) %>%
     mutate(beta_full = paste(noNA_aaSeqCDR3u_beta, noNA_bestV_beta, noNA_bestJ_beta, noNA_nSeqCDR3_beta, sep = "|")) %>%
     mutate(alpha_full = paste(noNA_aaSeqCDR3u_alpha, noNA_bestV_alpha, noNA_bestJ_alpha, noNA_nSeqCDR3_alpha, sep = "|")) %>%
     mutate(alpha_full2 = paste(noNA_aaSeqCDR3u_alpha_second, noNA_bestV_alpha_second, noNA_bestJ_alpha_second, noNA_nSeqCDR3_alpha_second, sep = "|")) %>%

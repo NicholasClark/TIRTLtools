@@ -11,6 +11,8 @@
     metrics = get_all_div_metrics()
 ) {
   data = data[[chain]]
+  data$targetSequences = as.character(data$targetSequences)
+  if("DFrame" %in% class(data)) data = as.data.frame(data)
   prop_df = .calculate_proportions(data = data, type_column = type_column, proportion_column = proportion_column)
   res = .calc_all_diversity(prop_df$prop, q=q, percent = percent, tol = tol, metrics = metrics, n = n)
   out = list(diversity = res, prop_df = prop_df)

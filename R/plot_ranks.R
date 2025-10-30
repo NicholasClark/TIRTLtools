@@ -20,12 +20,13 @@ plot_ranks = function(
     df_tmp = x[[chain]]
     df_tmp$rank = rank(-df_tmp[[column]])
     df_tmp$Sample = names(data)[i]
+    df_tmp$targetSequences = as.character(df_tmp$targetSequences)
     return(df_tmp)
   }) %>% bind_rows()
   xx = .get_log_labels_pos(df_all$rank)
   yy = .get_log_labels_neg(df_all[[column]])
 
-  gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample), size = 1.5) +
+  gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample), linewidth = 1.5) +
     xlab("rank") +
     #ylab("readFraction") +
     theme_classic() +

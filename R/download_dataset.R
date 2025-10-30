@@ -6,20 +6,20 @@
 #' @param dataset The TIRTLseq dataset to download
 #'
 #' @family download
-download_dataset = function(dataset = "SJTRC_TIRTLseq_minimal") {
+download_dataset = function(dataset = "SJTRC_TIRTLseq_minimal", folder = tempdir()) {
 
   file_info = .get_dataset_info(dataset)
-  dir.create(dataset, showWarnings = FALSE)
+  dir.create(folder, showWarnings = FALSE)
 
   for (i in 1:dim(file_info)[1]) {
     url = file_info$download_url[i]
     file_name = file_info$name[i]
-    msg = paste("Downloading file:", file_name, " to directory: ", dataset) %>% .add_newline()
+    msg = paste("Downloading file:", file_name, " to directory: ", folder) %>% .add_newline()
     cat(msg)
-    dest = file.path(dataset, basename(url))
+    dest = file.path(folder, basename(url))
     download.file(url, destfile = dest, mode = "wb")
   }
-  return(invisible(NULL))
+  return(folder)
 }
 
 .get_dataset_info = function(dataset = "SJTRC_TIRTLseq_minimal") {

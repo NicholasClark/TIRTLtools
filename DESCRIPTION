@@ -29,6 +29,7 @@ Imports:
     DFplyr,
     dtplyr,
     duckdb,
+    ggh4x,
     ggplot2,
     glue,
     HDF5Array,
@@ -49,7 +50,7 @@ Imports:
     uwot (>= 0.2.3),
     vctrs
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1)
 biocViews: 
 RoxygenNote: 7.3.3
 LinkingTo: 

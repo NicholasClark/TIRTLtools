@@ -90,8 +90,9 @@ plot_num_partners = function(data,
   char = paste(">", max_partners, sep = "")
   lvls = c(1:max_partners, char) %>% rev()
   gg_df$n_partners = factor(gg_df$n_partners, levels = lvls)
+  if(return_data) return(gg_df)
   gg = ggplot(gg_df) +
-    geom_col(aes(x = chain, y = !!var, fill = n_partners), color="black", size = 0.25) +
+    geom_col(aes(x = chain, y = !!var, fill = n_partners), color="black") +
     xlab("") +
     theme_classic()
   gg = gg + scale_fill_manual(values = .tirtl_colors_gradient(palette=color_scheme,length(lvls) ))
@@ -99,12 +100,13 @@ plot_num_partners = function(data,
     #facet_formula = as.formula(paste("~",group_col, sep = ""))
     gg = gg + facet_wrap(~Group)
   }
-  if(return_data) {
-    res = list(plot=gg, data = gg_df)
-  } else {
-    res = gg
-  }
-  return(res)
+  # if(return_data) {
+  #   res = list(plot=gg, data = gg_df)
+  # } else {
+  #   res = gg
+  # }
+  # return(res)
+  return(gg)
 }
 
 .get_num_partners_single = function(df, max_partners = 5) {

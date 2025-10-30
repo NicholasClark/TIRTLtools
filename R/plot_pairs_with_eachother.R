@@ -43,11 +43,11 @@ plot_pairs_with_eachother = function(
   df$paired_status = factor(df$paired_status, levels = c("T-SHELL only", "MAD-HYPE only", "both", "neither") )
   gg = ggplot() +
     geom_point(data = df, aes(x=rank, y=readFraction, color = !!sym(color_col), group = chain), size = 1) +
-    geom_point(data = df, aes(x=rank, y=readFraction, color = !!sym(color_col), group = chain, shape = label_unpaired), size = 5) +
+    geom_point(data = df %>% filter(!is.na(label_unpaired)), aes(x=rank, y=readFraction, color = !!sym(color_col), group = chain, shape = label_unpaired), size = 5) +
     geom_segment(data = df_pair,
                  aes(x = rank_alpha, xend = rank_beta,
                      y=alpha_readFraction, yend = beta_readFraction),
-                 size = 0.125) +
+                 linewidth = 0.125) +
     #xlab("Clonal rank by readFraction") +
     #ylab(ylabel) +
     #geom_point(aes(shape = method, color = method)) +

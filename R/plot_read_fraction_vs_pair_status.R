@@ -29,10 +29,11 @@ plot_read_fraction_vs_pair_status = function(
 
   color_col = ifelse(show_num_partners, "n_paired_factor", "paired_status")
   df$n_paired_factor = factor(df$n_paired, levels = sort(unique(df$n_paired)))
-  gg = ggplot(df, aes(x=rank, y=readFraction, color = !!sym(color_col), group = chain)) +
+  df = as_tibble(df)
+  gg = ggplot() +
     #geom_step(size = 1) +
-    geom_point() +
-    geom_point(aes(shape = label_unpaired), size = 5) +
+    geom_point(data = df, aes(x=rank, y=readFraction, color = !!sym(color_col), group = chain)) +
+    geom_point(data = df %>% filter(!is.na(label_unpaired)), aes(x=rank, y=readFraction, color = !!sym(color_col), group = chain, shape = label_unpaired), size = 5) +
     #xlab("Clonal rank by readFraction") +
     #ylab(ylabel) +
     #geom_point(aes(shape = method, color = method)) +

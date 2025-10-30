@@ -71,9 +71,10 @@ plot_clone_size_across_samples = function(
     gg_df = gg_df %>%
       mutate(source = factor(source, levels = samples)) %>%
       mutate(sample_id = source) %>%
-      left_join(., data$meta)
+      left_join(., data$meta, by = "sample_id")
     xx = sym("source")
     if(!is.null(x_var)) xx = sym(x_var)
+    gg_df = as_tibble(gg_df)
     gg = ggplot(gg_df, aes(x=!!xx, y=!!y_col+pseudo)) +
       geom_line(aes(group = !!grp, color = group)) +
       geom_point(aes(group = !!grp, color = group)) +

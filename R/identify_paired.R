@@ -72,6 +72,10 @@ identify_paired = function(data, verbose = TRUE) {
 # for input of a single sample/experiment, returns alpha, beta, and
 # paired (with no duplicates) data frames with methods (madhype and tshell) annotated
 .identify_paired_single = function(data) {
+  if(.is.DataFrame(data$alpha)) data$alpha = as.data.table(data$alpha)
+  if(.is.DataFrame(data$beta)) data$beta = as.data.table(data$beta)
+  if(.is.DataFrame(data$paired)) data$paired = as.data.table(data$paired)
+
   paired_tmp = data$paired %>% remove_duplicates()
   paired_tmp_madhype = data$paired %>% filter(method == "madhype")
   paired_tmp_tshell = data$paired %>% filter(method == "tshell")

@@ -19,11 +19,8 @@
 #' @param color_scheme (optional) a color scheme to use
 #'
 #' @return
-#' A list with two objects:
-#'
-#' \code{$plot} - a stacked bar chart of relative frequencies of most-frequent clonotypes
-#'
-#' \code{$data} - if return_data is TRUE, the data frame used to create the plot
+#' (default) Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
+#' If return_data is TRUE, the data frame used to create the plot is returned instead.
 #'
 #' @family plotting
 #' @seealso \code{\link{diversity}()}, \code{\link{plot_diversity}()}
@@ -83,17 +80,17 @@ plot_clonotype_indices = function(
   gg_df$Sample = factor(gg_df$Sample, levels = labels)
   y_label = "Proportion"
   plot_title = "Clonal proportion by indices"
-
+  if(return_data) return(gg_df)
   if(is.null(group_col)) {
     gg = ggplot(gg_df, aes(y=prop, x= Sample)) +
       geom_col(aes(fill = clonotype_indices),
-               position = position_stack(reverse = TRUE), color="black", size = 0.25) +
+               position = position_stack(reverse = TRUE), color="black") +
       ylab(y_label) +
       ggtitle(plot_title)
   } else {
     gg = ggplot(gg_df, aes(y=prop, x= Sample)) +
       geom_col(aes(fill = clonotype_indices),
-               position = position_stack(reverse = TRUE), color="black", size = 0.25)
+               position = position_stack(reverse = TRUE), color="black")
       ylab(y_label)
     if(length(group_col) == 1) {
       gg = gg + facet_wrap(~Group, scales = ifelse(flip, "free_y", "free_x"))
@@ -119,9 +116,10 @@ plot_clonotype_indices = function(
   gg = gg + theme_classic()
   n=length(cutoffs)+1
   gg = gg + scale_fill_manual(values = .tirtl_colors_gradient(palette=color_scheme, n=n))
-  res_list = list(plot = gg)
-  if(return_data) res_list$data = gg_df
-  return(res_list)
+  # res_list = list(plot = gg)
+  # if(return_data) res_list$data = gg_df
+  # return(res_list)
+  return(gg)
 }
 
 

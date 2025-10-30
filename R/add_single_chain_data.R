@@ -50,7 +50,11 @@ add_single_chain_data = function(data, verbose = TRUE) {
   colnames(dtB) = paste("beta_", colnames(dtB), sep = "")
   colnames(dtA)[1] = "alpha_nuc"
   colnames(dtB)[1] = "beta_nuc"
+  if(!is.data.table(dtA)) dtA = as.data.table(dtA)
+  if(!is.data.table(dtB)) dtB = as.data.table(dtB)
+  if(!is.data.table(dt_pair)) dt_pair = as.data.table(dt_pair)
   dt_join1 = data.table::merge.data.table(x=dt_pair, y=dtA, by = "alpha_nuc", all.x=TRUE, all.y=FALSE)
   dt_join2 = data.table::merge.data.table(x=dt_join1, y=dtB, by = "beta_nuc", all.x=TRUE, all.y=FALSE)
+
   return(dt_join2)
 }
