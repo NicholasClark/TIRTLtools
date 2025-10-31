@@ -42,6 +42,7 @@ Imports:
     Rcpp,
     RcppParallel,
     readr,
+    reshape2,
     reticulate (>= 1.41.0.1),
     rhdf5,
     S4Vectors,
