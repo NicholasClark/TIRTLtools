@@ -1,0 +1,37 @@
+---
+title: "TCRdist GPU implementation"
+output: html_document
+date: "2025-10-31"
+---
+
+This function computes the similarity of two T-cell receptors (TCRs) using TCRdist ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)). The function can efficiently calculate pairwise similarities of thousands or millions of TCRs using a GPU if it is available. It relies on python code using [cupy](https://cupy.dev/) (Nvidia GPUs) or [mlx](https://opensource.apple.com/projects/mlx/) (Apple Silicon GPUs), which is called through the `reticulate` R package.
+
+The following example computes TCRdist values for all pairs of annotated TCRs in the [VDJdb](https://vdjdb.cdr3.net/) database. It outputs all values with TCRdist <= 90.
+
+#### Load the package
+
+```{r message=FALSE,warning=FALSE}
+library(TIRTLtools)
+library(dplyr)
+```
+
+#### Load an example dataset (annotated TCRs from VDJ-db)
+
+```{r}
+tcr1 = TIRTLtools::vdj_db
+### note: You may replace this with a file of your choice - needs to have columns "va", "vb", "cdr3a", and "cdr3b"
+
+as_tibble(tcr1)
+```
+
+#### Run TCRdist
+
+```{r}
+result = TCRdist(tcr1 = tcr1, tcrdist_cutoff = 90, chunk_size = 5000)
+
+edge_df = result[['TCRdist_df']] ### table of TCRdist values <= cutoff
+meta_df = result[['tcr1']] ### table of input data with indices
+
+as_tibble(edge_df)
+as_tibble(meta_df)
+```

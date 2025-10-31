@@ -4,9 +4,9 @@ template:
   light-switch: true
   theme: atom-one-light
   bslib:
-    bootswatch: flatly
-    pkgdown-nav-height: 100px
-    primary: "#323232"
+    #bootswatch: flatly
+    #pkgdown-nav-height: 100px
+    #primary: "#323232"
 
 authors:
   Nicholas Clark:

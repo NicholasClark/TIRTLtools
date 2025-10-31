@@ -9,6 +9,14 @@ We provide functions for analysis of **paired TCR repertoires** as well as **sin
 
 In addition to various **analysis and plotting functions**, we provide an **efficient batched GPU implementation of TCRdist** ([Dash et al., Nature 2017](https://doi.org/10.1038/nature22383)) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).
 
+## The TIRTLseq assay
+
+[TIRTL-seq](https://doi.org/10.1101/2024.09.16.613345) is a method to obtain paired TCR-sequencing information from millions of human T cells.
+Cells are split across wells in [384-well](https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/) or [96-well](https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/) plates with ~2,500 to ~25,000 cells per well and alpha and beta TCR chains are sequenced simultaneously in each well.
+
+The initial output from the TIRTLseq assay consists of two tables of read counts for single-chain TCRs (one for alpha and one for beta) for each well.
+Alpha and beta chains are paired using computational algorithms based on their occurrence patterns and read counts across wells.
+
 ## Installation
 
 Instructions to [install TIRTLtools](articles/TIRTLtools.html).

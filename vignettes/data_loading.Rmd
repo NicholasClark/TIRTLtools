@@ -1,0 +1,23 @@
+---
+title: "Data loading"
+output: html_document
+date: "2025-10-31"
+---
+
+TIRTLseq data is kept in tab-separated text files (.tsv). The files may be 'gzipped' (.tsv.gz) to save space.<br>Output for each sample consists of 3 files:
+
+- `<sample-name>_TIRTLoutput.tsv(.gz)`-- Paired TCRs -- a table of computationally paired alpha/beta TCRs<br>
+- `<sample-name>_pseudobulk_TRA.tsv(.gz)` -- Alpha chain "pseudo-bulk" data -- average read counts/frequencies of alpha-chains across all wells on a plate<br>
+- `<sample-name>_pseudobulk_TRB.tsv(.gz)` -- Beta chain "pseudo-bulk" data -- average read counts/frequencies of beta-chains across all wells on a plate
+
+You can load paired TCR data with the `load_tirtlseq()` function.<br>
+You must to specify a directory that has tab-separated TIRLTseq data files in it.
+
+The `load_tirtlseq()` function will load data for all of the TIRTLseq samples it finds in a directory.
+
+```{r message=FALSE,warning=FALSE}
+library(TIRTLtools)
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
+#sjtrc = load_tirtlseq(folder)
+```
+
