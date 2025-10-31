@@ -38,6 +38,7 @@ Imports:
     lifecycle,
     magrittr,
     Matrix (>= 1.7.3),
+    R.utils,
     Rcpp,
     RcppParallel,
     readr,
