@@ -38,7 +38,16 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/plot_examples.html">Plot examples</a></li>
+<li><a class="dropdown-item" href="articles/data_loading.html">Data loading</a></li>
+    <li><a class="dropdown-item" href="articles/plot_examples.html">Plot examples</a></li>
+    <li><a class="dropdown-item" href="articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
+    <li><a class="dropdown-item" href="articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
+    <li><a class="dropdown-item" href="articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
+    <li><a class="dropdown-item" href="articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
+    <li><a class="dropdown-item" href="articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
+    <li><a class="dropdown-item" href="articles/TCRdist.html">TCRdist GPU implementation</a></li>
+    <li><a class="dropdown-item" href="articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
+    <li><a class="dropdown-item" href="articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
@@ -71,6 +80,12 @@
 </h2>
 <p><code>TIRTLtools</code> is a suite of tools for analyzing T-cell receptor (TCR) repertoires created using <strong>TIRTL-seq</strong> (<strong>T</strong>hroughput-<strong>I</strong>ntensive <strong>R</strong>apid <strong>T</strong>CR <strong>L</strong>ibrary <strong>seq</strong>uencing) <a href="https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2" class="external-link">(Pogorelyy and Kirk et al., bioRxiv 2024)</a>. We provide functions for analysis of <strong>paired TCR repertoires</strong> as well as <strong>single-chain bulk data</strong>.</p>
 <p>In addition to various <strong>analysis and plotting functions</strong>, we provide an <strong>efficient batched GPU implementation of TCRdist</strong> (<a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., Nature 2017</a>) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).</p>
+</div>
+<div class="section level2">
+<h2 id="the-tirtlseq-assay">The TIRTLseq assay<a class="anchor" aria-label="anchor" href="#the-tirtlseq-assay"></a>
+</h2>
+<p><a href="https://doi.org/10.1101/2024.09.16.613345" class="external-link">TIRTL-seq</a> is a method to obtain paired TCR-sequencing information from millions of human T cells. Cells are split across wells in <a href="https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/" class="external-link">384-well</a> or <a href="https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/" class="external-link">96-well</a> plates with ~2,500 to ~25,000 cells per well and alpha and beta TCR chains are sequenced simultaneously in each well.</p>
+<p>The initial output from the TIRTLseq assay consists of two tables of read counts for single-chain TCRs (one for alpha and one for beta) for each well. Alpha and beta chains are paired using computational algorithms based on their occurrence patterns and read counts across wells.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
