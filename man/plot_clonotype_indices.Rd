@@ -36,11 +36,8 @@ to group samples}
 \item{color_scheme}{(optional) a color scheme to use}
 }
 \value{
-A list with two objects:
-
-\code{$plot} - a stacked bar chart of relative frequencies of most-frequent clonotypes
-
-\code{$data} - if return_data is TRUE, the data frame used to create the plot
+(default) Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
+If return_data is TRUE, the data frame used to create the plot is returned instead.
 }
 \description{
 \code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of

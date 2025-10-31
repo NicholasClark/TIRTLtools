@@ -1,6 +1,12 @@
 url: https://nicholasclark.github.io/TIRTLtools/
 template:
   bootstrap: 5
+  light-switch: true
+  theme: atom-one-light
+  bslib:
+    bootswatch: flatly
+    pkgdown-nav-height: 100px
+    primary: "#323232"
 
 authors:
   Nicholas Clark:
@@ -40,8 +46,26 @@ reference:
   contents:
   - has_concept("single-cell")
 
-# articles:
-# - title: Plot examples
-#   navbar: ~
-#   contents:
-#   - plot_examples
+- title: Other
+  contents:
+  - lacks_concept(c("data_wrangling", "data_processing", "repertoire_analysis", "plotting", "stitchr", "well", "download", "data", "single-cell"))
+
+
+
+navbar:
+  structure:
+    left: [home, intro, reference, articles, github]
+    right: [search, lightswitch]
+  components:
+    home:
+      text: Home
+      href: index.html
+    github:
+      #icon: fab fa-github
+      text: "Github"
+      icon: fa-github fa-lg
+      href: https://github.com/NicholasClark/TIRTLtools
+  articles:
+    contents:
+    - plot_examples
+

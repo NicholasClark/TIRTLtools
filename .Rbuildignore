@@ -11,3 +11,8 @@
 ^inst/extdata
 ^\.Rproj\.user$
 ^vignettes$
+^_pkgdown.yml$
+^pkgdown$
+^_pkgdown\.yml$
+^docs$
+^\.github$

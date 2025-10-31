@@ -59,7 +59,7 @@ The function returns a list with two objects:
 pseudo-bulk data and the paired data respectively.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 \code{load_tirtlseq()} loads paired-TCR and pseudo-bulk data from TIRTLseq experiments
 from a given directory. It can also automatically assemble metadata from filenames.

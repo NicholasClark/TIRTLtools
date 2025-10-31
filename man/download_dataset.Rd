@@ -4,9 +4,12 @@
 \alias{download_dataset}
 \title{Download TIRTLseq datasets}
 \usage{
-download_dataset(dataset = "SJTRC_TIRTLseq_minimal")
+download_dataset(dataset = "SJTRC_TIRTLseq_minimal", folder = tempdir())
+}
+\arguments{
+\item{dataset}{The TIRTLseq dataset to download}
 }
 \description{
-Download TIRTLseq datasets
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \concept{download}
