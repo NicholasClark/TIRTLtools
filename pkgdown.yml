@@ -1,8 +1,10 @@
 pandoc: 3.1.11
 pkgdown: 2.1.3
 pkgdown_sha: ~
-articles: {}
-last_built: 2025-10-14T15:33Z
+articles:
+  plot_examples: plot_examples.html
+  TIRTLtools: TIRTLtools.html
+last_built: 2025-10-31T22:20Z
 urls:
   reference: https://nicholasclark.github.io/TIRTLtools/reference
   article: https://nicholasclark.github.io/TIRTLtools/articles

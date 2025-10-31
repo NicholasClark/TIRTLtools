@@ -2,11 +2,15 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/404.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/LICENSE-text.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/LICENSE.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/articles/TIRTLtools.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/articles/index.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/articles/plot_examples.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/authors.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/index.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TIRTLtools-package.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/add_metadata.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html</loc></url>
@@ -29,6 +33,7 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/index.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_well_data.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_well_data_to_sparse_multi.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/params.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/pipe.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.html</loc></url>
