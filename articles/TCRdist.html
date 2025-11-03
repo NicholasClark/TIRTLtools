@@ -36,16 +36,26 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/data_loading.html">Data loading</a></li>
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/data_loading.html">Data loading</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples</a></li>
-    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
-    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
-    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
-    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
-    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">TCRdist GPU implementation</a></li>
-    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
+    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
+    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
+    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
@@ -144,24 +154,24 @@ database. It outputs all values with TCRdist &lt;= 90.</p>
 <span><span class="co">## Loading numpy to perform TCRdist</span></span>
 <span><span class="co">## Number of chunks: 15</span></span>
 <span><span class="co">## 20% done</span></span>
-<span><span class="co">## Time taken so far: 10.649849 seconds</span></span>
+<span><span class="co">## Time taken so far: 10.641178 seconds</span></span>
 <span><span class="co">## 27% done</span></span>
-<span><span class="co">## Time taken so far: 15.779745 seconds</span></span>
+<span><span class="co">## Time taken so far: 15.767380 seconds</span></span>
 <span><span class="co">## 40% done</span></span>
-<span><span class="co">## Time taken so far: 26.040586 seconds</span></span>
+<span><span class="co">## Time taken so far: 26.018240 seconds</span></span>
 <span><span class="co">## 47% done</span></span>
-<span><span class="co">## Time taken so far: 31.173334 seconds</span></span>
+<span><span class="co">## Time taken so far: 31.141865 seconds</span></span>
 <span><span class="co">## 60% done</span></span>
-<span><span class="co">## Time taken so far: 41.430168 seconds</span></span>
+<span><span class="co">## Time taken so far: 41.385801 seconds</span></span>
 <span><span class="co">## 67% done</span></span>
-<span><span class="co">## Time taken so far: 46.560856 seconds</span></span>
+<span><span class="co">## Time taken so far: 46.512626 seconds</span></span>
 <span><span class="co">## 80% done</span></span>
-<span><span class="co">## Time taken so far: 56.825075 seconds</span></span>
+<span><span class="co">## Time taken so far: 56.764670 seconds</span></span>
 <span><span class="co">## 87% done</span></span>
-<span><span class="co">## Time taken so far: 61.959775 seconds</span></span>
+<span><span class="co">## Time taken so far: 61.888738 seconds</span></span>
 <span><span class="co">## 100% done</span></span>
-<span><span class="co">## Time taken so far: 72.233589 seconds</span></span>
-<span><span class="co">## Total time taken: 83.934451 seconds</span></span></code></pre>
+<span><span class="co">## Time taken so far: 72.137779 seconds</span></span>
+<span><span class="co">## Total time taken: 83.817573 seconds</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">edge_df</span> <span class="op">=</span> <span class="va">result</span><span class="op">[[</span><span class="st">'TCRdist_df'</span><span class="op">]</span><span class="op">]</span> <span class="co">### table of TCRdist values &lt;= cutoff</span></span>
 <span><span class="va">meta_df</span> <span class="op">=</span> <span class="va">result</span><span class="op">[[</span><span class="st">'tcr1'</span><span class="op">]</span><span class="op">]</span> <span class="co">### table of input data with indices</span></span>

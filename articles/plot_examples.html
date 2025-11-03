@@ -36,16 +36,26 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/data_loading.html">Data loading</a></li>
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
+    <li><a class="dropdown-item" href="../articles/data_loading.html">Data loading</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples</a></li>
-    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
-    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
-    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
-    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
-    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">TCRdist GPU implementation</a></li>
-    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
+    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
+    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
+    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
+    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
@@ -93,16 +103,16 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="../reference/download_dataset.html">download_dataset</a></span><span class="op">(</span><span class="st">"SJTRC_TIRTLseq_minimal"</span>, folder <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Downloading file: cd8_tp1_v2_TIRTLoutput.tsv.gz  to directory:  /tmp/RtmpO7w6Jx</span></span>
-<span><span class="co">## Downloading file: cd8_tp1_v2_pseudobulk_TRA.tsv.gz  to directory:  /tmp/RtmpO7w6Jx</span></span>
-<span><span class="co">## Downloading file: cd8_tp1_v2_pseudobulk_TRB.tsv.gz  to directory:  /tmp/RtmpO7w6Jx</span></span>
-<span><span class="co">## Downloading file: cd8_tp2_v2_TIRTLoutput.tsv.gz  to directory:  /tmp/RtmpO7w6Jx</span></span>
-<span><span class="co">## Downloading file: cd8_tp2_v2_pseudobulk_TRA.tsv.gz  to directory:  /tmp/RtmpO7w6Jx</span></span>
-<span><span class="co">## Downloading file: cd8_tp2_v2_pseudobulk_TRB.tsv.gz  to directory:  /tmp/RtmpO7w6Jx</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading file: cd8_tp1_v2_TIRTLoutput.tsv.gz  to directory:  /tmp/RtmpkK7dMD</span></span>
+<span><span class="co">## Downloading file: cd8_tp1_v2_pseudobulk_TRA.tsv.gz  to directory:  /tmp/RtmpkK7dMD</span></span>
+<span><span class="co">## Downloading file: cd8_tp1_v2_pseudobulk_TRB.tsv.gz  to directory:  /tmp/RtmpkK7dMD</span></span>
+<span><span class="co">## Downloading file: cd8_tp2_v2_TIRTLoutput.tsv.gz  to directory:  /tmp/RtmpkK7dMD</span></span>
+<span><span class="co">## Downloading file: cd8_tp2_v2_pseudobulk_TRA.tsv.gz  to directory:  /tmp/RtmpkK7dMD</span></span>
+<span><span class="co">## Downloading file: cd8_tp2_v2_pseudobulk_TRB.tsv.gz  to directory:  /tmp/RtmpkK7dMD</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")</span></span>
 <span><span class="va">sjtrc</span> <span class="op">=</span> <span class="fu"><a href="../reference/load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, compress_strings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 15.519 sec elapsed</span></span></code></pre>
+<pre><code><span><span class="co">## 15.81 sec elapsed</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sjtrc</span> <span class="op">=</span> <span class="fu"><a href="../reference/TIRTL_process.html">TIRTL_process</a></span><span class="op">(</span><span class="va">sjtrc</span>, clean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Adding single-chain data to paired dataframe for sample 1</span></span>
