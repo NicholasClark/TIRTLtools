@@ -1,5 +1,10 @@
 #' Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
+#'
 #' @param data a TIRTLseqData object or a data frame created using \code{\link{get_pair_stats}()}
 #' @param chain the TCR chain to plot (default is "paired")
 #' @param samples (optional) the samples to include in the plot (default is all)

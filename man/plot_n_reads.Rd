@@ -21,7 +21,7 @@ plot_n_reads(
 \item{color_scheme}{a color scheme for the plot}
 }
 \description{
-Bar plot of the number of single-chain reads for each sample
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other plotting: 

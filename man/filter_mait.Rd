@@ -12,7 +12,7 @@ filter_mait(df, verbose = TRUE)
 \item{verbose}{whether to print number of MAIT TCRs removed}
 }
 \description{
-Remove MAIT (Mucosal-Associated Invariant T cells) TCRs
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other data_processing: 

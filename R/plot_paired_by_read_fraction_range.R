@@ -1,6 +1,10 @@
 #' Bar plot of the fraction of single chains that were paired within different
 #' read fraction ranges for each sample.
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param data a TIRTLseqData object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}
 #' @param chain the TCR chain to plot (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges

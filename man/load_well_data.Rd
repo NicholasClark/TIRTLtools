@@ -15,7 +15,7 @@ load_well_data(
 )
 }
 \description{
-Load well-level TIRTLseq data
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other well: 

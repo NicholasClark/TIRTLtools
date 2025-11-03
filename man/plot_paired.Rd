@@ -21,7 +21,7 @@ plot_paired(
 \item{color_scheme}{(optional) the color scheme for the plot}
 }
 \description{
-Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other plotting: 

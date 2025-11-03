@@ -14,7 +14,7 @@ reorder_samples(data, samples)
 conditions where each entry is of the form \code{"column==value"}.}
 }
 \description{
-Change the order of samples in a TIRTLseqData object
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other data_wrangling: 

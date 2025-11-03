@@ -16,7 +16,7 @@ load_well_data_to_sparse_multi(
 )
 }
 \description{
-Load well-level TIRTLseq data to sparse matrices
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other well: 

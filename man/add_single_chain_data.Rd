@@ -16,6 +16,7 @@ A TIRTLseq dataset object where the paired data frames for each sample have
 added columns for read counts and proportions from the single-chain pseudobulk data.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 The \code{add_single_chain_data()} function adds read counts and proportions
 from the single-chain pseudobulk data to the paired data frame for each sample
 of a dataset.

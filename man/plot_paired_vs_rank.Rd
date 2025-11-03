@@ -27,7 +27,7 @@ plot_paired_vs_rank(
 \item{color_scheme}{(optional) the color scheme for the plot}
 }
 \description{
-A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other plotting: 

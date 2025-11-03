@@ -40,6 +40,7 @@ A heatmap with hierarchically clustered rows and columns showing the number of
 TCRs shared between each pair of samples, among their top N most frequent TCRs.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{plot_sample_overlap()} returns a heatmap showing the overlap in most frequent TCRs
 among pairs of samples in a dataset
 }

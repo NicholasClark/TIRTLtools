@@ -17,6 +17,7 @@ By default, the TIRTLtools::params data frame is used.}
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function prepares a paired TCR data frame for running TCRdist,
 adding alleles to V-segments (i.e. "*01") if they are missing and removing
 TCRs with unrecognized V-segments or non-functional CDR3 sequences.

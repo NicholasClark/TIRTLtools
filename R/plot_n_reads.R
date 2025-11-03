@@ -1,5 +1,9 @@
 #' Bar plot of the number of single-chain reads for each sample
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param data a TIRTLseqData object
 #' @param chain the TCR chain to plot (default is both "alpha" and "beta")
 #' @param samples (optional) which samples to plot (default is all samples)

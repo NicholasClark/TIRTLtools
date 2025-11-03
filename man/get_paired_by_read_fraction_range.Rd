@@ -19,8 +19,7 @@ get_paired_by_read_fraction_range(
 \item{cutoffs}{a vector of cutoffs for the read fraction ranges}
 }
 \description{
-Calculate the number and fraction of single chains that were paired within
-different read fraction ranges
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other repertoire_analysis: 

@@ -15,8 +15,7 @@ plot_read_fraction_vs_pair_status(
 )
 }
 \description{
-Alternative point plot of read fraction vs. rank for the N most frequent alpha
-and beta chains, with a cross indicating an unpaired single-chain
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other plotting: 

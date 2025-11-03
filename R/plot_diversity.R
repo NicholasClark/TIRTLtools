@@ -1,6 +1,7 @@
 #' Bar plot of clonal diversity metrics
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' The \code{plot_diversity()} plots the requested clonal diversity metric
 #'
 #' @details

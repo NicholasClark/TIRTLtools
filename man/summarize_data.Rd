@@ -10,7 +10,7 @@ summarize_data(data)
 \item{data}{a TIRTLseqData object}
 }
 \description{
-Create a summary table with number of reads and unique alpha/beta chains observed for each sample
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other repertoire_analysis: 

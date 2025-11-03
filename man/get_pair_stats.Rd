@@ -12,7 +12,7 @@ get_pair_stats(data, verbose = TRUE)
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \description{
-Count the number of single-chains that were paired by each algorithm
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other repertoire_analysis: 

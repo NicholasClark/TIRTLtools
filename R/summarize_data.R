@@ -1,5 +1,9 @@
 #' Create a summary table with number of reads and unique alpha/beta chains observed for each sample
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param data a TIRTLseqData object
 #'
 #' @family repertoire_analysis

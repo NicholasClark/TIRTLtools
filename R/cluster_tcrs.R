@@ -1,6 +1,7 @@
 #' Cluster TCRs (using the Leiden algorithm) based on their pairwise TCRdist values
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' The \code{cluster_tcrs()} function aggregates all of the paired TCRs found in the data,
 #' calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 #' and clusters the results using the Leiden algorithm.

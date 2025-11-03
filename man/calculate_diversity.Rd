@@ -46,6 +46,7 @@ of the data, the percentage (50 or XX) supplied, and the actual percentage of th
 They return a data frame with many rows if supplied with a vector of orders (e.g. 1:5).
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{calculate_diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
 Shannon and Simpson indices) calculated from supplied data.
 }

@@ -7,7 +7,7 @@
 write_stitchr_tsv(df, output_name, output_folder = "")
 }
 \description{
-Write a tab-separated "thimble" text file for use with Stitchr
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other stitchr: 

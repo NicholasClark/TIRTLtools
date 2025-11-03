@@ -1,6 +1,7 @@
 #' Line plot of clonotype rank vs. read fraction for each sample
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 #'
 #' @family plotting

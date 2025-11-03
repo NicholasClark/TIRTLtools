@@ -2,6 +2,8 @@
 #' and beta (right) chains with lines between alpha and beta chains indicating a
 #' pair and a cross indicating an unpaired single-chain
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #'
 #' @family plotting

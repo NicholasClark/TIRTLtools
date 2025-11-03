@@ -1,5 +1,7 @@
 #' Get well names from top left and bottom right wells
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @family well
 get_wells_from_edges = function(top_left, bottom_right, return_type = c("wells", "rows_and_columns")){
   return_type = return_type[1]

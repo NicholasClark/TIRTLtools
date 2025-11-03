@@ -1,5 +1,7 @@
 #' Convert paired TCRs to a "thimble" data frame for stitching together TCR nucleotide coding sequences with the Stitchr Python package
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @family stitchr
 #'
 create_thimble_df = function(df, preset = c("default", "none"), TCR_names = "TCR",

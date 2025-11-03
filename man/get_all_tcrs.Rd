@@ -22,6 +22,7 @@ the T-SHELL and MAD-HYPE algorithms (default is TRUE).}
 A dataframe including all of the TCRs in a dataset.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 The \code{get_all_tcrs()} function aggregates the TCRs from all samples of a dataset
 and puts them into one table.
 }

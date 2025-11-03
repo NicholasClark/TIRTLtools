@@ -13,6 +13,7 @@ TIRTL_process(data, clean = FALSE)
 excess pairs for individual alpha and beta chains (default is FALSE).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function runs annotation and data cleaning functions on a
 TIRTLseqData object. Specifically, it calls the functions \code{add_single_chain_data()},
 \code{identify_paired()}, \code{identify_non_functional_seqs()}, and (optionally) \code{clean_pairs()}.

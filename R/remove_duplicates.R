@@ -1,6 +1,8 @@
 #' Removes duplicate paired TCRs
 #'
-#' @description By default, paired TCRs are listed twice in the paired chain data
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' By default, paired TCRs are listed twice in the paired chain data
 #' if they were called by both the T-SHELL and MAD-HYPE pairing algorithms. This
 #' function removes duplicate TCRs and returns a data frame with only one of each pair.
 #'

@@ -1,5 +1,7 @@
 #' Load well-level TIRTLseq data
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @family well
 load_well_data = function(folder_path, wells = get_well_subset(1:16,1:24),
                           well_pos=3, chain = c("both", "alpha", "beta"), nproc = 1L,

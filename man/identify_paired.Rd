@@ -21,6 +21,7 @@ paired data. \code{n_paired} is the number of distinct chains that the particula
 chain is paired with.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 For each sample in the dataset, \code{identify_paired()} annotates the alpha
 and beta pseudobulk data with the number of distinct pairs each chain is a part of
 in the paired data as well as a TRUE/FALSE column indicating whether the chain

@@ -1,5 +1,8 @@
 #' Returns all diversity metric options for \code{\link{calculate_diversity}()}
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
 #' @return
 #' A vector of all available diversity metrics for the \code{\link{calculate_diversity}()} function.
 #'

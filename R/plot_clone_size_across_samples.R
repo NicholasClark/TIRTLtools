@@ -1,5 +1,9 @@
 #' Line plot of clone read fraction across multiple samples
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param data a TIRTLseqData object
 #' @param clones a list of nucleotide sequences of TCR clones
 #' @param chain the TCR chain used (default is "beta")

@@ -1,6 +1,9 @@
 #' Remove MAIT (Mucosal-Associated Invariant T cells) TCRs
 #'
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param df data frame with paired TCRs
 #' @param verbose whether to print number of MAIT TCRs removed
 #'

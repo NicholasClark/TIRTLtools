@@ -11,7 +11,7 @@ get_wells_from_edges(
 )
 }
 \description{
-Get well names from top left and bottom right wells
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other well: 

@@ -1,5 +1,8 @@
 #' Count the number of single-chains that were paired by each algorithm
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param data a TIRTLseqData object
 #' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'

@@ -1,6 +1,10 @@
 #' Calculate the number and fraction of single chains that were paired within
 #' different read fraction ranges
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param data a TIRTLseqData object
 #' @param chain the TCR chain to use for read fraction (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges

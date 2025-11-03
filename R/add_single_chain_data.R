@@ -1,6 +1,8 @@
 #' Add single-chain read counts/fractions to the paired TCR data
 #'
+#'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' The \code{add_single_chain_data()} function adds read counts and proportions
 #' from the single-chain pseudobulk data to the paired data frame for each sample
 #' of a dataset.

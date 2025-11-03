@@ -1,6 +1,7 @@
 #' Identify TCRs that contain non-functional CDR3 sequences
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' \code{identify_non_functional_seqs()} identifies CDR3 nucleotide sequences in
 #' the data that contain either stop codons (*) or frame shifts (_) that
 #' would indicate a non-functional protein product.

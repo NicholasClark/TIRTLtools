@@ -11,6 +11,7 @@ remove_duplicates(data)
 of data frames}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 By default, paired TCRs are listed twice in the paired chain data
 if they were called by both the T-SHELL and MAD-HYPE pairing algorithms. This
 function removes duplicate TCRs and returns a data frame with only one of each pair.

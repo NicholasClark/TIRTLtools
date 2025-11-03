@@ -44,7 +44,7 @@ If FALSE, plot each clone with a separate line.}
 \item{log_scale}{(optional) if TRUE, use log-scale for the y-axis (default is FALSE)}
 }
 \description{
-Line plot of clone read fraction across multiple samples
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other plotting: 

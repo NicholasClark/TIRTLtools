@@ -22,6 +22,7 @@ each kind of coding error. Other columns identify if the alpha chain or beta cha
 a stop codon or frameshift, and if it is functional.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{identify_non_functional_seqs()} identifies CDR3 nucleotide sequences in
 the data that contain either stop codons (*) or frame shifts (_) that
 would indicate a non-functional protein product.

@@ -10,7 +10,7 @@ get_all_div_metrics()
 A vector of all available diversity metrics for the \code{\link{calculate_diversity}()} function.
 }
 \description{
-Returns all diversity metric options for \code{\link{calculate_diversity}()}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 # example code

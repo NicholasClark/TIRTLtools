@@ -53,6 +53,7 @@ Returns a list with the following elements:
 \code{$resolution} - the resolution parameter used for the Leiden algorithm
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 The \code{cluster_tcrs()} function aggregates all of the paired TCRs found in the data,
 calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 and clusters the results using the Leiden algorithm.

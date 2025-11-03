@@ -1,6 +1,8 @@
 #' Run data processing functions on a TIRTLseqData object
 #'
-#' @description This function runs annotation and data cleaning functions on a
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' This function runs annotation and data cleaning functions on a
 #' TIRTLseqData object. Specifically, it calls the functions \code{add_single_chain_data()},
 #' \code{identify_paired()}, \code{identify_non_functional_seqs()}, and (optionally) \code{clean_pairs()}.
 #'

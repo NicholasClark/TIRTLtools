@@ -1,5 +1,8 @@
 #' Add metadata to a TIRTLseqData object
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param obj a TIRTLseqData object
 #' @param meta_columns (optional) a vector of names for metadata for each field in the sample names.
 #' @param sep (optional) the character separating fields in the sample names of the data

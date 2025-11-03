@@ -16,7 +16,7 @@ For example \code{c("marker", "timepoint", "donor")} for samples named something
 like "cd8_timepoint2_donor1".}
 }
 \description{
-Add metadata to a TIRTLseqData object
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other data_wrangling: 

@@ -64,6 +64,7 @@ pairs that have TCRdist <= cutoff.
 \code{$tcr2} - a similar data frame for tcr2, if it was supplied.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 An efficient, batched version of TCRdist that is compatible with both NVIDIA and Apple Silicon GPUs.
 }
 \details{

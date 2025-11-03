@@ -1,6 +1,7 @@
 #' Plot clusters of similar TCRs
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' \code{plot_clusters()} plots TCRs that were previously clustered by the \code{\link{cluster_tcrs}()} function.
 #'
 #' @details

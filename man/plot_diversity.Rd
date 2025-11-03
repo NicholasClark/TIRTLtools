@@ -56,6 +56,7 @@ A list with two objects:
 \code{$data} - if return_data is TRUE, the data frame used to make the plot
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 The \code{plot_diversity()} plots the requested clonal diversity metric
 }
 \details{

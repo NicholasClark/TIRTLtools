@@ -1,5 +1,9 @@
 #' A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains
 #'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#'
 #' @param data a TIRTLseqData object
 #' @param sample the sample to plot
 #' @param y_axis whether to plot the cumulative number of paired or un-paired single-chains (default is "n_not_paired")

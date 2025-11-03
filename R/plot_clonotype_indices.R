@@ -1,6 +1,7 @@
 #' Stacked bar chart with fractions of reads attributed to the most frequent clonotypes
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' \code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of
 #' reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 #' clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.

@@ -32,6 +32,7 @@ A scatterplot (ggplot object) with read frequencies (proportions), colored by wh
 TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples
 }
 \details{

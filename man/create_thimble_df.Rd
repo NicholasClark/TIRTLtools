@@ -24,7 +24,7 @@ create_thimble_df(
 )
 }
 \description{
-Convert paired TCRs to a "thimble" data frame for stitching together TCR nucleotide coding sequences with the Stitchr Python package
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other stitchr: 

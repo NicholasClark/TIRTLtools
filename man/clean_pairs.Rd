@@ -18,6 +18,7 @@ paired with an individual alpha chain (default 1)}
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function filters the paired TCR data, keeping at most one beta-chain partner for each
 individual alpha-chain and at most two alpha-chain partners for each individual beta-chain.
 }

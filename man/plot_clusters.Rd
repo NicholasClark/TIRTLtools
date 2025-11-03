@@ -34,6 +34,7 @@ Currently returns a list with three items:
 \code{$heatmap} - a heatmap visualization of TCRs from the top clusters
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{plot_clusters()} plots TCRs that were previously clustered by the \code{\link{cluster_tcrs}()} function.
 }
 \details{

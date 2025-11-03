@@ -29,8 +29,7 @@ plot_paired_by_read_fraction_range(
 \item{color_scheme}{(optional) the color scheme to use in the plot}
 }
 \description{
-Bar plot of the fraction of single chains that were paired within different
-read fraction ranges for each sample.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
 Other plotting: 

@@ -1,6 +1,7 @@
 #' Scatterplot of TCR clone read fraction of clones between two samples
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' \code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples
 #'
 #' @details

@@ -2,6 +2,7 @@
 #' Plot the overlap/agreement between samples (in terms of most frequent clones)
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' \code{plot_sample_overlap()} returns a heatmap showing the overlap in most frequent TCRs
 #' among pairs of samples in a dataset
 #'

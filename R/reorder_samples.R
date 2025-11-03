@@ -1,5 +1,7 @@
 #' Change the order of samples in a TIRTLseqData object
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param data a TIRTLseqData object
 #' @param samples the samples of 'data', in their desired order. Either 1) a numeric vector of indices,
 #' 2) a character vector of sample names, or 3) a character vector of metadata

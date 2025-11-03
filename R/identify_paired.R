@@ -1,6 +1,7 @@
 #' Identify which single chains were paired
 #'
 #' @description
+#' `r lifecycle::badge('experimental')`
 #' For each sample in the dataset, \code{identify_paired()} annotates the alpha
 #' and beta pseudobulk data with the number of distinct pairs each chain is a part of
 #' in the paired data as well as a TRUE/FALSE column indicating whether the chain
