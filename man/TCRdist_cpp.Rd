@@ -19,7 +19,6 @@ for every pair of TCRs in tcr1.}
 \seealso{
 Other repertoire_analysis: 
 \code{\link{TCRdist}()},
-\code{\link{calculate_diversity}()},
 \code{\link{cluster_tcrs}()},
 \code{\link{get_all_div_metrics}()},
 \code{\link{get_all_tcrs}()},

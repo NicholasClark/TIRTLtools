@@ -4,8 +4,8 @@ template:
   light-switch: true
   theme: atom-one-light
   bslib:
-    #bootswatch: flatly
-    #pkgdown-nav-height: 100px
+    bootswatch: materia
+    pkgdown-nav-height: 100px
     #primary: "#323232"
 
 authors:
@@ -26,6 +26,9 @@ reference:
 - subtitle: TCR repertoire analysis
   contents:
   - has_concept("repertoire_analysis")
+- subtitle: Diversity
+  contents:
+  - has_concept("diversity")
 - subtitle: Plotting
   contents:
   - has_concept("plotting")
@@ -65,7 +68,56 @@ navbar:
       text: "Github"
       icon: fa-github fa-lg
       href: https://github.com/NicholasClark/TIRTLtools
-  articles:
-    contents:
-    - plot_examples
+    # tutorial:
+    #   text: "Tutorials"
+    #   menu:
+    #   - text: "Installation"
+    #     href: articles/TIRTLtools.html
+    #   - text: "Data loading"
+    #     href: articles/data_loading.html
+    #   - text: "Plot examples"
+    #     href: articles/plot_examples.html
+    #   - text: "Calculating TCRdist"
+    #     href: articles/TCRdist.html
+    #   - text: "(coming soon) The structure of TIRTLseq data in R"
+    #     href: articles/structure_in_R.html
+    #   - text: "(coming soon) Working with TIRTLseq data in R"
+    #     href: articles/working_with_tirtlseq_data_in_R.html
 
+
+articles:
+  - title: "Tutorials"
+    #desc: "An introduction to the package."
+    navbar: "Tutorials"
+    contents:
+      - "TIRTLtools"
+      - "data_loading"
+      - "plot_examples"
+      - "TCRdist"
+      - "structure_in_R"
+      - "working_with_tirtlseq_data_in_R"
+
+  - title: "Basic TIRTLseq data analysis"
+    #desc: "An introduction to the package."
+    navbar: "Basic TIRTLseq data analysis"
+    contents:
+      - "summarizing_diversity"
+      - "SJTRC_identifying_covid_epitopes"
+
+  - title: "Constructing full TCR nucleotide sequences"
+    #desc: "For users who have mastered the basics."
+    navbar: "Constructing full TCR nucleotide sequences"
+    contents:
+      - "stitchr"
+
+  - title: "Single-cell TIRTLseq analysis"
+    #desc: "An introduction to the package."
+    navbar: "Single-cell TIRTLseq analysis"
+    contents:
+      - "scTIRTLseq_data"
+
+  - title: "Well-level TIRTLseq analysis"
+    #desc: "An introduction to the package."
+    navbar: "Well-level TIRTLseq analysis"
+    contents:
+      - "well_level_data"

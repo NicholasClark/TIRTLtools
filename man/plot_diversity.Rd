@@ -91,5 +91,9 @@ Other plotting:
 \code{\link{plot_read_fraction_vs_pair_status}()},
 \code{\link{plot_sample_overlap}()},
 \code{\link{plot_sample_vs_sample}()}
+
+Other diversity: 
+\code{\link{calculate_diversity}()}
 }
+\concept{diversity}
 \concept{plotting}

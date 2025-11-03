@@ -108,14 +108,7 @@ In general, as q increases, less weight is given to rarer species.
 \seealso{
 \code{\link{plot_diversity}()}, \code{\link{get_all_div_metrics}()}
 
-Other repertoire_analysis: 
-\code{\link{TCRdist}()},
-\code{\link{TCRdist_cpp}()},
-\code{\link{cluster_tcrs}()},
-\code{\link{get_all_div_metrics}()},
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{summarize_data}()}
+Other diversity: 
+\code{\link{plot_diversity}()}
 }
-\concept{repertoire_analysis}
+\concept{diversity}

@@ -45,6 +45,7 @@ Imports:
     reshape2,
     reticulate (>= 1.41.0.1),
     rhdf5,
+    rsconnect,
     S4Vectors,
     stringdist,
     tictoc,

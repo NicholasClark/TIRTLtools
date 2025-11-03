@@ -18,7 +18,6 @@ get_pair_stats(data, verbose = TRUE)
 Other repertoire_analysis: 
 \code{\link{TCRdist}()},
 \code{\link{TCRdist_cpp}()},
-\code{\link{calculate_diversity}()},
 \code{\link{cluster_tcrs}()},
 \code{\link{get_all_div_metrics}()},
 \code{\link{get_all_tcrs}()},

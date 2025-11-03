@@ -76,7 +76,7 @@
 #' @param n the number of most frequent clones to use for the topNfraction metric.
 #'
 #'
-#' @family repertoire_analysis
+#' @family diversity
 #' @seealso \code{\link{plot_diversity}()}, \code{\link{get_all_div_metrics}()}
 #'
 #' @export
