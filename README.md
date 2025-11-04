@@ -2,6 +2,14 @@
 
 ***Package is in active development and may change frequently.***
 
+## Documentation and usage instructions
+
+For more information, see our website: [https://nicholasclark.github.io/TIRTLtools/](https://nicholasclark.github.io/TIRTLtools/)
+
+- [Installation instructions](https://nicholasclark.github.io/TIRTLtools/articles/TIRTLtools.html)
+- [Reference manual](https://nicholasclark.github.io/TIRTLtools/reference/index.html)
+- [Tutorials and vignettes](https://nicholasclark.github.io/TIRTLtools/articles/)
+
 ## Overview
 
 `TIRTLtools` is a suite of tools for analyzing T-cell receptor (TCR) repertoires created using **TIRTL-seq** (**T**hroughput-**I**ntensive **R**apid **T**CR **L**ibrary **seq**uencing) [(Pogorelyy and Kirk et al., bioRxiv 2024)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2).
@@ -16,11 +24,6 @@ Cells are split across wells in [384-well](https://www.protocols.io/view/tirtl-s
 
 The initial output from the TIRTLseq assay consists of two tables of read counts for single-chain TCRs (one for alpha and one for beta) for each well.
 Alpha and beta chains are paired using computational algorithms based on their occurrence patterns and read counts across wells.
-
-## Installation
-
-Instructions to [install TIRTLtools](articles/TIRTLtools.html).
-
 
 ## References
 
