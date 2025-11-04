@@ -6,6 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Data loading • TIRTLtools</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
@@ -14,6 +19,20 @@
 <meta property="og:title" content="Data loading">
 </head>
 <body>
+<p>
+
+
+
+
+
+
+
+
+  pkgdown/extra.css
+
+  
+
+  </p>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -52,7 +71,7 @@
     <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
+    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">Working with single-cell TIRTLseq data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
@@ -84,8 +103,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Data loading</h1>
+      <img src="../logo.svg" class="logo" alt=""><h1>Data loading</h1>
             
             <h4 data-toc-skip class="date">2025-10-31</h4>
       
@@ -95,37 +113,535 @@
 
     
     
+<div class="section level2">
+<h2 id="tirtlseq-text-file-data-structure">TIRTLseq text file data structure<a class="anchor" aria-label="anchor" href="#tirtlseq-text-file-data-structure"></a>
+</h2>
 <p>TIRTLseq data is kept in tab-separated text files (.tsv). The files
 may be ‘gzipped’ (.tsv.gz) to save space.<br>Output for each sample
 consists of 3 files:</p>
 <ul>
 <li>
 <code>&lt;sample-name&gt;_TIRTLoutput.tsv(.gz)</code>– Paired TCRs –
-a table of computationally paired alpha/beta TCRs<br>
-</li>
+a table of computationally paired alpha/beta TCRs</li>
 <li>
 <code>&lt;sample-name&gt;_pseudobulk_TRA.tsv(.gz)</code> – Alpha
 chain “pseudo-bulk” data – average read counts/frequencies of
-alpha-chains across all wells on a plate<br>
-</li>
+alpha-chains across all wells on a plate</li>
 <li>
 <code>&lt;sample-name&gt;_pseudobulk_TRB.tsv(.gz)</code> – Beta
 chain “pseudo-bulk” data – average read counts/frequencies of
 beta-chains across all wells on a plate</li>
 </ul>
-<p>You can load paired TCR data with the <code><a href="../reference/load_tirtlseq.html">load_tirtlseq()</a></code>
-function.<br> You must to specify a directory that has tab-separated
-TIRLTseq data files in it.</p>
-<p>The <code><a href="../reference/load_tirtlseq.html">load_tirtlseq()</a></code> function will load data for all of
-the TIRTLseq samples it finds in a directory.</p>
+</div>
+<div class="section level2">
+<h2 id="loading-tirtlseq-data-in-r">Loading TIRTLseq Data in R<a class="anchor" aria-label="anchor" href="#loading-tirtlseq-data-in-r"></a>
+</h2>
+<p>The <code><a href="../reference/load_tirtlseq.html">load_tirtlseq()</a></code> function loads paired TCR TIRTLseq
+data from all text files in a directory.</p>
+<p>The function can also automatically assemble a metadata table if the
+files are named in a way that specifies the sample metadata.</p>
+<p>Here, our files are named
+<code>(marker)_(timepoint)_(version)_ ... .tsv.gz</code>, e.g.
+<code>cd4_tp1_v2_TIRTLoutput.tsv</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nicholasclark.github.io/TIRTLtools/">TIRTLtools</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Error in system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE) : </span></span>
 <span><span class="co">##   error in running command</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTLseq_minimal"</span>, package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span>
-<span><span class="co">#sjtrc = load_tirtlseq(folder)</span></span></code></pre></div>
-  </main>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTL_seq_longitudinal"</span>, package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">folder</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] "cd4_tp1_v2_pseudobulk_TRA.tsv.gz" "cd4_tp1_v2_pseudobulk_TRB.tsv.gz"</span></span>
+<span><span class="co">##  [3] "cd4_tp1_v2_TIRTLoutput.tsv.gz"    "cd4_tp2_v2_pseudobulk_TRA.tsv.gz"</span></span>
+<span><span class="co">##  [5] "cd4_tp2_v2_pseudobulk_TRB.tsv.gz" "cd4_tp2_v2_TIRTLoutput.tsv.gz"   </span></span>
+<span><span class="co">##  [7] "cd4_tp3_v2_pseudobulk_TRA.tsv.gz" "cd4_tp3_v2_pseudobulk_TRB.tsv.gz"</span></span>
+<span><span class="co">##  [9] "cd4_tp3_v2_TIRTLoutput.tsv.gz"    "cd8_tp1_v2_pseudobulk_TRA.tsv.gz"</span></span>
+<span><span class="co">## [11] "cd8_tp1_v2_pseudobulk_TRB.tsv.gz" "cd8_tp1_v2_TIRTLoutput.tsv.gz"   </span></span>
+<span><span class="co">## [13] "cd8_tp2_v2_pseudobulk_TRA.tsv.gz" "cd8_tp2_v2_pseudobulk_TRB.tsv.gz"</span></span>
+<span><span class="co">## [15] "cd8_tp2_v2_TIRTLoutput.tsv.gz"    "cd8_tp3_v2_pseudobulk_TRA.tsv.gz"</span></span>
+<span><span class="co">## [17] "cd8_tp3_v2_pseudobulk_TRB.tsv.gz" "cd8_tp3_v2_TIRTLoutput.tsv.gz"</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu"><a href="../reference/load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 64.769 sec elapsed</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="the-tirtlseq-data-object">The TIRTLseq data object<a class="anchor" aria-label="anchor" href="#the-tirtlseq-data-object"></a>
+</h2>
+<p>In R, TIRTLseq data is stored in a “list” which can contain any type
+of unstructured data.</p>
+<p>The list contains two slots.</p>
+<ul>
+<li>
+<code>meta</code> - a data frame with sample metadata</li>
+<li>
+<code>data</code> - a list with data for each sample</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">)</span> <span class="co">## list</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "list"</span></span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">)</span> <span class="co">## [1] "data" "meta"</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "data" "meta"</span></span></code></pre>
+<div class="section level3">
+<h3 id="the-metadata-table">The metadata table<a class="anchor" aria-label="anchor" href="#the-metadata-table"></a>
+</h3>
+<p>The <code>$meta</code> slot contains a data frame with columns for
+<code>sample_id</code> (determined from the filename) and any columns
+you specified with the “meta_columns” argument. The <code>label</code>
+column combines all of the metadata columns into one string.</p>
+<p>If you did not specify “meta_columns” in the
+<code><a href="../reference/load_tirtlseq.html">load_tirtlseq()</a></code> call, then the table will only contain the
+<code>sample_id</code> and <code>label</code> columns.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_data</span><span class="op">$</span><span class="va">meta</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">##   sample_id  marker timepoint version label                                     </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                     </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> cd4_tp1_v2 cd4    tp1       v2      marker: cd4 | timepoint: tp1 | version: v2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> cd4_tp2_v2 cd4    tp2       v2      marker: cd4 | timepoint: tp2 | version: v2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> cd4_tp3_v2 cd4    tp3       v2      marker: cd4 | timepoint: tp3 | version: v2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> cd8_tp1_v2 cd8    tp1       v2      marker: cd8 | timepoint: tp1 | version: v2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> cd8_tp2_v2 cd8    tp2       v2      marker: cd8 | timepoint: tp2 | version: v2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> cd8_tp3_v2 cd8    tp3       v2      marker: cd8 | timepoint: tp3 | version: v2</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="the-data-list">The data list<a class="anchor" aria-label="anchor" href="#the-data-list"></a>
+</h3>
+<p>The <code>$data</code> slot is also a “list” that contains one object
+for each sample, named by its <code>sample_id</code>.</p>
+<p>For each sample, <code>$data$[sample-name]</code> is a “list” of
+three data frames.</p>
+<ul>
+<li>
+<code>$data$[sample-name]$alpha</code> contains the pseudo-bulk data
+for the alpha chain</li>
+<li>
+<code>$data$[sample-name]$beta</code> contains the pseudo-bulk data
+for the beta chain</li>
+<li>
+<code>$data$[sample-name]$paired</code> contains alpha and beta
+chains that were paired computationally by our MAD-HYPE and T-SHELL
+algorithms.</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="co">## [1] "cd4_tp1_v2" "cd4_tp2_v2" "cd4_tp3_v2" "cd8_tp1_v2" "cd8_tp2_v2" "cd8_tp3_v2"</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "cd4_tp1_v2" "cd4_tp2_v2" "cd4_tp3_v2" "cd8_tp1_v2" "cd8_tp2_v2"</span></span>
+<span><span class="co">## [6] "cd8_tp3_v2"</span></span></code></pre>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">)</span> <span class="co">## list</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "list"</span></span></code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">)</span> <span class="co">## [1] "alpha"  "beta"   "paired"</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "alpha"  "beta"   "paired"</span></span></code></pre>
+<div class="section level4">
+<h4 id="the-pseudo-bulk-data-frames">The pseudo-bulk data frames<a class="anchor" aria-label="anchor" href="#the-pseudo-bulk-data-frames"></a>
+</h4>
+<p>In the TIRTLseq assay, one experiment is repeated hundreds of times
+in a multi-well plate. Generally, an experiment is repeated in a half
+plate (192 wells) or a whole plate (384 wells). Alpha and beta TCRs are
+sequenced simultaneously, but separately in each well.</p>
+<p>The reads for each well are processed using <a href="https://mixcr.com/" class="external-link">MiXCR</a>, which calls V and J segments,
+assembles the CDR3 nucleotide sequence, and generates its corresponding
+amino acid sequence.</p>
+<p>For each clonotype defined by a unique CDR3 nucleotide sequence, the
+following summary metrics are reported:</p>
+<ul>
+<li>
+<code>readCount</code> - sum of read counts over all wells for the
+clonotype</li>
+<li>
+<code>readFraction</code> - the fraction of all reads attributed to
+the clonotype</li>
+<li>
+<code>sem</code> - standard error of the mean for the read
+fraction.</li>
+<li>
+<code>n_wells</code> - the number of wells in which a clonotype is
+observed</li>
+<li>
+<code>max_wells</code> - the number of wells used for the experiment
+(generally the same for all clonotypes)</li>
+<li>
+<code>readCount_max</code> - the maximum read count in any well for
+the clonotype</li>
+<li>
+<code>readCount_median</code> - the median read count for a
+clonotype</li>
+</ul>
+<p><code>$data$[sample-name]$alpha</code> and
+<code>$data$[sample-name]$beta</code> contain the pseudo-bulk data for
+alpha and beta chains, respectively.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">$</span><span class="va">alpha</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                        targetSequences readCount        v</span></span>
+<span><span class="co">##                                                 &lt;char&gt;     &lt;int&gt;   &lt;char&gt;</span></span>
+<span><span class="co">##       1:          TGTGCTCTGACTGACAGCTGGGGGAAATTGCAGTTT     52024  TRAV9-2</span></span>
+<span><span class="co">##       2: TGTGCTCTGAGTGAGGCAGGTACTGGAGGCTTCAAAACTATCTTT     47586   TRAV19</span></span>
+<span><span class="co">##       3:    TGTGCTCTGATTCAATCGGGTGACGGTAACCAGTTCTATTTT     42579   TRAV19</span></span>
+<span><span class="co">##       4: TGTGTGGTGAACAACCGGGCTGGCAACAACCGTAAGCTGATTTGG     39236 TRAV12-1</span></span>
+<span><span class="co">##       5:    TGTGCTGTGATCCCCAACACGGGCAGGAGAGCACTTACTTTT     38665    TRAV3</span></span>
+<span><span class="co">##      ---                                                                 </span></span>
+<span><span class="co">## 1972372:             TTTTTCGGTACTAGCTATGGAAAGCTGACATTT         1   TRAV41</span></span>
+<span><span class="co">## 1972373:               TTTTTCTACAGATGGCCAGAAGCTGCTCTTT         1   TRAV10</span></span>
+<span><span class="co">## 1972374:           TTTTTGGCTCTAGCGACACAGGCAAACTAATCTTT         1  TRAV9-2</span></span>
+<span><span class="co">## 1972375:          TTTTTTTCAGGAGGGGGAGCTGACGGACTCACCTTT         1   TRAV25</span></span>
+<span><span class="co">## 1972376:            TTTTTTTTTCTGGTGGCTACAATAAGCTGATTTT         1    TRAV5</span></span>
+<span><span class="co">##               j       aaSeqCDR3 n_wells readCount_max readCount_median</span></span>
+<span><span class="co">##          &lt;char&gt;          &lt;char&gt;   &lt;int&gt;         &lt;int&gt;            &lt;num&gt;</span></span>
+<span><span class="co">##       1: TRAJ24    CALTDSWGKLQF     177          1304              256</span></span>
+<span><span class="co">##       2:  TRAJ9 CALSEAGTGGFKTIF     181          1148              243</span></span>
+<span><span class="co">##       3: TRAJ49  CALIQSGDGNQFYF     177           692              217</span></span>
+<span><span class="co">##       4: TRAJ38 CVVNNRAGNNRKLIW     172           868              202</span></span>
+<span><span class="co">##       5:  TRAJ5  CAVIPNTGRRALTF     136          1047              261</span></span>
+<span><span class="co">##      ---                                                              </span></span>
+<span><span class="co">## 1972372: TRAJ52     FFGTSYGKLTF       1             1                1</span></span>
+<span><span class="co">## 1972373: TRAJ16     FFYRW_QKLLF       1             1                1</span></span>
+<span><span class="co">## 1972374: TRAJ37    FLALAT_GKLIF       1             1                1</span></span>
+<span><span class="co">## 1972375: TRAJ45    FFSGGGADGLTF       1             1                1</span></span>
+<span><span class="co">## 1972376:  TRAJ4    FFFLVA_Q*ADF       1             1                1</span></span>
+<span><span class="co">##                   sem readFraction max_wells</span></span>
+<span><span class="co">##                 &lt;num&gt;        &lt;num&gt;     &lt;int&gt;</span></span>
+<span><span class="co">##       1: 3.795837e-05 6.825034e-04       191</span></span>
+<span><span class="co">##       2: 3.156959e-05 6.242812e-04       191</span></span>
+<span><span class="co">##       3: 2.727428e-05 5.585943e-04       191</span></span>
+<span><span class="co">##       4: 2.884605e-05 5.147375e-04       191</span></span>
+<span><span class="co">##       5: 3.741446e-05 5.072465e-04       191</span></span>
+<span><span class="co">##      ---                                    </span></span>
+<span><span class="co">## 1972372: 1.247838e-08 1.311901e-08       191</span></span>
+<span><span class="co">## 1972373: 1.416962e-08 1.311901e-08       191</span></span>
+<span><span class="co">## 1972374: 1.210356e-08 1.311901e-08       191</span></span>
+<span><span class="co">## 1972375: 1.242923e-08 1.311901e-08       191</span></span>
+<span><span class="co">## 1972376: 1.306689e-08 1.311901e-08       191</span></span></code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                targetSequences readCount</span></span>
+<span><span class="co">##                                                         &lt;char&gt;     &lt;int&gt;</span></span>
+<span><span class="co">##       1:                  TGCAGCGGGACAGCGAACACCGGGGAGCTGTTTTTT    145569</span></span>
+<span><span class="co">##       2:                     TGCAGCGCATTAGCCAAAAACATTCAGTACTTC     84844</span></span>
+<span><span class="co">##       3:                  TGCAGCGCCGGGACTAGCGTGGAGACCCAGTACTTC     60756</span></span>
+<span><span class="co">##       4:               TGCGCCAGCAGAGTCGATGGCTACAATGAGCAGTTCTTC     54311</span></span>
+<span><span class="co">##       5:      TGTGCCAGCAGCCAAGCGGAAAGGGCTGGGGCCAACGTCCTGACTTTC     53686</span></span>
+<span><span class="co">##      ---                                                                </span></span>
+<span><span class="co">## 1867887:               TTTGCTAGCAGCTTAGTCGAGGGTTCGCCCCTCCACTTT         1</span></span>
+<span><span class="co">## 1867888:    TTTGTGCCAGCAGCCACGTAAAACTTCAAGGCACAGATACGCAGTATTTT         1</span></span>
+<span><span class="co">## 1867889: TTTTATGGGGGACAGCAAATAGGTACCCCCCGAAGGGACCACCCCTCCACTTT         1</span></span>
+<span><span class="co">## 1867890: TTTTATGGGGGACAGCAAATAGGTACCCCCCGAAGGGATTACCCCTCCACTTT         1</span></span>
+<span><span class="co">## 1867891:                 TTTTGAGGGAGGCAGCAGGCGGTGTACGCAGTATTTT         1</span></span>
+<span><span class="co">##                 v       j          aaSeqCDR3 n_wells readCount_max</span></span>
+<span><span class="co">##            &lt;char&gt;  &lt;char&gt;             &lt;char&gt;   &lt;int&gt;         &lt;int&gt;</span></span>
+<span><span class="co">##       1: TRBV29-1 TRBJ2-2       CSGTANTGELFF     190          2501</span></span>
+<span><span class="co">##       2: TRBV29-1 TRBJ2-4        CSALAKNIQYF     168          2483</span></span>
+<span><span class="co">##       3: TRBV29-1 TRBJ2-5       CSAGTSVETQYF     141          2334</span></span>
+<span><span class="co">##       4:  TRBV5-1 TRBJ2-1      CASRVDGYNEQFF     167          1270</span></span>
+<span><span class="co">##       5:  TRBV4-2 TRBJ2-6   CASSQAERAGANVLTF     172          1427</span></span>
+<span><span class="co">##      ---                                                          </span></span>
+<span><span class="co">## 1867887:  TRBV7-7 TRBJ1-6      FASSLVEGSPLHF       1             1</span></span>
+<span><span class="co">## 1867888:   TRBV16 TRBJ2-3  FVPAAT*N_QGTDTQYF       1             1</span></span>
+<span><span class="co">## 1867889: TRBV11-3 TRBJ1-6 FYGGQQIGT_PKGPPLHF       1             1</span></span>
+<span><span class="co">## 1867890: TRBV11-3 TRBJ1-6 FYGGQQIGT_PKGLPLHF       1             1</span></span>
+<span><span class="co">## 1867891:  TRBV6-5 TRBJ2-3      F*GRQQ_RCTQYF       1             1</span></span>
+<span><span class="co">##          readCount_median          sem readFraction max_wells</span></span>
+<span><span class="co">##                     &lt;num&gt;        &lt;num&gt;        &lt;num&gt;     &lt;int&gt;</span></span>
+<span><span class="co">##       1:            739.5 7.132553e-05 1.379590e-03       191</span></span>
+<span><span class="co">##       2:            391.5 6.976097e-05 8.040853e-04       191</span></span>
+<span><span class="co">##       3:            150.0 6.087061e-05 5.757980e-04       191</span></span>
+<span><span class="co">##       4:            278.0 3.137988e-05 5.147174e-04       191</span></span>
+<span><span class="co">##       5:            263.0 3.070883e-05 5.087941e-04       191</span></span>
+<span><span class="co">##      ---                                                     </span></span>
+<span><span class="co">## 1867887:              1.0 1.199151e-08 9.477221e-09       191</span></span>
+<span><span class="co">## 1867888:              1.0 9.529725e-09 9.477221e-09       191</span></span>
+<span><span class="co">## 1867889:              1.0 8.920835e-09 9.477221e-09       191</span></span>
+<span><span class="co">## 1867890:              1.0 8.920835e-09 9.477221e-09       191</span></span>
+<span><span class="co">## 1867891:              1.0 8.860281e-09 9.477221e-09       191</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="the-paired-data-frame">The paired data frame<a class="anchor" aria-label="anchor" href="#the-paired-data-frame"></a>
+</h4>
+<p>We use computational algorithms based on occurrence patterns (<a href="https://academic.oup.com/bioinformatics/article/35/8/1318/5095649" class="external-link">MAD-HYPE
+algorithm</a>) or correlation of read fractions (<a href="https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2" class="external-link">T-SHELL</a>)
+of TCR chains across all wells to identify alpha and beta chains present
+in the same clone.</p>
+<p>In general, the MAD-HYPE method works well for moderately frequent
+clones, but fails for the most frequent clones if they are found in all
+or almost all wells. The T-SHELL algorithm works well for pairing these
+very frequent clones.</p>
+<p>For each pair, we report:</p>
+<div class="section level5">
+<h5 id="vjcdr3-sequences">V/J/CDR3 sequences<a class="anchor" aria-label="anchor" href="#vjcdr3-sequences"></a>
+</h5>
+<ul>
+<li>
+<code>alpha_nuc_seq</code>, <code>alpha_nuc</code> - alpha CDR3
+nucleotide sequence</li>
+<li>
+<code>beta_nuc_seq</code>, <code>beta_nuc</code> - beta CDR3
+nucleotide sequence</li>
+<li>
+<code>alpha_beta</code> - alpha-beta pair concatenated nucleotide
+sequence</li>
+<li>
+<code>cdr3a</code> - alpha CDR3aa sequence</li>
+<li>
+<code>va</code> - alpha V gene</li>
+<li>
+<code>ja</code> - alpha J gene</li>
+<li>
+<code>cdr3b</code> - beta CDR3aa sequence</li>
+<li>
+<code>vb</code> - beta V gene</li>
+<li>
+<code>jb</code> - beta J gene</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="alphabeta-chain-occurence-and-overlap">Alpha/beta chain occurence and overlap<a class="anchor" aria-label="anchor" href="#alphabeta-chain-occurence-and-overlap"></a>
+</h5>
+<ul>
+<li>
+<code>wa</code> - number of wells where alpha is found</li>
+<li>
+<code>wb</code> -number of wells where beta is found</li>
+<li>
+<code>wi</code> - number of wells where alpha is found, but not
+beta</li>
+<li>
+<code>wj</code> - number of wells where beta is found, but not
+alpha</li>
+<li>
+<code>wij</code> - number of wells where both alpha and beta are
+found</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="pairing-method-scores-and-metrics">Pairing method scores and metrics<a class="anchor" aria-label="anchor" href="#pairing-method-scores-and-metrics"></a>
+</h5>
+<ul>
+<li>
+<code>method</code> - method used for pairing: T-SHELL or
+MAD-HYPE</li>
+<li>
+<code>r</code> - for T-SHELL, the Pearson correlation coefficient
+between alpha and beta frequencies</li>
+<li>
+<code>ts</code> - for T-SHELL, the t-statistic of the
+correlation</li>
+<li>
+<code>pval</code> - for T-SHELL, the p-value of the correlation</li>
+<li>
+<code>pval_adj</code> - for T-SHELL, the adjusted p-value of the
+correlation</li>
+<li>
+<code>score</code> - for MAD-HYPE, the score of the pairing (higher
+is better)</li>
+<li>
+<code>loss_a_frac</code> - the fraction of wells with lost alpha
+chain</li>
+<li>
+<code>loss_b_frac</code> - the fraction of wells with lost beta
+chain</li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">$</span><span class="va">paired</span></span></code></pre></div>
+<pre><code><span><span class="co">##           wi    wj   wij                                        alpha_nuc</span></span>
+<span><span class="co">##        &lt;int&gt; &lt;int&gt; &lt;int&gt;                                           &lt;char&gt;</span></span>
+<span><span class="co">##     1:     0     0     3          TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT</span></span>
+<span><span class="co">##     2:     0     0     3       TGTGCTCTTCAAACTTCTGGTGGCTACAATAAGCTGATTTTT</span></span>
+<span><span class="co">##     3:     0     0     3             TGTGCTCCCCGGTACACCGGTAACCAGTTCTATTTT</span></span>
+<span><span class="co">##     4:     0     0     3 TGTGCAATGAGAGAGGTCGCTTCTGGTGGCTACAATAAGCTGATTTTT</span></span>
+<span><span class="co">##     5:     0     0     3             TGTGCTGCCAGCGGGGGCTTTCAGAAACTTGTATTT</span></span>
+<span><span class="co">##    ---                                                                   </span></span>
+<span><span class="co">## 67827:    87     0    49       TGTGCTGTGATCCCCAACACGGGCAGGAGAGCACTTACTTTT</span></span>
+<span><span class="co">## 67828:    87     1    39       TGTGCAGCAAGCATAAGACAGGGAGCCCAGAAGCTGGTATTT</span></span>
+<span><span class="co">## 67829:    89     0    62          TGTGCCGTTCCCTCTGGGGGTTACCAGAAAGTTACCTTT</span></span>
+<span><span class="co">## 67830:    90     0    27       TGTGCTCTGAGTGAGGAGGGTAGGGATGACAAGATCATCTTT</span></span>
+<span><span class="co">## 67831:    93     0    40          TGTGCTTATAGGCGCGGGGCTGGAAACAAGCTGGTCTTT</span></span>
+<span><span class="co">##                                                          beta_nuc    wa    wb</span></span>
+<span><span class="co">##                                                            &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">##     1:                    TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT     3     3</span></span>
+<span><span class="co">##     2:                          TGTGCCAGCAGCTATCAGGGCCAGCAGTTCTTC     3     3</span></span>
+<span><span class="co">##     3:                 TGTGCCATCAGTCGGGGACAGGGGGCAGGTGAGCAGTTCTTC     3     3</span></span>
+<span><span class="co">##     4:           TGTGCCAGCTCGACAGGGGGACAGCGACCTAATGAAAAACTGTTTTTT     3     3</span></span>
+<span><span class="co">##     5:              TGCGCCAGCAGCCCAACAGGGGGGCAGGACTATGGCTACACCTTC     3     3</span></span>
+<span><span class="co">##    ---                                                                       </span></span>
+<span><span class="co">## 67827: TGTGCCAGCAGTTCCGGCCGGCATGTCTTGATAGCGGGAGGGTAGGGAGCAGTTCTTC   136    49</span></span>
+<span><span class="co">## 67828:                              TGTGCCATCAGCAAGATGGCTACACCTTC   126    40</span></span>
+<span><span class="co">## 67829:                   TGTGCCAGCAGTTTCCCTTTCCGGGAGAAGGCAGTATTTT   151    62</span></span>
+<span><span class="co">## 67830:       TGTGCCAGCCGCGGACAGGGGGCTAAGACGACTAATGAAAAACTGTTTTTTT   117    27</span></span>
+<span><span class="co">## 67831:                              TGTGCCATCAGCAAGATGGCTACACCTTC   133    40</span></span>
+<span><span class="co">##                                                                                                   alpha_beta</span></span>
+<span><span class="co">##                                                                                                       &lt;char&gt;</span></span>
+<span><span class="co">##     1:                       TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT</span></span>
+<span><span class="co">##     2:                          TGTGCTCTTCAAACTTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCAGCTATCAGGGCCAGCAGTTCTTC</span></span>
+<span><span class="co">##     3:                       TGTGCTCCCCGGTACACCGGTAACCAGTTCTATTTT_TGTGCCATCAGTCGGGGACAGGGGGCAGGTGAGCAGTTCTTC</span></span>
+<span><span class="co">##     4:     TGTGCAATGAGAGAGGTCGCTTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCTCGACAGGGGGACAGCGACCTAATGAAAAACTGTTTTTT</span></span>
+<span><span class="co">##     5:                    TGTGCTGCCAGCGGGGGCTTTCAGAAACTTGTATTT_TGCGCCAGCAGCCCAACAGGGGGGCAGGACTATGGCTACACCTTC</span></span>
+<span><span class="co">##    ---                                                                                                      </span></span>
+<span><span class="co">## 67827: TGTGCTGTGATCCCCAACACGGGCAGGAGAGCACTTACTTTT_TGTGCCAGCAGTTCCGGCCGGCATGTCTTGATAGCGGGAGGGTAGGGAGCAGTTCTTC</span></span>
+<span><span class="co">## 67828:                              TGTGCAGCAAGCATAAGACAGGGAGCCCAGAAGCTGGTATTT_TGTGCCATCAGCAAGATGGCTACACCTTC</span></span>
+<span><span class="co">## 67829:                      TGTGCCGTTCCCTCTGGGGGTTACCAGAAAGTTACCTTT_TGTGCCAGCAGTTTCCCTTTCCGGGAGAAGGCAGTATTTT</span></span>
+<span><span class="co">## 67830:       TGTGCTCTGAGTGAGGAGGGTAGGGATGACAAGATCATCTTT_TGTGCCAGCCGCGGACAGGGGGCTAAGACGACTAATGAAAAACTGTTTTTTT</span></span>
+<span><span class="co">## 67831:                                 TGTGCTTATAGGCGCGGGGCTGGAAACAAGCTGGTCTTT_TGTGCCATCAGCAAGATGGCTACACCTTC</span></span>
+<span><span class="co">##         method     r    ts  pval pval_adj loss_a_frac loss_b_frac    score</span></span>
+<span><span class="co">##         &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co">##     1: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     2: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     3: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     4: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     5: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##    ---                                                                    </span></span>
+<span><span class="co">## 67827: madhype    NA    NA    NA       NA 0.000000000   0.6397059 2.789358</span></span>
+<span><span class="co">## 67828: madhype    NA    NA    NA       NA 0.007874016   0.6850394 1.105181</span></span>
+<span><span class="co">## 67829: madhype    NA    NA    NA       NA 0.000000000   0.5894040 2.040927</span></span>
+<span><span class="co">## 67830: madhype    NA    NA    NA       NA 0.000000000   0.7692308 0.507382</span></span>
+<span><span class="co">## 67831: madhype    NA    NA    NA       NA 0.000000000   0.6992481 1.408576</span></span>
+<span><span class="co">##                   cdr3a           va     ja                cdr3b       vb</span></span>
+<span><span class="co">##                  &lt;char&gt;       &lt;char&gt; &lt;char&gt;               &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">##     1:    CAVNGGNDYKLSF     TRAV12-2 TRAJ20        CASSPEQGLAQHF   TRBV18</span></span>
+<span><span class="co">##     2:   CALQTSGGYNKLIF      TRAV9-2  TRAJ4          CASSYQGQQFF  TRBV7-6</span></span>
+<span><span class="co">##     3:     CAPRYTGNQFYF       TRAV41 TRAJ49       CAISRGQGAGEQFF TRBV10-3</span></span>
+<span><span class="co">##     4: CAMREVASGGYNKLIF   TRAV14/DV4  TRAJ4     CASSTGGQRPNEKLFF  TRBV6-1</span></span>
+<span><span class="co">##     5:     CAASGGFQKLVF        TRAV2  TRAJ8      CASSPTGGQDYGYTF  TRBV5-1</span></span>
+<span><span class="co">##    ---                                                                   </span></span>
+<span><span class="co">## 67827:   CAVIPNTGRRALTF        TRAV3  TRAJ5 CASSSGRHVL_*REGREQFF   TRBV27</span></span>
+<span><span class="co">## 67828:   CAASIRQGAQKLVF   TRAV23/DV6 TRAJ54           CAISK_GYTF TRBV10-3</span></span>
+<span><span class="co">## 67829:    CAVPSGGYQKVTF     TRAV12-2 TRAJ13       CASSFPF_GRRQYF   TRBV27</span></span>
+<span><span class="co">## 67830:   CALSEEGRDDKIIF       TRAV19 TRAJ30   CASRGQGAK_RLMKNCFF   TRBV27</span></span>
+<span><span class="co">## 67831:    CAYRRGAGNKLVF TRAV38-2/DV8 TRAJ47           CAISK_GYTF TRBV10-3</span></span>
+<span><span class="co">##             jb</span></span>
+<span><span class="co">##         &lt;char&gt;</span></span>
+<span><span class="co">##     1: TRBJ1-5</span></span>
+<span><span class="co">##     2: TRBJ2-1</span></span>
+<span><span class="co">##     3: TRBJ2-1</span></span>
+<span><span class="co">##     4: TRBJ1-4</span></span>
+<span><span class="co">##     5: TRBJ1-2</span></span>
+<span><span class="co">##    ---        </span></span>
+<span><span class="co">## 67827: TRBJ2-1</span></span>
+<span><span class="co">## 67828: TRBJ1-2</span></span>
+<span><span class="co">## 67829: TRBJ2-3</span></span>
+<span><span class="co">## 67830: TRBJ1-4</span></span>
+<span><span class="co">## 67831: TRBJ1-2</span></span></code></pre>
+<p>Note: Some TCR pairs will be listed twice in the <code>$paired</code>
+data frame, once for the “MAD-HYPE” method and once for the “T-SHELL”
+method.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">$</span><span class="va">paired</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">alpha_beta</span> <span class="op">==</span> <span class="st">"TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">alpha_nuc</span>, <span class="va">beta_nuc</span>, <span class="va">method</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                  alpha_nuc</span></span>
+<span><span class="co">##                                     &lt;char&gt;</span></span>
+<span><span class="co">## 1: TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT</span></span>
+<span><span class="co">## 2: TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT</span></span>
+<span><span class="co">##                                   beta_nuc  method    wi    wj   wij    wa</span></span>
+<span><span class="co">##                                     &lt;char&gt;  &lt;char&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">## 1: TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT madhype     0     0     3     3</span></span>
+<span><span class="co">## 2: TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT  tshell     0     0     3     3</span></span>
+<span><span class="co">##       wb</span></span>
+<span><span class="co">##    &lt;int&gt;</span></span>
+<span><span class="co">## 1:     3</span></span>
+<span><span class="co">## 2:     3</span></span>
+<span><span class="co">##                                                                         alpha_beta</span></span>
+<span><span class="co">##                                                                             &lt;char&gt;</span></span>
+<span><span class="co">## 1: TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT</span></span>
+<span><span class="co">## 2: TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT</span></span>
+<span><span class="co">##            r      ts         pval     pval_adj loss_a_frac loss_b_frac    score</span></span>
+<span><span class="co">##        &lt;num&gt;   &lt;num&gt;        &lt;num&gt;        &lt;num&gt;       &lt;num&gt;       &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co">## 1:        NA      NA           NA           NA           0           0 0.201161</span></span>
+<span><span class="co">## 2: 0.9315229 35.2129 5.890724e-85 2.799892e-23           0           0 0.201161</span></span>
+<span><span class="co">##            cdr3a       va     ja         cdr3b     vb      jb</span></span>
+<span><span class="co">##           &lt;char&gt;   &lt;char&gt; &lt;char&gt;        &lt;char&gt; &lt;char&gt;  &lt;char&gt;</span></span>
+<span><span class="co">## 1: CAVNGGNDYKLSF TRAV12-2 TRAJ20 CASSPEQGLAQHF TRBV18 TRBJ1-5</span></span>
+<span><span class="co">## 2: CAVNGGNDYKLSF TRAV12-2 TRAJ20 CASSPEQGLAQHF TRBV18 TRBJ1-5</span></span></code></pre>
+<p>To see only unique TCR pairs, you may do the following:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pairs</span> <span class="op">=</span> <span class="va">ts_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd4_tp1_v2</span><span class="op">$</span><span class="va">paired</span></span>
+<span><span class="va">pairs_unique</span> <span class="op">=</span> <span class="va">pairs</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">pairs</span><span class="op">$</span><span class="va">alpha_beta</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="va">pairs_unique</span></span></code></pre></div>
+<pre><code><span><span class="co">##           wi    wj   wij                                        alpha_nuc</span></span>
+<span><span class="co">##        &lt;int&gt; &lt;int&gt; &lt;int&gt;                                           &lt;char&gt;</span></span>
+<span><span class="co">##     1:     0     0     3          TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT</span></span>
+<span><span class="co">##     2:     0     0     3       TGTGCTCTTCAAACTTCTGGTGGCTACAATAAGCTGATTTTT</span></span>
+<span><span class="co">##     3:     0     0     3             TGTGCTCCCCGGTACACCGGTAACCAGTTCTATTTT</span></span>
+<span><span class="co">##     4:     0     0     3 TGTGCAATGAGAGAGGTCGCTTCTGGTGGCTACAATAAGCTGATTTTT</span></span>
+<span><span class="co">##     5:     0     0     3             TGTGCTGCCAGCGGGGGCTTTCAGAAACTTGTATTT</span></span>
+<span><span class="co">##    ---                                                                   </span></span>
+<span><span class="co">## 47824:    87     0    49       TGTGCTGTGATCCCCAACACGGGCAGGAGAGCACTTACTTTT</span></span>
+<span><span class="co">## 47825:    87     1    39       TGTGCAGCAAGCATAAGACAGGGAGCCCAGAAGCTGGTATTT</span></span>
+<span><span class="co">## 47826:    89     0    62          TGTGCCGTTCCCTCTGGGGGTTACCAGAAAGTTACCTTT</span></span>
+<span><span class="co">## 47827:    90     0    27       TGTGCTCTGAGTGAGGAGGGTAGGGATGACAAGATCATCTTT</span></span>
+<span><span class="co">## 47828:    93     0    40          TGTGCTTATAGGCGCGGGGCTGGAAACAAGCTGGTCTTT</span></span>
+<span><span class="co">##                                                          beta_nuc    wa    wb</span></span>
+<span><span class="co">##                                                            &lt;char&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">##     1:                    TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT     3     3</span></span>
+<span><span class="co">##     2:                          TGTGCCAGCAGCTATCAGGGCCAGCAGTTCTTC     3     3</span></span>
+<span><span class="co">##     3:                 TGTGCCATCAGTCGGGGACAGGGGGCAGGTGAGCAGTTCTTC     3     3</span></span>
+<span><span class="co">##     4:           TGTGCCAGCTCGACAGGGGGACAGCGACCTAATGAAAAACTGTTTTTT     3     3</span></span>
+<span><span class="co">##     5:              TGCGCCAGCAGCCCAACAGGGGGGCAGGACTATGGCTACACCTTC     3     3</span></span>
+<span><span class="co">##    ---                                                                       </span></span>
+<span><span class="co">## 47824: TGTGCCAGCAGTTCCGGCCGGCATGTCTTGATAGCGGGAGGGTAGGGAGCAGTTCTTC   136    49</span></span>
+<span><span class="co">## 47825:                              TGTGCCATCAGCAAGATGGCTACACCTTC   126    40</span></span>
+<span><span class="co">## 47826:                   TGTGCCAGCAGTTTCCCTTTCCGGGAGAAGGCAGTATTTT   151    62</span></span>
+<span><span class="co">## 47827:       TGTGCCAGCCGCGGACAGGGGGCTAAGACGACTAATGAAAAACTGTTTTTTT   117    27</span></span>
+<span><span class="co">## 47828:                              TGTGCCATCAGCAAGATGGCTACACCTTC   133    40</span></span>
+<span><span class="co">##                                                                                                   alpha_beta</span></span>
+<span><span class="co">##                                                                                                       &lt;char&gt;</span></span>
+<span><span class="co">##     1:                       TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT</span></span>
+<span><span class="co">##     2:                          TGTGCTCTTCAAACTTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCAGCTATCAGGGCCAGCAGTTCTTC</span></span>
+<span><span class="co">##     3:                       TGTGCTCCCCGGTACACCGGTAACCAGTTCTATTTT_TGTGCCATCAGTCGGGGACAGGGGGCAGGTGAGCAGTTCTTC</span></span>
+<span><span class="co">##     4:     TGTGCAATGAGAGAGGTCGCTTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCTCGACAGGGGGACAGCGACCTAATGAAAAACTGTTTTTT</span></span>
+<span><span class="co">##     5:                    TGTGCTGCCAGCGGGGGCTTTCAGAAACTTGTATTT_TGCGCCAGCAGCCCAACAGGGGGGCAGGACTATGGCTACACCTTC</span></span>
+<span><span class="co">##    ---                                                                                                      </span></span>
+<span><span class="co">## 47824: TGTGCTGTGATCCCCAACACGGGCAGGAGAGCACTTACTTTT_TGTGCCAGCAGTTCCGGCCGGCATGTCTTGATAGCGGGAGGGTAGGGAGCAGTTCTTC</span></span>
+<span><span class="co">## 47825:                              TGTGCAGCAAGCATAAGACAGGGAGCCCAGAAGCTGGTATTT_TGTGCCATCAGCAAGATGGCTACACCTTC</span></span>
+<span><span class="co">## 47826:                      TGTGCCGTTCCCTCTGGGGGTTACCAGAAAGTTACCTTT_TGTGCCAGCAGTTTCCCTTTCCGGGAGAAGGCAGTATTTT</span></span>
+<span><span class="co">## 47827:       TGTGCTCTGAGTGAGGAGGGTAGGGATGACAAGATCATCTTT_TGTGCCAGCCGCGGACAGGGGGCTAAGACGACTAATGAAAAACTGTTTTTTT</span></span>
+<span><span class="co">## 47828:                                 TGTGCTTATAGGCGCGGGGCTGGAAACAAGCTGGTCTTT_TGTGCCATCAGCAAGATGGCTACACCTTC</span></span>
+<span><span class="co">##         method     r    ts  pval pval_adj loss_a_frac loss_b_frac    score</span></span>
+<span><span class="co">##         &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;    &lt;num&gt;</span></span>
+<span><span class="co">##     1: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     2: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     3: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     4: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##     5: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.201161</span></span>
+<span><span class="co">##    ---                                                                    </span></span>
+<span><span class="co">## 47824: madhype    NA    NA    NA       NA 0.000000000   0.6397059 2.789358</span></span>
+<span><span class="co">## 47825: madhype    NA    NA    NA       NA 0.007874016   0.6850394 1.105181</span></span>
+<span><span class="co">## 47826: madhype    NA    NA    NA       NA 0.000000000   0.5894040 2.040927</span></span>
+<span><span class="co">## 47827: madhype    NA    NA    NA       NA 0.000000000   0.7692308 0.507382</span></span>
+<span><span class="co">## 47828: madhype    NA    NA    NA       NA 0.000000000   0.6992481 1.408576</span></span>
+<span><span class="co">##                   cdr3a           va     ja                cdr3b       vb</span></span>
+<span><span class="co">##                  &lt;char&gt;       &lt;char&gt; &lt;char&gt;               &lt;char&gt;   &lt;char&gt;</span></span>
+<span><span class="co">##     1:    CAVNGGNDYKLSF     TRAV12-2 TRAJ20        CASSPEQGLAQHF   TRBV18</span></span>
+<span><span class="co">##     2:   CALQTSGGYNKLIF      TRAV9-2  TRAJ4          CASSYQGQQFF  TRBV7-6</span></span>
+<span><span class="co">##     3:     CAPRYTGNQFYF       TRAV41 TRAJ49       CAISRGQGAGEQFF TRBV10-3</span></span>
+<span><span class="co">##     4: CAMREVASGGYNKLIF   TRAV14/DV4  TRAJ4     CASSTGGQRPNEKLFF  TRBV6-1</span></span>
+<span><span class="co">##     5:     CAASGGFQKLVF        TRAV2  TRAJ8      CASSPTGGQDYGYTF  TRBV5-1</span></span>
+<span><span class="co">##    ---                                                                   </span></span>
+<span><span class="co">## 47824:   CAVIPNTGRRALTF        TRAV3  TRAJ5 CASSSGRHVL_*REGREQFF   TRBV27</span></span>
+<span><span class="co">## 47825:   CAASIRQGAQKLVF   TRAV23/DV6 TRAJ54           CAISK_GYTF TRBV10-3</span></span>
+<span><span class="co">## 47826:    CAVPSGGYQKVTF     TRAV12-2 TRAJ13       CASSFPF_GRRQYF   TRBV27</span></span>
+<span><span class="co">## 47827:   CALSEEGRDDKIIF       TRAV19 TRAJ30   CASRGQGAK_RLMKNCFF   TRBV27</span></span>
+<span><span class="co">## 47828:    CAYRRGAGNKLVF TRAV38-2/DV8 TRAJ47           CAISK_GYTF TRBV10-3</span></span>
+<span><span class="co">##             jb</span></span>
+<span><span class="co">##         &lt;char&gt;</span></span>
+<span><span class="co">##     1: TRBJ1-5</span></span>
+<span><span class="co">##     2: TRBJ2-1</span></span>
+<span><span class="co">##     3: TRBJ2-1</span></span>
+<span><span class="co">##     4: TRBJ1-4</span></span>
+<span><span class="co">##     5: TRBJ1-2</span></span>
+<span><span class="co">##    ---        </span></span>
+<span><span class="co">## 47824: TRBJ2-1</span></span>
+<span><span class="co">## 47825: TRBJ1-2</span></span>
+<span><span class="co">## 47826: TRBJ2-3</span></span>
+<span><span class="co">## 47827: TRBJ1-4</span></span>
+<span><span class="co">## 47828: TRBJ1-2</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
@@ -145,5 +661,6 @@ the TIRTLseq samples it finds in a directory.</p>
 
 
 
-  </body>
+  
+</body>
 </html>
