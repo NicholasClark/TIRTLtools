@@ -1,6 +1,4 @@
-# TIRTLtools <a href="https://nicholasclark.github.io/TIRTLtools/"><img src="man/figures/logo.svg" align="right" height="139" alt="TIRTLtools website" /></a>
-
-# TIRTLtools R package
+# TIRTLtools R package <a href="https://nicholasclark.github.io/TIRTLtools/"><img src="man/figures/logo.svg" align="right" height="139" alt="TIRTLtools website" /></a>
 
 ***Package is in active development and may change frequently.***
 
