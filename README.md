@@ -1,3 +1,5 @@
+# TIRTLtools <a href="https://nicholasclark.github.io/TIRTLtools/"><img src="man/figures/logo.svg" align="right" height="139" alt="TIRTLtools website" /></a>
+
 # TIRTLtools R package
 
 ***Package is in active development and may change frequently.***
@@ -162,7 +164,7 @@ as_tibble(meta_df)
 
 ## References
 
-For details on our pairing pipeline, see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) and our [github repository](https://github.com/pogorely/TIRTL).
+For details on our pairing pipeline and the T-SHELL algorithm, see the [TIRTLseq preprint (Pogorelyy and Kirk et al.)](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2) and our [github repository](https://github.com/pogorely/TIRTL).
 
 For details on the MAD-HYPE algorithm, see [Holec and Berleant et al., 2019](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649).
 

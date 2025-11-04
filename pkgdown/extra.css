@@ -1,3 +1,15 @@
 body {
   font-size: 1.2em; /* Increases base font size */
 }
+
+/* Ensures the logo is positioned above other elements */
+.navbar-brand img.logo {
+  position: relative;
+  z-index: 10; /* A high value to ensure it's on top */
+}
+
+/* Adjusts the horizontal rule (hr) if necessary */
+hr {
+  position: relative;
+  z-index: 1; /* A lower value */
+}

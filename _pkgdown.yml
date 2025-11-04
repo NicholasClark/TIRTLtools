@@ -3,6 +3,8 @@ template:
   bootstrap: 5
   light-switch: true
   theme: atom-one-light
+  includes:
+    in_header: pkgdown/extra.css
   bslib:
     bootswatch: materia
     pkgdown-nav-height: 100px

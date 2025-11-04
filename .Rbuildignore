@@ -8,7 +8,6 @@
 ^.*\.DS_Store$
 ^.*\.Rproj$
 ^data-raw
-^inst/extdata
 ^\.Rproj\.user$
 ^vignettes$
 ^_pkgdown.yml$
