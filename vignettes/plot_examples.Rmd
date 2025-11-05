@@ -1,23 +1,50 @@
 ---
-title: "Plot examples"
+title: "Plot examples with SJTRC COVID-19 data"
 output:
   html_document:
     df_print: paged
 ---
 
+This vignette loads paired TCR TIRTLseq data from the St. Jude Tracking Study of Immune 
+Responses Associated with COVID-19 (SJTRC) and shows examples of the package's plotting functions.
 
+## Load the package
 ```{r message=FALSE,warning=FALSE}
 library(TIRTLtools)
 library(magrittr)
 library(dplyr)
 ```
 
+## Load the SJTRC COVID-19 data
+
 ```{r message=FALSE}
-folder = download_dataset("SJTRC_TIRTLseq_minimal", folder = tempdir())
-#folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder, compress_strings = FALSE)
-sjtrc = TIRTL_process(sjtrc, clean = FALSE)
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+dir(folder)
+sjtrc = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ```
+
+## Process the data
+
+When we initially load the data, the data frames lack some information that is needed for plotting functions.
+
+The `TIRTL_process()` function runs 3 other package functions to add this information to the data frames:
+
+- `add_single_chain_data()` - adds single-chain read counts/fractions to the paired TCR data frames
+- `identify_paired()` - adds a column to pseudobulk data indicating which single-chains were paired
+- `identify_non_functional_seqs()` - adds columns to paired data frames indicating whether CDR3A/B amino acid sequences are functional (not containing stop codons or frameshifts)
+
+If `clean = TRUE` is specified, the `clean_pairs()` function is also run before the preceding functions. This function removes excess pairs for alpha and beta chains. Biologically, we expect that each alpha is paired with at most one beta and that each beta is paired with at most two alphas in a clone. Here we use `clean = FALSE` to show how the data looks as-is. 
+
+```{r}
+sjtrc = TIRTL_process(sjtrc, clean = FALSE) 
+```
+
+## Longitudinal plots for individual TCRs or groups of TCRs
+
+For CD8-selected T-cells, we get the nucleotide sequences for the 5 most frequent beta chains for
+timepoints 1 and 2 and show their frequencies across all samples and timepoints.
+
+We can see they are highly frequent at CD8 timepoint 3, but not in any of the CD4 samples.
 
 ```{r}
 top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% extract2("targetSequences") %>% as.character()
