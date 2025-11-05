@@ -103,26 +103,26 @@ cluster_tcrs = function(
   dist_input = dist$tcr1
 
   dist_df = dist_df %>% mutate(
-    edge1_1index = edge1_0index + 1,
-    edge2_1index = edge2_0index + 1
+    node1_1index = node1_0index + 1,
+    node2_1index = node2_0index + 1
   )
   dist_df$weight_binary = 1
   #dist_df$TCRdist_mod = ifelse(dist_df$TCRdist_mod == 0, -1, dist_df$TCRdist_mod)
 
   if(!is.null(dist$tcr2)) {
-    dist_df$edge2_1index = dist_df$edge2_1index + nrow(dist$tcr1)
+    dist_df$node2_1index = dist_df$node2_1index + nrow(dist$tcr1)
     dist_input = bind_rows(dist$tcr1, dist$tcr2)
     n_valid = nrow(dist_input)
   }
   n_valid = nrow(dist_input)
-  sparse_weight_mat_binary = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
+  sparse_weight_mat_binary = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
                                                   x=dist_df$weight_binary, symmetric = TRUE,
                                                   dims = c(n_valid, n_valid))
-  # sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
+  # sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
   #                                           x=dist_df$TCRdist_mod, symmetric = TRUE,
   #                                           dims = c(n_valid, n_valid))
 
-  # sparse_weight_mat = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
+  # sparse_weight_mat = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
   #                                          x=dist_df$weight, symmetric = TRUE,
   #                                          dims = c(n_valid, n_valid) )
 

@@ -80,9 +80,9 @@ plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c(
 .make_graph_many_cluster = function(df, adj_mat, clusters, pdf_name = "", seed = NULL, color_column = "cluster", vertex.size = 4) {
   df_clus = df %>% filter(cluster %in% clusters)
   # dist_df_sub = adj_mat %>% ## get all edges in the cluster
-  #   filter(edge1_clone_name %in% df_clus$clone_name,
-  #          edge2_clone_name %in% df_clus$clone_name) %>%
-  #   select(edge1_clone_name, edge2_clone_name, TCRdist)
+  #   filter(node1_clone_name %in% df_clus$clone_name,
+  #          node2_clone_name %in% df_clus$clone_name) %>%
+  #   select(node1_clone_name, node2_clone_name, TCRdist)
   # g = graph_from_data_frame(dist_df_sub, directed = F, vertices = df_clus)
   g = igraph::graph_from_adjacency_matrix(adj_mat, mode = "undirected", weighted = NULL)
 

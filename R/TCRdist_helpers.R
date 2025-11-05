@@ -1,8 +1,8 @@
 .tcrdist_to_matrix = function(tcr_obj) {
   n_vert = dim(tcr_obj$tcr1)[1]
   dist_df = tcr_obj$TCRdist_df %>% mutate %>%
-    mutate(edge1_1index = edge1_0index+1L,
-           edge2_1index = edge2_0index+1L
+    mutate(node1_1index = node1_0index+1L,
+           node2_1index = node2_0index+1L
     )
   .dist_df_to_matrix(dist_df, n_vert, 1:n_vert)
 }
@@ -11,7 +11,7 @@
   ## temporarily switch zeros with -1
   dist_df$TCRdist_mod = ifelse(dist_df$TCRdist == 0L, -1L, dist_df$TCRdist)
   ## convert to sparse matrix
-  sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$edge1_1index, j=dist_df$edge2_1index,
+  sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
                                             x=dist_df$TCRdist_mod, symmetric = TRUE,
                                             dims = c(n_vertices_all, n_vertices_all))
   tmp = sparse_tcrdist_mat[idx_keep, idx_keep] %>% as.matrix()

@@ -79,12 +79,12 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
     if output in ["edge_list", "both"]:
         ### convert matrix to dataframe with indices and TCRdist values
         coo_mat = result_sparse.tocoo()
-        df = pd.DataFrame({'edge1_0index': coo_mat.row+ch1, 'edge2_0index': coo_mat.col+ch2, 'TCRdist': coo_mat.data})
+        df = pd.DataFrame({'node1_0index': coo_mat.row+ch1, 'node2_0index': coo_mat.col+ch2, 'TCRdist': coo_mat.data})
         if compare_to_self:
             if only_lower_tri:
-                df = df[df['edge1_0index'] > df['edge2_0index']]
+                df = df[df['node1_0index'] > df['node2_0index']]
             else:
-                df = df[df['edge1_0index'] != df['edge2_0index']]
+                df = df[df['node1_0index'] != df['node2_0index']]
         ### Change values of -1 back to zero (see comment above)
         df['TCRdist'] = df['TCRdist'].replace(-1, 0)
     if output == "both":
