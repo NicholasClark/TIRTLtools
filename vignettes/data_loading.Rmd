@@ -24,6 +24,7 @@ Here, our files are named `(marker)_(timepoint)_(version)_ ... .tsv.gz`, e.g.
 ```{r message=FALSE,warning=FALSE}
 library(TIRTLtools)
 library(dplyr)
+library(rmarkdown)
 folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
 dir(folder)
 ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
@@ -54,7 +55,7 @@ If you did not specify "meta_columns" in the `load_tirtlseq()` call, then
 the table will only contain the `sample_id` and `label` columns.
 
 ```{r}
-ts_data$meta
+paged_table(ts_data$meta)
 ```
 
 ### The data list
@@ -95,9 +96,9 @@ For each clonotype defined by a unique CDR3 nucleotide sequence, the following s
 `$data$[sample-name]$alpha` and `$data$[sample-name]$beta` contain the pseudo-bulk data for alpha and beta chains, respectively.
 
 ```{r}
-ts_data$data$cd4_tp1_v2$alpha
+paged_table(ts_data$data$cd4_tp1_v2$alpha)
 
-ts_data$data$cd4_tp1_v2$beta
+paged_table(ts_data$data$cd4_tp1_v2$beta)
 ```
 
 #### The paired data frame
@@ -139,7 +140,7 @@ For each pair, we report:
 
 
 ```{r}
-ts_data$data$cd4_tp1_v2$paired
+paged_table(ts_data$data$cd4_tp1_v2$paired)
 ```
 
 Note: Some TCR pairs will be listed twice in the `$paired` data frame, once for the "MAD-HYPE" method and once for the "T-SHELL" method.
@@ -147,7 +148,8 @@ Note: Some TCR pairs will be listed twice in the `$paired` data frame, once for 
 ```{r}
 ts_data$data$cd4_tp1_v2$paired %>% 
   filter(alpha_beta == "TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT") %>%
-  select(alpha_nuc, beta_nuc, method, everything())
+  select(alpha_nuc, beta_nuc, method, everything()) %>%
+  paged_table()
 ```
 
 To see only unique TCR pairs, you may do the following:
@@ -155,7 +157,7 @@ To see only unique TCR pairs, you may do the following:
 ```{r}
 pairs = ts_data$data$cd4_tp1_v2$paired
 pairs_unique = pairs[!duplicated(pairs$alpha_beta),]
-pairs_unique
+paged_table(pairs_unique)
 ```
 
 
