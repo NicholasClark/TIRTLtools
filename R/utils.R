@@ -17,19 +17,8 @@
   return(paste(string, "\n", sep = ""))
 }
 
-### check that va and vb are found in the parameters for tcrdist (but don't remove them)
-.check_alleles = function(df, params=NULL) {
-  if(is.null(params)) params = TIRTLtools::params
-  df = df %>% mutate(va_allowed = va %in% params$feature, vb_allowed = vb %in% params$feature) %>%
-    mutate(va_and_vb_allowed = va_allowed & vb_allowed)
-  return(df)
-}
-
-### filter data frame so that va and vb alleles are found in the parameters for tcrdist
-.filter_alleles = function(df, params=NULL) {
-  if(is.null(params)) params = TIRTLtools::params
-  df = df %>% filter(va %in% params$feature, vb %in% params$feature)
-  return(df)
+.add_commas = function(x) {
+ formatC(x, format="d",big.mark=",")
 }
 
 .get_log_labels_neg = function(x, pseudo = 1e-6, max_val = NULL, min_val = NULL, label_zero = FALSE) {

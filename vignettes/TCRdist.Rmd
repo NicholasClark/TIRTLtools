@@ -16,11 +16,17 @@ The algorithm computes a weighted [Hamming distance](https://en.wikipedia.org/wi
 |:--:|
 | <em> A schematic of TCRdist. </em> |
 
+# Why is TCRdist important?
+
+TCRdist can be used to discover clusters of similar TCRs associated with response to an antigen. When combined with databases of known TCRs associated with certain viruses and epitopes, like [VDJ-db](https://vdjdb.cdr3.net/) and [metaCoNGA](https://www.biorxiv.org/content/10.1101/2025.05.31.657155v1), TCRdist can be used to label virus/epitope-specific TCRs and currently unknown TCRs. With reverse epitope discovery techniques, experimental methods can be used to discover the epitopes targeted by these antigen-responsive TCR clusters.
+
 # Why do we need another TCRdist implementation?
 
-TCRdist was originally implemented in Python ([tcr-dist](https://github.com/phbradley/tcr-dist)), but **computation becomes very slow when calculating pairwise TCRdist values for thousands of TCRs**. Efforts to speed up TCRdist calculation in Python have been made using [numba](https://numba.pydata.org/), a high-performance just-in-time (JIT) compiler ([tcrdist3](https://github.com/kmayerb/tcrdist3)), Cython, which compiles Python code into fast C code  ([fast_tcrdist](https://github.com/villani-lab/fast_tcrdist)), and standard C++ ([CoNGA](https://github.com/phbradley/conga)). However, none of these implementations make use of GPUs, which can outperform compiled C++ executed on a CPUs.
+TCRdist was originally implemented in Python ([tcr-dist](https://github.com/phbradley/tcr-dist)), but **computation becomes very slow when calculating pairwise TCRdist values for thousands of TCRs**. Efforts to speed up TCRdist calculation in Python have been made using [numba](https://numba.pydata.org/), a high-performance just-in-time (JIT) compiler ([tcrdist3](https://github.com/kmayerb/tcrdist3)), Cython, which compiles Python code into fast C code  ([fast_tcrdist](https://github.com/villani-lab/fast_tcrdist)), and standard C++ ([CoNGA](https://github.com/phbradley/conga)). These faster implementations work well for paired TCR datasets up to ~100k TCRs, which has been more than sufficient thus far.
 
-**We wrote a GPU-enabled TCRdist implementation in Python that is faster than all other existing implementations** (although other implementations are certainly more feature-rich). To enable use with extra-large datasets of millions of TCRs, it batches computation, keeps results in sparse format, and can progressively write results to a text file rather than returning a cumbersomely large data object.
+However, **with TIRTLseq it has become possible to rapidly and cheaply generate even larger paired TCR datasets** and computation time scales quadratically with the number of TCRs, **calculating TCRdist becomes prohibitively slow for hundreds of thousands to 1 million+ TCRs**. To address this, we leveraged GPU computation, which can significantly outperform compiled C++ executed on a CPU.
+
+**We wrote a GPU-enabled TCRdist implementation in Python (with an R wrapper) that is faster than all other existing implementations** and is suitable for use with extra-large datasets of paired TCRs. It is **efficient (minutes to hours) for datasets of 100k to 1 million+ TCRs** and **super-fast (seconds) for datasets of 10k to 100k TCRs**. It batches computation, keeps results in sparse format, and can progressively write results to a text file rather than returning a cumbersomely large data object.
 
 Our implementation is compatible with both NVIDIA and Apple Silicon GPUs and automatically detects a user's GPU type. It uses [cupy](https://cupy.dev/) (for NVIDIA GPUs) or [mlx](https://ml-explore.github.io/mlx/build/html/index.html) (for Apple Silicon GPUs) to compute pairwise TCRdist for each batch of TCRs, using [numpy](https://numpy.org/) as a backup when no GPU is available.
 
@@ -34,14 +40,14 @@ Our implementation is compatible with both NVIDIA and Apple Silicon GPUs and aut
   - `vb` - V-segment for beta chain
   - `cdr3b` - CDR3 amino acid sequence for beta chain
 - Our implementation currently ignores J-segments and calculates similarity based on only V-segment and CDR3 amino acid sequence.
+- Our implementation currently does not align CDR3 segments. It pads all CDR3 amino acid sequences in the center with blanks to a common length (29 AA) and penalizes mismatches between the two sequences.
 - Our implementation currently requires V-segments and CDR3 sequences for both alpha and beta chains. If you have single-chain data only, you can insert dummy values in the V and CDR3 columns for the missing chain to allow for compatibility with our function.
 - Our implementation uses a pre-calculated substitution matrix for amino acids and V-segments. TCRs whose amino acid sequences contain stop codons (*) or frameshifts (_) and TCRs with V-segments that are not found in the substitution matrix will be dropped. For a list of permitted amino acids and V-segments, see `TIRTLtools::params$feature`.
 - Our V-segments include an allele identifier, e.g. "TRAV13-1\*03". If some or all of your V-segments do not include alleles, the function will automatically add "\*01" to them.
 - You may also run TCRdist directly in Python <https://github.com/NicholasClark/TCRdist_gpu>. However, the steps above of preparing the data (dropping improper TCRs and adding alleles) are not part of the Python function, so you may want to run `prep_for_tcrdist()` on your data first and write that data frame to a file.
+- We discard large TCRdist values (>= some cutoff, default 90) and return a dataframe where each row contains one TCRdist value for a pair of TCRs.
 
 # TCRdist example
-
-The following example computes TCRdist values for all pairs of annotated TCRs in the [VDJdb](https://vdjdb.cdr3.net/) database. It outputs all values with TCRdist <= 90.
 
 ## Load the package
 
@@ -51,27 +57,57 @@ library(dplyr)
 library(rmarkdown)
 ```
 
-## Load an example dataset (annotated TCRs from VDJ-db)
+## Load a paired TCR dataset
+
+For an example, we load paired TCRs from TIRTLseq experiments using CD4 and CD8-isolated T-cell samples taken from COVID-19-infected patients at three timepoints as part of the St. Jude Tracking Study of Immune Responses Associated with COVID-19 (SJTRC).
 
 ```{r}
-tcr1 = TIRTLtools::vdj_db
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", chain = "paired", verbose = FALSE)
+
+data$meta %>% paged_table()
+```
+
+We can use the `get_all_tcrs()` function to get a data frame with paired TCRs from all samples.
+You can optionally remove MAIT TCRs, which share an invariant alpha-chain and thus often have lower TCRdist values, forming dense clusters which we may not be interested in.
+
+After filtering, we have ~100k TCRs.
+
+```{r}
+all_tcrs = get_all_tcrs(data)
+input_tcrs = all_tcrs %>% prep_for_tcrdist(remove_MAIT = TRUE)
 ### note: You may replace this with a file of your choice - needs to have columns "va", "vb", "cdr3a", and "cdr3b"
 
-paged_table(tcr1)
+input_tcrs %>% paged_table()
 ```
 
 ## Run TCRdist
 
+TCRs are processed in chunks (default 1000). For a dataset of this size, computation on a laptop with an Apple Silicon M4 Pro GPU takes about 30 seconds.
+
 ```{r}
-result = TCRdist(tcr1 = tcr1, tcrdist_cutoff = 90, chunk_size = 5000)
+result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 ```
 
 ## Inspect the output
 
+The function returns a "list" with two slots:
+
+- `TCRdist_df` - a dataframe with 3 columns, containing all TCRdist values <= cutoff (default 90) in sparse format. Each row contains the TCRdist value between two TCRs identified by their indices. This may be thought of as a dataframe of "edges" between "nodes" (TCRs) in a network.
+- `tcr1` - The dataframe with input TCRs, their assigned indices, and any other metadata. The TCR indices, starting from 0, are found in the `tcr_index` column. Note that this dataframe may have fewer rows than the input because some TCRs with non-functional CDR3s or non-standard V-segments may have been removed.
+
+When calculating TCRdist between two different sets of TCRs, the output will also contain another slot `tcr2` with the second dataframe of input TCRs.
+
+**Important note: TCRs are assigned indices starting at 0 (Python-style) rather than starting at 1 (R style)**
+
 ```{r}
 edge_df = result[['TCRdist_df']] ### table of TCRdist values <= cutoff
-meta_df = result[['tcr1']] ### table of input data with indices
+node_df = result[['tcr1']] ### table of input data with indices
 
-paged_table(edge_df)
-paged_table(meta_df)
+edge_df %>% paged_table()
+node_df %>% select(tcr_index, everything()) %>% paged_table()
+
+nrow(edge_df) # ~75k edges
 ```
+
+We detect ~100k relationships between similar TCRs for a TCRdist cutoff of 90.

@@ -21,7 +21,7 @@ filter_mait = function(df, verbose = TRUE) {
   n_tcr_final = nrow(df)
   n_mait = n_tcr_orig - n_tcr_final
   pct_mait = signif(100*(n_mait/n_tcr_orig), 2)
-  msg = paste("Removed ", n_mait, " MAIT TCRs ", "(", pct_mait, "%) from a total of ", n_tcr_orig, " TCRs.", sep = "")
+  msg = paste("Removed ", n_mait %>% .add_commas(), " MAIT TCRs ", "(", pct_mait, "%) from a total of ", n_tcr_orig %>% .add_commas(), " TCRs.", sep = "")
   if(verbose) message(msg)
   return(df)
 }

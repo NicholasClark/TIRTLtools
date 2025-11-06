@@ -1,20 +1,20 @@
 Package: TIRTLtools
 Type: Package
 Title: Analysis Tools for TIRTLseq Data
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person(
       "Nicholas", "Clark",
-      email = "Nicholas.Clark@STJUDE.ORG",
+      email = "nicholas.clark00@gmail.com",
       role = c("aut", "cre")
     ),
     person(
       "Mikhail", "Pogorelyy",
-      email = "Mikhail.Pogorelyy@STJUDE.ORG",
+      email = "mpogorel@fredhutch.org",
       role = c("aut")
     )
   )
-Description: A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using TIRTL-seq.
+Description: A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using the TIRTL-seq assay.
     Contains an efficient GPU implementation of TCRdist (Dash et al., Nature 2017).
 License: MIT + file LICENSE
 Encoding: UTF-8
