@@ -53,7 +53,7 @@ With large data it may be desirable to write the result to disk instead. (defaul
 \value{
 A list with entries:
 
-\code{$TCRdist_df} - a data frame with three columns: "edge1_0index", "edge2_0index", and "TCRdist".
+\code{$TCRdist_df} - a data frame with three columns: "node1_0index", "node2_0index", and "TCRdist".
 The first two columns contain the indices (0-indexed) of the TCRs for each pair.
 The last column contains the TCRdist if it is below the cutoff. The output is sparse in that it only contains
 pairs that have TCRdist <= cutoff.
