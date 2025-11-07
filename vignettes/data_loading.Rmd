@@ -58,7 +58,9 @@ the table will only contain the `sample_id` and `label` columns.
 
 ```{r}
 class(ts_data$meta) ## data.frame
-paged_table(ts_data$meta)
+ts_data$meta %>%
+  mutate(label = paste(substr(label, 0, 20), "...", sep = "")) %>%
+  paged_table()
 ```
 
 ### The data list
@@ -107,9 +109,13 @@ For each clonotype defined by a unique CDR3 nucleotide sequence, the following a
 `$data$<sample-name>$alpha` and `$data$<sample-name>$beta` contain the pseudo-bulk data for alpha and beta chains, respectively.
 
 ```{r}
-paged_table(ts_data$data$cd8_tp1_v2$alpha)
+ts_data$data$cd8_tp1_v2$alpha %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  paged_table()
 
-paged_table(ts_data$data$cd8_tp1_v2$beta)
+ts_data$data$cd8_tp1_v2$beta %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  paged_table()
 ```
 
 #### The paired data frame
@@ -151,7 +157,11 @@ For each pair, we report:
 
 
 ```{r}
-paged_table(ts_data$data$cd8_tp1_v2$paired)
+ts_data$data$cd8_tp1_v2$paired %>%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")
+         ) %>%
+  paged_table()
 ```
 
 Note: If a TCR pair is paired by both algorithms, it will be listed twice in the `$paired` data frame, once for the "MAD-HYPE" method and once for the "T-SHELL" method.
@@ -169,7 +179,12 @@ To see only unique TCR pairs, you may do the following:
 ```{r}
 pairs = ts_data$data$cd8_tp1_v2$paired
 pairs_unique = pairs[!duplicated(pairs$alpha_beta),]
-paged_table(pairs_unique)
+
+pairs_unique %>%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) %>%
+  paged_table()
+  
 nrow(pairs) ## ~20k TCR pairs called by one or both methods
 nrow(pairs_unique) ## ~14k unique TCR pairs called
 ```

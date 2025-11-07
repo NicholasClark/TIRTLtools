@@ -65,7 +65,9 @@ For an example, we load paired TCRs from TIRTLseq experiments using CD4 and CD8-
 folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
 data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", chain = "paired", verbose = FALSE)
 
-data$meta %>% paged_table()
+data$meta %>%
+  mutate(label = paste(substr(label, 0, 20), "...", sep = "")) %>%
+  paged_table()
 ```
 
 We can use the `get_all_tcrs()` function to get a data frame with paired TCRs from all samples.
@@ -78,12 +80,16 @@ all_tcrs = get_all_tcrs(data)
 input_tcrs = all_tcrs %>% prep_for_tcrdist(remove_MAIT = TRUE)
 ### note: You may replace this with a file of your choice - needs to have columns "va", "vb", "cdr3a", and "cdr3b"
 
-input_tcrs %>% paged_table()
+input_tcrs %>%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) %>%
+  arrange(desc(wij)) %>%
+  paged_table()
 ```
 
 ## Run TCRdist
 
-TCRs are processed in chunks (default 1000). For a dataset of this size, computation on a laptop with an Apple Silicon M4 Pro GPU takes about 30 seconds.
+TCRs are processed in chunks (default 1000). For a dataset of this size (~100k TCRs), computation on a laptop with an Apple Silicon M4 Pro GPU takes about 30 seconds.
 
 ```{r}
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
@@ -104,10 +110,25 @@ When calculating TCRdist between two different sets of TCRs, the output will als
 edge_df = result[['TCRdist_df']] ### table of TCRdist values <= cutoff
 node_df = result[['tcr1']] ### table of input data with indices
 
+node_df %>% 
+  select(tcr_index, everything()) %>%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) %>%
+  paged_table()
+
 edge_df %>% paged_table()
-node_df %>% select(tcr_index, everything()) %>% paged_table()
 
 nrow(edge_df) # ~75k edges
 ```
 
-We detect ~100k relationships between similar TCRs for a TCRdist cutoff of 90.
+For this dataset of ~100k TCRs, we detect ~75k relationships between similar TCRs (TCRdist <= 90).
+For any row of the output table, we can view the two TCRs:
+
+```{r}
+row_idx = 1
+node_df %>% 
+  filter(tcr_index %in% c(edge_df$node1_0index[row_idx], edge_df$node2_0index[row_idx])) %>%
+  select(va, ja, cdr3a, cdr3b, vb, jb) %>%
+  paged_table()
+```
+

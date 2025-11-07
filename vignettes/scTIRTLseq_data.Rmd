@@ -1,6 +1,6 @@
 ---
-title: "Working with single-cell TIRTLseq data"
+title: "(coming soon) Working with single-cell TIRTLseq data"
 output: html_notebook
 ---
-<span class="label label-info">Coming Soon!</span>
+
 (coming soon)
