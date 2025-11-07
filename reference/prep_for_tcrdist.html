@@ -49,7 +49,7 @@ TCRs with unrecognized V-segments or non-functional CDR3 sequences.'><meta prope
     <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
+    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
     <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
@@ -91,7 +91,13 @@ TCRs with unrecognized V-segments or non-functional CDR3 sequences.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_for_tcrdist</span><span class="op">(</span><span class="va">df</span>, params <span class="op">=</span> <span class="cn">NULL</span>, remove_MAIT <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_for_tcrdist</span><span class="op">(</span></span>
+<span>  <span class="va">df</span>,</span>
+<span>  params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  remove_duplicate_tcrs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  remove_MAIT <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -105,6 +111,10 @@ TCRs with unrecognized V-segments or non-functional CDR3 sequences.</p>
 <dt id="arg-params">params<a class="anchor" aria-label="anchor" href="#arg-params"></a></dt>
 <dd><p>(optional) a data frame with permissible amino acids and V-segments.
 By default, the TIRTLtools::params data frame is used.</p></dd>
+
+
+<dt id="arg-remove-duplicate-tcrs">remove_duplicate_tcrs<a class="anchor" aria-label="anchor" href="#arg-remove-duplicate-tcrs"></a></dt>
+<dd><p>(optional) whether or not to remove duplicate TCRs (default is FALSE, do not remove duplicates).</p></dd>
 
 
 <dt id="arg-remove-mait">remove_MAIT<a class="anchor" aria-label="anchor" href="#arg-remove-mait"></a></dt>
@@ -121,7 +131,11 @@ By default, the TIRTLtools::params data frame is used.</p></dd>
 <code><a href="TIRTL_process.html">TIRTL_process()</a></code>,
 <code><a href="add_single_chain_data.html">add_single_chain_data()</a></code>,
 <code><a href="clean_pairs.html">clean_pairs()</a></code>,
+<code><a href="filter_duplicate_tcrs.html">filter_duplicate_tcrs()</a></code>,
 <code><a href="filter_mait.html">filter_mait()</a></code>,
+<code><a href="filter_nonfunctional_TCRs.html">filter_nonfunctional_TCRs()</a></code>,
+<code><a href="filter_short_cdr3s.html">filter_short_cdr3s()</a></code>,
+<code><a href="filter_v_alleles.html">filter_v_alleles()</a></code>,
 <code><a href="identify_non_functional_seqs.html">identify_non_functional_seqs()</a></code>,
 <code><a href="identify_paired.html">identify_paired()</a></code>,
 <code><a href="remove_duplicates.html">remove_duplicates()</a></code></p></div>

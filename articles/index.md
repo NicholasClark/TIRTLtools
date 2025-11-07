@@ -16,7 +16,7 @@
 
 ### Basic TIRTLseq data analysis
 
-- [(coming soon) Summarizing TCR
+- [Estimating TCR Repertoire
   diversity](https://nicholasclark.github.io/TIRTLtools/articles/summarizing_diversity.md):
 - [(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq
   data](https://nicholasclark.github.io/TIRTLtools/articles/SJTRC_identifying_covid_epitopes.md):

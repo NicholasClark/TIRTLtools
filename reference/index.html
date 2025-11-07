@@ -43,7 +43,7 @@
     <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
+    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
     <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
@@ -149,10 +149,38 @@
 
         <dt>
 
+          <code><a href="filter_duplicate_tcrs.html">filter_duplicate_tcrs()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Remove duplicate TCRs from a data frame</dd>
+
+        <dt>
+
           <code><a href="filter_mait.html">filter_mait()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Remove MAIT (Mucosal-Associated Invariant T cells) TCRs</dd>
+
+        <dt>
+
+          <code><a href="filter_nonfunctional_TCRs.html">filter_nonfunctional_TCRs()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Remove TCRs with nonfunctional CDR3 amino acid sequences</dd>
+
+        <dt>
+
+          <code><a href="filter_short_cdr3s.html">filter_short_cdr3s()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Remove TCRs with short CDR3 loops</dd>
+
+        <dt>
+
+          <code><a href="filter_v_alleles.html">filter_v_alleles()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Remove TCRs with unknown V-segments</dd>
 
         <dt>
 

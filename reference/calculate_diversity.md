@@ -83,7 +83,7 @@ equals the probability that two entities taken at random from the
 dataset represent the same type. It is the inverse of the Hill number of
 order 2.
 
-gini - The Gini index/coefficient...
+gini - The Gini index/coefficient
 (https://en.wikipedia.org/wiki/Gini_coefficient).
 
 gini.simpson - The Gini-Simpson index

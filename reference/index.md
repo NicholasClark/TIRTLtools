@@ -25,9 +25,18 @@
 - [`clean_pairs()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.md)
   **\[experimental\]** : Remove excess pairs for individual single
   chains
+- [`filter_duplicate_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_duplicate_tcrs.md)
+  **\[experimental\]** : Remove duplicate TCRs from a data frame
 - [`filter_mait()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_mait.md)
   **\[experimental\]** : Remove MAIT (Mucosal-Associated Invariant T
   cells) TCRs
+- [`filter_nonfunctional_TCRs()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_nonfunctional_TCRs.md)
+  **\[experimental\]** : Remove TCRs with nonfunctional CDR3 amino acid
+  sequences
+- [`filter_short_cdr3s()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_short_cdr3s.md)
+  **\[experimental\]** : Remove TCRs with short CDR3 loops
+- [`filter_v_alleles()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_v_alleles.md)
+  **\[experimental\]** : Remove TCRs with unknown V-segments
 - [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md)
   **\[experimental\]** : Identify TCRs that contain non-functional CDR3
   sequences

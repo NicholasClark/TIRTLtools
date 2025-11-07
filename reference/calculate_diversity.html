@@ -47,7 +47,7 @@ Shannon and Simpson indices) calculated from supplied data."><meta property="og:
     <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">(coming soon) Summarizing TCR diversity</a></li>
+    <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
     <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
@@ -151,7 +151,7 @@ They return a data frame with many rows if supplied with a vector of orders (e.g
 <p>simpson - The Simpson diversity index (https://en.wikipedia.org/wiki/Diversity_index#Simpson_index).
 This equals the probability that two entities taken at random from the dataset represent the same type.
 It is the inverse of the Hill number of order 2.</p>
-<p>gini - The Gini index/coefficient... (https://en.wikipedia.org/wiki/Gini_coefficient).</p>
+<p>gini - The Gini index/coefficient (https://en.wikipedia.org/wiki/Gini_coefficient).</p>
 <p>gini.simpson - The Gini-Simpson index (https://en.wikipedia.org/wiki/Diversity_index#Gini%E2%80%93Simpson_index). Equal to 1-Simpson_index. This equals the probability that two entities taken at random from the dataset represent different types.</p>
 <p>inv.simpson - The Inverse-Simpson index - i.e. the reciprocal of the Simpson index, which measures the effective
 number of types when the weighted arithmetic mean is used to calculate diversity. It is equivalent to the
