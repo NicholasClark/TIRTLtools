@@ -1,0 +1,282 @@
+# Loading TIRTLseq data in R
+
+## TIRTLseq text file data structure
+
+TIRTLseq data is kept in tab-separated text files (.tsv). The files may
+be ‘gzipped’ (.tsv.gz) to save space.
+
+Output for each sample consists of 3 files:
+
+- `<sample-name>_TIRTLoutput.tsv(.gz)`– Paired TCRs – a table of
+  computationally paired alpha/beta TCRs
+- `<sample-name>_pseudobulk_TRA.tsv(.gz)` – Alpha chain “pseudo-bulk”
+  data – a table of read count summary metrics for alpha-chains across
+  all wells on a plate
+- `<sample-name>_pseudobulk_TRB.tsv(.gz)` – Beta chain “pseudo-bulk”
+  data – a table of read count summary metrics for beta-chains across
+  all wells on a plate
+
+## Loading TIRTLseq Data in R
+
+The
+[`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
+function loads paired TCR TIRTLseq data from all text files in a
+directory.
+
+The function can also automatically assemble a metadata table if the
+files are named in a way that specifies the sample metadata.
+
+Here, our files are named `(marker)_(timepoint)_(version)_ ... .tsv.gz`,
+e.g. `cd8_tp1_v2_TIRTLoutput.tsv`.
+
+``` r
+library(TIRTLtools)
+```
+
+    ## Error in system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE) : 
+    ##   error in running command
+
+``` r
+library(dplyr)
+library(rmarkdown)
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
+dir(folder)
+```
+
+    ## [1] "cd8_tp1_v2_pseudobulk_TRA.tsv.gz" "cd8_tp1_v2_pseudobulk_TRB.tsv.gz"
+    ## [3] "cd8_tp1_v2_TIRTLoutput.tsv.gz"    "cd8_tp2_v2_pseudobulk_TRA.tsv.gz"
+    ## [5] "cd8_tp2_v2_pseudobulk_TRB.tsv.gz" "cd8_tp2_v2_TIRTLoutput.tsv.gz"
+
+``` r
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
+```
+
+    ## 15.133 sec elapsed
+
+``` r
+## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz
+```
+
+## The TIRTLseq data object
+
+In R, TIRTLseq data is stored in a “list” which can contain any type of
+unstructured data.
+
+The list contains two slots.
+
+- `meta` - a data frame with sample metadata
+- `data` - a list with data for each sample
+
+``` r
+class(ts_data) ## list
+```
+
+    ## [1] "list"
+
+``` r
+names(ts_data) ## [1] "data" "meta"
+```
+
+    ## [1] "data" "meta"
+
+### The metadata table
+
+The `$meta` slot contains a data frame with columns for `sample_id`
+(determined from the filename) and any columns you specified with the
+“meta_columns” argument. The `label` column combines all of the metadata
+columns into one string.
+
+If you did not specify “meta_columns” in the
+[`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
+call, then the table will only contain the `sample_id` and `label`
+columns.
+
+``` r
+class(ts_data$meta) ## data.frame
+```
+
+    ## [1] "tbl_df"     "tbl"        "data.frame"
+
+``` r
+ts_data$meta %>%
+  mutate(label = paste(substr(label, 0, 20), "...", sep = "")) %>%
+  paged_table()
+```
+
+### The data list
+
+The `$data` slot is also a “list” that contains one object for each
+sample, named by its `sample_id`.
+
+For each sample, `$data$<sample-name>` is a “list” of three data frames.
+
+- `$data$<sample-name>$alpha` contains the pseudo-bulk data for the
+  alpha chain
+- `$data$<sample-name>$beta` contains the pseudo-bulk data for the beta
+  chain
+- `$data$<sample-name>$paired` contains alpha and beta chains that were
+  paired computationally by our MAD-HYPE and T-SHELL algorithms.
+
+``` r
+class(ts_data$data) ## list
+```
+
+    ## [1] "list"
+
+``` r
+names(ts_data$data) ## [1] "cd8_tp1_v2" "cd8_tp2_v2"
+```
+
+    ## [1] "cd8_tp1_v2" "cd8_tp2_v2"
+
+``` r
+class(ts_data$data$cd8_tp1_v2) ## list
+```
+
+    ## [1] "list"
+
+``` r
+names(ts_data$data$cd8_tp1_v2) ## [1] "alpha"  "beta"   "paired"
+```
+
+    ## [1] "alpha"  "beta"   "paired"
+
+#### The pseudo-bulk data frames
+
+In the TIRTLseq assay, one experiment is repeated hundreds of times in a
+multi-well plate. Generally, an experiment is repeated in a half plate
+(192 wells) or a whole plate (384 wells). Alpha and beta TCRs are
+sequenced simultaneously, but separately in each well.
+
+The reads for each well are processed using [MiXCR](https://mixcr.com/),
+which calls V and J segments, assembles the CDR3 nucleotide sequence,
+and generates its corresponding amino acid sequence.
+
+For each clonotype defined by a unique CDR3 nucleotide sequence, the
+following are reported:
+
+##### Read identifying information
+
+- `targetSequences` - CDR3 nucleotide sequence
+- `v` - V-segment call from MiXCR
+- `j` - J-segment call from MiXCR
+- `aaSeqCDR3` - CDR3 amino acid sequence, including stop codons (\*) and
+  frameshifts (\_)
+
+##### Read count summary metrics
+
+- `readCount` - sum of read counts over all wells for the clonotype
+- `readFraction` - the fraction of all reads attributed to the clonotype
+- `sem` - standard error of the mean for the read fraction.
+- `n_wells` - the number of wells in which a clonotype is observed
+- `max_wells` - the number of wells used for the experiment (generally
+  the same for all clonotypes)
+- `readCount_max` - the maximum read count in any well for the clonotype
+- `readCount_median` - the median read count for a clonotype
+
+`$data$<sample-name>$alpha` and `$data$<sample-name>$beta` contain the
+pseudo-bulk data for alpha and beta chains, respectively.
+
+``` r
+ts_data$data$cd8_tp1_v2$alpha %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  paged_table()
+```
+
+``` r
+ts_data$data$cd8_tp1_v2$beta %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  paged_table()
+```
+
+#### The paired data frame
+
+We use computational algorithms based on occurrence patterns ([MAD-HYPE
+algorithm](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649))
+or correlation of read fractions
+([T-SHELL](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2))
+of TCR chains across all wells to identify alpha and beta chains present
+in the same clone.
+
+In general, the MAD-HYPE method works well for moderately frequent
+clones, but fails for the most frequent clones if they are found in all
+or almost all wells. The T-SHELL algorithm works well for pairing these
+very frequent clones.
+
+For each pair, we report:
+
+##### V/J/CDR3 sequences
+
+- `alpha_nuc_seq`, `alpha_nuc` - alpha CDR3 nucleotide sequence
+- `beta_nuc_seq`, `beta_nuc` - beta CDR3 nucleotide sequence
+- `alpha_beta` - alpha-beta pair concatenated nucleotide sequence
+- `cdr3a` - alpha CDR3 amino acid sequence
+- `va` - alpha V gene
+- `ja` - alpha J gene
+- `cdr3b` - beta CDR3 amino acid sequence
+- `vb` - beta V gene
+- `jb` - beta J gene
+
+##### Alpha/beta chain occurence and overlap
+
+- `wa` - number of wells where alpha is found
+- `wb` - number of wells where beta is found
+- `wi` - number of wells where alpha is found, but not beta
+- `wj` - number of wells where beta is found, but not alpha
+- `wij` - number of wells where both alpha and beta are found
+
+##### Pairing method scores and metrics
+
+- `method` - method that resulted in pairing: T-SHELL or MAD-HYPE
+- `r` - for T-SHELL, the Pearson correlation coefficient between alpha
+  and beta chain frequencies
+- `ts` - for T-SHELL, the t-statistic of the correlation
+- `pval` - for T-SHELL, the p-value of the correlation
+- `pval_adj` - for T-SHELL, the adjusted p-value of the correlation
+- `score` - for MAD-HYPE, the score of the pairing (higher is better)
+- `loss_a_frac` - the fraction of wells with lost alpha chain
+- `loss_b_frac` - the fraction of wells with lost beta chain
+
+``` r
+ts_data$data$cd8_tp1_v2$paired %>%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")
+         ) %>%
+  paged_table()
+```
+
+Note: If a TCR pair is paired by both algorithms, it will be listed
+twice in the `$paired` data frame, once for the “MAD-HYPE” method and
+once for the “T-SHELL” method.
+
+``` r
+## example TCR pair with two entries, one for each pairing algorithm
+ts_data$data$cd8_tp1_v2$paired %>% 
+  filter(alpha_beta == "TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT_TGCAGTGCTACATCTCGGAGAGAGCCCTACGAGCAGTACTTC") %>%
+  select(alpha_nuc, beta_nuc, method, everything()) %>%
+  paged_table()
+```
+
+To see only unique TCR pairs, you may do the following:
+
+``` r
+pairs = ts_data$data$cd8_tp1_v2$paired
+pairs_unique = pairs[!duplicated(pairs$alpha_beta),]
+
+pairs_unique %>%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) %>%
+  paged_table()
+```
+
+``` r
+nrow(pairs) ## ~20k TCR pairs called by one or both methods
+```
+
+    ## [1] 20690
+
+``` r
+nrow(pairs_unique) ## ~14k unique TCR pairs called
+```
+
+    ## [1] 14273
