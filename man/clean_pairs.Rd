@@ -39,7 +39,11 @@ chains by their V/J segments. However, we keep only one beta chain (can be chang
 Other data_processing: 
 \code{\link{TIRTL_process}()},
 \code{\link{add_single_chain_data}()},
+\code{\link{filter_duplicate_tcrs}()},
 \code{\link{filter_mait}()},
+\code{\link{filter_nonfunctional_TCRs}()},
+\code{\link{filter_short_cdr3s}()},
+\code{\link{filter_v_alleles}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{identify_paired}()},
 \code{\link{prep_for_tcrdist}()},

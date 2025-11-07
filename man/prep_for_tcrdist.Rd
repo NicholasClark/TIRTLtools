@@ -4,13 +4,21 @@
 \alias{prep_for_tcrdist}
 \title{Prepare paired TCRs for TCRdist calculation}
 \usage{
-prep_for_tcrdist(df, params = NULL, remove_MAIT = TRUE, verbose = TRUE)
+prep_for_tcrdist(
+  df,
+  params = NULL,
+  remove_duplicate_tcrs = FALSE,
+  remove_MAIT = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{df}{a data frame of paired TCRs}
 
 \item{params}{(optional) a data frame with permissible amino acids and V-segments.
 By default, the TIRTLtools::params data frame is used.}
+
+\item{remove_duplicate_tcrs}{(optional) whether or not to remove duplicate TCRs (default is FALSE, do not remove duplicates).}
 
 \item{remove_MAIT}{(optional) whether or not to remove MAIT cells from the data frame (default is TRUE).}
 
@@ -27,7 +35,11 @@ Other data_processing:
 \code{\link{TIRTL_process}()},
 \code{\link{add_single_chain_data}()},
 \code{\link{clean_pairs}()},
+\code{\link{filter_duplicate_tcrs}()},
 \code{\link{filter_mait}()},
+\code{\link{filter_nonfunctional_TCRs}()},
+\code{\link{filter_short_cdr3s}()},
+\code{\link{filter_v_alleles}()},
 \code{\link{identify_non_functional_seqs}()},
 \code{\link{identify_paired}()},
 \code{\link{remove_duplicates}()}
