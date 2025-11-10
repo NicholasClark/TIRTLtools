@@ -102,19 +102,26 @@ load_tirtlseq = function(
 
 
     files_alpha = dir(dir_tmp, pattern = alpha_post )
+    msg1 = paste("Found", length(files_alpha), "alpha chain pseudo-bulk files.")
     files_beta = dir(dir_tmp, pattern = beta_post )
+    msg2 = paste("Found", length(files_beta), "beta chain pseudo-bulk files.")
     files_paired = dir(dir_tmp, pattern = paired_post )
+    msg3 = paste("Found", length(files_paired), "paired chain files.")
+    if(verbose) message(msg1); message(msg2); message(msg3)
 
     files_pre_paired = gsub("_TIRTLoutput\\.tsv.*", "",files_paired)
     files_pre_alpha = gsub("_pseudobulk_TRA\\.tsv.*", "",files_alpha)
     files_pre_beta = gsub("_pseudobulk_TRB\\.tsv.*", "",files_beta)
 
-    files_pre = case_when(
-      chain == "all" ~ unique(c(files_pre_paired, files_pre_alpha, files_pre_beta)),
-      chain == "alpha" ~ files_pre_alpha,
-      chain == "beta" ~ files_pre_beta,
-      chain == "paired" ~ files_pre_paired
-    )
+    if(chain == "all") {
+      files_pre = unique(c(files_pre_paired, files_pre_alpha, files_pre_beta))
+    } else if(chain == "alpha") {
+      files_pre = files_pre_alpha
+    } else if(chain == "beta") {
+      files_pre = files_pre_beta
+    } else {
+      files_pre = files_pre_paired
+    }
 
     if(n_max < length(files_pre)) {
       files_pre = files_pre[1:n_max]
