@@ -74,7 +74,7 @@ TCRdist = function(
   chunk_size = as.integer(chunk_size)
   print_chunk_size = as.integer(print_chunk_size)
   ### load python packages/scripts
-  TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
+  TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python/TCRdist/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
   pd = reticulate::import("pandas", delay_load = TRUE)
   np = reticulate::import("numpy", delay_load = TRUE)
   ### load substitution matrix and dataframe of parameters
