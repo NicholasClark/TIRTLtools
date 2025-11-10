@@ -138,9 +138,13 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loading files from: /home/runner/work/_temp/Library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
 
+    ## Found 6 beta chain pseudo-bulk files.
+
+    ## Found 6 paired chain files.
+
     ## Loaded 6 files from 6 samples.
 
-    ## 2.592 sec elapsed
+    ## 2.485 sec elapsed
 
 ``` r
 data$meta %>%
@@ -209,26 +213,26 @@ result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
     ## Loading numpy to perform TCRdist
     ## Number of chunks: 5253
     ## 10% done
-    ## Time taken so far: 105.352088 seconds
+    ## Time taken so far: 108.515997 seconds
     ## 20% done
-    ## Time taken so far: 210.485911 seconds
+    ## Time taken so far: 216.748532 seconds
     ## 30% done
-    ## Time taken so far: 315.504383 seconds
+    ## Time taken so far: 324.412638 seconds
     ## 40% done
-    ## Time taken so far: 420.688158 seconds
+    ## Time taken so far: 432.558333 seconds
     ## 50% done
-    ## Time taken so far: 525.617240 seconds
+    ## Time taken so far: 540.727944 seconds
     ## 60% done
-    ## Time taken so far: 630.864099 seconds
+    ## Time taken so far: 648.708348 seconds
     ## 70% done
-    ## Time taken so far: 736.269631 seconds
+    ## Time taken so far: 756.992190 seconds
     ## 80% done
-    ## Time taken so far: 841.505088 seconds
+    ## Time taken so far: 864.984485 seconds
     ## 90% done
-    ## Time taken so far: 946.579210 seconds
+    ## Time taken so far: 972.880886 seconds
     ## 100% done
-    ## Time taken so far: 1051.863973 seconds
-    ## Total time taken: 1062.779263 seconds
+    ## Time taken so far: 1080.554633 seconds
+    ## Total time taken: 1091.486767 seconds
 
 ### Inspect the output
 
