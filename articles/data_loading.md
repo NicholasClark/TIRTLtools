@@ -51,7 +51,7 @@ dir(folder)
 ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ```
 
-    ## 15.906 sec elapsed
+    ## 15.728 sec elapsed
 
 ``` r
 ## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz
