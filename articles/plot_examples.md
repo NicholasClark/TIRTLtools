@@ -39,7 +39,7 @@ dir(folder)
 sjtrc = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ```
 
-    ## 65.805 sec elapsed
+    ## 65.038 sec elapsed
 
 ## Process the data
 
