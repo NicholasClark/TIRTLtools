@@ -60,7 +60,7 @@ def madhyper_process(prefix):
     results_df.to_csv(prefix+'_madhyperesults.csv', index=False)
     print(f"Number of pairs from MAD-HYPE: {results_df.shape[0]}")
 
-def correlation_process(prefix,min_wells=2):
+def correlation_process(prefix,min_wells=2,filter_before_top3=False):
     print("start load for T-Shell:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     bigmas = mx.array(np.loadtxt(prefix+'_bigmas.tsv', delimiter='\t', dtype=np.float32))
     bigmbs = mx.array(np.loadtxt(prefix+'_bigmbs.tsv', delimiter='\t', dtype=np.float32))
@@ -104,6 +104,21 @@ def correlation_process(prefix,min_wells=2):
         a_total = mx.sum(bigmas[row_range] > 0, axis=1,keepdims=True)
         pairwise_cors_method2 = mx.matmul(bigma_w1_scaled, bigmb_w1_scaled) #mask for madhype
         overlaps = mx.matmul((bigmas[row_range] > 0).astype(mx.float32), bigmbs) #optimized
+
+        if filter_before_top3:
+            ### remove correlations for pairs with low overlap or high loss fraction
+            overlap_mask = overlaps <= 2 # require overlap of >=3 wells
+            ## calculate loss fraction
+            wij = overlaps 
+            wa = a_total
+            wb = b_total.T
+            loss_a_frac =(wb-wij)/(wij+(wb-wij)+(wa-wij))
+            loss_b_frac =(wa-wij)/(wij+(wb-wij)+(wa-wij))
+            loss_frac_sum = loss_a_frac+loss_b_frac
+            loss_frac_mask = loss_frac_sum >= 0.5 # require (loss_a_frac+loss_b_frac)<0.5
+            combined_mask = mx.logical_or(overlap_mask, loss_frac_mask)
+            pairwise_cors_method2 = mx.where(combined_mask, -1, pairwise_cors_method2) # set correlation to -1 if not enough overlap or loss fraction is too high
+
         mask_condition=(-pairwise_cors_method2<=mx.partition(pairwise_cors_method2*(-1), 3,axis=1)[:,2:3])
  
         pairs = mx.argwhere(mask_condition)# this is for cupy!

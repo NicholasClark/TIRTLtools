@@ -1,14 +1,70 @@
-import mlx.core as mx
+import utils
 import numpy as np
 import pandas as pd
 from datetime import datetime
 import sys
+import os
+## Note: either cupy, mlx.core, or numpy is loaded as "mx"
 
-def madhyper_process(prefix):
+### if backend is specified, load it
+# if backend == "cupy":
+#   import cupy as mx
+# elif backend == "mlx":
+#   import mlx.core as mx
+# elif backend == "numpy":
+#   import numpy as mx
+# else: ### if backend is not specified, check and load correct one
+
+
+gpu = utils.check_gpu()
+module = utils.check_cupy_or_mlx()
+if gpu == "nvidia" and module == "cupy":
+    print("Loading cupy to perform TCRdist")
+    import cupy as mx #cuda python backend, connect to T4 runtime or other with GPU
+elif gpu == "apple" and module == "mlx":
+    print("Loading mlx to perform TCRdist")
+    import mlx.core as mx #use this for apple silicon
+else:
+    print("Loading numpy to perform TCRdist")
+    import numpy as mx #use this for CPU only
+
+def pairing(prefix, folder_out, backend="auto") :
+  #get_backend(backend) ### load cupy, mlx, or numpy as mx.
+
+  madhyper_process(prefix, folder_out)
+  correlation_process(prefix, folder_out)
+  return(None)
+
+# def get_backend(backend = "auto"):
+#   ### if backend is specified, load it
+#   if backend == "cupy":
+#     import cupy as mx
+#   elif backend == "mlx":
+#     import mlx.core as mx
+#   elif backend == "numpy":
+#     import numpy as mx
+#   else: ### if backend is not specified, check and load correct one
+#     gpu = utils.check_gpu()
+#     module = utils.check_cupy_or_mlx()
+#     if gpu == "nvidia" and module == "cupy":
+#         print("Loading cupy to perform pairing")
+#         import cupy as mx #cuda python backend, connect to T4 runtime or other with GPU
+#         #import cupy_backend_script
+#     elif gpu == "apple" and module == "mlx":
+#         print("Loading mlx to perform pairing")
+#         #import mlx_backend_script
+#         import mlx.core as mx #use this for apple silicon
+#     else:
+#         print("Loading numpy to perform pairing")
+#         import numpy as mx #use this for CPU only
+#         #import numpy_backend_script
+#   return(None)
+
+def madhyper_process(prefix, folder_out):
     print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    bigmas = mx.array(np.loadtxt(prefix+'_bigmas.tsv', delimiter='\t', dtype=np.float32))
-    bigmbs = mx.array(np.loadtxt(prefix+'_bigmbs.tsv', delimiter='\t', dtype=np.float32))
-    mdh = mx.array(np.loadtxt(prefix+'_mdh.tsv', delimiter='\t', dtype=np.int32))
+    bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
+    bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
+    mdh = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_mdh.tsv'), delimiter='\t', dtype=np.int32))
     rowinds_bigmas=mx.arange(bigmas.shape[0])
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
     results = []
@@ -57,13 +113,13 @@ def madhyper_process(prefix):
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
-    results_df.to_csv(prefix+'_madhyperesults.csv', index=False)
+    results_df.to_csv(os.path.join(folder_out, prefix+'_madhyperesults.csv'), index=False)
     print(f"Number of pairs: {results_df.shape[0]}")
 
-def correlation_process(prefix,min_wells=2,filter_before_top3=False):
+def correlation_process(prefix, folder_out, min_wells=2, filter_before_top3=False):
     print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    bigmas = mx.array(np.loadtxt(prefix+'_bigmas.tsv', delimiter='\t', dtype=np.float32))
-    bigmbs = mx.array(np.loadtxt(prefix+'_bigmbs.tsv', delimiter='\t', dtype=np.float32))
+    bigmas = mx.array(np.loadtxt(os.path.join(folder_out,prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
+    bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
     #mdh = mx.array(np.loadtxt(prefix+'_mdh.tsv', delimiter='\t', dtype=np.int32))
     rowinds_bigmas=mx.arange(bigmas.shape[0])
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
@@ -149,13 +205,4 @@ def correlation_process(prefix,min_wells=2,filter_before_top3=False):
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
-    results_df.to_csv(prefix+'_corresults.csv', index=False)
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <prefix>")
-        sys.exit(1)
-        
-    prefix = sys.argv[1]    
-    madhyper_process(prefix)
-    correlation_process(prefix)
+    results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)

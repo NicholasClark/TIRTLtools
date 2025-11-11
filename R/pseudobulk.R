@@ -10,13 +10,14 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
     well_pos=3,
     wellset1=get_well_subset(1:16,1:24),
     compute=T,
+    backend = "auto",
     pval_thres_tshell=1e-10,
     wij_thres_tshell=2,
     verbose = TRUE){
 
   if(verbose) {
     message("start")
-    message(Sys.time())
+    print(Sys.time())
   }
 
   ## Create folder for results
@@ -35,8 +36,8 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   mlistb<-getb(mlist)
   if(verbose) {
     message("clonesets loaded")
-    message(names(mlist))
-    message(Sys.time())
+    print(names(mlist))
+    print(Sys.time())
   }
   wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
   clone_thres=round(well_filter_thres*mean(sapply(mlist,nrow)[wellsub]))
@@ -45,63 +46,77 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
   if(verbose) {
     message("clone_threshold")
-    message(clone_thres)
+    print(clone_thres)
     message("alpha_wells_working")
-    message(table(qc$a))
-    message("alpha_wells_working")
-    message(table(qc$a))
+    print(table(qc$a))
+    message("beta_wells_working")
+    print(table(qc$b))
   }
 
   #result<-do_analysis_madhyper_r_optim_both(mlista[qc$a],mlistb[qc$b],n_cells = clone_thres)
   mlista<-mlista[qc$a]#downsize to qc
   mlistb<-mlistb[qc$b]#downsize to qc
 
-  message("pseudobulk_alpha")
-  message(Sys.time())
+  if(verbose) {
+    message("pseudobulk_alpha")
+    print(Sys.time())
+  }
   combd_a<-combineTCR(rbindlist(mlista,idcol="file"))
   combd_a$max_wells<-sum(qc$a)
-  message("pseudobulk_beta")
-  fwrite(combd_a[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv"),sep="\t"))
-  message(Sys.time())
+  if(verbose) message("pseudobulk_beta")
+  fwrite(combd_a[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv")),sep="\t")
+  if(verbose) print(Sys.time())
   combd_b<-combineTCR(rbindlist(mlistb,idcol="file"))
   combd_b$max_wells<-sum(qc$b)
-  fwrite(combd_b[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv"),sep="\t"))
-  message("pseudobulk_done")
+  fwrite(combd_b[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv")),sep="\t")
+  if(verbose) message("pseudobulk_done")
 
-  message(Sys.time())
-  message("start")
+  if(verbose) {
+    print(Sys.time())
+    message("start")
+  }
   bigma<-big_merge_freqs2(mlista,min_reads = min_reads)
-  message(dim(bigma))
+  if(verbose) message(dim(bigma))
   bigmas<-bigma[rowSums(bigma>0)>min_wells,]
-  message(Sys.time())
-  message("big merge done")
-  message("bigmas")
-  message(dim(bigmas))
+  if(verbose) {
+    message(Sys.time())
+    message("big merge done")
+    message("bigmas")
+    print(dim(bigmas))
+  }
   bigmb<-big_merge_freqs2(mlistb,min_reads = min_reads)
-  message(dim(bigmb))
+  if(verbose) message(dim(bigmb))
   bigmbs<-bigmb[rowSums(bigmb>0)>min_wells,]
-  message(Sys.time())
-  message("big merge done")
-  message("bigmbs")
-  message(dim(bigmbs))
+  if(verbose) {
+    message(Sys.time())
+    message("big merge done")
+    message("bigmbs")
+    print(dim(bigmbs))
+  }
   write(rownames(bigmas),file=file.path(folder_out, paste0(prefix,"_bigmas_names.tsv")))
   write(rownames(bigmbs),file=file.path(folder_out, paste0(prefix,"_bigmbs_names.tsv")))
   write_dat(as.matrix(bigmas),fname = file.path(folder_out, paste0(prefix,"_bigmas.tsv")))
   write_dat(as.matrix(bigmbs),fname = file.path(folder_out, paste0(prefix,"_bigmbs.tsv")))
-  message(Sys.time())
+  if(verbose) print(Sys.time())
   n_wells=ncol(bigmas)
   mdh<-madhyper_surface(n_wells = ncol(bigmas),cells = clone_thres,alpha=2,prior = 1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5)
   write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
-  message(Sys.time())
+  if(verbose) print(Sys.time())
 
+  if(compute==T) {
+    pairing = reticulate::import_from_path("pairing_all_backends", path = system.file("python/pairing/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
+    pairing$pairing(prefix, folder_out, backend)
+  }
 
-
-  if(compute==T)system(paste0("python3 cupy_madhype_script.py ",prefix,collapse=""))
+  # cupy_madhype_script = reticulate::import_from_path("cupy_madhype_script", path = system.file("python/pairing/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
+  # cupy_madhype_script$madhyper_process(prefix)
+  # cupy_madhype_script$correlation_process(prefix)
+  # if(compute==T)system(paste0("python3 cupy_madhype_script.py ",prefix,collapse=""))
   # here goes SYS call to python script.
   #python3 mlx_madhype_script ~/R_projects/mlx_dev/plate6
   # and here we go read it:
-  gpu_res<-read_gpu(prefix)
-  gpu_res_corr<-read_gpu_corr(prefix)
+  gpu_res<-read_gpu(file.path(folder_out, prefix))
+  gpu_res_corr<-read_gpu_corr(file.path(folder_out, prefix))
   # I also want to compute
   result<-rbind(gpu_res,gpu_res_corr,fill=T)
   #probably this we don't want. what is it???
@@ -137,8 +152,32 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   result$vb=tp_b$v
   result$jb=tp_b$j
 
-  fwrite(result, file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv"),sep="\t"))
+  fwrite(result, file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv")),sep="\t")
   return(result)
+}
+
+combineTCR<-function(dt){
+  dt[, v := tstrsplit(allVHitsWithScore, "*", fixed = TRUE, fill = "")[[1]]]
+  dt[, j := tstrsplit(allJHitsWithScore, "*", fixed = TRUE, fill = "")[[1]]]
+  setkey(dt, targetSequences)
+  nmax=length(unique(dt$file))
+  #print(nmax)
+  out <- dt[,
+            .(
+              readCount = sum(readCount),
+              v = v[which.max(tabulate(match(v, v)))],
+              j = j[which.max(tabulate(match(j, j)))],
+              aaSeqCDR3 = aaSeqCDR3[which.max(tabulate(match(aaSeqCDR3, aaSeqCDR3)))],
+              n_wells=.N,
+              readCount_max=max(readCount),
+              readCount_median=median(readCount),
+              avg=sum(readFraction)/nmax,
+              sem=sd(c(readFraction,rep(0,times=nmax-.N)))/sqrt(nmax)
+            ),
+            by = targetSequences #or by EACHI?
+  ]
+  out[, readFraction := readCount / sum(readCount)]
+  out  #get most popular V and J and aaSeqCDR3 for each target
 }
 
 run_single_point_analysis_sub_gpu_pseudobulk_legacy<-function(folder_path,prefix="tmp",well_filter_thres=0.75,min_reads=0,min_wells=2,well_pos=3,wellset1=get_well_subset(1:16,1:24),compute=T,pval_thres_tshell=1e-10,wij_thres_tshell=2){ #this is with gpu backend
@@ -325,28 +364,4 @@ run_single_point_analysis_sub_pseudobulk_only<-function(folder_path,prefix="tmp"
   combd_b$max_wells<-sum(qc$b)
   fwrite(combd_b,paste0(prefix,"_pseudobulk_TRB.tsv"),sep="\t")
   print("pseudobulk_done")
-}
-
-combineTCR<-function(dt){
-  dt[, v := tstrsplit(allVHitsWithScore, "*", fixed = TRUE, fill = "")[[1]]]
-  dt[, j := tstrsplit(allJHitsWithScore, "*", fixed = TRUE, fill = "")[[1]]]
-  setkey(dt, targetSequences)
-  nmax=length(unique(dt$file))
-  #print(nmax)
-  out <- dt[,
-            .(
-              readCount = sum(readCount),
-              v = v[which.max(tabulate(match(v, v)))],
-              j = j[which.max(tabulate(match(j, j)))],
-              aaSeqCDR3 = aaSeqCDR3[which.max(tabulate(match(aaSeqCDR3, aaSeqCDR3)))],
-              n_wells=.N,
-              readCount_max=max(readCount),
-              readCount_median=median(readCount),
-              avg=sum(readFraction)/nmax,
-              sem=sd(c(readFraction,rep(0,times=nmax-.N)))/sqrt(nmax)
-            ),
-            by = targetSequences #or by EACHI?
-  ]
-  out[, readFraction := readCount / sum(readCount)]
-  out  #get most popular V and J and aaSeqCDR3 for each target
 }

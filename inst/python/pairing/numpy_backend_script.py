@@ -62,7 +62,7 @@ def madhyper_process(prefix):
 
 
 
-def correlation_process(prefix, min_wells=2):
+def correlation_process(prefix, min_wells=2,filter_before_top3=False):
     print("start load for T-Shell:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     bigmas = mx.array(np.loadtxt(prefix+'_bigmas.tsv', delimiter='\t', dtype=np.float32))
     bigmbs = mx.array(np.loadtxt(prefix+'_bigmbs.tsv', delimiter='\t', dtype=np.float32))
@@ -108,6 +108,20 @@ def correlation_process(prefix, min_wells=2):
         # Calculate overlaps
         a_total = mx.sum(bigmas[row_range] > 0, axis=1, keepdims=True)
         overlaps = mx.matmul((bigmas[row_range] > 0).astype(mx.float32), bigmbs)
+
+        if filter_before_top3:
+            ### remove correlations for pairs with low overlap or high loss fraction
+            overlap_mask = overlaps <= 2 # require overlap of >=3 wells
+            ## calculate loss fraction
+            wij = overlaps 
+            wa = a_total
+            wb = b_total.T
+            loss_a_frac =(wb-wij)/(wij+(wb-wij)+(wa-wij))
+            loss_b_frac =(wa-wij)/(wij+(wb-wij)+(wa-wij))
+            loss_frac_sum = loss_a_frac+loss_b_frac
+            loss_frac_mask = loss_frac_sum >= 0.5 # require (loss_a_frac+loss_b_frac)<0.5
+            combined_mask = mx.logical_or(overlap_mask, loss_frac_mask)
+            pairwise_cors_method2 = mx.where(combined_mask, -1, pairwise_cors_method2) # set correlation to -1 if not enough overlap or loss fraction is too high
         
         # Use argsort to get top 3 correlations for each row
         sorted_indices = mx.argsort(-pairwise_cors_method2, axis=1)  # Sort in descending order
