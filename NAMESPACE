@@ -15,7 +15,10 @@ import(rhdf5)
 importFrom(S4Vectors, DataFrame)
 importFrom(Biostrings, DNAStringSet, BStringSet, AAStringSet)
 importFrom(data.table, merge.data.table, setkey, getDTthreads, fread, is.data.table, as.data.table, rbindlist, fwrite, tstrsplit)
+
+import(reticulate)
 import(Matrix)
+
 
 export("%>%")
 importFrom(Rcpp, sourceCpp)

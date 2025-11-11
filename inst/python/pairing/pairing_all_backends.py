@@ -28,12 +28,15 @@ else:
     print("Loading numpy to perform TCRdist")
     import numpy as mx #use this for CPU only
 
-def pairing(prefix, folder_out, backend="auto") :
+def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_before_top3 = False) :
   #get_backend(backend) ### load cupy, mlx, or numpy as mx.
-
-  madhyper_process(prefix, folder_out)
-  correlation_process(prefix, folder_out)
-  return(None)
+  bigmas = mx.array(bigmas)
+  bigmbs = mx.array(bigmbs)
+  mdh = mx.array(mdh)
+  mdh = madhyper_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh)
+  corr = correlation_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, filter_before_top3 = filter_before_top3)
+  res = {"mdh": mdh, "corr": corr}
+  return(res)
 
 # def get_backend(backend = "auto"):
 #   ### if backend is specified, load it
@@ -60,11 +63,11 @@ def pairing(prefix, folder_out, backend="auto") :
 #         #import numpy_backend_script
 #   return(None)
 
-def madhyper_process(prefix, folder_out):
-    print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
-    bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
-    mdh = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_mdh.tsv'), delimiter='\t', dtype=np.int32))
+def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh):
+    #print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    #bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
+    #bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
+    #mdh = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_mdh.tsv'), delimiter='\t', dtype=np.int32))
     rowinds_bigmas=mx.arange(bigmas.shape[0])
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
     results = []
@@ -113,17 +116,18 @@ def madhyper_process(prefix, folder_out):
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
-    results_df.to_csv(os.path.join(folder_out, prefix+'_madhyperesults.csv'), index=False)
+    #results_df.to_csv(os.path.join(folder_out, prefix+'_madhyperesults.csv'), index=False)
     print(f"Number of pairs: {results_df.shape[0]}")
+    return(results_df)
 
-def correlation_process(prefix, folder_out, min_wells=2, filter_before_top3=False):
-    print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    bigmas = mx.array(np.loadtxt(os.path.join(folder_out,prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
-    bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
+def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_before_top3=False):
+    #print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    #bigmas = mx.array(np.loadtxt(os.path.join(folder_out,prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
+    #bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
     #mdh = mx.array(np.loadtxt(prefix+'_mdh.tsv', delimiter='\t', dtype=np.int32))
     rowinds_bigmas=mx.arange(bigmas.shape[0])
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
-    print('file read done')
+    #print('file read done')
     # #now we need to downsize to min_wells. Following filter does not work in mlx. add numpy workaround?
     # non_zero_counts_bigmas = mx.sum(bigmas > 0, axis=1)
     # non_zero_counts_bigmbs = mx.sum(bigmbs > 0, axis=1)
@@ -205,4 +209,5 @@ def correlation_process(prefix, folder_out, min_wells=2, filter_before_top3=Fals
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
-    results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)
+    #results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)
+    return(results_df)

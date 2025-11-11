@@ -13,10 +13,13 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
     backend = "auto",
     pval_thres_tshell=1e-10,
     wij_thres_tshell=2,
-    verbose = TRUE){
+    verbose = TRUE,
+    write_extra_files = FALSE,
+    filter_before_top3 = FALSE
+    ){
 
   if(verbose) {
-    message("start")
+    print("start")
     print(Sys.time())
   }
 
@@ -24,10 +27,10 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   if (!dir.exists(folder_out)) {
     dir.create(folder_out, recursive = TRUE)
     msg = paste("Created folder:", folder_out)
-    if(verbose) message(msg)
+    if(verbose) print(msg)
   } else {
     msg = paste("Folder already exists:", folder_out)
-    if(verbose) message(msg)
+    if(verbose) print(msg)
   }
 
   mlist<-lapply(list.files(path = folder_path,full.names = T),fread)
@@ -35,7 +38,7 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   mlista<-geta(mlist)
   mlistb<-getb(mlist)
   if(verbose) {
-    message("clonesets loaded")
+    print("clonesets loaded")
     print(names(mlist))
     print(Sys.time())
   }
@@ -45,11 +48,11 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
 
   qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
   if(verbose) {
-    message("clone_threshold")
+    print("clone_threshold")
     print(clone_thres)
-    message("alpha_wells_working")
+    print("alpha_wells_working")
     print(table(qc$a))
-    message("beta_wells_working")
+    print("beta_wells_working")
     print(table(qc$b))
   }
 
@@ -58,54 +61,63 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   mlistb<-mlistb[qc$b]#downsize to qc
 
   if(verbose) {
-    message("pseudobulk_alpha")
+    print("pseudobulk_alpha")
     print(Sys.time())
   }
   combd_a<-combineTCR(rbindlist(mlista,idcol="file"))
   combd_a$max_wells<-sum(qc$a)
-  if(verbose) message("pseudobulk_beta")
+  if(verbose) print("pseudobulk_beta")
   fwrite(combd_a[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv")),sep="\t")
   if(verbose) print(Sys.time())
   combd_b<-combineTCR(rbindlist(mlistb,idcol="file"))
   combd_b$max_wells<-sum(qc$b)
   fwrite(combd_b[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv")),sep="\t")
-  if(verbose) message("pseudobulk_done")
+  if(verbose) print("pseudobulk_done")
 
   if(verbose) {
     print(Sys.time())
-    message("start")
+    print("start")
   }
   bigma<-big_merge_freqs2(mlista,min_reads = min_reads)
-  if(verbose) message(dim(bigma))
+  if(verbose) print(dim(bigma))
   bigmas<-bigma[rowSums(bigma>0)>min_wells,]
   if(verbose) {
-    message(Sys.time())
-    message("big merge done")
-    message("bigmas")
+    print(Sys.time())
+    print("big merge done")
+    print("bigmas")
     print(dim(bigmas))
   }
   bigmb<-big_merge_freqs2(mlistb,min_reads = min_reads)
-  if(verbose) message(dim(bigmb))
+  if(verbose) print(dim(bigmb))
   bigmbs<-bigmb[rowSums(bigmb>0)>min_wells,]
   if(verbose) {
-    message(Sys.time())
-    message("big merge done")
-    message("bigmbs")
+    print(Sys.time())
+    print("big merge done")
+    print("bigmbs")
     print(dim(bigmbs))
   }
-  write(rownames(bigmas),file=file.path(folder_out, paste0(prefix,"_bigmas_names.tsv")))
-  write(rownames(bigmbs),file=file.path(folder_out, paste0(prefix,"_bigmbs_names.tsv")))
-  write_dat(as.matrix(bigmas),fname = file.path(folder_out, paste0(prefix,"_bigmas.tsv")))
-  write_dat(as.matrix(bigmbs),fname = file.path(folder_out, paste0(prefix,"_bigmbs.tsv")))
+  if(write_extra_files) {
+    write(rownames(bigmas),file=file.path(folder_out, paste0(prefix,"_bigmas_names.tsv")))
+    write(rownames(bigmbs),file=file.path(folder_out, paste0(prefix,"_bigmbs_names.tsv")))
+    write_dat(as.matrix(bigmas),fname = file.path(folder_out, paste0(prefix,"_bigmas.tsv")))
+    write_dat(as.matrix(bigmbs),fname = file.path(folder_out, paste0(prefix,"_bigmbs.tsv")))
+  }
   if(verbose) print(Sys.time())
   n_wells=ncol(bigmas)
   mdh<-madhyper_surface(n_wells = ncol(bigmas),cells = clone_thres,alpha=2,prior = 1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5)
-  write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
+  if(write_extra_files) write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
   if(verbose) print(Sys.time())
 
   if(compute==T) {
     pairing = reticulate::import_from_path("pairing_all_backends", path = system.file("python/pairing/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
-    pairing$pairing(prefix, folder_out, backend)
+
+    bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
+    bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
+    mdh_py = r_to_py(mdh)
+
+    pair_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
+                    bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
+                    backend = backend, filter_before_top3 = filter_before_top3)
   }
 
   # cupy_madhype_script = reticulate::import_from_path("cupy_madhype_script", path = system.file("python/pairing/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
@@ -115,8 +127,37 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
   # here goes SYS call to python script.
   #python3 mlx_madhype_script ~/R_projects/mlx_dev/plate6
   # and here we go read it:
-  gpu_res<-read_gpu(file.path(folder_out, prefix))
-  gpu_res_corr<-read_gpu_corr(file.path(folder_out, prefix))
+
+  #gpu_res<-read_gpu(file.path(folder_out, prefix))
+  #gpu_res_corr<-read_gpu_corr(file.path(folder_out, prefix))
+
+  n_wells = ncol(bigmas)
+
+  gpu_res = pair_res$mdh %>%
+    mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
+           beta_nuc_seq = rownames(bigmbs)[beta_nuc]
+           ) %>%
+    mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq) %>%
+    mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
+    mutate(method = "madhype") %>%
+    as.data.table()
+  gpu_res_corr = pair_res$corr %>%
+    mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
+           beta_nuc_seq = rownames(bigmbs)[beta_nuc]) %>%
+    mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq) %>%
+    mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
+    mutate(ts = r*sqrt((n_wells - 2) / (1 - r^2))) %>%
+    mutate(pval = 2*pt(-abs(ts), n_wells - 2)) %>%
+    as.data.table()
+
+  gpu_res_corr[,pval_adj:=pval/sort(pval)[3],alpha_nuc]
+  gpu_res_corr[,method:="tshell",]
+
+  # res_gpu$ts=res_gpu$r*sqrt((n_wells - 2) / (1 - res_gpu$r^2))
+  # res_gpu$pval=2 * pt(-abs(res_gpu$ts), n_wells - 2)
+  # res_gpu[,pval_adj:=pval/sort(pval)[3],alpha_nuc]
+  # res_gpu[,method:="tshell",]
+
   # I also want to compute
   result<-rbind(gpu_res,gpu_res_corr,fill=T)
   #probably this we don't want. what is it???
@@ -131,7 +172,7 @@ run_single_point_analysis_sub_gpu_pseudobulk = function(
 
   unique_combinations <- unique(result[, .(wi, wj, wij)])
   for (i in 1:nrow(unique_combinations)){
-    if(i%%1000==0)message(i)
+    if(i%%1000==0)print(i)
     unique_combinations$score[i]<-log10(estimate_pair_prob(wi = unique_combinations[i,]$wi,wj = unique_combinations[i,]$wj,w_ij = unique_combinations[i,]$wij,n_wells,cpw = clone_thres,alpha = 2,prior=1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5))
   }
 
