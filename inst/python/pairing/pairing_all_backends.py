@@ -18,6 +18,7 @@ import os
 
 gpu = utils.check_gpu()
 module = utils.check_cupy_or_mlx()
+
 if gpu == "nvidia" and module == "cupy":
     print("Loading cupy to perform TCRdist")
     import cupy as mx #cuda python backend, connect to T4 runtime or other with GPU
@@ -89,7 +90,7 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh):
         overlaps = mx.matmul((bigmas[row_range] > 0).astype(mx.float32), bigmbs) #optimized
         mask_condition=-(overlaps.T - b_total).T < mdh[(overlaps).astype(mx.int16), -(overlaps - a_total).astype(mx.int16)]# mad hype only
         
-        if module == "cupy" or module == "numpy":
+        if module == "cupy":
           pairs = mx.argwhere(mask_condition)
           result = { #this works in cupy
                'alpha_nuc': 1+(rowinds_bigmas[row_range][pairs[:, 0]]).get(),
@@ -109,6 +110,15 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh):
               'wij': np.array(overlaps[pairs[:, 0], pairs[:, 1]]),
               'wa': np.array(a_total[:,0][pairs[:, 0]]),
               'wb': np.array(b_total[:,0][pairs[:, 1]])
+          }
+        elif module == "numpy":
+          pairs = mx.argwhere(mask_condition)
+          result = {
+              'alpha_nuc': 1+(rowinds_bigmas[row_range][pairs[:, 0]]),
+              'beta_nuc': 1+(rowinds_bigmbs[pairs[:, 1]]),
+              'wij': (overlaps[pairs[:, 0], pairs[:, 1]]),
+              'wa': (a_total[:,0][pairs[:, 0]]),
+              'wb': (b_total[:,0][pairs[:, 1]])
           }
 
         results.append(result)
@@ -130,7 +140,7 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
     #print('file read done')
     
-    if module == "cupy":
+    if module == "cupy" or module == "numpy":
       #now we need to downsize to min_wells. Following filter does not work in mlx. add numpy workaround?
       non_zero_counts_bigmas = mx.sum(bigmas > 0, axis=1)
       non_zero_counts_bigmbs = mx.sum(bigmbs > 0, axis=1)
@@ -193,7 +203,7 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
           rows, cols = mx.ogrid[:pairwise_cors_method2.shape[0], :3]
           mask[rows, sorted_indices[rows, cols]] = True
         
-        if module == "cupy" or module == "numpy":
+        if module == "cupy":
           pairs = mx.argwhere(mask_condition) #this is for cupy!
           result = { #this works in cupy
               'alpha_nuc': 1+(rowinds_bigmas[row_range][pairs[:, 0]]).get(),
@@ -214,6 +224,16 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
             'wij': np.array(overlaps[pairs[:, 0], pairs[:, 1]]),
             'wa': np.array(a_total[:,0][pairs[:, 0]]),
             'wb': np.array(b_total[:,0][pairs[:, 1]])
+          }
+        elif module == "numpy":
+          pairs = mx.argwhere(mask)
+          result = {
+              'alpha_nuc': 1 + rowinds_bigmas[row_range][pairs[:, 0]],
+              'beta_nuc': 1 + rowinds_bigmbs[pairs[:, 1]],
+              'r': pairwise_cors_method2[pairs[:, 0], pairs[:, 1]],
+              'wij': overlaps[pairs[:, 0], pairs[:, 1]],
+              'wa': a_total[:,0][pairs[:, 0]],
+              'wb': b_total[:,0][pairs[:, 1]]
           }
         
         results.append(result)
