@@ -138,10 +138,8 @@ timepoints.</p>
 <span><span class="co">## [15] "cd8_tp2_v2_TIRTLoutput.tsv.gz"    "cd8_tp3_v2_pseudobulk_TRA.tsv.gz"</span></span>
 <span><span class="co">## [17] "cd8_tp3_v2_pseudobulk_TRB.tsv.gz" "cd8_tp3_v2_TIRTLoutput.tsv.gz"</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu"><a href="../reference/load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 67.768 sec elapsed</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu"><a href="../reference/load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
+<span><span class="co">## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz</span></span></code></pre></div>
 <p>We offer the following diversity metrics/indices:</p>
 <ul>
 <li>
@@ -207,13 +205,13 @@ rarer species. (<a href="https://en.wikipedia.org/wiki/Diversity_index#Effective
 </ul>
 <p>For a full list of the currently available metrics, run
 <code><a href="../reference/get_all_div_metrics.html">get_all_div_metrics()</a></code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_all_div_metrics.html">get_all_div_metrics</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "simpson"        "gini"           "gini.simpson"   "inv.simpson"   </span></span>
 <span><span class="co">##  [5] "shannon"        "berger.parker"  "richness"       "d50"           </span></span>
 <span><span class="co">##  [9] "dXX"            "renyi"          "hill"           "top10fraction" </span></span>
 <span><span class="co">## [13] "top100fraction" "topNfraction"</span></span></code></pre>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">div</span> <span class="op">=</span> <span class="fu"><a href="../reference/calculate_diversity.html">calculate_diversity</a></span><span class="op">(</span><span class="va">ts_data</span>, chain <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## -- Calculating diversity indices for sample 1 of 6.</span></span>
@@ -222,18 +220,18 @@ rarer species. (<a href="https://en.wikipedia.org/wiki/Diversity_index#Effective
 <span><span class="co">## -- Calculating diversity indices for sample 4 of 6.</span></span>
 <span><span class="co">## -- Calculating diversity indices for sample 5 of 6.</span></span>
 <span><span class="co">## -- Calculating diversity indices for sample 6 of 6.</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_diversity.html">plot_diversity</a></span><span class="op">(</span><span class="va">div</span>, metric <span class="op">=</span> <span class="st">"d50"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarizing_diversity_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <p>The <code><a href="../reference/plot_diversity.html">plot_diversity()</a></code> function returns a ggplot object
 that contains the sample metadata in <code>ts_data$meta</code>, so we
 can use ggplot to make the plot more informative.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_diversity.html">plot_diversity</a></span><span class="op">(</span><span class="va">div</span>, metric <span class="op">=</span> <span class="st">"richness"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">marker</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">marker</span><span class="op">)</span></span></code></pre></div>
 <p><img src="summarizing_diversity_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="700"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_diversity.html">plot_diversity</a></span><span class="op">(</span><span class="va">div</span>, metric <span class="op">=</span> <span class="st">"berger.parker"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">marker</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">marker</span><span class="op">)</span> <span class="op">+</span></span>
@@ -241,7 +239,7 @@ can use ggplot to make the plot more informative.</p>
 <pre><code><span><span class="co">## Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
 <span><span class="co">## Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre>
 <p><img src="summarizing_diversity_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_diversity.html">plot_diversity</a></span><span class="op">(</span><span class="va">div</span>, metric <span class="op">=</span> <span class="st">"simpson"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">timepoint</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">marker</span><span class="op">)</span> <span class="op">+</span></span>
@@ -249,7 +247,7 @@ can use ggplot to make the plot more informative.</p>
 <pre><code><span><span class="co">## Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
 <span><span class="co">## Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre>
 <p><img src="summarizing_diversity_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" width="700"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_diversity.html">plot_diversity</a></span><span class="op">(</span><span class="va">div</span>, metric <span class="op">=</span> <span class="st">"shannon"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">timepoint</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">marker</span><span class="op">)</span> <span class="op">+</span></span>
@@ -257,7 +255,7 @@ can use ggplot to make the plot more informative.</p>
 <pre><code><span><span class="co">## Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
 <span><span class="co">## Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre>
 <p><img src="summarizing_diversity_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="700"></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_diversity.html">plot_diversity</a></span><span class="op">(</span><span class="va">div</span>, metric <span class="op">=</span> <span class="st">"top10fraction"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">timepoint</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill<span class="op">=</span><span class="va">marker</span><span class="op">)</span> <span class="op">+</span></span>

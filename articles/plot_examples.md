@@ -39,8 +39,6 @@ dir(folder)
 sjtrc = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ```
 
-    ## 65.038 sec elapsed
-
 ## Process the data
 
 When we initially load the data, the data frames lack some information
