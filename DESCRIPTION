@@ -20,37 +20,21 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    Biostrings,
-    ComplexHeatmap,
     data.table,
-    dbplyr,
-    DelayedDataFrame,
-    dendsort,
-    DFplyr,
     dtplyr,
-    duckdb,
     ggh4x,
     ggplot2,
     glue,
-    HDF5Array,
-    igraph (>= 2.1.4),
-    irlba (>= 2.3.5.1),
     lifecycle,
     magrittr,
     Matrix (>= 1.7.3),
+    pkgload,
     R.utils,
     Rcpp,
     RcppParallel,
-    readr,
     reshape2,
     reticulate (>= 1.41.0.1),
-    rhdf5,
-    rsconnect,
-    S4Vectors,
-    stringdist,
-    tictoc,
     tidyr,
-    uwot (>= 0.2.3),
     vctrs
 Depends: 
     R (>= 4.1)
@@ -62,3 +46,19 @@ LinkingTo:
 SystemRequirements: GNU make
 URL: https://nicholasclark.github.io/TIRTLtools/
 Roxygen: list(markdown = TRUE)
+Suggests: 
+    Biostrings,
+    ComplexHeatmap,
+    dbplyr,
+    DelayedDataFrame,
+    dendsort,
+    DFplyr,
+    duckdb,
+    HDF5Array,
+    igraph (>= 2.1.4),
+    irlba (>= 2.3.5.1),
+    rhdf5,
+    rsconnect,
+    S4Vectors,
+    stringdist,
+    uwot (>= 0.2.3)

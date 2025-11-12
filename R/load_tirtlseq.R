@@ -73,7 +73,8 @@ load_tirtlseq = function(
     verbose = TRUE,
     stringsAsFactors = FALSE,
     n_max = Inf) {
-  tictoc::tic()
+  #tictoc::tic()
+  start = Sys.time()
   chain = chain[1]
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
@@ -214,7 +215,11 @@ load_tirtlseq = function(
   })
   meta_final = lapply(ll, function(x) x$meta) %>% bind_rows()
   data_final = lapply(ll, function(x) x$data) %>% do.call(c, .)
-  tictoc::toc()
+  #tictoc::toc()
+  end = Sys.time()
+  time = end-start
+  n_secs = as.vector(time) %>% round(1)
+  message(paste(n_secs, "seconds"))
   return(list(data = data_final, meta = meta_final))
 }
 
