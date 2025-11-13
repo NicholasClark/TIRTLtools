@@ -44,6 +44,9 @@ plot_sample_overlap = function(
     cluster_rows = TRUE,
     cluster_cols = TRUE
 ) {
+  suggests::need("ComplexHeatmap")
+  suggests::need("dendsort")
+
   meta = data$meta
   data = data$data
   chain = chain[1]

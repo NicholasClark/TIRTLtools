@@ -66,6 +66,8 @@ cluster_tcrs = function(
     allow_self_edges = TRUE,
     remove_MAIT = TRUE
     ) {
+  suggests::need("igraph>=2.1.4")
+
   cluster.type = "leiden"
   chain = "paired"
   if(.is.list.only(data)) { ### if an object loaded by load_tirtlseq

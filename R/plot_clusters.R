@@ -35,6 +35,13 @@
 #' # plot_clusters(obj)
 
 plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c("cluster", "source"), color_col = "cluster") {
+  ## install needed packages if necessary
+  suggests::need("ComplexHeatmap")
+  suggests::need("igraph>=2.1.4")
+  suggests::need("uwot>=0.2.3")
+  suggests::need("irlba>=2.3.5.1")
+
+
   cluster_summ = obj$df %>% group_by(cluster) %>%
     summarize(n_total = n(), n_vdjdb = sum(source == "vdj-db"), n_obs = sum(source == "observed"))
   largest_clusters = cluster_summ %>% arrange(desc(n_obs)) %>% mutate(cluster = as.integer(cluster)) %>% head(n_clusters)

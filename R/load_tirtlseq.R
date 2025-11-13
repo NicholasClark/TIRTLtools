@@ -38,7 +38,6 @@
 #' a list of columns or one of "auto", "all", or "minimal". "auto" (default) loads all columns except for
 #' some redundant ones. "all" loads all columns. "minimal" loads a small number of the most important columns.
 #' @param n_threads (optional) number of CPU threads to use for reading .tsv(.gz) files
-#' @param compress_strings (optional) whether to compress nucleotide and amino acid sequences using the Biostrings package.
 #' @param verbose (optional) whether to print the name of each file loaded (default is TRUE).
 #' @param stringsAsFactors (optional) read character strings in as factors
 #' @param n_max (optional) the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. read all files).
@@ -69,13 +68,14 @@ load_tirtlseq = function(
     pseudobulk_columns = "auto",
     paired_columns = "auto",
     n_threads = data.table::getDTthreads(),
-    compress_strings = FALSE,
+    #compress_strings = FALSE,
     verbose = TRUE,
     stringsAsFactors = FALSE,
     n_max = Inf) {
   #tictoc::tic()
   start = Sys.time()
   chain = chain[1]
+  compress_strings = FALSE
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
   ll = lapply(directory, function(dir_tmp) {

@@ -35,6 +35,7 @@ Imports:
     RcppParallel,
     reshape2,
     reticulate (>= 1.41.0.1),
+    suggests,
     tidyr,
     vctrs
 Depends: 
