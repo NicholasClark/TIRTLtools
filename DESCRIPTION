@@ -49,6 +49,7 @@ SystemRequirements: GNU make
 URL: https://nicholasclark.github.io/TIRTLtools/
 Roxygen: list(markdown = TRUE)
 Suggests: 
+    BiocManager,
     Biostrings,
     ComplexHeatmap,
     dbplyr,
