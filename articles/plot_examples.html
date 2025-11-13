@@ -315,13 +315,12 @@ see that there is significant sharing within CD4 and CD8 samples, but
 not between them, which is expected.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_sample_overlap.html">plot_sample_overlap</a></span><span class="op">(</span><span class="va">sjtrc</span>, chain <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Loading required namespace: ComplexHeatmap</span></span></code></pre>
 <p><img src="plot_examples_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" width="700"></p>
 <p>We may also want to find whether clones are expanding or contracting
 in-between timepoints. Here, the CD8 clones that are expanding from
 timepoint 1 to 2 are shown in orange and those that are contracting are
 shown in green.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_sample_vs_sample.html">plot_sample_vs_sample</a></span><span class="op">(</span><span class="va">sjtrc</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp1_v2</span>, <span class="va">sjtrc</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp2_v2</span>, chain <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="plot_examples_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="700"></p>
 </div>

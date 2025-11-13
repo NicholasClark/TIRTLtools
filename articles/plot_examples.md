@@ -277,8 +277,6 @@ between them, which is expected.
 plot_sample_overlap(sjtrc, chain = "beta")
 ```
 
-    ## Loading required namespace: ComplexHeatmap
-
 ![](plot_examples_files/figure-html/unnamed-chunk-16-1.png)
 
 We may also want to find whether clones are expanding or contracting

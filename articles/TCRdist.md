@@ -144,7 +144,7 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loaded 6 files from 6 samples.
 
-    ## 1.9 seconds
+    ## 1.8 seconds
 
 ``` r
 data$meta %>%
@@ -213,26 +213,26 @@ result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
     ## Loading numpy
     ## Number of chunks: 5253
     ## 10% done
-    ## Time taken so far: 108.224809 seconds
+    ## Time taken so far: 107.884724 seconds
     ## 20% done
-    ## Time taken so far: 216.244824 seconds
+    ## Time taken so far: 215.528187 seconds
     ## 30% done
-    ## Time taken so far: 324.318040 seconds
+    ## Time taken so far: 323.073895 seconds
     ## 40% done
-    ## Time taken so far: 432.579015 seconds
+    ## Time taken so far: 431.122813 seconds
     ## 50% done
-    ## Time taken so far: 540.752928 seconds
+    ## Time taken so far: 538.886313 seconds
     ## 60% done
-    ## Time taken so far: 648.953854 seconds
+    ## Time taken so far: 646.671216 seconds
     ## 70% done
-    ## Time taken so far: 757.419429 seconds
+    ## Time taken so far: 754.388528 seconds
     ## 80% done
-    ## Time taken so far: 865.534613 seconds
+    ## Time taken so far: 861.876421 seconds
     ## 90% done
-    ## Time taken so far: 973.841044 seconds
+    ## Time taken so far: 969.501303 seconds
     ## 100% done
-    ## Time taken so far: 1082.341921 seconds
-    ## Total time taken: 1093.349524 seconds
+    ## Time taken so far: 1077.279328 seconds
+    ## Total time taken: 1088.185631 seconds
 
 ### Inspect the output
 
