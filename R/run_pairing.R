@@ -1,4 +1,4 @@
-run_single_point_analysis_sub_gpu_pseudobulk = function(
+run_pairing = function(
     folder_path,
     folder_out,
     prefix="tmp",
