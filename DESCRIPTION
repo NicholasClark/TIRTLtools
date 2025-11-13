@@ -21,6 +21,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.table,
+    dplyr,
     dtplyr,
     ggh4x,
     ggplot2,
