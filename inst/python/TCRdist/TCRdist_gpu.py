@@ -11,13 +11,13 @@ import scipy
 import os
 
 if gpu == "nvidia" and module == "cupy":
-    print("Loading cupy to perform TCRdist")
+    print("Loading cupy")
     import cupy as mx #cuda python backend, connect to T4 runtime or other with GPU
 elif gpu == "apple" and module == "mlx":
-    print("Loading mlx to perform TCRdist")
+    print("Loading mlx")
     import mlx.core as mx #use this for apple silicon
 else:
-    print("Loading numpy to perform TCRdist")
+    print("Loading numpy")
     import numpy as mx #use this for CPU only
 
 # helper functions --------------

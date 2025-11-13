@@ -103,6 +103,6 @@ export(TIRTL_process)
 #export(well_data_df_to_sparse_multi)
 export(write_stitchr_tsv)
 
-export(run_single_point_analysis_sub_gpu_pseudobulk)
+export(run_pairing)
 #export(run_single_point_analysis_sub_pseudobulk_only)
 #export(run_single_point_analysis_sub_gpu)
