@@ -36,7 +36,8 @@
 
 plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c("cluster", "source"), color_col = "cluster") {
   ## install needed packages if necessary
-  suggests::need("ComplexHeatmap")
+  suggests::need("BiocManager")
+  suggests::need("ComplexHeatmap", install_cmd = quote(BiocManager::install("ComplexHeatmap")))
   suggests::need("igraph>=2.1.4")
   suggests::need("uwot>=0.2.3")
   suggests::need("irlba>=2.3.5.1")

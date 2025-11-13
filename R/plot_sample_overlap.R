@@ -44,8 +44,8 @@ plot_sample_overlap = function(
     cluster_rows = TRUE,
     cluster_cols = TRUE
 ) {
-  #suggests::need("ComplexHeatmap")
-  requireNamespace("ComplexHeatmap")
+  suggests::need("BiocManager")
+  suggests::need("ComplexHeatmap", install_cmd = quote(BiocManager::install("ComplexHeatmap")))
   suggests::need("dendsort")
 
   meta = data$meta
