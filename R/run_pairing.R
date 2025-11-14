@@ -120,7 +120,8 @@ run_pairing = function(
       if(is.null(shared)) shared = FALSE
       print("package loaded from installed version")
     }
-    env = .choose_basilisk_env(backend)
+    #env = .choose_basilisk_env(backend)
+    env = TIRTLtools_py_env
     proc <- basilisk::basiliskStart(env, fork = fork, shared = shared)
     on.exit(basilisk::basiliskStop(proc))
     py_path = system.file("python/pairing/", package = "TIRTLtools")
