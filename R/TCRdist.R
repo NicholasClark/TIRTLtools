@@ -31,6 +31,8 @@
 #' @param return_data (optional) whether to return the output result from the function.
 #' With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)
 #' @param write_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
+#' @param fork (optional) a TRUE/FALSE value for whether to "fork" a new Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.
+#' @param shared (optional) a TRUE/FALSE value for whether to "share" the Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.
 #'
 #' @return
 #' A list with entries:
@@ -67,29 +69,69 @@ TCRdist = function(
     print_res = TRUE,
     only_lower_tri = TRUE,
     return_data = TRUE,
-    write_to_tsv = FALSE
+    write_to_tsv = FALSE,
+    fork = NULL,
+    shared = NULL
     ) {
   tcr1 = prep_for_tcrdist(tcr1, params = params, remove_MAIT = remove_MAIT)
   if(!is.null(tcr2)) tcr2 = prep_for_tcrdist(tcr2, params = params, remove_MAIT = remove_MAIT)
   chunk_size = as.integer(chunk_size)
   print_chunk_size = as.integer(print_chunk_size)
-  ### load python packages/scripts
-  TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python/TCRdist/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
-  pd = reticulate::import("pandas", delay_load = TRUE)
-  np = reticulate::import("numpy", delay_load = TRUE)
-  ### load substitution matrix and dataframe of parameters
-  if(is.null(submat)) submat = TIRTLtools::submat
-  if(is.null(params)) params = TIRTLtools::params
-  ### convert R objects to python objects
-  submat_py = reticulate::r_to_py(submat, convert = TRUE)
-  params_py = pd$DataFrame(data = reticulate::r_to_py(params, convert = TRUE))
-  tcr1_py = pd$DataFrame(data = reticulate::r_to_py(tcr1, convert = TRUE))
-  if(!is.null(tcr2)) {
-    tcr2_py = pd$DataFrame(data = reticulate::r_to_py(tcr2, convert = TRUE))
+
+  #### basilisk stuff
+  is_loaded = pkgload::is_dev_package("TIRTLtools")
+  if(is_loaded) {
+    if(is.null(fork)) fork = FALSE
+    if(is.null(shared)) shared = TRUE
+    print("package loaded by pkgload/devtools")
   } else {
-    tcr2_py = reticulate::r_to_py(tcr2, convert = TRUE)
+    if(is.null(fork)) fork = FALSE
+    if(is.null(shared)) shared = FALSE
+    print("package loaded from installed version")
   }
-  ### call python TCRdist_batch function
-  res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_tsv = write_to_tsv)
-  return(res)
+  proc <- basilisk::basiliskStart(TIRTLtools_env, fork = fork, shared = shared)
+  on.exit(basilisk::basiliskStop(proc))
+  py_path = system.file("python/TCRdist/", package = "TIRTLtools")
+  TCR_dist_res = basilisk::basiliskRun(proc, fun=function(tcr1, tcr2, chunk_size, print_chunk_size, submat, params) {
+    ### load python packages/scripts
+    #TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python/TCRdist/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
+    TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = py_path, convert = TRUE, delay_load = TRUE)
+    pd = reticulate::import("pandas", delay_load = TRUE)
+    np = reticulate::import("numpy", delay_load = TRUE)
+    ### load substitution matrix and dataframe of parameters
+    if(is.null(submat)) submat = TIRTLtools::submat
+    if(is.null(params)) params = TIRTLtools::params
+    ### convert R objects to python objects
+    submat_py = reticulate::r_to_py(submat, convert = TRUE)
+    params_py = pd$DataFrame(data = reticulate::r_to_py(params, convert = TRUE))
+    tcr1_py = pd$DataFrame(data = reticulate::r_to_py(tcr1, convert = TRUE))
+    if(!is.null(tcr2)) {
+      tcr2_py = pd$DataFrame(data = reticulate::r_to_py(tcr2, convert = TRUE))
+    } else {
+      tcr2_py = reticulate::r_to_py(tcr2, convert = TRUE)
+    }
+    ### call python TCRdist_batch function
+    res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_tsv = write_to_tsv)
+    return(res)
+  }, tcr1 = tcr1, tcr2 = tcr2, chunk_size = chunk_size, print_chunk_size = print_chunk_size, submat = submat, params = params)
+  return(TCR_dist_res)
+  # ### load python packages/scripts
+  # TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python/TCRdist/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
+  # pd = reticulate::import("pandas", delay_load = TRUE)
+  # np = reticulate::import("numpy", delay_load = TRUE)
+  # ### load substitution matrix and dataframe of parameters
+  # if(is.null(submat)) submat = TIRTLtools::submat
+  # if(is.null(params)) params = TIRTLtools::params
+  # ### convert R objects to python objects
+  # submat_py = reticulate::r_to_py(submat, convert = TRUE)
+  # params_py = pd$DataFrame(data = reticulate::r_to_py(params, convert = TRUE))
+  # tcr1_py = pd$DataFrame(data = reticulate::r_to_py(tcr1, convert = TRUE))
+  # if(!is.null(tcr2)) {
+  #   tcr2_py = pd$DataFrame(data = reticulate::r_to_py(tcr2, convert = TRUE))
+  # } else {
+  #   tcr2_py = reticulate::r_to_py(tcr2, convert = TRUE)
+  # }
+  # ### call python TCRdist_batch function
+  # res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_tsv = write_to_tsv)
+  # return(res)
 }
