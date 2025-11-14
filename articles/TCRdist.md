@@ -202,20 +202,20 @@ result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
     ## Installing pyenv ...
     ## Done! pyenv has been installed to '/home/runner/.local/share/r-reticulate/pyenv/bin/pyenv'.
     ## Using Python: /home/runner/.pyenv/versions/3.12.9/bin/python3.12
-    ## Creating virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu' ...
+    ## Creating virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env' ...
 
-    ## + /home/runner/.pyenv/versions/3.12.9/bin/python3.12 -m venv /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu
+    ## + /home/runner/.pyenv/versions/3.12.9/bin/python3.12 -m venv /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env
 
     ## Done!
     ## Installing packages: pip, wheel, setuptools
 
-    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu/bin/python -m pip install --upgrade pip wheel setuptools
+    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env/bin/python -m pip install --upgrade pip wheel setuptools
 
     ## Installing packages: 'numpy==2.3.0', 'scipy==1.15.2', 'pandas==2.2.2'
 
-    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu/bin/python -m pip install --upgrade --no-user 'numpy==2.3.0' 'scipy==1.15.2' 'pandas==2.2.2'
+    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env/bin/python -m pip install --upgrade --no-user 'numpy==2.3.0' 'scipy==1.15.2' 'pandas==2.2.2'
 
-    ## Virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu' successfully created.
+    ## Virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env' successfully created.
 
 ### Inspect the output
 
