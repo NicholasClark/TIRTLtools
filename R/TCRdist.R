@@ -31,6 +31,7 @@
 #' @param return_data (optional) whether to return the output result from the function.
 #' With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)
 #' @param write_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
+#' @param backend (optional) the CPU or GPU backend to use (default "auto")
 #' @param fork (optional) a TRUE/FALSE value for whether to "fork" a new Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.
 #' @param shared (optional) a TRUE/FALSE value for whether to "share" the Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.
 #'
@@ -70,6 +71,7 @@ TCRdist = function(
     only_lower_tri = TRUE,
     return_data = TRUE,
     write_to_tsv = FALSE,
+    backend = c("auto", "cpu", "cupy", "mlx"),
     fork = NULL,
     shared = NULL
     ) {
@@ -89,7 +91,8 @@ TCRdist = function(
     if(is.null(shared)) shared = FALSE
     print("package loaded from installed version")
   }
-  proc <- basilisk::basiliskStart(TIRTLtools_env, fork = fork, shared = shared)
+  env = .choose_basilisk_env(backend)
+  proc <- basilisk::basiliskStart(env, fork = fork, shared = shared)
   on.exit(basilisk::basiliskStop(proc))
   py_path = system.file("python/TCRdist/", package = "TIRTLtools")
   TCR_dist_res = basilisk::basiliskRun(proc, fun=function(tcr1, tcr2, chunk_size, print_chunk_size, submat, params) {

@@ -8,7 +8,7 @@ run_pairing = function(
     well_pos=3,
     wellset1=get_well_subset(1:16,1:24),
     compute=T,
-    backend = "auto",
+    backend = c("auto", "cpu", "cupy", "mlx"),
     pval_thres_tshell=1e-10,
     wij_thres_tshell=2,
     verbose = TRUE,
@@ -17,7 +17,7 @@ run_pairing = function(
     fork = NULL,
     shared = NULL
 ){
-
+  backend = backend[1]
   if(verbose) {
     print("start")
     print(Sys.time())
@@ -120,7 +120,8 @@ run_pairing = function(
       if(is.null(shared)) shared = FALSE
       print("package loaded from installed version")
     }
-    proc <- basilisk::basiliskStart(TIRTLtools_env, fork = fork, shared = shared)
+    env = .choose_basilisk_env(backend)
+    proc <- basilisk::basiliskStart(env, fork = fork, shared = shared)
     on.exit(basilisk::basiliskStop(proc))
     py_path = system.file("python/pairing/", package = "TIRTLtools")
 
