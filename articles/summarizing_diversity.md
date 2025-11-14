@@ -8,12 +8,6 @@ samples from COVID-infected patients at a few timepoints.
 
 ``` r
 library(TIRTLtools)
-```
-
-    ## Error in system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE) : 
-    ##   error in running command
-
-``` r
 library(dplyr)
 library(rmarkdown)
 library(ggplot2)

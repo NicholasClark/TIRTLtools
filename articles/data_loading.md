@@ -31,12 +31,6 @@ e.g. `cd8_tp1_v2_TIRTLoutput.tsv`.
 
 ``` r
 library(TIRTLtools)
-```
-
-    ## Error in system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE) : 
-    ##   error in running command
-
-``` r
 library(dplyr)
 library(rmarkdown)
 folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")

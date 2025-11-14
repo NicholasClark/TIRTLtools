@@ -8,12 +8,6 @@ examples of the package’s plotting functions.
 
 ``` r
 library(TIRTLtools)
-```
-
-    ## Error in system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE) : 
-    ##   error in running command
-
-``` r
 library(magrittr)
 library(dplyr)
 ```

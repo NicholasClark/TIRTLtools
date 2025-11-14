@@ -114,12 +114,6 @@ implementation via R using the
 
 ``` r
 library(TIRTLtools)
-```
-
-    ## Error in system("nvidia-smi", intern = TRUE, ignore.stderr = TRUE) : 
-    ##   error in running command
-
-``` r
 library(dplyr)
 library(rmarkdown)
 ```
@@ -144,7 +138,7 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loaded 6 files from 6 samples.
 
-    ## 1.8 seconds
+    ## 1.7 seconds
 
 ``` r
 data$meta %>%
@@ -204,35 +198,24 @@ result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 
     ## Filtered data frame contains 102,515 TCRs (100%) of original 102,515 TCRs.
 
-    ## Checking for available GPU...
-    ## 
-    ## No supported GPU detected (NVIDIA or Apple Silicon).
-    ## Checking for GPU-related Python modules...
-    ## 
-    ## Neither 'cupy' or 'mlx' are installed
-    ## Loading numpy
-    ## Number of chunks: 5253
-    ## 10% done
-    ## Time taken so far: 107.884724 seconds
-    ## 20% done
-    ## Time taken so far: 215.528187 seconds
-    ## 30% done
-    ## Time taken so far: 323.073895 seconds
-    ## 40% done
-    ## Time taken so far: 431.122813 seconds
-    ## 50% done
-    ## Time taken so far: 538.886313 seconds
-    ## 60% done
-    ## Time taken so far: 646.671216 seconds
-    ## 70% done
-    ## Time taken so far: 754.388528 seconds
-    ## 80% done
-    ## Time taken so far: 861.876421 seconds
-    ## 90% done
-    ## Time taken so far: 969.501303 seconds
-    ## 100% done
-    ## Time taken so far: 1077.279328 seconds
-    ## Total time taken: 1088.185631 seconds
+    ## [1] "package loaded from installed version"
+    ## Installing pyenv ...
+    ## Done! pyenv has been installed to '/home/runner/.local/share/r-reticulate/pyenv/bin/pyenv'.
+    ## Using Python: /home/runner/.pyenv/versions/3.12.9/bin/python3.12
+    ## Creating virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu' ...
+
+    ## + /home/runner/.pyenv/versions/3.12.9/bin/python3.12 -m venv /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu
+
+    ## Done!
+    ## Installing packages: pip, wheel, setuptools
+
+    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu/bin/python -m pip install --upgrade pip wheel setuptools
+
+    ## Installing packages: 'numpy==2.3.0', 'scipy==1.15.2', 'pandas==2.2.2'
+
+    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu/bin/python -m pip install --upgrade --no-user 'numpy==2.3.0' 'scipy==1.15.2' 'pandas==2.2.2'
+
+    ## Virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_env_no_gpu' successfully created.
 
 ### Inspect the output
 
