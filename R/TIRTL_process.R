@@ -12,11 +12,11 @@
 #'
 #' @family data_processing
 #'
-TIRTL_process = function(data, clean = FALSE) {
+TIRTL_process = function(data, clean = FALSE, remove_nonfunctional = FALSE) {
+  if(remove_nonfunctional) data = data %>% filter_nonfunctional_TCRs()
   if(clean) data = data %>% clean_pairs()
   data = data %>%
     add_single_chain_data() %>%
-    identify_paired() %>%
-    identify_non_functional_seqs()
+    identify_paired()
   return(data)
 }
