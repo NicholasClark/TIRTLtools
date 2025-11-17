@@ -109,21 +109,26 @@
 </div>
 <p><strong><em>Package is in active development and may change frequently.</em></strong></p>
 <div class="section level2">
+<h2 id="documentation-and-usage-instructions">Documentation and usage instructions<a class="anchor" aria-label="anchor" href="#documentation-and-usage-instructions"></a>
+</h2>
+<ul>
+<li><a href="https://nicholasclark.github.io/TIRTLtools/articles/TIRTLtools.html">Installation instructions</a></li>
+<li><a href="https://nicholasclark.github.io/TIRTLtools/reference/index.html">Reference manual</a></li>
+<li><a href="https://nicholasclark.github.io/TIRTLtools/articles/">Tutorials and vignettes</a></li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>TIRTLtools</code> is a suite of tools for analyzing T-cell receptor (TCR) repertoires created using <strong>TIRTL-seq</strong> (<strong>T</strong>hroughput-<strong>I</strong>ntensive <strong>R</strong>apid <strong>T</strong>CR <strong>L</strong>ibrary <strong>seq</strong>uencing) <a href="https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2" class="external-link">(Pogorelyy and Kirk et al., bioRxiv 2024)</a>. We provide functions for analysis of <strong>paired TCR repertoires</strong> as well as <strong>single-chain bulk data</strong>.</p>
+<p><code>TIRTLtools</code> is a software package for analyzing T-cell receptor (TCR) repertoires created using <strong>TIRTL-seq</strong> (<strong>T</strong>hroughput-<strong>I</strong>ntensive <strong>R</strong>apid <strong>T</strong>CR <strong>L</strong>ibrary <strong>seq</strong>uencing) <a href="https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2" class="external-link">(Pogorelyy and Kirk et al., bioRxiv 2024)</a>. We provide functions for analysis of <strong>paired TCR repertoires</strong> as well as <strong>single-chain bulk TCR-sequencing data</strong>.</p>
 <p>In addition to various <strong>analysis and plotting functions</strong>, we provide an <strong>efficient batched GPU implementation of TCRdist</strong> (<a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., Nature 2017</a>) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).</p>
 </div>
 <div class="section level2">
 <h2 id="the-tirtlseq-assay">The TIRTLseq assay<a class="anchor" aria-label="anchor" href="#the-tirtlseq-assay"></a>
 </h2>
-<p><a href="https://doi.org/10.1101/2024.09.16.613345" class="external-link">TIRTL-seq</a> is a method to obtain paired TCR-sequencing information from millions of human T cells. Cells are split across wells in <a href="https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/" class="external-link">384-well</a> or <a href="https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/" class="external-link">96-well</a> plates with ~2,500 to ~25,000 cells per well and alpha and beta TCR chains are sequenced simultaneously in each well.</p>
-<p>The initial output from the TIRTLseq assay consists of two tables of read counts for single-chain TCRs (one for alpha and one for beta) for each well. Alpha and beta chains are paired using computational algorithms based on their occurrence patterns and read counts across wells.</p>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>Instructions to <a href="articles/TIRTLtools.html">install TIRTLtools</a>.</p>
+<p>The T-cell receptor (TCR), which allows for adaptive immune response, is made up of two separate protein chains, TCR-alpha and TCR-beta. Bulk single-chain TCR-sequencing allows for cost-effective in-depth TCR-repertoire profiling, but does not provide chain pairings, which are essential for determining T-cell specificity. Single-cell TCR sequencing can produce paired chain data, but is much more expensive and thus limited to thousands of cells in total and cost-prohibitive for cohort-scale studies.</p>
+<p><a href="https://doi.org/10.1101/2024.09.16.613345" class="external-link">TIRTL-seq</a> is a novel assay (published Nov. 2025) that can rapidly and economically sequence single-chain TCRs from <strong>millions of human T-cells</strong> and produce <strong>paired TCR-sequencing</strong> information for tens of thousands of T cell clones per sample at a <strong>fraction of the cost of single-cell sequencing</strong>. Cells are split across wells in <a href="https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/" class="external-link">384-well</a> or <a href="https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/" class="external-link">96-well</a> plates with between 2,500 and 25,000 cells per well and alpha/beta TCR chains are sequenced simultaneously in each well. Computational algorithms based on chain co-occurrence and correlation of chain frequency are used to identify alpha/beta chain pairs that derive from the same T-cell clone.</p>
+<p>A simple <strong>new algorithm (T-SHELL)</strong> allows for <strong>effective pairing of the most abundant clones</strong>, which had frustrated previous algorithms. Along with paired TCR information, single-chain read frequency can be used to identify expanded clones in one sample as well as to track clone expansions and contractions longitudinally across samples.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
