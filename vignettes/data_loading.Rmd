@@ -35,7 +35,22 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 
 ## The TIRTLseq data object
 
-In R, TIRTLseq data is stored in a "list" which can contain any type of unstructured data.
+In R, we store TIRTLseq data in a "list", which can contain any type of unstructured data, with the following structure:
+
+```
+your_data_object (list)
+├───meta (metadata dataframe)
+└───data (list)
+    └───sample_1 (list)
+     	├───alpha (alpha pseudobulk dataframe)
+     	├───beta (beta pseudobulk dataframe)
+     	└───paired (paired pseudobulk dataframe)
+	...
+    └───sample_n (list)
+     	├───alpha (alpha pseudobulk dataframe)
+     	├───beta (beta pseudobulk dataframe)
+     	└───paired (paired pseudobulk dataframe)
+```
 
 The list contains two slots.
 

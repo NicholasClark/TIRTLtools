@@ -42,6 +42,10 @@ filter_nonfunctional_TCRs = function(data, verbose = TRUE, version = "data.table
   msg = paste("Removed ", n_nonfunc %>% .add_commas(), " TCRs with non-functional CDR3 amino acid sequences ", "(", pct_nonfunc, "%) from a total of ", n_tcr_orig %>% .add_commas(), " TCRs.", sep = "")
   if(verbose) message(msg)
   if(version == "data.table") {
+    if(!"data.table" %in% class(df)) {
+      print("converting to data.table")
+      df = as.data.table(df)
+    }
     df = df[is_functional==TRUE, ..cols]
   } else {
     print("using dplyr version for testing")

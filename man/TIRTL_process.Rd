@@ -4,7 +4,7 @@
 \alias{TIRTL_process}
 \title{Run data processing functions on a TIRTLseqData object}
 \usage{
-TIRTL_process(data, clean = FALSE)
+TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 }
 \arguments{
 \item{data}{a TIRTLseqData object}

@@ -4,10 +4,10 @@
 \alias{filter_nonfunctional_TCRs}
 \title{Remove TCRs with nonfunctional CDR3 amino acid sequences}
 \usage{
-filter_nonfunctional_TCRs(df, verbose = TRUE)
+filter_nonfunctional_TCRs(data, verbose = TRUE, version = "data.table")
 }
 \arguments{
-\item{df}{data frame with paired TCRs}
+\item{data}{either a TIRTLseqData object or a data frame with paired TCRs}
 
 \item{verbose}{whether to print number of TCRs removed}
 }

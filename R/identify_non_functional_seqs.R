@@ -66,5 +66,9 @@ identify_non_functional_seqs = function(data) {
       ) %>%
       mutate(is_functional = !(has_stop_codon & has_frameshift))
   }
+  if(!"data.table" %in% class(df_out)) {
+    #print("converting to data.table")
+    df_out = as.data.table(df_out)
+  }
   return(df_out)
 }

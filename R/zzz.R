@@ -1,3 +1,15 @@
+# .onAttach <- function(libname, pkgname) {
+#   if (interactive()) {
+#     packageStartupMessage(
+#       "TIRTLtools: to pre-install the Python environment, run:\n",
+#       "  TIRTLtools::install_python_env()"
+#     )
+#   }
+# }
+
+
+
+
 # .onLoad <- function(...) {
 #   ### code to install python dependencies (conda) ----------
 #   install_python_deps_conda <- function(envname = "TIRTLtools") {

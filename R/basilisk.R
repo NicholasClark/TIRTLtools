@@ -1,12 +1,21 @@
+## original deps -- working for basilisk 1.20
+# base_deps <- c(
+#   "python==3.12.9",
+#   "numpy==2.3.0",
+#   "scipy==1.15.2",
+#   "pandas==2.2.2"
+# )
+
+## deps for basilisk 1.22 (using pyenv)
 base_deps <- c(
-  "python==3.12.9",
-  "numpy==2.3.0",
-  "scipy==1.15.2",
-  "pandas==2.2.2"
+  "python==3.14",
+  "numpy==2.3.5",
+  "scipy==1.16.3",
+  "pandas==2.3.3"
 )
 
-#silicon_deps <- c(base_deps,"mlx==0.23.0")
-#nvidia_deps <- c(base_deps,"cupy==13.4.1")
+#silicon_deps <- c(base_deps,"mlx==0.23.0") ## working for basilisk 1.20
+#nvidia_deps <- c(base_deps,"cupy==13.4.1") ## working for basilisk 1.20
 
 .has_nvidia_gpu <- function() {
   # Simple heuristic: uses nvidia-smi or driver file
@@ -32,10 +41,10 @@ base_deps <- c(
 }
 
 if(.has_nvidia_gpu()) {
-  base_deps = c(base_deps,"cupy==13.4.1")
+  base_deps = c(base_deps,"cupy==13.6.0")
 }
 if (.is_apple_silicon()) {
-  base_deps <- c(base_deps,"mlx==0.23.0")
+  base_deps <- c(base_deps,"mlx==0.29.4")
 }
 
 TIRTLtools_py_env <- basilisk::BasiliskEnvironment(

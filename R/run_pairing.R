@@ -17,6 +17,8 @@ run_pairing = function(
     fork = NULL,
     shared = NULL
 ){
+  ensure_python_env()
+
   backend = backend[1]
   if(verbose) {
     print("start")
@@ -114,11 +116,11 @@ run_pairing = function(
     if(is_loaded) {
       if(is.null(fork)) fork = FALSE
       if(is.null(shared)) shared = TRUE
-      print("package loaded by pkgload/devtools")
+      #print("package loaded by pkgload/devtools")
     } else {
       if(is.null(fork)) fork = FALSE
       if(is.null(shared)) shared = FALSE
-      print("package loaded from installed version")
+      #print("package loaded from installed version")
     }
     #env = .choose_basilisk_env(backend)
     env = TIRTLtools_py_env

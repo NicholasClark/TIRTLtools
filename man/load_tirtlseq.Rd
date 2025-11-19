@@ -13,7 +13,6 @@ load_tirtlseq(
   pseudobulk_columns = "auto",
   paired_columns = "auto",
   n_threads = data.table::getDTthreads(),
-  compress_strings = FALSE,
   verbose = TRUE,
   stringsAsFactors = FALSE,
   n_max = Inf
@@ -40,8 +39,6 @@ a list of columns or one of "auto", "all", or "minimal". "auto" (default) loads 
 some redundant ones. "all" loads all columns. "minimal" loads a small number of the most important columns.}
 
 \item{n_threads}{(optional) number of CPU threads to use for reading .tsv(.gz) files}
-
-\item{compress_strings}{(optional) whether to compress nucleotide and amino acid sequences using the Biostrings package.}
 
 \item{verbose}{(optional) whether to print the name of each file loaded (default is TRUE).}
 

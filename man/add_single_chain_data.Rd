@@ -4,12 +4,14 @@
 \alias{add_single_chain_data}
 \title{Add single-chain read counts/fractions to the paired TCR data}
 \usage{
-add_single_chain_data(data, verbose = TRUE)
+add_single_chain_data(data, verbose = TRUE, version = "new")
 }
 \arguments{
 \item{data}{a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}}
 
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
+
+\item{version}{(for testing)}
 }
 \value{
 A TIRTLseq dataset object where the paired data frames for each sample have

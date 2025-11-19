@@ -4,7 +4,14 @@
 \alias{clean_pairs}
 \title{Remove excess pairs for individual single chains}
 \usage{
-clean_pairs(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE)
+clean_pairs(
+  data,
+  n_max_alpha = 2,
+  n_max_beta = 1,
+  verbose = TRUE,
+  prefer_functional = TRUE,
+  version = "fast"
+)
 }
 \arguments{
 \item{data}{a TIRTLseqData object}
@@ -16,6 +23,10 @@ paired with an individual beta chain (default 2)}
 paired with an individual alpha chain (default 1)}
 
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
+
+\item{prefer_functional}{(optional) if TRUE, prefer functional to non-functional chains even if they are less frequent}
+
+\item{version}{(optional) For testing purposes -- if "fast" (default) use fast data.table version of function, otherwise use dplyr version.}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

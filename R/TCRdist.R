@@ -75,6 +75,8 @@ TCRdist = function(
     fork = NULL,
     shared = NULL
     ) {
+  ensure_python_env()
+
   tcr1 = prep_for_tcrdist(tcr1, params = params, remove_MAIT = remove_MAIT)
   if(!is.null(tcr2)) tcr2 = prep_for_tcrdist(tcr2, params = params, remove_MAIT = remove_MAIT)
   chunk_size = as.integer(chunk_size)
@@ -85,11 +87,11 @@ TCRdist = function(
   if(is_loaded) {
     if(is.null(fork)) fork = FALSE
     if(is.null(shared)) shared = TRUE
-    print("package loaded by pkgload/devtools")
+    #print("package loaded by pkgload/devtools")
   } else {
     if(is.null(fork)) fork = FALSE
     if(is.null(shared)) shared = FALSE
-    print("package loaded from installed version")
+    #print("package loaded from installed version")
   }
   #env = .choose_basilisk_env(backend)
   env = TIRTLtools_py_env
