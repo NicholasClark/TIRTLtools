@@ -14,7 +14,7 @@ Output for each sample consists of 3 files:
 - `<sample-name>_pseudobulk_TRA.tsv(.gz)` -- Alpha chain "pseudo-bulk" data -- a table of read count summary metrics for alpha-chains across all wells on a plate
 - `<sample-name>_pseudobulk_TRB.tsv(.gz)` -- Beta chain "pseudo-bulk" data -- a table of read count summary metrics for beta-chains across all wells on a plate
 
-## Loading TIRTLseq Data in R
+## Loading TIRTLseq Data
 
 The `load_tirtlseq()` function loads paired TCR TIRTLseq data from all text files in a directory.
 

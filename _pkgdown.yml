@@ -56,7 +56,7 @@ reference:
 
 - title: Other
   contents:
-  - lacks_concept(c("data_wrangling", "data_processing", "repertoire_analysis", "plotting", "stitchr", "well", "download", "data", "single-cell"))
+  - lacks_concept(c("data", "data_processing", "data_wrangling", "diversity", "download", "pairing", "plotting", "repertoire_analysis", "single-cell", "stitchr", "well"))
 
 
 
