@@ -49,6 +49,9 @@ plot_num_partners = function(data,
                              return_data = FALSE,
                              color_scheme = NULL
                              ) {
+  if( (!include_non_functional) && (!"is_functional" %in% colnames(data$data[[1]]$paired)) ) {
+    data = data %>% identify_non_functional_seqs()
+  }
 
   meta = data$meta
   data = data$data

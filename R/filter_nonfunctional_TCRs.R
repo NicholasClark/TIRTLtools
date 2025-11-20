@@ -34,7 +34,7 @@ filter_nonfunctional_TCRs = function(data, verbose = TRUE, version = "data.table
 
 
 .filter_nonfunctional_TCRs_single = function(df, verbose = TRUE, version = "data.table") {
-  cols = colnames(df)
+  cols = c(colnames(df), "is_functional")
   df = .identify_non_functional_seqs_single(df)
   n_tcr_orig = nrow(df)
   n_nonfunc = sum(!df$is_functional)
@@ -51,7 +51,7 @@ filter_nonfunctional_TCRs = function(data, verbose = TRUE, version = "data.table
     print("using dplyr version for testing")
     df = df %>% filter(is_functional) %>%
       select(-alpha_has_stop_codon, -alpha_has_frameshift, -beta_has_stop_codon, -beta_has_frameshift,
-             -alpha_is_functional, -beta_is_functional, -is_functional)
+             -alpha_is_functional, -beta_is_functional)
   }
   return(df)
 }
