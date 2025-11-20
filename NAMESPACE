@@ -26,9 +26,19 @@ importFrom(RcppParallel, RcppParallelLibs)
 useDynLib(TIRTLtools, .registration = TRUE)
 
 
+## data_wrangling
+export(add_metadata) # docs 99% done, could use an example
+export(filter_dataset) # docs 99% done, could use real code in example
+export(load_tirtlseq) # docs 99% done, could use real code in example
+export(reorder_samples) # docs 99% done, could use examples
+## pairing
+export(run_pairing) # docs 90% done - needs details, examples
+## data_processing
+export(TIRTL_process) ## docs 99% done, could use an example
+
+
 #export(_TIRTLtools_tcrdist_cpp)
 #export(_TIRTLtools_tcrdist_parallel)
-export(add_metadata)
 export(add_single_chain_data)
 export(calculate_diversity)
 export(clean_pairs)
@@ -38,7 +48,6 @@ export(cluster_tcrs)
 export(create_thimble_df)
 export(diversity)
 #export(download_dataset)
-export(filter_dataset)
 export(filter_duplicate_tcrs)
 export(filter_mait)
 export(filter_nonfunctional_TCRs)
@@ -56,9 +65,9 @@ export(get_well_subset)
 export(get_wells_from_edges)
 export(identify_non_functional_seqs)
 export(identify_paired)
+export(install_python_env)
 #export(load_TIRTL_HDF5_10x)
 #export(load_TIRTL_HDF5_sparse)
-export(load_tirtlseq)
 export(load_well_data)
 #export(load_well_data_to_df_single)
 #export(load_well_data_to_sparse_multi)
@@ -84,8 +93,9 @@ export(prep_for_tcrdist)
 #export(read_meta_HDF5)
 #export(read_meta_parquet)
 export(remove_duplicates)
-export(reorder_samples)
 #export(run_edgeR)
+#export(run_single_point_analysis_sub_pseudobulk_only)
+#export(run_single_point_analysis_sub_gpu)
 #export(save_TIRTL_meta)
 #export(save_TIRTL_to_HDF5_10x)
 #export(save_TIRTL_to_HDF5_sparse)
@@ -98,12 +108,9 @@ export(TCRdist)
 #export(tcrdist_cpp)
 export(TCRdist_cpp)
 #export(tcrdist_parallel)
-export(TIRTL_process)
 #export(well_data_df_to_sparse)
 #export(well_data_df_to_sparse_multi)
 export(write_stitchr_tsv)
 
-export(run_pairing)
-#export(run_single_point_analysis_sub_pseudobulk_only)
-#export(run_single_point_analysis_sub_gpu)
-export(install_python_env)
+
+

@@ -2,6 +2,8 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function adds a metadata data frame, `obj$meta`, to the input TIRTLseqData object based on
+#' the sample names. This can be useful when the metadata was not specified when the initial object was loaded.
 #'
 #' @param obj a TIRTLseqData object
 #' @param meta_columns (optional) a vector of names for metadata for each field in the sample names.
@@ -9,6 +11,7 @@
 #' For example \code{c("marker", "timepoint", "donor")} for samples named something
 #' like "cd8_timepoint2_donor1".
 #'
+#' @return a TIRTLseqData object with added metadata
 #'
 #' @family data_wrangling
 #'

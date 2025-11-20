@@ -47,13 +47,23 @@ some redundant ones. "all" loads all columns. "minimal" loads a small number of 
 \item{n_max}{(optional) the maximum number of files to read in -- used mostly for testing purposes (default is Inf, i.e. read all files).}
 }
 \value{
-The function returns a list with two objects:
+The function returns a list with the following structure, containing the data from
+each sample and the sample metadata.
 
-\code{$meta} - a metadata table (data frame)
-
-\code{$data} - a list with one entry for each sample. Each entry is a list with entries
-\code{$alpha}, \code{$beta}, and \code{$paired}, which are data frames for the alpha- and beta-chain
-pseudo-bulk data and the paired data respectively.
+\preformatted{
+your_data_object (list)
+├───meta (metadata dataframe)
+└───data (list)
+    └───sample_1 (list)
+        ├───alpha (alpha pseudobulk dataframe)
+        ├───beta (beta pseudobulk dataframe)
+        └───paired (paired pseudobulk dataframe)
+    ...
+    └───sample_n (list)
+        ├───alpha (alpha pseudobulk dataframe)
+        ├───beta (beta pseudobulk dataframe)
+        └───paired (paired pseudobulk dataframe)
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

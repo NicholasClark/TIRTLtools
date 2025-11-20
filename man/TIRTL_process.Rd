@@ -12,6 +12,9 @@ TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 \item{clean}{(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 excess pairs for individual alpha and beta chains (default is FALSE).}
 }
+\value{
+a TIRTLseqData object with annotated and (optionally) cleaned data
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function runs annotation and data cleaning functions on a

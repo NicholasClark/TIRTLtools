@@ -10,6 +10,8 @@
 #' @param clean (optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 #' excess pairs for individual alpha and beta chains (default is FALSE).
 #'
+#' @return a TIRTLseqData object with annotated and (optionally) cleaned data
+#'
 #' @family data_processing
 #'
 TIRTL_process = function(data, clean = FALSE, remove_nonfunctional = FALSE) {

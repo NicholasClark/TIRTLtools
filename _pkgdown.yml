@@ -22,6 +22,9 @@ reference:
 - subtitle: Data loading and wrangling
   contents:
   - has_concept("data_wrangling")
+- subtitle: TCR-alpha/TCR-beta pairing
+  contents:
+  - has_concept("pairing")
 - subtitle: Data processing and cleaning
   contents:
   - has_concept("data_processing")

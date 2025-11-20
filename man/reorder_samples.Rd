@@ -2,19 +2,28 @@
 % Please edit documentation in R/reorder_samples.R
 \name{reorder_samples}
 \alias{reorder_samples}
-\title{Change the order of samples in a TIRTLseqData object}
+\title{Re-order samples in a TIRTLseqData object}
 \usage{
 reorder_samples(data, samples)
 }
 \arguments{
 \item{data}{a TIRTLseqData object}
 
-\item{samples}{the samples of 'data', in their desired order. Either 1) a numeric vector of indices,
-2) a character vector of sample names, or 3) a character vector of metadata
-conditions where each entry is of the form \code{"column==value"}.}
+\item{samples}{the samples of 'data', in their desired order.
+
+Either:
+\enumerate{
+\item A numeric vector of indices
+\item A character vector of sample names
+\item A character vector of metadata conditions where each entry is of the form \code{"column==value"}
+}}
+}
+\value{
+A TIRTLseqData object with re-ordered samples.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function changes the order of the samples in a TIRTLseqData object to the order that the user specifies.
 }
 \seealso{
 Other data_wrangling: 

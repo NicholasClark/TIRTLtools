@@ -1,3 +1,44 @@
+#' Find TCRalpha/beta pairs from individual well read counts
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
+#' originating from the same clone.
+#'
+#'
+#' @param folder_path the path of the folder with well-level data
+#' @param folder_out the path of the folder to write results to. The function will create the folder if it does not exist.
+#' @param prefix a prefix for the output file names
+#' @param wellfilter_thres wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
+#' The default value is 0.75
+#' @param min_reads minimum number of reads a chain must have in a well to be considered observed
+#' (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)
+#' @param min_wells minimum number of wells a chain must be observed in to be paired.
+#' @param well_pos the position of the well ID (e.g. "B5") in the file names. For example, files
+#' named "<lab>_<project>_<well_id>_TCRalpha.tsv" would use well_pos=3. (default is 3)
+#' @param wellset1 a vector of wells to use for the pairing
+#' @param compute whether or not to run the pairing algorithms after tabulating and writing pseudobulk data (default TRUE)
+#' @param backend the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.
+#' @param pval_thres_tshell the adjusted p-value threshold for T-SHELL significance (default 1e-10)
+#' @param wij_thres_tshell the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells)
+#' @param verbose whether to print out messages (default TRUE)
+#' @param write_extra_files whether to write un-necessary intermediate files (default FALSE)
+#' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
+#' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
+#' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
+#'
+#' @return
+#' A data frame with the TCR-alpha/TCR-beta pairs.
+#'
+#' The function also writes three files to "folder_out":
+#'  - A data frame ("<prefix>_pseudobulk_TRA.tsv") of pseudobulk counts for TCRalpha chains
+#'  - A data frame ("<prefix>_pseudobulk_TRB.tsv") of pseudobulk counts for TCRbeta chains
+#'  - A data frame ("<prefix>_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
+#'
+#' @family pairing
+#' @export
+#'
+
 run_pairing = function(
     folder_path,
     folder_out,
@@ -40,8 +81,14 @@ run_pairing = function(
   mlista<-geta(mlist)
   mlistb<-getb(mlist)
   if(verbose) {
-    print("clonesets loaded")
-    print(names(mlist))
+    n_filesA = length(mlista)
+    n_filesB = length(mlistb)
+    msgA = paste(n_filesA, "TCRalpha well files loaded")
+    msgB = paste(n_filesB, "TCRalpha well files loaded")
+    print(msgA)
+    print(msgB)
+    #print("clonesets loaded")
+    #print(names(mlist))
     print(Sys.time())
   }
   wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
@@ -50,11 +97,11 @@ run_pairing = function(
 
   qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
   if(verbose) {
-    print("clone_threshold")
+    print("Clone threshold for QC:")
     print(clone_thres)
-    print("alpha_wells_working")
+    print("Alpha wells passing QC:")
     print(table(qc$a))
-    print("beta_wells_working")
+    print("Beta wells passing QC:")
     print(table(qc$b))
   }
 
@@ -63,39 +110,45 @@ run_pairing = function(
   mlistb<-mlistb[qc$b]#downsize to qc
 
   if(verbose) {
-    print("pseudobulk_alpha")
+    print("Tabulating TCRalpha pseudobulk counts")
     print(Sys.time())
   }
   combd_a<-.combineTCR(rbindlist(mlista,idcol="file"))
   combd_a$max_wells<-sum(qc$a)
-  if(verbose) print("pseudobulk_beta")
   fwrite(combd_a[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv")),sep="\t")
-  if(verbose) print(Sys.time())
+  if(verbose) {
+    print("Tabulating TCRbeta pseudobulk counts")
+    print(Sys.time())
+  }
   combd_b<-.combineTCR(rbindlist(mlistb,idcol="file"))
   combd_b$max_wells<-sum(qc$b)
   fwrite(combd_b[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv")),sep="\t")
-  if(verbose) print("pseudobulk_done")
+  if(verbose) print("Pseudobulk done.")
 
   if(verbose) {
     print(Sys.time())
-    print("start")
+    print("Merging alpha clonesets...")
   }
   bigma<-big_merge_freqs2(mlista,min_reads = min_reads)
-  if(verbose) print(dim(bigma))
+  if(verbose) {
+    print("Done! Unique alpha clones and wells after filtering:")
+    print(dim(bigma))
+  }
   bigmas<-bigma[rowSums(bigma>0)>min_wells,]
   if(verbose) {
     print(Sys.time())
-    print("big merge done")
-    print("bigmas")
+    print(paste0("Unique alpha clones and wells in more than: ",min_wells," wells"))
     print(dim(bigmas))
   }
   bigmb<-big_merge_freqs2(mlistb,min_reads = min_reads)
-  if(verbose) print(dim(bigmb))
+  if(verbose) {
+    print("Done! beta clones and wells after filtering:")
+    print(dim(bigmb))
+  }
   bigmbs<-bigmb[rowSums(bigmb>0)>min_wells,]
   if(verbose) {
     print(Sys.time())
-    print("big merge done")
-    print("bigmbs")
+    print(paste0("Unique beta clones and wells in more than: ",min_wells," wells"))
     print(dim(bigmbs))
   }
   if(write_extra_files) {
@@ -106,6 +159,7 @@ run_pairing = function(
   }
   if(verbose) print(Sys.time())
   n_wells=ncol(bigmas)
+  if(verbose) print("Pre-computing look-up table:")
   mdh<-madhyper_surface(n_wells = ncol(bigmas),cells = clone_thres,alpha=2,prior = 1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5)
   if(write_extra_files) write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
   if(verbose) print(Sys.time())
@@ -142,6 +196,8 @@ run_pairing = function(
     }, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
 
   }
+
+  print("Filtering results, adding amino acid and V segment information")
 
   # cupy_madhype_script = reticulate::import_from_path("cupy_madhype_script", path = system.file("python/pairing/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
   # cupy_madhype_script$madhyper_process(prefix)
@@ -194,8 +250,9 @@ run_pairing = function(
   #groom the output.
 
   unique_combinations <- unique(result[, .(wi, wj, wij)])
+  print("Scoring unique pairs...")
   for (i in 1:nrow(unique_combinations)){
-    if(i%%1000==0)print(i)
+    #if(i%%1000==0)print(i)
     unique_combinations$score[i]<-log10(estimate_pair_prob(wi = unique_combinations[i,]$wi,wj = unique_combinations[i,]$wj,w_ij = unique_combinations[i,]$wij,n_wells,cpw = clone_thres,alpha = 2,prior=1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5))
   }
 
@@ -216,6 +273,11 @@ run_pairing = function(
   result$vb=tp_b$v
   result$jb=tp_b$j
 
+  if(verbose) {
+    print(Sys.time())
+    print("All is done! Number of paired clones:")
+    print(table(result$method))
+  }
   fwrite(result, file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv")),sep="\t")
   return(result)
 }
