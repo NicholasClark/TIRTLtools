@@ -60,7 +60,7 @@
 #'         ├───beta (beta pseudobulk dataframe)
 #'         └───paired (paired pseudobulk dataframe)
 #' }
-#' @family data_wrangling
+#' @family data_loading
 #'
 #' @export
 #' @examples

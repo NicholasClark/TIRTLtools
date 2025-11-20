@@ -48,7 +48,7 @@
 #'
 #' \code{$tcr2} - a similar data frame for tcr2, if it was supplied.
 #'
-#' @family repertoire_analysis
+#' @family tcr_similarity
 #' @seealso \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export

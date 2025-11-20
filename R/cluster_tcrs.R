@@ -48,7 +48,7 @@
 #'
 #' \code{$resolution} - the resolution parameter used for the Leiden algorithm
 #'
-#' @family repertoire_analysis
+#' @family tcr_similarity
 #' @seealso \code{\link{plot_clusters}()}, \code{\link{identify_non_functional_seqs}()}, \code{\link{TCRdist}()}
 #'
 #' @export

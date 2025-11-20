@@ -22,7 +22,7 @@
 #' A heatmap with hierarchically clustered rows and columns showing the number of
 #' TCRs shared between each pair of samples, among their top N most frequent TCRs.
 #'
-#' @family plotting
+#' @family qc
 #' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export

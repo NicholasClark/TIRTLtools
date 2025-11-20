@@ -34,7 +34,6 @@
 #'
 #' \code{$data} - if return_data is TRUE, the data frame used to make the plot
 #'
-#' @family plotting
 #' @family diversity
 #' @seealso \code{\link{diversity}()}, \code{\link{get_all_div_metrics}()}
 #'

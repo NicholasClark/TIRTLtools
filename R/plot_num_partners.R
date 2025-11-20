@@ -30,7 +30,7 @@
 #'
 #' \code{$data} the data used to create the plot
 #'
-#' @family plotting
+#' @family qc
 #' @seealso \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export

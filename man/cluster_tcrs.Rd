@@ -80,13 +80,9 @@ will be assigned to the "*01" allele.
 \seealso{
 \code{\link{plot_clusters}()}, \code{\link{identify_non_functional_seqs}()}, \code{\link{TCRdist}()}
 
-Other repertoire_analysis: 
+Other tcr_similarity: 
 \code{\link{TCRdist}()},
 \code{\link{TCRdist_cpp}()},
-\code{\link{get_all_div_metrics}()},
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{summarize_data}()}
+\code{\link{plot_clusters}()}
 }
-\concept{repertoire_analysis}
+\concept{tcr_similarity}

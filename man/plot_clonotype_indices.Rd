@@ -53,19 +53,9 @@ clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the
 \seealso{
 \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 
-Other plotting: 
-\code{\link{plot_clone_size_across_samples}()},
-\code{\link{plot_clusters}()},
-\code{\link{plot_diversity}()},
-\code{\link{plot_n_reads}()},
-\code{\link{plot_num_partners}()},
-\code{\link{plot_paired}()},
-\code{\link{plot_paired_by_read_fraction_range}()},
-\code{\link{plot_paired_vs_rank}()},
-\code{\link{plot_pairs_with_eachother}()},
-\code{\link{plot_ranks}()},
-\code{\link{plot_read_fraction_vs_pair_status}()},
-\code{\link{plot_sample_overlap}()},
-\code{\link{plot_sample_vs_sample}()}
+Other diversity: 
+\code{\link{calculate_diversity}()},
+\code{\link{get_all_div_metrics}()},
+\code{\link{plot_diversity}()}
 }
-\concept{plotting}
+\concept{diversity}

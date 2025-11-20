@@ -15,6 +15,8 @@ filter_short_cdr3s(df, verbose = TRUE, min_aa = 6)
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function removes TCR pairs where the CDR3 amino acid segment is short.
+By defualt, it removes TCRs where CDR3-alpha or CDR3-beta is less than 6 amino acids long.
 }
 \seealso{
 Other data_processing: 

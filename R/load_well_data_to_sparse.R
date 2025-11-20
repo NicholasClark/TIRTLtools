@@ -1,8 +1,4 @@
-#' Load well-level TIRTLseq data to sparse matrices
-#'
-#' `r lifecycle::badge('experimental')`
-#'
-#' @family well
+
 # load_well_data_to_sparse = function(folder_path, wells = get_well_subset(1:16,1:24),
 #                           well_pos=3, chain = c("both", "alpha", "beta"), nproc = 1L,
 #                           columns = NULL,

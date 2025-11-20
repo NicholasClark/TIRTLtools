@@ -5,7 +5,7 @@
 #' `r lifecycle::badge('experimental')`
 #'
 #'
-#' @family plotting
+#' @family qc
 plot_read_fraction_vs_pair_status = function(
     data,
     sample = 1,

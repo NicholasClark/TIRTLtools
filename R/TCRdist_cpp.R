@@ -2,13 +2,26 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This is an alternative to the GPU version of TCRdist that is still very fast for
+#' large datasets (tens of thousands of TCRs). It is written in C++ and will
+#' run in parallel across available CPU cores.
+#'
+#' @details
+#' This version of TCRdist is currently less feature-rich than \code{\link{TCRdist}()} and returns
+#' a dense matrix as output. It does not yet allow for sparse output or writing output directly to a file.
 #'
 #'
 #' @param tcr1 a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"
 #' @param tcr2 (optional) another data frame of TCRs. If supplied, TCRdist will be calculated
 #' for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
 #' for every pair of TCRs in tcr1.
-#' @family repertoire_analysis
+#'
+#' @returns a list with two objects (or three if tcr2 is not null):
+#' - matrix - a matrix of TCRdist values
+#' - tcr1 - the input matrix tcr1, after pre-processing and removing unacceptable TCRs
+#' - tcr2 (if supplied) - the input matrix tcr2, after pre-processing and removing unacceptable TCRs
+#'
+#' @family tcr_similarity
 #'
 TCRdist_cpp = function(tcr1, tcr2=NULL) {
 
@@ -51,8 +64,12 @@ TCRdist_cpp = function(tcr1, tcr2=NULL) {
   tcrdist_mat <- tcrdist_parallel(all_mat1, all_mat2, submat, tcr2_equals_tcr1)
   mode(tcrdist_mat) <- "integer"
 
-
-  return(tcrdist_mat)
+  if(tcr2_equals_tcr1) {
+    out = list(matrix = tcrdist_mat, tcr1 = tcr1)
+  } else {
+    out = list(matrix = tcrdist_mat, tcr1 = tcr1, tcr2 = tcr2)
+  }
+  return(out)
 }
 
 

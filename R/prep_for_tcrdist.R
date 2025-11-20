@@ -8,10 +8,12 @@
 #'
 #' @param df a data frame of paired TCRs
 #' @param params (optional) a data frame with permissible amino acids and V-segments.
-#' By default, the TIRTLtools::params data frame is used.
+#' By default, the \code{\link{TIRTLtools::params}} data frame is used.
 #' @param remove_duplicate_tcrs (optional) whether or not to remove duplicate TCRs (default is FALSE, do not remove duplicates).
 #' @param remove_MAIT (optional) whether or not to remove MAIT cells from the data frame (default is TRUE).
 #' @param verbose (optional) whether to print progress of the function (default is TRUE).
+#'
+#' @returns Returns a paired TCR data frame that is compatible with TCRdist python scripts.
 #'
 #' @family data_processing
 #'

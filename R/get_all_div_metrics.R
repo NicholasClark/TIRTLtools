@@ -6,7 +6,7 @@
 #' @return
 #' A vector of all available diversity metrics for the \code{\link{calculate_diversity}()} function.
 #'
-#' @family repertoire_analysis
+#' @family diversity
 #' @seealso \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 #'
 #' @export

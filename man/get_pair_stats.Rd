@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_pair_stats.R
 \name{get_pair_stats}
 \alias{get_pair_stats}
-\title{Count the number of single-chains that were paired by each algorithm}
+\title{Count the number of pairs called by each algorithm}
 \usage{
 get_pair_stats(data, verbose = TRUE)
 }
@@ -11,17 +11,38 @@ get_pair_stats(data, verbose = TRUE)
 
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
+\value{
+A data frame with the number of pairs called by each algorithm for each sample.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function tabulates the number of TCR pairs called for each sample by the MAD-HYPE
+algorithm, the T-SHELL algorithm, or both. It is used in the \code{\link{plot_paired}()} function.
+}
+\details{
+The function can count the number of alpha chains paired, or beta chains, or the number of pairs overall.
+By default, it counts the number of pairs overall.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+get_pair_stats(ts_data)
+
 }
 \seealso{
-Other repertoire_analysis: 
-\code{\link{TCRdist}()},
-\code{\link{TCRdist_cpp}()},
-\code{\link{cluster_tcrs}()},
-\code{\link{get_all_div_metrics}()},
+Other qc: 
 \code{\link{get_all_tcrs}()},
 \code{\link{get_paired_by_read_fraction_range}()},
+\code{\link{plot_n_reads}()},
+\code{\link{plot_num_partners}()},
+\code{\link{plot_paired}()},
+\code{\link{plot_paired_by_read_fraction_range}()},
+\code{\link{plot_paired_vs_rank}()},
+\code{\link{plot_pairs_with_eachother}()},
+\code{\link{plot_ranks}()},
+\code{\link{plot_read_fraction_vs_pair_status}()},
+\code{\link{plot_sample_overlap}()},
 \code{\link{summarize_data}()}
 }
-\concept{repertoire_analysis}
+\concept{qc}

@@ -22,13 +22,18 @@ get_paired_by_read_fraction_range(
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
-Other repertoire_analysis: 
-\code{\link{TCRdist}()},
-\code{\link{TCRdist_cpp}()},
-\code{\link{cluster_tcrs}()},
-\code{\link{get_all_div_metrics}()},
+Other qc: 
 \code{\link{get_all_tcrs}()},
 \code{\link{get_pair_stats}()},
+\code{\link{plot_n_reads}()},
+\code{\link{plot_num_partners}()},
+\code{\link{plot_paired}()},
+\code{\link{plot_paired_by_read_fraction_range}()},
+\code{\link{plot_paired_vs_rank}()},
+\code{\link{plot_pairs_with_eachother}()},
+\code{\link{plot_ranks}()},
+\code{\link{plot_read_fraction_vs_pair_status}()},
+\code{\link{plot_sample_overlap}()},
 \code{\link{summarize_data}()}
 }
-\concept{repertoire_analysis}
+\concept{qc}

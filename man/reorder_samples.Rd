@@ -28,7 +28,6 @@ This function changes the order of the samples in a TIRTLseqData object to the o
 \seealso{
 Other data_wrangling: 
 \code{\link{add_metadata}()},
-\code{\link{filter_dataset}()},
-\code{\link{load_tirtlseq}()}
+\code{\link{filter_dataset}()}
 }
 \concept{data_wrangling}

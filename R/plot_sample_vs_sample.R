@@ -16,7 +16,7 @@
 #' A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each
 #' TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
 #'
-#' @family plotting
+#' @family longitudinal
 #' @export
 #' @examples
 #' # example code

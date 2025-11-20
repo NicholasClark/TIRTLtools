@@ -26,7 +26,6 @@ the sample names. This can be useful when the metadata was not specified when th
 \seealso{
 Other data_wrangling: 
 \code{\link{filter_dataset}()},
-\code{\link{load_tirtlseq}()},
 \code{\link{reorder_samples}()}
 }
 \concept{data_wrangling}

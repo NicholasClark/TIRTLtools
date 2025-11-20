@@ -17,7 +17,7 @@
 #' @param show_legend whether to show the legend (default is TRUE)
 #' @param log_scale (optional) if TRUE, use log-scale for the y-axis (default is FALSE)
 #'
-#' @family plotting
+#' @family longitudinal
 #'
 plot_clone_size_across_samples = function(
     data,

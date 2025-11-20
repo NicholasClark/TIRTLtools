@@ -1,12 +1,16 @@
 #' Remove TCRs with unknown V-segments
 #'
-#'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function removes TCR pairs with V-segments that are not found in \code{\link{TIRTLtools::params}()}.
+#' This is needed for pre-processing for \code{\link{TCRdist}()} and is part of \code{\link{prep_for_tcrdist}()},
+#' which is automatically run during \code{\link{TCRdist}()}.
 #'
 #' @param df data frame with paired TCRs
 #' @param params a table with acceptable V-segments (default is `TIRTLtools::params`)
 #' @param verbose whether to print number of TCRs removed
+#'
+#' @returns a paired TCR data frame with TCRs with unknown V-segments removed.
 #'
 #' @family data_processing
 #'

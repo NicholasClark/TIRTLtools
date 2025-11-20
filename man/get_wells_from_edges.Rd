@@ -17,7 +17,6 @@ get_wells_from_edges(
 Other well: 
 \code{\link{filter_well_data}()},
 \code{\link{get_well_subset}()},
-\code{\link{load_well_data}()},
-\code{\link{load_well_data_to_sparse_multi}()}
+\code{\link{load_well_data}()}
 }
 \concept{well}

@@ -6,7 +6,7 @@
 #'
 #' @param data a TIRTLseqData object
 #'
-#' @family repertoire_analysis
+#' @family qc
 #'
 summarize_data = function(data) {
   if("SimpleList" %in% class(data)) {

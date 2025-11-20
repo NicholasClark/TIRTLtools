@@ -24,7 +24,7 @@
 #'
 #' \code{$heatmap} - a heatmap visualization of TCRs from the top clusters
 #'
-#' @family plotting
+#' @family tcr_similarity
 #' @seealso \code{\link{cluster_tcrs}()}, \code{\link{TCRdist}()}
 #'
 #' @export

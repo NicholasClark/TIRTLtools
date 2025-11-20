@@ -47,19 +47,7 @@ If FALSE, plot each clone with a separate line.}
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \seealso{
-Other plotting: 
-\code{\link{plot_clonotype_indices}()},
-\code{\link{plot_clusters}()},
-\code{\link{plot_diversity}()},
-\code{\link{plot_n_reads}()},
-\code{\link{plot_num_partners}()},
-\code{\link{plot_paired}()},
-\code{\link{plot_paired_by_read_fraction_range}()},
-\code{\link{plot_paired_vs_rank}()},
-\code{\link{plot_pairs_with_eachother}()},
-\code{\link{plot_ranks}()},
-\code{\link{plot_read_fraction_vs_pair_status}()},
-\code{\link{plot_sample_overlap}()},
+Other longitudinal: 
 \code{\link{plot_sample_vs_sample}()}
 }
-\concept{plotting}
+\concept{longitudinal}

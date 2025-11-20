@@ -23,7 +23,7 @@
 #' (default) Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
 #' If return_data is TRUE, the data frame used to create the plot is returned instead.
 #'
-#' @family plotting
+#' @family diversity
 #' @seealso \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 #'
 #' @export

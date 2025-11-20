@@ -13,17 +13,28 @@ TCRdist_cpp(tcr1, tcr2 = NULL)
 for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
 for every pair of TCRs in tcr1.}
 }
+\value{
+a list with two objects (or three if tcr2 is not null):
+\itemize{
+\item matrix - a matrix of TCRdist values
+\item tcr1 - the input matrix tcr1, after pre-processing and removing unacceptable TCRs
+\item tcr2 (if supplied) - the input matrix tcr2, after pre-processing and removing unacceptable TCRs
+}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This is an alternative to the GPU version of TCRdist that is still very fast for
+large datasets (tens of thousands of TCRs). It is written in C++ and will
+run in parallel across available CPU cores.
+}
+\details{
+This version of TCRdist is currently less feature-rich than \code{\link{TCRdist}()} and returns
+a dense matrix as output. It does not yet allow for sparse output or writing output directly to a file.
 }
 \seealso{
-Other repertoire_analysis: 
+Other tcr_similarity: 
 \code{\link{TCRdist}()},
 \code{\link{cluster_tcrs}()},
-\code{\link{get_all_div_metrics}()},
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{summarize_data}()}
+\code{\link{plot_clusters}()}
 }
-\concept{repertoire_analysis}
+\concept{tcr_similarity}

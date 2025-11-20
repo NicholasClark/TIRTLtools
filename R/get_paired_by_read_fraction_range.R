@@ -9,7 +9,7 @@
 #' @param chain the TCR chain to use for read fraction (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges
 #'
-#' @family repertoire_analysis
+#' @family qc
 get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1)) {
   chain = chain[1]
   df = lapply(1:length(data$data), function(i) {

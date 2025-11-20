@@ -1,15 +1,25 @@
-#' Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm
+#' Stacked bar plot of the number of TCRs paired by each algorithm
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#'
-#'
+#' This function plots the number of TCRs paired by each algorithm. It can also plot the number
+#' of single-chains (alpha or beta) paired by the algorithms.
 #'
 #' @param data a TIRTLseqData object or a data frame created using \code{\link{get_pair_stats}()}
 #' @param chain the TCR chain to plot (default is "paired")
 #' @param samples (optional) the samples to include in the plot (default is all)
 #' @param color_scheme (optional) the color scheme for the plot
-#' @family plotting
+#' @family qc
+#'
+#' @returns a ggplot object with a stacked bar chart of the number of pairs called for each
+#' sample by each algorithm.
+#'
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' plot_paired(ts_data)
+#'
 #'
 plot_paired = function(
     data,

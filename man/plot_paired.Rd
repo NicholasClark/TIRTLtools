@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_paired.R
 \name{plot_paired}
 \alias{plot_paired}
-\title{Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm}
+\title{Stacked bar plot of the number of TCRs paired by each algorithm}
 \usage{
 plot_paired(
   data,
@@ -20,15 +20,28 @@ plot_paired(
 
 \item{color_scheme}{(optional) the color scheme for the plot}
 }
+\value{
+a ggplot object with a stacked bar chart of the number of pairs called for each
+sample by each algorithm.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function plots the number of TCRs paired by each algorithm. It can also plot the number
+of single-chains (alpha or beta) paired by the algorithms.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+plot_paired(ts_data)
+
+
 }
 \seealso{
-Other plotting: 
-\code{\link{plot_clone_size_across_samples}()},
-\code{\link{plot_clonotype_indices}()},
-\code{\link{plot_clusters}()},
-\code{\link{plot_diversity}()},
+Other qc: 
+\code{\link{get_all_tcrs}()},
+\code{\link{get_pair_stats}()},
+\code{\link{get_paired_by_read_fraction_range}()},
 \code{\link{plot_n_reads}()},
 \code{\link{plot_num_partners}()},
 \code{\link{plot_paired_by_read_fraction_range}()},
@@ -37,6 +50,6 @@ Other plotting:
 \code{\link{plot_ranks}()},
 \code{\link{plot_read_fraction_vs_pair_status}()},
 \code{\link{plot_sample_overlap}()},
-\code{\link{plot_sample_vs_sample}()}
+\code{\link{summarize_data}()}
 }
-\concept{plotting}
+\concept{qc}

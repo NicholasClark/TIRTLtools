@@ -5,7 +5,9 @@
 \alias{params}
 \title{Table of permissible amino acids and V-segments for TCRdist}
 \format{
-A data frame with two columns. The first column is called "feature" and
+A data frame with two columns. The data frame contains 266 features, mapping to 161 row/column indices.
+
+The first column is called "feature" and
 contains TCR V-segments (e.g. "TRAV12-1*02") and one-letter abbreviations for amino acids.
 The second column is called "value" and contains the row/column index in the
 substitution matrix corresponding to that amino acid or V-segment. Note that the
@@ -17,6 +19,10 @@ params
 }
 \description{
 Table of permissible amino acids and V-segments for TCRdist
+}
+\examples{
+params
+
 }
 \concept{data}
 \keyword{datasets}

@@ -42,7 +42,6 @@ the sample metadata.
 \seealso{
 Other data_wrangling: 
 \code{\link{add_metadata}()},
-\code{\link{load_tirtlseq}()},
 \code{\link{reorder_samples}()}
 }
 \concept{data_wrangling}

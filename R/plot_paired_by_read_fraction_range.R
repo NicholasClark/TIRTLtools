@@ -14,7 +14,7 @@
 #' @param color_scheme (optional) the color scheme to use in the plot
 #'
 #'
-#' @family plotting
+#' @family qc
 plot_paired_by_read_fraction_range = function(
     data,
     chain = c("beta","alpha"),

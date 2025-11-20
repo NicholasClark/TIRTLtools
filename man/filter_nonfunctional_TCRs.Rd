@@ -4,16 +4,20 @@
 \alias{filter_nonfunctional_TCRs}
 \title{Remove TCRs with nonfunctional CDR3 amino acid sequences}
 \usage{
-filter_nonfunctional_TCRs(data, verbose = TRUE, version = "data.table")
+filter_nonfunctional_TCRs(data, verbose = TRUE)
 }
 \arguments{
-\item{data}{either a TIRTLseqData object or a data frame with paired TCRs}
+\item{data}{a TIRTLseqData object}
 
 \item{verbose}{whether to print number of TCRs removed}
 }
+\value{
+Returns a TIRTLseqData object with nonfunctional TCRs removed.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function
+This function removes TCR pairs where the CDR3-alpha or beta segment does not make a
+functional protein, i.e. amino acid sequence contains a stop codon (*) or a frameshift (_).
 }
 \seealso{
 Other data_processing: 

@@ -13,7 +13,6 @@ filter_well_data(well_data_df, min_fraction = 1e-06)
 Other well: 
 \code{\link{get_well_subset}()},
 \code{\link{get_wells_from_edges}()},
-\code{\link{load_well_data}()},
-\code{\link{load_well_data_to_sparse_multi}()}
+\code{\link{load_well_data}()}
 }
 \concept{well}

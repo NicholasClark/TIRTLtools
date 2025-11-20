@@ -6,7 +6,7 @@
 #' `r lifecycle::badge('experimental')`
 #'
 #'
-#' @family plotting
+#' @family qc
 #'
 plot_pairs_with_eachother = function(
     data,

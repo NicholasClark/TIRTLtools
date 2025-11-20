@@ -19,11 +19,10 @@ rank_plot(...)
 \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 }
 \seealso{
-Other plotting: 
-\code{\link{plot_clone_size_across_samples}()},
-\code{\link{plot_clonotype_indices}()},
-\code{\link{plot_clusters}()},
-\code{\link{plot_diversity}()},
+Other qc: 
+\code{\link{get_all_tcrs}()},
+\code{\link{get_pair_stats}()},
+\code{\link{get_paired_by_read_fraction_range}()},
 \code{\link{plot_n_reads}()},
 \code{\link{plot_num_partners}()},
 \code{\link{plot_paired}()},
@@ -32,6 +31,6 @@ Other plotting:
 \code{\link{plot_pairs_with_eachother}()},
 \code{\link{plot_read_fraction_vs_pair_status}()},
 \code{\link{plot_sample_overlap}()},
-\code{\link{plot_sample_vs_sample}()}
+\code{\link{summarize_data}()}
 }
-\concept{plotting}
+\concept{qc}

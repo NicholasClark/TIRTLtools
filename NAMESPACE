@@ -31,91 +31,117 @@ export(add_metadata) # docs 99% done, could use an example
 export(filter_dataset) # docs 99% done, could use real code in example
 export(load_tirtlseq) # docs 99% done, could use real code in example
 export(reorder_samples) # docs 99% done, could use examples
+
+## qc and data summary
+export(get_pair_stats) ## full docs
+export(plot_paired) ## full docs
+export(get_all_tcrs) ## docs 99% done, could use an example
+export(summarize_data)
+export(get_paired_by_read_fraction_range)
+export(plot_paired_by_read_fraction_range)
+export(plot_paired_vs_rank)
+export(plot_pairs_with_eachother)
+export(plot_ranks)
+export(rank_plot) ## deprecated for plot_ranks()
+export(plot_read_fraction_vs_pair_status)
+export(plot_sample_overlap)
+export(plot_n_reads)
+export(plot_num_partners)
+
 ## pairing
 export(run_pairing) # docs 90% done - needs details, examples
+#export(run_single_point_analysis_sub_pseudobulk_only)
+#export(run_single_point_analysis_sub_gpu)
+
 ## data_processing
 export(TIRTL_process) ## docs 99% done, could use an example
 export(add_single_chain_data) ## docs 99% done, could use an example
 export(clean_pairs) ## docs 99% done, could use an example
 #export(filter_duplicate_tcrs) ## hide this for internal use, create df w/ unique pairs upon loading
 export(filter_mait) ## docs 99% done, could use an example
+export(filter_nonfunctional_TCRs) ## docs 99% done, could use an example
+export(filter_short_cdr3s) ## docs 99% done, could use an example
+# export(filter_v_alleles) ## hide for internal use, not needed for package users
+export(identify_non_functional_seqs) ## docs 99% done, could use an example
+export(identify_paired) ## docs 99% done, could use an example
+export(prep_for_tcrdist) ## docs 99% done, could use an example
+export(remove_duplicates) ## docs 99% done, could use an example -- maybe hide, does the user need this?
 
-
-
+## tcr_similarity
 #export(_TIRTLtools_tcrdist_cpp)
 #export(_TIRTLtools_tcrdist_parallel)
+export(TCRdist) ## docs 99% done, could use an example
+#export(tcrdist_cpp)
+export(TCRdist_cpp) ## docs 99% done, could use an example
+#export(tcrdist_parallel)
+export(cluster_tcrs) ## docs 99% done, could use a real example
+export(plot_clusters)
 
+
+## longitudinal
+export(plot_clone_size_across_samples)
+export(plot_sample_vs_sample)
+
+## diversity
 export(calculate_diversity)
+export(diversity) ## deprecated for calculate_diversity()
+export(plot_diversity)
+export(get_all_div_metrics) ## full docs
+export(plot_clonotype_indices)
 
-export(clean_scTIRTLseq)
-export(cluster_tcrs)
-#export(convert_to_summarized_experiment)
+## stitchr (external tools)
 export(create_thimble_df)
-export(diversity)
-#export(download_dataset)
+export(write_stitchr_tsv)
 
-
-export(filter_nonfunctional_TCRs)
-export(filter_short_cdr3s)
-export(filter_v_alleles)
+## well
 export(filter_well_data)
-export(get_all_div_metrics)
-export(get_all_tcrs)
-#export(get_files_gh)
-#export(get_files_gh_SJTRC_minimal)
-export(get_pair_stats)
-export(get_paired_by_read_fraction_range)
-#export(get_row_data)
 export(get_well_subset)
 export(get_wells_from_edges)
-export(identify_non_functional_seqs)
-export(identify_paired)
-export(install_python_env)
-#export(load_TIRTL_HDF5_10x)
-#export(load_TIRTL_HDF5_sparse)
 export(load_well_data)
 #export(load_well_data_to_df_single)
 #export(load_well_data_to_sparse_multi)
 #export(load_well_data_to_sparse_single)
+#export(well_data_df_to_sparse)
+#export(well_data_df_to_sparse_multi)
+
+## download
+#export(download_dataset)
+#export(get_files_gh)
+#export(get_files_gh_SJTRC_minimal)
+
+## data
+#export(params) ## full docs, don't need to export these
+#export(submat) ## full docs, don't need to export these
+
+
+## single-cell
+export(clean_scTIRTLseq)
+export(summarize_scTIRTLseq)
+
+## python-deps
+export(install_python_env) ## full docs
+
+## edgeR
 #export(make_pseudo_replicates)
-#export(params)
-export(plot_clone_size_across_samples)
-export(plot_clonotype_indices)
-export(plot_clusters)
-export(plot_diversity)
-export(plot_n_reads)
-export(plot_num_partners)
-export(plot_paired)
-export(plot_paired_by_read_fraction_range)
-export(plot_paired_vs_rank)
-export(plot_pairs_with_eachother)
-export(plot_ranks)
-export(plot_read_fraction_vs_pair_status)
-export(plot_sample_overlap)
-export(plot_sample_vs_sample)
-export(prep_for_tcrdist)
+#export(run_edgeR)
+#export(split_wells)
+
+## alternate data containers
+#export(convert_to_summarized_experiment)
+#export(get_row_data)
+#export(load_TIRTL_HDF5_10x)
+#export(load_TIRTL_HDF5_sparse)
 #export(read_h5_df)
 #export(read_meta_HDF5)
 #export(read_meta_parquet)
-export(remove_duplicates)
-#export(run_edgeR)
-#export(run_single_point_analysis_sub_pseudobulk_only)
-#export(run_single_point_analysis_sub_gpu)
 #export(save_TIRTL_meta)
 #export(save_TIRTL_to_HDF5_10x)
 #export(save_TIRTL_to_HDF5_sparse)
 #export(show_row_data)
-#export(split_wells)
-#export(submat)
-export(summarize_data)
-export(summarize_scTIRTLseq)
-export(TCRdist)
-#export(tcrdist_cpp)
-export(TCRdist_cpp)
-#export(tcrdist_parallel)
-#export(well_data_df_to_sparse)
-#export(well_data_df_to_sparse_multi)
-export(write_stitchr_tsv)
+
+
+
+
 
 
 

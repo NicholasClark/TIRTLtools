@@ -12,7 +12,7 @@
 #' @param color_scheme (optional) the color scheme for the plot
 #'
 #'
-#' @family plotting
+#' @family qc
 plot_paired_vs_rank = function(
     data,
     sample = 1,

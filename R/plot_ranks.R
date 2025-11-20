@@ -4,7 +4,7 @@
 #' `r lifecycle::badge('experimental')`
 #' \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 #'
-#' @family plotting
+#' @family qc
 #'
 
 plot_ranks = function(

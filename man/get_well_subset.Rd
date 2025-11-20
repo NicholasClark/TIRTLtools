@@ -13,7 +13,6 @@ get_well_subset(row_range = 1:16, col_range = 1:24)
 Other well: 
 \code{\link{filter_well_data}()},
 \code{\link{get_wells_from_edges}()},
-\code{\link{load_well_data}()},
-\code{\link{load_well_data_to_sparse_multi}()}
+\code{\link{load_well_data}()}
 }
 \concept{well}

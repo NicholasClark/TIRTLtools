@@ -18,7 +18,7 @@
 #' @return
 #' A dataframe including all of the TCRs in a dataset.
 #'
-#' @family repertoire_analysis
+#' @family qc
 #' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export

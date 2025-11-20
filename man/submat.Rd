@@ -5,7 +5,7 @@
 \alias{submat}
 \title{Substitution penalty matrix for TCRdist amino acids and V-segments}
 \format{
-A symmetric matrix with substitution penalties for pairs of amino acids or
+A symmetric matrix (161 x 161) with substitution penalties for pairs of amino acids or
 V-segments for TCRdist calculation. The amino acids/V-segments corresponding to each
 row/column are listed in the "params" table.
 }
@@ -14,6 +14,14 @@ submat
 }
 \description{
 Substitution penalty matrix for TCRdist amino acids and V-segments
+}
+\examples{
+dim(submat)
+submat[1:5,1:5]
+## to find the amino acid or v-segment(s) that map to a specific row/column
+index = 106 ## 106th row/column of matrix
+params[params$value == index-1,] ## need to subtract 1 because values in params are 0-indexed
+
 }
 \concept{data}
 \keyword{datasets}

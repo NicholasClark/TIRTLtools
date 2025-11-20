@@ -9,7 +9,7 @@
 #' @param samples (optional) which samples to plot (default is all samples)
 #' @param color_scheme a color scheme for the plot
 #'
-#' @family plotting
+#' @family qc
 #'
 plot_n_reads = function(
     data,

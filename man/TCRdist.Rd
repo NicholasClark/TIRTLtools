@@ -93,13 +93,9 @@ or \code{numpy} (no GPU) to calculate TCRdist efficiently.
 \seealso{
 \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 
-Other repertoire_analysis: 
+Other tcr_similarity: 
 \code{\link{TCRdist_cpp}()},
 \code{\link{cluster_tcrs}()},
-\code{\link{get_all_div_metrics}()},
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{summarize_data}()}
+\code{\link{plot_clusters}()}
 }
-\concept{repertoire_analysis}
+\concept{tcr_similarity}

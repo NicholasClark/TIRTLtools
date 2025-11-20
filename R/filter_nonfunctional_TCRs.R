@@ -2,14 +2,19 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' This function
+#' This function removes TCR pairs where the CDR3-alpha or beta segment does not make a
+#' functional protein, i.e. amino acid sequence contains a stop codon (*) or a frameshift (_).
 #'
-#' @param data either a TIRTLseqData object or a data frame with paired TCRs
+#' @param data a TIRTLseqData object
 #' @param verbose whether to print number of TCRs removed
 #'
-#' @family data_processing
+#' @returns Returns a TIRTLseqData object with nonfunctional TCRs removed.
 #'
-filter_nonfunctional_TCRs = function(data, verbose = TRUE, version = "data.table") {
+#' @family data_processing
+#' @export
+#'
+filter_nonfunctional_TCRs = function(data, verbose = TRUE) {
+  version = "data.table"
   is_list = .is.list.only(data)
   if(is_list) {
     for(i in 1:length(data$data)) {

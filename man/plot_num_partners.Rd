@@ -61,11 +61,10 @@ showing the proportion of them (among all called pairs) that are paired with 1 c
 \seealso{
 \code{\link{identify_non_functional_seqs}()}
 
-Other plotting: 
-\code{\link{plot_clone_size_across_samples}()},
-\code{\link{plot_clonotype_indices}()},
-\code{\link{plot_clusters}()},
-\code{\link{plot_diversity}()},
+Other qc: 
+\code{\link{get_all_tcrs}()},
+\code{\link{get_pair_stats}()},
+\code{\link{get_paired_by_read_fraction_range}()},
 \code{\link{plot_n_reads}()},
 \code{\link{plot_paired}()},
 \code{\link{plot_paired_by_read_fraction_range}()},
@@ -74,6 +73,6 @@ Other plotting:
 \code{\link{plot_ranks}()},
 \code{\link{plot_read_fraction_vs_pair_status}()},
 \code{\link{plot_sample_overlap}()},
-\code{\link{plot_sample_vs_sample}()}
+\code{\link{summarize_data}()}
 }
-\concept{plotting}
+\concept{qc}

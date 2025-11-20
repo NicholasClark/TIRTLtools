@@ -96,10 +96,4 @@ paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("ce
 }
 
 }
-\seealso{
-Other data_wrangling: 
-\code{\link{add_metadata}()},
-\code{\link{filter_dataset}()},
-\code{\link{reorder_samples}()}
-}
-\concept{data_wrangling}
+\concept{data_loading}

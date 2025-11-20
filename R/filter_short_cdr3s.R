@@ -1,14 +1,16 @@
 #' Remove TCRs with short CDR3 loops
 #'
-#'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function removes TCR pairs where the CDR3 amino acid segment is short.
+#' By defualt, it removes TCRs where CDR3-alpha or CDR3-beta is less than 6 amino acids long.
 #'
 #' @param df data frame with paired TCRs
 #' @param verbose whether to print number of TCRs removed
 #' @param min_aa the minimum number of amino acids allowed for a CDR3 sequence
 #'
 #' @family data_processing
+#' @export
 #'
 filter_short_cdr3s = function(df, verbose = TRUE, min_aa = 6) {
   df = df %>% mutate(is_short_cdr3 = nchar(cdr3a) < min_aa | nchar(cdr3b) < min_aa)
