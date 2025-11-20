@@ -7,7 +7,13 @@ most two alpha-chain partners for each individual beta-chain.
 ## Usage
 
 ``` r
-clean_pairs(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE)
+clean_pairs(
+  data,
+  n_max_alpha = 2,
+  n_max_beta = 1,
+  prefer_functional = TRUE,
+  verbose = TRUE
+)
 ```
 
 ## Arguments
@@ -26,10 +32,19 @@ clean_pairs(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE)
   (optional) the maximum number of beta chains allowed paired with an
   individual alpha chain (default 1)
 
+- prefer_functional:
+
+  (optional) if TRUE, prefer functional to non-functional chains even if
+  they are less frequent
+
 - verbose:
 
   (optional) whether to print progress of the function (default is
   TRUE).
+
+## Value
+
+Returns a TIRTLseqData object with excess pairs removed.
 
 ## Details
 

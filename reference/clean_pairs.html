@@ -25,7 +25,7 @@ individual alpha-chain and at most two alpha-chain partners for each individual 
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,7 +88,13 @@ individual alpha-chain and at most two alpha-chain partners for each individual 
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">clean_pairs</span><span class="op">(</span><span class="va">data</span>, n_max_alpha <span class="op">=</span> <span class="fl">2</span>, n_max_beta <span class="op">=</span> <span class="fl">1</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">clean_pairs</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  n_max_alpha <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  n_max_beta <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  prefer_functional <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -109,10 +115,18 @@ paired with an individual beta chain (default 2)</p></dd>
 paired with an individual alpha chain (default 1)</p></dd>
 
 
+<dt id="arg-prefer-functional">prefer_functional<a class="anchor" aria-label="anchor" href="#arg-prefer-functional"></a></dt>
+<dd><p>(optional) if TRUE, prefer functional to non-functional chains even if they are less frequent</p></dd>
+
+
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>(optional) whether to print progress of the function (default is TRUE).</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>Returns a TIRTLseqData object with excess pairs removed.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Excess partners for an individual chain are often sequencing errors of the true partner.

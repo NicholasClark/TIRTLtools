@@ -91,8 +91,13 @@ For details on TCRdist, see [Dash et al., Nature
 - [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
   **\[experimental\]** : Load data from TIRTLseq experiments
 - [`reorder_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/reorder_samples.md)
-  **\[experimental\]** : Change the order of samples in a TIRTLseqData
-  object
+  **\[experimental\]** : Re-order samples in a TIRTLseqData object
+
+### TCR-alpha/TCR-beta pairing
+
+- [`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
+  **\[experimental\]** : Find TCRalpha/beta pairs from individual well
+  read counts
 
 ### Data processing and cleaning
 
@@ -271,6 +276,9 @@ For details on TCRdist, see [Dash et al., Nature
 - [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
   [`diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
   **\[experimental\]** : Calculate TCR repertoire diversity metrics
+- [`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
+  **\[experimental\]** : Find TCRalpha/beta pairs from individual well
+  read counts
 
 # Articles
 

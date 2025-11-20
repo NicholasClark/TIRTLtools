@@ -1,18 +1,18 @@
 # Remove TCRs with nonfunctional CDR3 amino acid sequences
 
-**\[experimental\]**
+**\[experimental\]** This function
 
 ## Usage
 
 ``` r
-filter_nonfunctional_TCRs(df, verbose = TRUE)
+filter_nonfunctional_TCRs(data, verbose = TRUE, version = "data.table")
 ```
 
 ## Arguments
 
-- df:
+- data:
 
-  data frame with paired TCRs
+  either a TIRTLseqData object or a data frame with paired TCRs
 
 - verbose:
 

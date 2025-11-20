@@ -11,7 +11,7 @@ and (optionally)
 ## Usage
 
 ``` r
-TIRTL_process(data, clean = FALSE)
+TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 ```
 
 ## Arguments
@@ -25,6 +25,10 @@ TIRTL_process(data, clean = FALSE)
   (optional) a TRUE/FALSE value, whether or not to "clean" the paired
   data by removing excess pairs for individual alpha and beta chains
   (default is FALSE).
+
+## Value
+
+a TIRTLseqData object with annotated and (optionally) cleaned data
 
 ## See also
 

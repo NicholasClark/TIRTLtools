@@ -18,7 +18,10 @@ TCRdist(
   print_res = TRUE,
   only_lower_tri = TRUE,
   return_data = TRUE,
-  write_to_tsv = FALSE
+  write_to_tsv = FALSE,
+  backend = c("auto", "cpu", "cupy", "mlx"),
+  fork = NULL,
+  shared = NULL
 )
 ```
 
@@ -79,6 +82,24 @@ TCRdist(
   (optional) whether to return the output result from the function. With
   large data it may be desirable to write the result to disk instead.
   (default is TRUE, returns output)
+
+- backend:
+
+  (optional) the CPU or GPU backend to use (default "auto")
+
+- fork:
+
+  (optional) a TRUE/FALSE value for whether to "fork" a new Python
+  process for running TCRdist via the "basilisk" package. Default is
+  NULL, which should use choose a safe value based on how the package is
+  loaded.
+
+- shared:
+
+  (optional) a TRUE/FALSE value for whether to "share" the Python
+  process for running TCRdist via the "basilisk" package. Default is
+  NULL, which should use choose a safe value based on how the package is
+  loaded.
 
 - write_tsv:
 

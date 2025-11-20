@@ -138,7 +138,7 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loaded 6 files from 6 samples.
 
-    ## 1.8 seconds
+    ## 1.7 seconds
 
 ``` r
 data$meta %>%
@@ -190,32 +190,33 @@ takes about 30 seconds.
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 ```
 
+    ## Installing pyenv ...
+    ## Done! pyenv has been installed to '/home/runner/.local/share/r-reticulate/pyenv/bin/pyenv'.
+    ## Using Python: /home/runner/.pyenv/versions/3.14.0/bin/python3.14
+    ## Creating virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env' ...
+
+    ## + /home/runner/.pyenv/versions/3.14.0/bin/python3.14 -m venv /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env
+
+    ## Done!
+    ## Installing packages: pip, wheel, setuptools
+
+    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env/bin/python -m pip install --upgrade pip wheel setuptools
+
+    ## Installing packages: 'numpy==2.3.5', 'scipy==1.16.3', 'pandas==2.3.3'
+
+    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env/bin/python -m pip install --upgrade --no-user 'numpy==2.3.5' 'scipy==1.16.3' 'pandas==2.3.3'
+
+    ## Virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env' successfully created.
+
     ## Removed 0 TCRs with unknown V-segments (0%) from a total of 102,515 TCRs.
 
     ## Removed 0 TCRs with short CDR3 segments (0%) from a total of 102,515 TCRs.
 
     ## Removed 0 TCRs with non-functional CDR3 amino acid sequences (0%) from a total of 102,515 TCRs.
 
+    ## [1] "converting to data.table"
+
     ## Filtered data frame contains 102,515 TCRs (100%) of original 102,515 TCRs.
-
-    ## [1] "package loaded from installed version"
-    ## Installing pyenv ...
-    ## Done! pyenv has been installed to '/home/runner/.local/share/r-reticulate/pyenv/bin/pyenv'.
-    ## Using Python: /home/runner/.pyenv/versions/3.12.9/bin/python3.12
-    ## Creating virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env' ...
-
-    ## + /home/runner/.pyenv/versions/3.12.9/bin/python3.12 -m venv /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env
-
-    ## Done!
-    ## Installing packages: pip, wheel, setuptools
-
-    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env/bin/python -m pip install --upgrade pip wheel setuptools
-
-    ## Installing packages: 'numpy==2.3.0', 'scipy==1.15.2', 'pandas==2.2.2'
-
-    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env/bin/python -m pip install --upgrade --no-user 'numpy==2.3.0' 'scipy==1.15.2' 'pandas==2.2.2'
-
-    ## Virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.2/TIRTLtools_py_env' successfully created.
 
 ### Inspect the output
 

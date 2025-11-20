@@ -18,7 +18,6 @@ load_tirtlseq(
   pseudobulk_columns = "auto",
   paired_columns = "auto",
   n_threads = data.table::getDTthreads(),
-  compress_strings = FALSE,
   verbose = TRUE,
   stringsAsFactors = FALSE,
   n_max = Inf
@@ -73,11 +72,6 @@ load_tirtlseq(
 
   (optional) number of CPU threads to use for reading .tsv(.gz) files
 
-- compress_strings:
-
-  (optional) whether to compress nucleotide and amino acid sequences
-  using the Biostrings package.
-
 - verbose:
 
   (optional) whether to print the name of each file loaded (default is
@@ -94,14 +88,21 @@ load_tirtlseq(
 
 ## Value
 
-The function returns a list with two objects:
+The function returns a list with the following structure, containing the
+data from each sample and the sample metadata.
 
-`$meta` - a metadata table (data frame)
-
-`$data` - a list with one entry for each sample. Each entry is a list
-with entries `$alpha`, `$beta`, and `$paired`, which are data frames for
-the alpha- and beta-chain pseudo-bulk data and the paired data
-respectively.
+    your_data_object (list)
+    ├───meta (metadata dataframe)
+    └───data (list)
+        └───sample_1 (list)
+            ├───alpha (alpha pseudobulk dataframe)
+            ├───beta (beta pseudobulk dataframe)
+            └───paired (paired pseudobulk dataframe)
+        ...
+        └───sample_n (list)
+            ├───alpha (alpha pseudobulk dataframe)
+            ├───beta (beta pseudobulk dataframe)
+            └───paired (paired pseudobulk dataframe)
 
 ## Details
 

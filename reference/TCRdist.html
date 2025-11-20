@@ -23,7 +23,7 @@ An efficient, batched version of TCRdist that is compatible with both NVIDIA and
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,10 @@ An efficient, batched version of TCRdist that is compatible with both NVIDIA and
 <span>  print_res <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  only_lower_tri <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  return_data <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  write_to_tsv <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  write_to_tsv <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"cpu"</span>, <span class="st">"cupy"</span>, <span class="st">"mlx"</span><span class="op">)</span>,</span>
+<span>  fork <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  shared <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -151,6 +154,18 @@ chunk_size of over 7500 resulted in memory errors on some GPUs).</p></dd>
 <dt id="arg-return-data">return_data<a class="anchor" aria-label="anchor" href="#arg-return-data"></a></dt>
 <dd><p>(optional) whether to return the output result from the function.
 With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)</p></dd>
+
+
+<dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
+<dd><p>(optional) the CPU or GPU backend to use (default "auto")</p></dd>
+
+
+<dt id="arg-fork">fork<a class="anchor" aria-label="anchor" href="#arg-fork"></a></dt>
+<dd><p>(optional) a TRUE/FALSE value for whether to "fork" a new Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.</p></dd>
+
+
+<dt id="arg-shared">shared<a class="anchor" aria-label="anchor" href="#arg-shared"></a></dt>
+<dd><p>(optional) a TRUE/FALSE value for whether to "share" the Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.</p></dd>
 
 
 <dt id="arg-write-tsv">write_tsv<a class="anchor" aria-label="anchor" href="#arg-write-tsv"></a></dt>

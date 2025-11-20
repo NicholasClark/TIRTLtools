@@ -42,10 +42,3 @@ Other data_processing:
 [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md),
 [`prep_for_tcrdist()`](https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.md),
 [`remove_duplicates()`](https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.md)
-
-## Examples
-
-``` r
-# example code
-
-```

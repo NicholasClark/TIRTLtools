@@ -1,6 +1,7 @@
-# Change the order of samples in a TIRTLseqData object
+# Re-order samples in a TIRTLseqData object
 
-**\[experimental\]**
+**\[experimental\]** This function changes the order of the samples in a
+TIRTLseqData object to the order that the user specifies.
 
 ## Usage
 
@@ -16,10 +17,20 @@ reorder_samples(data, samples)
 
 - samples:
 
-  the samples of 'data', in their desired order. Either 1) a numeric
-  vector of indices, 2) a character vector of sample names, or 3) a
-  character vector of metadata conditions where each entry is of the
-  form `"column==value"`.
+  the samples of 'data', in their desired order.
+
+  Either:
+
+  1.  A numeric vector of indices
+
+  2.  A character vector of sample names
+
+  3.  A character vector of metadata conditions where each entry is of
+      the form `"column==value"`
+
+## Value
+
+A TIRTLseqData object with re-ordered samples.
 
 ## See also
 
