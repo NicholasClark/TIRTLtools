@@ -9,7 +9,6 @@
 #'
 #' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
 #' @param verbose (optional) whether to print progress of the function (default is TRUE).
-#' @param version (for testing)
 #'
 #' @return
 #' A TIRTLseq dataset object where the paired data frames for each sample have
@@ -18,11 +17,10 @@
 #' @family data_processing
 #'
 #' @export
-#' @examples
-#' # example code
 #'
 #'
-add_single_chain_data = function(data, verbose = TRUE, version = "new") {
+add_single_chain_data = function(data, verbose = TRUE) {
+  version = "new"
   if(!is.null(data$is_annotated)) {
     if(data$is_annotated) {
       message("Single-chain data already added")

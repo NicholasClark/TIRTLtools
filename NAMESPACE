@@ -35,21 +35,26 @@ export(reorder_samples) # docs 99% done, could use examples
 export(run_pairing) # docs 90% done - needs details, examples
 ## data_processing
 export(TIRTL_process) ## docs 99% done, could use an example
+export(add_single_chain_data) ## docs 99% done, could use an example
+export(clean_pairs) ## docs 99% done, could use an example
+#export(filter_duplicate_tcrs) ## hide this for internal use, create df w/ unique pairs upon loading
+export(filter_mait) ## docs 99% done, could use an example
+
 
 
 #export(_TIRTLtools_tcrdist_cpp)
 #export(_TIRTLtools_tcrdist_parallel)
-export(add_single_chain_data)
+
 export(calculate_diversity)
-export(clean_pairs)
+
 export(clean_scTIRTLseq)
 export(cluster_tcrs)
 #export(convert_to_summarized_experiment)
 export(create_thimble_df)
 export(diversity)
 #export(download_dataset)
-export(filter_duplicate_tcrs)
-export(filter_mait)
+
+
 export(filter_nonfunctional_TCRs)
 export(filter_short_cdr3s)
 export(filter_v_alleles)

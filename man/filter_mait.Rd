@@ -11,8 +11,18 @@ filter_mait(df, verbose = TRUE)
 
 \item{verbose}{whether to print number of MAIT TCRs removed}
 }
+\value{
+A data frame with MAIT TCRs removed
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function uses a heuristic to remove TCRs associated with MAIT cells, which
+may not be desired for some applications. For example, when creating a network of related TCRs
+with TCRdist, these TCRs often form a very highly dense sub-network that inflates output file size.
+}
+\details{
+We use a heiristic where we remove TCRs with V-alpha TRAV1-2 and
+either J-alpha segment TRAJ33, TRAJ12, or TRAJ20 (see Garner et al. 2023 - https://www.nature.com/articles/s41590-023-01575-1).
 }
 \seealso{
 Other data_processing: 

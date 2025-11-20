@@ -1,8 +1,8 @@
 #' Remove TCRs with nonfunctional CDR3 amino acid sequences
 #'
-#'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function
 #'
 #' @param data either a TIRTLseqData object or a data frame with paired TCRs
 #' @param verbose whether to print number of TCRs removed
@@ -34,8 +34,12 @@ filter_nonfunctional_TCRs = function(data, verbose = TRUE, version = "data.table
 
 
 .filter_nonfunctional_TCRs_single = function(df, verbose = TRUE, version = "data.table") {
-  cols = c(colnames(df), "is_functional")
-  df = .identify_non_functional_seqs_single(df)
+  if("is_functional" %in% colnames(df)) {
+    cols = colnames(df)
+  } else {
+    cols = c(colnames(df), "is_functional")
+    df = .identify_non_functional_seqs_single(df)
+  }
   n_tcr_orig = nrow(df)
   n_nonfunc = sum(!df$is_functional)
   pct_nonfunc = signif(100*n_nonfunc/n_tcr_orig,2)

@@ -16,7 +16,7 @@ whether the CDR3 alpha and beta
 nucleotide sequences contain any stop codons (*) or frame shifts (_) that would
 indicate a non-functional chain.
 
-If column \code{is_functional} is TRUE if neither chain has a stop codon or a frame shift.
+Column \code{is_functional} is TRUE if neither chain has a stop codon or a frame shift.
 The columns \code{has_stop_codon} and \code{has_frameshift} are similar, but specific to
 each kind of coding error. Other columns identify if the alpha chain or beta chain has
 a stop codon or frameshift, and if it is functional.

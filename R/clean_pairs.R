@@ -23,13 +23,24 @@
 #' paired with an individual beta chain (default 2)
 #' @param n_max_beta (optional) the maximum number of beta chains allowed
 #' paired with an individual alpha chain (default 1)
-#' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #' @param prefer_functional (optional) if TRUE, prefer functional to non-functional chains even if they are less frequent
-#' @param version (optional) For testing purposes -- if "fast" (default) use fast data.table version of function, otherwise use dplyr version.
+#' @param verbose (optional) whether to print progress of the function (default is TRUE).
+#'
+#' @return
+#' Returns a TIRTLseqData object with excess pairs removed.
+#'
 #'
 #' @family data_processing
+#' @export
 #'
-clean_pairs = function(data, n_max_alpha = 2, n_max_beta = 1, verbose = TRUE, prefer_functional = TRUE, version = "fast") {
+#'
+clean_pairs = function(
+    data,
+    n_max_alpha = 2,
+    n_max_beta = 1,
+    prefer_functional = TRUE,
+    verbose = TRUE) {
+  version = "fast"
   if(is.null(data$is_annotated)) {
     data = add_single_chain_data(data, verbose = verbose)
   }
