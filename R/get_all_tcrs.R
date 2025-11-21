@@ -15,7 +15,7 @@
 #' @param remove_duplicates only return one TCR for TCRs paired by both
 #' the T-SHELL and MAD-HYPE algorithms (default is TRUE).
 #'
-#' @return
+#' @returns
 #' A dataframe including all of the TCRs in a dataset.
 #'
 #' @family qc
@@ -23,7 +23,10 @@
 #'
 #' @export
 #' @examples
-#' # example code
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' get_all_tcrs(ts_data, chain = "paired")
 #'
 #'
 

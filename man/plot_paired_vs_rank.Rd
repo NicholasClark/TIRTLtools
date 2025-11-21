@@ -2,11 +2,11 @@
 % Please edit documentation in R/plot_paired_vs_rank.R
 \name{plot_paired_vs_rank}
 \alias{plot_paired_vs_rank}
-\title{A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains}
+\title{A step plot of the cumulative number of paired/unpaired alpha/beta chains among the most frequent chains}
 \usage{
 plot_paired_vs_rank(
   data,
-  sample = 1,
+  sample,
   y_axis = c("n_not_paired", "n_paired"),
   chain = c("both", "beta", "alpha"),
   n_max = 100,
@@ -16,7 +16,7 @@ plot_paired_vs_rank(
 \arguments{
 \item{data}{a TIRTLseqData object}
 
-\item{sample}{the sample to plot}
+\item{sample}{the sample to plot (either by number or sample id)}
 
 \item{y_axis}{whether to plot the cumulative number of paired or un-paired single-chains (default is "n_not_paired")}
 
@@ -26,8 +26,23 @@ plot_paired_vs_rank(
 
 \item{color_scheme}{(optional) the color scheme for the plot}
 }
+\value{
+A ggplot object with the plot
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+The function creates a stepped line plot of the cumulative number of paired/unpaired alpha
+or beta chains (default is both) among the \code{n_max} most frequent chains.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_not_paired", chain = "both", n_max = 100)
+
+plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_paired", chain = "both", n_max = 100)
+
+
 }
 \seealso{
 Other qc: 

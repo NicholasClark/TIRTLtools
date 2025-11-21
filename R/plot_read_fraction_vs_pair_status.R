@@ -1,14 +1,37 @@
-#' Alternative point plot of read fraction vs. rank for the N most frequent alpha
-#' and beta chains, with a cross indicating an unpaired single-chain
+#' A point plot of read fraction vs. rank for the most frequent alpha/beta chains
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function creates two point plots (alpha left, beta right) of the `n_max` most frequent
+#' single-chains found in a sample.
+#'
+#' This function creates a plot similar to \code{\link{plot_pairs_with_eachother}()},
+#' but does not mirror the alpha chains plot and add connections between paired alpha and beta chains.
+#'
+#' @param data a TIRTLseqData object
+#' @param sample the sample to plot (either by number or sample id)
+#' @param chain the chain to plot, "alpha", "beta", or "both" (default is "both")
+#' @param n_max the number of most frequent single-chains to plot
+#' @param show_num_partners whether to show the number of partners for each single-chain (default is FALSE)
+#' @param color_scheme (optional) the color scheme for the plot
+#'
+#' @returns A ggplot object with the point plot
 #'
 #'
 #' @family qc
+#'
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100)
+#'
+#' plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100,
+#' show_num_partners = TRUE)
+#'
 plot_read_fraction_vs_pair_status = function(
     data,
-    sample = 1,
+    sample,
     chain = c("both","beta", "alpha"),
     n_max = 100,
     show_num_partners = F,

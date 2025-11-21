@@ -1,12 +1,21 @@
-#' Create a summary table with number of reads and unique alpha/beta chains observed for each sample
+#' Create a summary table with number of reads and unique alpha/beta chains
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#'
+#' This function creates a summary table with the number of reads and unique alpha/beta chains observed
+#' for each sample.
 #'
 #' @param data a TIRTLseqData object
 #'
+#' @returns a data frame with the number of reads and unique chains observed for each sample.
+#'
 #' @family qc
+#'
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' summarize_data(ts_data)
 #'
 summarize_data = function(data) {
   if("SimpleList" %in% class(data)) {

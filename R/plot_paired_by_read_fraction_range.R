@@ -15,6 +15,8 @@
 #' @param samples (optional) the samples to include in the plot
 #' @param color_scheme (optional) the color scheme to use in the plot
 #'
+#' @returns a ggplot object with the bar plot of fraction of paired chains by frequency
+#'
 #'
 #' @family qc
 #' @examples

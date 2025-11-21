@@ -2,15 +2,27 @@
 % Please edit documentation in R/summarize_data.R
 \name{summarize_data}
 \alias{summarize_data}
-\title{Create a summary table with number of reads and unique alpha/beta chains observed for each sample}
+\title{Create a summary table with number of reads and unique alpha/beta chains}
 \usage{
 summarize_data(data)
 }
 \arguments{
 \item{data}{a TIRTLseqData object}
 }
+\value{
+a data frame with the number of reads and unique chains observed for each sample.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function creates a summary table with the number of reads and unique alpha/beta chains observed
+for each sample.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+summarize_data(ts_data)
+
 }
 \seealso{
 Other qc: 

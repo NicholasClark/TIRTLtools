@@ -4,12 +4,26 @@
 #' `r lifecycle::badge('experimental')`
 #' \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 #'
+#' @param data a TIRTLseqData object
+#' @param chain the chain to plot, "alpha" or "beta" (default is "beta")
+#' @param column the variable to plot (default is "readFraction")
+#' @param color_scheme (optional) the color scheme for the plot
+#'
+#' @returns a ggplot object with the rank plot
+#'
 #' @family qc
+#'
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' plot_ranks(ts_data, chain = "beta")
+#'
 #'
 
 plot_ranks = function(
     data,
-    chain=c("alpha", "beta"),
+    chain=c("beta", "alpha"),
     column = "readFraction",
     color_scheme = NULL
 ) {

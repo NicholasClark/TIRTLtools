@@ -17,6 +17,10 @@ get_paired_by_read_fraction_range(
 
 \item{cutoffs}{a vector of cutoffs for the read fraction ranges}
 }
+\value{
+a data frame with the number and fraction of chains paired for each
+read fraction range for each sample.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function returns the number and fraction of single-chains (alpha or beta, default is beta)

@@ -13,6 +13,9 @@
 #' @param chain the TCR chain to use for read fraction (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges
 #'
+#' @returns a data frame with the number and fraction of chains paired for each
+#' read fraction range for each sample.
+#'
 #' @family qc
 #'
 #' @examples

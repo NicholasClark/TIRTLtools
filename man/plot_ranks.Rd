@@ -7,16 +7,36 @@
 \usage{
 plot_ranks(
   data,
-  chain = c("alpha", "beta"),
+  chain = c("beta", "alpha"),
   column = "readFraction",
   color_scheme = NULL
 )
 
 rank_plot(...)
 }
+\arguments{
+\item{data}{a TIRTLseqData object}
+
+\item{chain}{the chain to plot, "alpha" or "beta" (default is "beta")}
+
+\item{column}{the variable to plot (default is "readFraction")}
+
+\item{color_scheme}{(optional) the color scheme for the plot}
+}
+\value{
+a ggplot object with the rank plot
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+plot_ranks(ts_data, chain = "beta")
+
+
 }
 \seealso{
 Other qc: 

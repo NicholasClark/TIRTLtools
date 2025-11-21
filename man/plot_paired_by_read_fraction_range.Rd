@@ -27,6 +27,9 @@ plot_paired_by_read_fraction_range(
 
 \item{color_scheme}{(optional) the color scheme to use in the plot}
 }
+\value{
+a ggplot object with the bar plot of fraction of paired chains by frequency
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function returns a bar plot of the fraction of single-chains (alpha or beta, default is beta)
