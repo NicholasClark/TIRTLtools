@@ -1,7 +1,7 @@
 #' @rdname plot_ranks
 #' @export
 #' @usage rank_plot(...)
-diversity <- function(...) {
+rank_plot <- function(...) {
   .Deprecated("plot_ranks")
   plot_ranks(...)
 }

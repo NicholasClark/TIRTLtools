@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_ranks.R, R/rank_plot.R
 \name{plot_ranks}
 \alias{plot_ranks}
-\alias{diversity}
+\alias{rank_plot}
 \title{Line plot of clonotype rank vs. read fraction for each sample}
 \usage{
 plot_ranks(
