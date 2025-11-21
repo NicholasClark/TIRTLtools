@@ -1,6 +1,10 @@
 # Line plot of clone read fraction across multiple samples
 
-**\[experimental\]**
+**\[experimental\]** This function creates a line plot of clone read
+fraction for the specified clones across multiple samples. The function
+can color the lines by groups of clones. If `sum_readFraction` is TRUE,
+the read fraction for each group will be summed and presented in one
+line.
 
 ## Usage
 
@@ -69,19 +73,41 @@ plot_clone_size_across_samples(
 
   (optional) if TRUE, use log-scale for the y-axis (default is FALSE)
 
+- x_var:
+
+  a column of metadata for grouping samples in the plot. The default is
+  NULL, which considers each sample its own group.
+
+## Value
+
+a ggplot object with a line plot of clone read fractions across samples.
+
 ## See also
 
-Other plotting:
-[`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md),
-[`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md),
-[`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md),
-[`plot_n_reads()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_n_reads.md),
-[`plot_num_partners()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_num_partners.md),
-[`plot_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired.md),
-[`plot_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired_by_read_fraction_range.md),
-[`plot_paired_vs_rank()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired_vs_rank.md),
-[`plot_pairs_with_eachother()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_pairs_with_eachother.md),
-[`plot_ranks()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_ranks.md),
-[`plot_read_fraction_vs_pair_status()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_read_fraction_vs_pair_status.md),
-[`plot_sample_overlap()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_overlap.md),
+Other longitudinal:
 [`plot_sample_vs_sample()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_vs_sample.md)
+
+## Examples
+
+``` r
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 11.6 seconds
+
+top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>%
+  head(5) %>% extract2("targetSequences") %>% as.character()
+top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>%
+  head(5) %>% extract2("targetSequences") %>% as.character()
+
+plot_clone_size_across_samples(sjtrc,
+  clones = c(top_clones1, top_clones2), chain = "beta")
+
+
+```

@@ -39,6 +39,10 @@ TCRdist(
   tcr2. Otherwise, it will calculate TCRdist for every pair of TCRs in
   tcr1.
 
+- remove_MAIT:
+
+  whether to remove TCRs from MAIT cells (default is FALSE)
+
 - params:
 
   (optional) a table of valid parameters for amino acids and va/vb
@@ -83,6 +87,11 @@ TCRdist(
   large data it may be desirable to write the result to disk instead.
   (default is TRUE, returns output)
 
+- write_to_tsv:
+
+  (optional) write the results to a tab-separated file ".tsv" (default
+  is FALSE, does not write .tsv file)
+
 - backend:
 
   (optional) the CPU or GPU backend to use (default "auto")
@@ -100,11 +109,6 @@ TCRdist(
   process for running TCRdist via the "basilisk" package. Default is
   NULL, which should use choose a safe value based on how the package is
   loaded.
-
-- write_tsv:
-
-  (optional) write the results to a tab-separated file ".tsv" (default
-  is FALSE, does not write .tsv file)
 
 ## Value
 
@@ -139,14 +143,10 @@ GPU) to calculate TCRdist efficiently.
 and
 [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md)
 
-Other repertoire_analysis:
+Other tcr_similarity:
 [`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md),
 [`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md),
-[`get_all_div_metrics()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_div_metrics.md),
-[`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md),
-[`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md),
-[`get_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.md),
-[`summarize_data()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.md)
+[`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md)
 
 ## Examples
 

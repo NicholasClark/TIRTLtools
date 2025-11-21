@@ -43,7 +43,6 @@ is `tp2` in the sample metadata.
 
 Other data_wrangling:
 [`add_metadata()`](https://nicholasclark.github.io/TIRTLtools/reference/add_metadata.md),
-[`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md),
 [`reorder_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/reorder_samples.md)
 
 ## Examples

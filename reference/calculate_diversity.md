@@ -152,6 +152,8 @@ In general, as q increases, less weight is given to rarer species.
 [`get_all_div_metrics()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_div_metrics.md)
 
 Other diversity:
+[`get_all_div_metrics()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_div_metrics.md),
+[`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md),
 [`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md)
 
 ## Examples

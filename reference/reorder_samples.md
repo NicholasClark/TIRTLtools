@@ -36,5 +36,4 @@ A TIRTLseqData object with re-ordered samples.
 
 Other data_wrangling:
 [`add_metadata()`](https://nicholasclark.github.io/TIRTLtools/reference/add_metadata.md),
-[`filter_dataset()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_dataset.md),
-[`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
+[`filter_dataset()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_dataset.md)

@@ -16,17 +16,13 @@ function.
 
 ## See also
 
-`diversity()`,
+[`diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md),
 [`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md)
 
-Other repertoire_analysis:
-[`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md),
-[`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md),
-[`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md),
-[`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md),
-[`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md),
-[`get_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.md),
-[`summarize_data()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.md)
+Other diversity:
+[`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md),
+[`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md),
+[`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md)
 
 ## Examples
 

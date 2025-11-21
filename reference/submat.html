@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,11 +87,37 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A symmetric matrix with substitution penalties for pairs of amino acids or
+    <p>A symmetric matrix (161 x 161) with substitution penalties for pairs of amino acids or
 V-segments for TCRdist calculation. The amino acids/V-segments corresponding to each
 row/column are listed in the "params" table.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">submat</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 161 161</span>
+<span class="r-in"><span><span class="va">submat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      V1 V2 V3 V4 V5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0 12 12 12 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 12  0 12 12 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 12 12  0 12 12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 12 12 12  0  6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 12 12 12  6  0</span>
+<span class="r-in"><span><span class="co">## to find the amino acid or v-segment(s) that map to a specific row/column</span></span></span>
+<span class="r-in"><span><span class="va">index</span> <span class="op">=</span> <span class="fl">106</span> <span class="co">## 106th row/column of matrix</span></span></span>
+<span class="r-in"><span><span class="va">params</span><span class="op">[</span><span class="va">params</span><span class="op">$</span><span class="va">value</span> <span class="op">==</span> <span class="va">index</span><span class="op">-</span><span class="fl">1</span>,<span class="op">]</span> <span class="co">## need to subtract 1 because values in params are 0-indexed</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   feature     value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> TRBV20-1*01   105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> TRBV20-1*02   105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> TRBV20-1*04   105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> TRBV20-1*05   105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> TRBV20-1*06   105</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> TRBV20-1*07   105</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

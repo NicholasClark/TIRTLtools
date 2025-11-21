@@ -26,6 +26,10 @@ TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
   data by removing excess pairs for individual alpha and beta chains
   (default is FALSE).
 
+- remove_nonfunctional:
+
+  whether to remove non-functional TCR chains (default is FALSE)
+
 ## Value
 
 a TIRTLseqData object with annotated and (optionally) cleaned data

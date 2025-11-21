@@ -27,7 +27,6 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/clean_scTIRTLseq.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/create_thimble_df.html</loc></url>
-<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/download_dataset.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/filter_dataset.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/filter_duplicate_tcrs.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/filter_mait.html</loc></url>
@@ -44,9 +43,9 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/index.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/install_python_env.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_well_data.html</loc></url>
-<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_well_data_to_sparse_multi.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/params.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/pipe.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.html</loc></url>

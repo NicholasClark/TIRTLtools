@@ -42,6 +42,12 @@ run_pairing(
 
   a prefix for the output file names
 
+- well_filter_thres:
+
+  wells are removed if they have fewer unique clones than:
+  wellfilter_thres\*(Avg. \# of unique clones per well). The default
+  value is 0.75
+
 - min_reads:
 
   minimum number of reads a chain must have in a well to be considered
@@ -104,12 +110,6 @@ run_pairing(
 
   whether to use a "shared" python process for basilisk (default is
   NULL, which automatically chooses an appropriate option)
-
-- wellfilter_thres:
-
-  wells are removed if they have fewer unique clones than:
-  wellfilter_thres\*(Avg. \# of unique clones per well). The default
-  value is 0.75
 
 ## Value
 

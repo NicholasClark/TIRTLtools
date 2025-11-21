@@ -26,7 +26,9 @@ prep_for_tcrdist(
 - params:
 
   (optional) a data frame with permissible amino acids and V-segments.
-  By default, the TIRTLtools::params data frame is used.
+  By default, the
+  [`params`](https://nicholasclark.github.io/TIRTLtools/reference/params.md)
+  data frame is used.
 
 - remove_duplicate_tcrs:
 
@@ -42,6 +44,11 @@ prep_for_tcrdist(
 
   (optional) whether to print progress of the function (default is
   TRUE).
+
+## Value
+
+Returns a paired TCR data frame that is compatible with TCRdist python
+scripts.
 
 ## See also
 

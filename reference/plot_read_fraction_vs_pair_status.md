@@ -1,13 +1,20 @@
-# Alternative point plot of read fraction vs. rank for the N most frequent alpha and beta chains, with a cross indicating an unpaired single-chain
+# A point plot of read fraction vs. rank for the most frequent alpha/beta chains
 
-**\[experimental\]**
+**\[experimental\]** This function creates two point plots (alpha left,
+beta right) of the `n_max` most frequent single-chains found in a
+sample.
+
+This function creates a plot similar to
+[`plot_pairs_with_eachother()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_pairs_with_eachother.md),
+but does not mirror the alpha chains plot and add connections between
+paired alpha and beta chains.
 
 ## Usage
 
 ``` r
 plot_read_fraction_vs_pair_status(
   data,
-  sample = 1,
+  sample,
   chain = c("both", "beta", "alpha"),
   n_max = 100,
   show_num_partners = F,
@@ -15,13 +22,43 @@ plot_read_fraction_vs_pair_status(
 )
 ```
 
+## Arguments
+
+- data:
+
+  a TIRTLseqData object
+
+- sample:
+
+  the sample to plot (either by number or sample id)
+
+- chain:
+
+  the chain to plot, "alpha", "beta", or "both" (default is "both")
+
+- n_max:
+
+  the number of most frequent single-chains to plot
+
+- show_num_partners:
+
+  whether to show the number of partners for each single-chain (default
+  is FALSE)
+
+- color_scheme:
+
+  (optional) the color scheme for the plot
+
+## Value
+
+A ggplot object with the point plot
+
 ## See also
 
-Other plotting:
-[`plot_clone_size_across_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.md),
-[`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md),
-[`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md),
-[`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md),
+Other qc:
+[`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md),
+[`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md),
+[`get_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.md),
 [`plot_n_reads()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_n_reads.md),
 [`plot_num_partners()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_num_partners.md),
 [`plot_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired.md),
@@ -30,4 +67,23 @@ Other plotting:
 [`plot_pairs_with_eachother()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_pairs_with_eachother.md),
 [`plot_ranks()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_ranks.md),
 [`plot_sample_overlap()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_overlap.md),
-[`plot_sample_vs_sample()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_vs_sample.md)
+[`summarize_data()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.md)
+
+## Examples
+
+``` r
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 12.3 seconds
+
+plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100)
+
+
+plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100,
+show_num_partners = TRUE)
+
+```

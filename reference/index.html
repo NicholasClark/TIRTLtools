@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,39 @@
 
       <dl></dl></div><div class="section level2">
 
-      <h3 id="data-loading-and-wrangling">Data loading and wrangling<a class="anchor" aria-label="anchor" href="#data-loading-and-wrangling"></a></h3>
+      <h3 id="tcr-alpha-tcr-beta-pairing">TCR-alpha/TCR-beta pairing<a class="anchor" aria-label="anchor" href="#tcr-alpha-tcr-beta-pairing"></a></h3>
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="run_pairing.html">run_pairing()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Find TCRalpha/beta pairs from individual well read counts</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="data-loading">Data loading<a class="anchor" aria-label="anchor" href="#data-loading"></a></h3>
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="load_tirtlseq.html">load_tirtlseq()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Load data from TIRTLseq experiments</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="data-wrangling">Data wrangling<a class="anchor" aria-label="anchor" href="#data-wrangling"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -105,33 +137,10 @@
 
         <dt>
 
-          <code><a href="load_tirtlseq.html">load_tirtlseq()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Load data from TIRTLseq experiments</dd>
-
-        <dt>
-
           <code><a href="reorder_samples.html">reorder_samples()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Re-order samples in a TIRTLseqData object</dd>
-      </dl></div><div class="section level2">
-
-      <h3 id="tcr-alpha-tcr-beta-pairing">TCR-alpha/TCR-beta pairing<a class="anchor" aria-label="anchor" href="#tcr-alpha-tcr-beta-pairing"></a></h3>
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="run_pairing.html">run_pairing()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Find TCRalpha/beta pairs from individual well read counts</dd>
       </dl></div><div class="section level2">
 
       <h3 id="data-processing-and-cleaning">Data processing and cleaning<a class="anchor" aria-label="anchor" href="#data-processing-and-cleaning"></a></h3>
@@ -227,7 +236,107 @@
         <dd>Removes duplicate paired TCRs</dd>
       </dl></div><div class="section level2">
 
-      <h3 id="tcr-repertoire-analysis">TCR repertoire analysis<a class="anchor" aria-label="anchor" href="#tcr-repertoire-analysis"></a></h3>
+      <h3 id="quality-control-and-data-summary">Quality control and data summary<a class="anchor" aria-label="anchor" href="#quality-control-and-data-summary"></a></h3>
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="get_all_tcrs.html">get_all_tcrs()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Returns all of the paired TCRs from all samples in a dataset</dd>
+
+        <dt>
+
+          <code><a href="get_pair_stats.html">get_pair_stats()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Count the number of pairs called by each algorithm</dd>
+
+        <dt>
+
+          <code><a href="get_paired_by_read_fraction_range.html">get_paired_by_read_fraction_range()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Calculate the number and fraction of single chains that were paired by frequency</dd>
+
+        <dt>
+
+          <code><a href="plot_n_reads.html">plot_n_reads()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Bar plot of the number of single-chain reads for each sample</dd>
+
+        <dt>
+
+          <code><a href="plot_num_partners.html">plot_num_partners()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Stacked bar plot of the fraction of alpha/beta chains with different numbers of partners</dd>
+
+        <dt>
+
+          <code><a href="plot_paired.html">plot_paired()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Stacked bar plot of the number of TCRs paired by each algorithm</dd>
+
+        <dt>
+
+          <code><a href="plot_paired_by_read_fraction_range.html">plot_paired_by_read_fraction_range()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Bar plot of the fraction of paired single chains by frequency</dd>
+
+        <dt>
+
+          <code><a href="plot_paired_vs_rank.html">plot_paired_vs_rank()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>A step plot of the cumulative number of paired/unpaired alpha/beta chains among the most frequent chains</dd>
+
+        <dt>
+
+          <code><a href="plot_pairs_with_eachother.html">plot_pairs_with_eachother()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>A connected point plot of read fraction vs. rank for the most frequent alpha/beta chains</dd>
+
+        <dt>
+
+          <code><a href="plot_ranks.html">plot_ranks()</a></code> <code><a href="plot_ranks.html">rank_plot()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Line plot of clonotype rank vs. read fraction for each sample</dd>
+
+        <dt>
+
+          <code><a href="plot_read_fraction_vs_pair_status.html">plot_read_fraction_vs_pair_status()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>A point plot of read fraction vs. rank for the most frequent alpha/beta chains</dd>
+
+        <dt>
+
+          <code><a href="plot_sample_overlap.html">plot_sample_overlap()</a></code> <code><a href="plot_sample_overlap.html">sample_overlap()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Plot the overlap/agreement between samples (in terms of most frequent clones)</dd>
+
+        <dt>
+
+          <code><a href="summarize_data.html">summarize_data()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Create a summary table with number of reads and unique alpha/beta chains</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="tcr-similarity-and-clustering">TCR similarity and clustering<a class="anchor" aria-label="anchor" href="#tcr-similarity-and-clustering"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -258,38 +367,33 @@
 
         <dt>
 
-          <code><a href="get_all_div_metrics.html">get_all_div_metrics()</a></code>
+          <code><a href="plot_clusters.html">plot_clusters()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Returns all diversity metric options for <code><a href="../reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
+        <dd>Plot clusters of similar TCRs</dd>
+      </dl></div><div class="section level2">
+
+      <h3 id="longitudinal-analysis">Longitudinal analysis<a class="anchor" aria-label="anchor" href="#longitudinal-analysis"></a></h3>
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="plot_clone_size_across_samples.html">plot_clone_size_across_samples()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Line plot of clone read fraction across multiple samples</dd>
 
         <dt>
 
-          <code><a href="get_all_tcrs.html">get_all_tcrs()</a></code>
+          <code><a href="plot_sample_vs_sample.html">plot_sample_vs_sample()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Returns all of the paired TCRs from all samples in a dataset</dd>
-
-        <dt>
-
-          <code><a href="get_pair_stats.html">get_pair_stats()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Count the number of single-chains that were paired by each algorithm</dd>
-
-        <dt>
-
-          <code><a href="get_paired_by_read_fraction_range.html">get_paired_by_read_fraction_range()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Calculate the number and fraction of single chains that were paired within different read fraction ranges</dd>
-
-        <dt>
-
-          <code><a href="summarize_data.html">summarize_data()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Create a summary table with number of reads and unique alpha/beta chains observed for each sample</dd>
+        <dd>Scatterplot of TCR clone read fraction of clones between two samples</dd>
       </dl></div><div class="section level2">
 
       <h3 id="diversity">Diversity<a class="anchor" aria-label="anchor" href="#diversity"></a></h3>
@@ -309,26 +413,10 @@
 
         <dt>
 
-          <code><a href="plot_diversity.html">plot_diversity()</a></code>
+          <code><a href="get_all_div_metrics.html">get_all_div_metrics()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Bar plot of clonal diversity metrics</dd>
-      </dl></div><div class="section level2">
-
-      <h3 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a></h3>
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="plot_clone_size_across_samples.html">plot_clone_size_across_samples()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Line plot of clone read fraction across multiple samples</dd>
+        <dd>Returns all diversity metric options for <code><a href="https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
 
         <dt>
 
@@ -339,87 +427,10 @@
 
         <dt>
 
-          <code><a href="plot_clusters.html">plot_clusters()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Plot clusters of similar TCRs</dd>
-
-        <dt>
-
           <code><a href="plot_diversity.html">plot_diversity()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Bar plot of clonal diversity metrics</dd>
-
-        <dt>
-
-          <code><a href="plot_n_reads.html">plot_n_reads()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Bar plot of the number of single-chain reads for each sample</dd>
-
-        <dt>
-
-          <code><a href="plot_num_partners.html">plot_num_partners()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Stacked bar plot of the fraction of single-chains with different numbers of partners for each sample</dd>
-
-        <dt>
-
-          <code><a href="plot_paired.html">plot_paired()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Stacked bar plot of the number alpha/beta chains paired by each pairing algorithm</dd>
-
-        <dt>
-
-          <code><a href="plot_paired_by_read_fraction_range.html">plot_paired_by_read_fraction_range()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Bar plot of the fraction of single chains that were paired within different read fraction ranges for each sample.</dd>
-
-        <dt>
-
-          <code><a href="plot_paired_vs_rank.html">plot_paired_vs_rank()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>A stepped plot of the cumulative number of paired (or unpaired) single-chains for the N most frequent single-chains</dd>
-
-        <dt>
-
-          <code><a href="plot_pairs_with_eachother.html">plot_pairs_with_eachother()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Point plot of read fraction vs. rank for the N most frequent alpha (left, mirrored) and beta (right) chains with lines between alpha and beta chains indicating a pair and a cross indicating an unpaired single-chain</dd>
-
-        <dt>
-
-          <code><a href="plot_ranks.html">plot_ranks()</a></code> <code><a href="plot_ranks.html">rank_plot()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Line plot of clonotype rank vs. read fraction for each sample</dd>
-
-        <dt>
-
-          <code><a href="plot_read_fraction_vs_pair_status.html">plot_read_fraction_vs_pair_status()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Alternative point plot of read fraction vs. rank for the N most frequent alpha and beta chains, with a cross indicating an unpaired single-chain</dd>
-
-        <dt>
-
-          <code><a href="plot_sample_overlap.html">plot_sample_overlap()</a></code> <code><a href="plot_sample_overlap.html">sample_overlap()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Plot the overlap/agreement between samples (in terms of most frequent clones)</dd>
-
-        <dt>
-
-          <code><a href="plot_sample_vs_sample.html">plot_sample_vs_sample()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Scatterplot of TCR clone read fraction of clones between two samples</dd>
       </dl></div><div class="section level2">
 
       <h3 id="export-for-external-tools">Export for external tools<a class="anchor" aria-label="anchor" href="#export-for-external-tools"></a></h3>
@@ -480,16 +491,9 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Load well-level TIRTLseq data</dd>
-
-        <dt>
-
-          <code><a href="load_well_data_to_sparse_multi.html">load_well_data_to_sparse_multi()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Load well-level TIRTLseq data to sparse matrices</dd>
       </dl></div><div class="section level2">
 
-      <h3 id="download-datasets">Download datasets<a class="anchor" aria-label="anchor" href="#download-datasets"></a></h3>
+      <h3 id="python-dependencies">Python dependencies<a class="anchor" aria-label="anchor" href="#python-dependencies"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -499,10 +503,10 @@
 
       <dl><dt>
 
-          <code><a href="download_dataset.html">download_dataset()</a></code>
+          <code><a href="install_python_env.html">install_python_env()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Download TIRTLseq datasets</dd>
+        <dd>Install python environment</dd>
       </dl></div><div class="section level2">
 
       <h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h3>
@@ -559,20 +563,7 @@
 
 
 
-      <dl><dt>
-
-          <code><a href="calculate_diversity.html">calculate_diversity()</a></code> <code><a href="calculate_diversity.html">diversity()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Calculate TCR repertoire diversity metrics</dd>
-
-        <dt>
-
-          <code><a href="run_pairing.html">run_pairing()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Find TCRalpha/beta pairs from individual well read counts</dd>
-      </dl></div>
+      <dl></dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

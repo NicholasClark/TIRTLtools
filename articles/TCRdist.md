@@ -130,7 +130,7 @@ folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtoo
 data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", chain = "paired", verbose = FALSE)
 ```
 
-    ## Loading files from: /home/runner/work/_temp/Library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
+    ## Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
 
     ## Found 6 beta chain pseudo-bulk files.
 
@@ -138,7 +138,7 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loaded 6 files from 6 samples.
 
-    ## 1.7 seconds
+    ## 0.7 seconds
 
 ``` r
 data$meta %>%
@@ -189,24 +189,6 @@ takes about 30 seconds.
 ``` r
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 ```
-
-    ## Installing pyenv ...
-    ## Done! pyenv has been installed to '/home/runner/.local/share/r-reticulate/pyenv/bin/pyenv'.
-    ## Using Python: /home/runner/.pyenv/versions/3.14.0/bin/python3.14
-    ## Creating virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env' ...
-
-    ## + /home/runner/.pyenv/versions/3.14.0/bin/python3.14 -m venv /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env
-
-    ## Done!
-    ## Installing packages: pip, wheel, setuptools
-
-    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env/bin/python -m pip install --upgrade pip wheel setuptools
-
-    ## Installing packages: 'numpy==2.3.5', 'scipy==1.16.3', 'pandas==2.3.3'
-
-    ## + /home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env/bin/python -m pip install --upgrade --no-user 'numpy==2.3.5' 'scipy==1.16.3' 'pandas==2.3.3'
-
-    ## Virtual environment '/home/runner/.cache/R/basilisk/1.22.0/TIRTLtools/0.1.3/TIRTLtools_py_env' successfully created.
 
     ## Removed 0 TCRs with unknown V-segments (0%) from a total of 102,515 TCRs.
 

@@ -12,13 +12,13 @@
 ## Citation
 
 Clark N, Pogorelyy M (2025). *TIRTLtools: Analysis Tools for TIRTLseq
-Data*. R package version 0.1.3,
+Data*. R package version 0.1.4,
 <https://nicholasclark.github.io/TIRTLtools/>.
 
     @Manual{,
       title = {TIRTLtools: Analysis Tools for TIRTLseq Data},
       author = {Nicholas Clark and Mikhail Pogorelyy},
       year = {2025},
-      note = {R package version 0.1.3},
+      note = {R package version 0.1.4},
       url = {https://nicholasclark.github.io/TIRTLtools/},
     }

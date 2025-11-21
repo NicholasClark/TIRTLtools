@@ -16,7 +16,7 @@ Output for each sample consists of 3 files:
   data – a table of read count summary metrics for beta-chains across
   all wells on a plate
 
-## Loading TIRTLseq Data in R
+## Loading TIRTLseq Data
 
 The
 [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)

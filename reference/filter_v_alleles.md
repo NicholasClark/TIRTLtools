@@ -1,6 +1,14 @@
 # Remove TCRs with unknown V-segments
 
-**\[experimental\]**
+**\[experimental\]** This function removes TCR pairs with V-segments
+that are not found in
+[`params`](https://nicholasclark.github.io/TIRTLtools/reference/params.md).
+This is needed for pre-processing for
+[`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md)
+and is part of
+[`prep_for_tcrdist()`](https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.md),
+which is automatically run during
+[`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md).
 
 ## Usage
 
@@ -22,6 +30,10 @@ filter_v_alleles(df, params = NULL, verbose = TRUE)
 - verbose:
 
   whether to print number of TCRs removed
+
+## Value
+
+a paired TCR data frame with TCRs with unknown V-segments removed.
 
 ## See also
 

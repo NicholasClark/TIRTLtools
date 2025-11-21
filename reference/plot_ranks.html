@@ -23,7 +23,7 @@ plot_ranks() returns a line plot of TCR rank vs. read fraction for a given sampl
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@ plot_ranks() returns a line plot of TCR rank vs. read fraction for a given sampl
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_ranks</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  chain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"beta"</span><span class="op">)</span>,</span>
+<span>  chain <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"beta"</span>, <span class="st">"alpha"</span><span class="op">)</span>,</span>
 <span>  column <span class="op">=</span> <span class="st">"readFraction"</span>,</span>
 <span>  color_scheme <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -96,12 +96,35 @@ plot_ranks() returns a line plot of TCR rank vs. read fraction for a given sampl
     </div>
 
     <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>a TIRTLseqData object</p></dd>
+
+
+<dt id="arg-chain">chain<a class="anchor" aria-label="anchor" href="#arg-chain"></a></dt>
+<dd><p>the chain to plot, "alpha" or "beta" (default is "beta")</p></dd>
+
+
+<dt id="arg-column">column<a class="anchor" aria-label="anchor" href="#arg-column"></a></dt>
+<dd><p>the variable to plot (default is "readFraction")</p></dd>
+
+
+<dt id="arg-color-scheme">color_scheme<a class="anchor" aria-label="anchor" href="#arg-color-scheme"></a></dt>
+<dd><p>(optional) the color scheme for the plot</p></dd>
+
+</dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>a ggplot object with the rank plot</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other plotting:
-<code><a href="plot_clone_size_across_samples.html">plot_clone_size_across_samples()</a></code>,
-<code><a href="plot_clonotype_indices.html">plot_clonotype_indices()</a></code>,
-<code><a href="plot_clusters.html">plot_clusters()</a></code>,
-<code><a href="plot_diversity.html">plot_diversity()</a></code>,
+    <div class="dont-index"><p>Other qc:
+<code><a href="get_all_tcrs.html">get_all_tcrs()</a></code>,
+<code><a href="get_pair_stats.html">get_pair_stats()</a></code>,
+<code><a href="get_paired_by_read_fraction_range.html">get_paired_by_read_fraction_range()</a></code>,
 <code><a href="plot_n_reads.html">plot_n_reads()</a></code>,
 <code><a href="plot_num_partners.html">plot_num_partners()</a></code>,
 <code><a href="plot_paired.html">plot_paired()</a></code>,
@@ -110,9 +133,25 @@ plot_ranks() returns a line plot of TCR rank vs. read fraction for a given sampl
 <code><a href="plot_pairs_with_eachother.html">plot_pairs_with_eachother()</a></code>,
 <code><a href="plot_read_fraction_vs_pair_status.html">plot_read_fraction_vs_pair_status()</a></code>,
 <code><a href="plot_sample_overlap.html">plot_sample_overlap()</a></code>,
-<code><a href="plot_sample_vs_sample.html">plot_sample_vs_sample()</a></code></p></div>
+<code><a href="summarize_data.html">summarize_data()</a></code></p></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTL_seq_longitudinal"</span>, package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 beta chain pseudo-bulk files.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 paired chain files.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 18 files from 6 samples.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 12 seconds</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">plot_ranks</span><span class="op">(</span><span class="va">ts_data</span>, chain <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot_ranks-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

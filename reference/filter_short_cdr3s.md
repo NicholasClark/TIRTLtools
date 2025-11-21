@@ -1,6 +1,8 @@
 # Remove TCRs with short CDR3 loops
 
-**\[experimental\]**
+**\[experimental\]** This function removes TCR pairs where the CDR3
+amino acid segment is short. By defualt, it removes TCRs where
+CDR3-alpha or CDR3-beta is less than 6 amino acids long.
 
 ## Usage
 

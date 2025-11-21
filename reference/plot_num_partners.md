@@ -1,4 +1,4 @@
-# Stacked bar plot of the fraction of single-chains with different numbers of partners for each sample
+# Stacked bar plot of the fraction of alpha/beta chains with different numbers of partners
 
 **\[experimental\]** `plot_num_partners()` creates bar plots for alpha
 and beta chains showing how many partners they are paired with by the
@@ -28,7 +28,7 @@ plot_num_partners(
 - group_col:
 
   a column of the metadata to use to group multiple samples into one bar
-  plot
+  plot The default is NULL, which uses the sample id.
 
 - fraction:
 
@@ -60,12 +60,9 @@ plot_num_partners(
 
 ## Value
 
-Either a bar chart (ggplot object) with facets (sub-plots) for each
-sample or a list with two objects:
-
-`$plot` the plot referenced above
-
-`$data` the data used to create the plot
+A bar chart (ggplot object) with facets (sub-plots) for each sample. If
+`return_data` is TRUE, the data frame used to create the plot is
+returned instead.
 
 ## Details
 
@@ -77,11 +74,10 @@ that are paired with 1 chain, 2 chains, 3 chains, etc.
 
 [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md)
 
-Other plotting:
-[`plot_clone_size_across_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.md),
-[`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md),
-[`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md),
-[`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md),
+Other qc:
+[`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md),
+[`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md),
+[`get_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.md),
 [`plot_n_reads()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_n_reads.md),
 [`plot_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired.md),
 [`plot_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired_by_read_fraction_range.md),
@@ -90,11 +86,20 @@ Other plotting:
 [`plot_ranks()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_ranks.md),
 [`plot_read_fraction_vs_pair_status()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_read_fraction_vs_pair_status.md),
 [`plot_sample_overlap()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_overlap.md),
-[`plot_sample_vs_sample()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_vs_sample.md)
+[`summarize_data()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.md)
 
 ## Examples
 
 ``` r
-# example code
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 14.2 seconds
+
+plot_num_partners(ts_data)
+
 
 ```

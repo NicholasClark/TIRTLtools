@@ -23,7 +23,7 @@ An efficient, batched version of TCRdist that is compatible with both NVIDIA and
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,6 +118,10 @@ for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it 
 for every pair of TCRs in tcr1.</p></dd>
 
 
+<dt id="arg-remove-mait">remove_MAIT<a class="anchor" aria-label="anchor" href="#arg-remove-mait"></a></dt>
+<dd><p>whether to remove TCRs from MAIT cells (default is FALSE)</p></dd>
+
+
 <dt id="arg-params">params<a class="anchor" aria-label="anchor" href="#arg-params"></a></dt>
 <dd><p>(optional) a table of valid parameters for amino acids and va/vb segments.
 (default is NULL, which uses TIRTLtools::params)</p></dd>
@@ -156,6 +160,10 @@ chunk_size of over 7500 resulted in memory errors on some GPUs).</p></dd>
 With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)</p></dd>
 
 
+<dt id="arg-write-to-tsv">write_to_tsv<a class="anchor" aria-label="anchor" href="#arg-write-to-tsv"></a></dt>
+<dd><p>(optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)</p></dd>
+
+
 <dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
 <dd><p>(optional) the CPU or GPU backend to use (default "auto")</p></dd>
 
@@ -166,10 +174,6 @@ With large data it may be desirable to write the result to disk instead. (defaul
 
 <dt id="arg-shared">shared<a class="anchor" aria-label="anchor" href="#arg-shared"></a></dt>
 <dd><p>(optional) a TRUE/FALSE value for whether to "share" the Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.</p></dd>
-
-
-<dt id="arg-write-tsv">write_tsv<a class="anchor" aria-label="anchor" href="#arg-write-tsv"></a></dt>
-<dd><p>(optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -194,14 +198,10 @@ or <code>numpy</code> (no GPU) to calculate TCRdist efficiently.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="cluster_tcrs.html">cluster_tcrs()</a></code>, <code><a href="plot_clusters.html">plot_clusters()</a></code>, and <code><a href="identify_non_functional_seqs.html">identify_non_functional_seqs()</a></code></p>
-<p>Other repertoire_analysis:
+<p>Other tcr_similarity:
 <code><a href="TCRdist_cpp.html">TCRdist_cpp()</a></code>,
 <code><a href="cluster_tcrs.html">cluster_tcrs()</a></code>,
-<code><a href="get_all_div_metrics.html">get_all_div_metrics()</a></code>,
-<code><a href="get_all_tcrs.html">get_all_tcrs()</a></code>,
-<code><a href="get_pair_stats.html">get_pair_stats()</a></code>,
-<code><a href="get_paired_by_read_fraction_range.html">get_paired_by_read_fraction_range()</a></code>,
-<code><a href="summarize_data.html">summarize_data()</a></code></p></div>
+<code><a href="plot_clusters.html">plot_clusters()</a></code></p></div>
     </div>
 
     <div class="section level2">

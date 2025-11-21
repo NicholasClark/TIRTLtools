@@ -1,22 +1,28 @@
 # Remove TCRs with nonfunctional CDR3 amino acid sequences
 
-**\[experimental\]** This function
+**\[experimental\]** This function removes TCR pairs where the
+CDR3-alpha or beta segment does not make a functional protein, i.e.
+amino acid sequence contains a stop codon (\*) or a frameshift (\_).
 
 ## Usage
 
 ``` r
-filter_nonfunctional_TCRs(data, verbose = TRUE, version = "data.table")
+filter_nonfunctional_TCRs(data, verbose = TRUE)
 ```
 
 ## Arguments
 
 - data:
 
-  either a TIRTLseqData object or a data frame with paired TCRs
+  a TIRTLseqData object
 
 - verbose:
 
   whether to print number of TCRs removed
+
+## Value
+
+Returns a TIRTLseqData object with nonfunctional TCRs removed.
 
 ## See also
 

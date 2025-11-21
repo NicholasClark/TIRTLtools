@@ -103,14 +103,10 @@ V-segments that do not specify an allele (e.g. "TRAV1-2" instead of
 [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md),
 [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md)
 
-Other repertoire_analysis:
+Other tcr_similarity:
 [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md),
 [`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md),
-[`get_all_div_metrics()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_div_metrics.md),
-[`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md),
-[`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md),
-[`get_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.md),
-[`summarize_data()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.md)
+[`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md)
 
 ## Examples
 

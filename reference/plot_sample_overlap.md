@@ -1,7 +1,8 @@
 # Plot the overlap/agreement between samples (in terms of most frequent clones)
 
-**\[experimental\]** `plot_sample_overlap()` returns a heatmap showing
-the overlap in most frequent TCRs among pairs of samples in a dataset
+**\[experimental\]** This function returns a heatmap showing the overlap
+among the most frequent `n_seq` TCRs (default is n_seq=200) among pairs
+of samples in a dataset.
 
 ## Usage
 
@@ -56,26 +57,36 @@ sample_overlap(...)
 
   a title for the heatmap
 
+- return_data:
+
+  whether to return the data used for plotting (a matrix with the
+  overlap values) instead of a heatmap (default is FALSE)
+
+- cluster_rows:
+
+  whether to cluster the rows of the heatmap (default TRUE)
+
+- cluster_cols:
+
+  whether to cluster the columns of the heatmap (default TRUE)
+
 ## Value
 
 A heatmap with hierarchically clustered rows and columns showing the
 number of TCRs shared between each pair of samples, among their top N
 most frequent TCRs.
 
-## Details
-
-The function takes the top N most frequent TCRs found in each dataset
-(default 200) and compares their overlap between samples.
+If `return_data` is TRUE, a matrix of overlap values will be returned
+instead.
 
 ## See also
 
 [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
 
-Other plotting:
-[`plot_clone_size_across_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.md),
-[`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md),
-[`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md),
-[`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md),
+Other qc:
+[`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md),
+[`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md),
+[`get_paired_by_read_fraction_range()`](https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.md),
 [`plot_n_reads()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_n_reads.md),
 [`plot_num_partners()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_num_partners.md),
 [`plot_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired.md),
@@ -84,12 +95,23 @@ Other plotting:
 [`plot_pairs_with_eachother()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_pairs_with_eachother.md),
 [`plot_ranks()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_ranks.md),
 [`plot_read_fraction_vs_pair_status()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_read_fraction_vs_pair_status.md),
-[`plot_sample_vs_sample()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_vs_sample.md)
+[`summarize_data()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.md)
 
 ## Examples
 
 ``` r
-# example code
-# data = load_tirtlseq("your_directory/")
-# plot_sample_overlap(data, chain = "paired", n_seq=200)
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 12.1 seconds
+
+plot_sample_overlap(ts_data, chain = "beta")
+
+plot_sample_overlap(ts_data, chain = "alpha")
+
+plot_sample_overlap(ts_data, chain = "paired")
+
 ```

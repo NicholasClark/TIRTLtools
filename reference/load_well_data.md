@@ -21,5 +21,4 @@ load_well_data(
 Other well:
 [`filter_well_data()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_well_data.md),
 [`get_well_subset()`](https://nicholasclark.github.io/TIRTLtools/reference/get_well_subset.md),
-[`get_wells_from_edges()`](https://nicholasclark.github.io/TIRTLtools/reference/get_wells_from_edges.md),
-[`load_well_data_to_sparse_multi()`](https://nicholasclark.github.io/TIRTLtools/reference/load_well_data_to_sparse_multi.md)
+[`get_wells_from_edges()`](https://nicholasclark.github.io/TIRTLtools/reference/get_wells_from_edges.md)
