@@ -2,8 +2,7 @@
 % Please edit documentation in R/get_paired_by_read_fraction_range.R
 \name{get_paired_by_read_fraction_range}
 \alias{get_paired_by_read_fraction_range}
-\title{Calculate the number and fraction of single chains that were paired within
-different read fraction ranges}
+\title{Calculate the number and fraction of single chains that were paired by frequency}
 \usage{
 get_paired_by_read_fraction_range(
   data,
@@ -20,6 +19,19 @@ get_paired_by_read_fraction_range(
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function returns the number and fraction of single-chains (alpha or beta, default is beta)
+that were paired within different frequency ranges
+(default is \verb{[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]}) for each sample.
+You can use this function to get the data used in the plot for
+\code{\link{plot_paired_by_read_fraction_range}()}.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+get_paired_by_read_fraction_range(ts_data, chain = "beta")
+
+
 }
 \seealso{
 Other qc: 

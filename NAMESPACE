@@ -37,8 +37,8 @@ export(get_pair_stats) ## full docs
 export(plot_paired) ## full docs
 export(get_all_tcrs) ## docs 99% done, could use an example
 export(summarize_data)
-export(get_paired_by_read_fraction_range)
-export(plot_paired_by_read_fraction_range)
+export(get_paired_by_read_fraction_range) ## full docs
+export(plot_paired_by_read_fraction_range) ## full docs
 export(plot_paired_vs_rank)
 export(plot_pairs_with_eachother)
 export(plot_ranks)

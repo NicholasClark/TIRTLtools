@@ -1,8 +1,12 @@
-#' Calculate the number and fraction of single chains that were paired within
-#' different read fraction ranges
+#' Calculate the number and fraction of single chains that were paired by frequency
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function returns the number and fraction of single-chains (alpha or beta, default is beta)
+#' that were paired within different frequency ranges
+#' (default is ```[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]```) for each sample.
+#' You can use this function to get the data used in the plot for
+#' \code{\link{plot_paired_by_read_fraction_range}()}.
 #'
 #'
 #' @param data a TIRTLseqData object
@@ -10,6 +14,14 @@
 #' @param cutoffs a vector of cutoffs for the read fraction ranges
 #'
 #' @family qc
+#'
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' get_paired_by_read_fraction_range(ts_data, chain = "beta")
+#'
+#'
 get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1)) {
   chain = chain[1]
   df = lapply(1:length(data$data), function(i) {
