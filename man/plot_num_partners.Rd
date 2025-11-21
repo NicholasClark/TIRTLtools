@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_num_partners.R
 \name{plot_num_partners}
 \alias{plot_num_partners}
-\title{Stacked bar plot of the fraction of single-chains with different numbers of partners for each sample}
+\title{Stacked bar plot of the fraction of alpha/beta chains with different numbers of partners}
 \usage{
 plot_num_partners(
   data,
@@ -18,7 +18,8 @@ plot_num_partners(
 \arguments{
 \item{data}{a TIRTLseqData object}
 
-\item{group_col}{a column of the metadata to use to group multiple samples into one bar plot}
+\item{group_col}{a column of the metadata to use to group multiple samples into one bar plot
+The default is NULL, which uses the sample id.}
 
 \item{fraction}{whether to plot the fraction of chains or the total number of chains
 (default is TRUE, i.e. plot fractions)}

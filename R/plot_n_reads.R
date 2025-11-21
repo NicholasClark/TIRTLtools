@@ -2,6 +2,8 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function plots the total number of alpha and/or beta reads (default is both)
+#' for each sample.
 #'
 #'
 #' @param data a TIRTLseqData object
@@ -10,6 +12,13 @@
 #' @param color_scheme a color scheme for the plot
 #'
 #' @family qc
+#'
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' plot_n_reads(ts_data)
+#'
 #'
 plot_n_reads = function(
     data,

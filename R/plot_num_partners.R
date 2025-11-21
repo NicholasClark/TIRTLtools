@@ -1,4 +1,4 @@
-#' Stacked bar plot of the fraction of single-chains with different numbers of partners for each sample
+#' Stacked bar plot of the fraction of alpha/beta chains with different numbers of partners
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
@@ -12,6 +12,7 @@
 #'
 #' @param data a TIRTLseqData object
 #' @param group_col a column of the metadata to use to group multiple samples into one bar plot
+#' The default is NULL, which uses the sample id.
 #' @param fraction whether to plot the fraction of chains or the total number of chains
 #' (default is TRUE, i.e. plot fractions)
 #' @param include_non_functional whether to include chains with non-functional

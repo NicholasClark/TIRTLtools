@@ -22,6 +22,16 @@ plot_n_reads(
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function plots the total number of alpha and/or beta reads (default is both)
+for each sample.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+
+plot_n_reads(ts_data)
+
+
 }
 \seealso{
 Other qc: 

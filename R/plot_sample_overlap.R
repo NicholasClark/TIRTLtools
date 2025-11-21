@@ -3,12 +3,8 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' \code{plot_sample_overlap()} returns a heatmap showing the overlap in most frequent TCRs
-#' among pairs of samples in a dataset
-#'
-#' @details
-#' The function takes the top N most frequent TCRs found in each dataset (default 200) and
-#' compares their overlap between samples.
+#' This function returns a heatmap showing the overlap among the most frequent
+#' `n_seq` TCRs (default is n_seq=200) among pairs of samples in a dataset.
 #'
 #' @param data the dataset, an object loaded using the \code{\link{load_tirtlseq}()} function
 #' @param chain which chain to plot: either paired or alpha-/beta-pseudobulk. (default "paired")
@@ -17,19 +13,27 @@
 #' @param show_column_names whether to show column names for the heatmap (default FALSE)
 #' @param label_col a column of the metadata to use as labels for rows and columns (default "Sample", uses the sample_id)
 #' @param title a title for the heatmap
+#' @param return_data whether to return the data used for plotting (a matrix with the overlap values) instead of a heatmap (default is FALSE)
+#' @param cluster_rows whether to cluster the rows of the heatmap (default TRUE)
+#' @param cluster_cols whether to cluster the columns of the heatmap (default TRUE)
 #'
-#' @return
+#' @returns
 #' A heatmap with hierarchically clustered rows and columns showing the number of
 #' TCRs shared between each pair of samples, among their top N most frequent TCRs.
+#'
+#' If `return_data` is TRUE, a matrix of overlap values will be returned instead.
 #'
 #' @family qc
 #' @seealso \code{\link{load_tirtlseq}()}
 #'
 #' @export
 #' @examples
-#' # example code
-#' # data = load_tirtlseq("your_directory/")
-#' # plot_sample_overlap(data, chain = "paired", n_seq=200)
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#'
+#' plot_sample_overlap(ts_data, chain = "beta")
+#' plot_sample_overlap(ts_data, chain = "alpha")
+#' plot_sample_overlap(ts_data, chain = "paired")
 #'
 
 plot_sample_overlap = function(

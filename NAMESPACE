@@ -44,8 +44,8 @@ export(plot_pairs_with_eachother) ## full docs
 export(plot_ranks) ## full docs
 export(rank_plot) ## deprecated for plot_ranks()
 export(plot_read_fraction_vs_pair_status) ## full docs
-export(plot_sample_overlap)
-export(plot_n_reads)
+export(plot_sample_overlap) ## full docs
+export(plot_n_reads) ## full docs
 export(plot_num_partners)
 
 ## pairing
