@@ -16,7 +16,7 @@ prep_for_tcrdist(
 \item{df}{a data frame of paired TCRs}
 
 \item{params}{(optional) a data frame with permissible amino acids and V-segments.
-By default, the \code{\link{TIRTLtools::params}} data frame is used.}
+By default, the \code{\link{params}} data frame is used.}
 
 \item{remove_duplicate_tcrs}{(optional) whether or not to remove duplicate TCRs (default is FALSE, do not remove duplicates).}
 

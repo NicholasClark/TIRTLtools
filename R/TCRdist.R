@@ -16,6 +16,7 @@
 #' @param tcr2 (optional) another data frame of TCRs. If supplied, TCRdist will be calculated
 #' for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
 #' for every pair of TCRs in tcr1.
+#' @param remove_MAIT whether to remove TCRs from MAIT cells (default is FALSE)
 #' @param params (optional) a table of valid parameters for amino acids and va/vb segments.
 #' (default is NULL, which uses TIRTLtools::params)
 #' @param submat (optional) a substitution matrix with mismatch penalties for each
@@ -30,7 +31,7 @@
 #' @param only_lower_tri (optional) return one TCRdist value for each pair (like the lower triangle of a symmetric matrix). Default is TRUE.
 #' @param return_data (optional) whether to return the output result from the function.
 #' With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)
-#' @param write_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
+#' @param write_to_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
 #' @param backend (optional) the CPU or GPU backend to use (default "auto")
 #' @param fork (optional) a TRUE/FALSE value for whether to "fork" a new Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.
 #' @param shared (optional) a TRUE/FALSE value for whether to "share" the Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.

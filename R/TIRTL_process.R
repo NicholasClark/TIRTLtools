@@ -9,6 +9,7 @@
 #' @param data a TIRTLseqData object
 #' @param clean (optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 #' excess pairs for individual alpha and beta chains (default is FALSE).
+#' @param remove_nonfunctional whether to remove non-functional TCR chains (default is FALSE)
 #'
 #' @return a TIRTLseqData object with annotated and (optionally) cleaned data
 #'

@@ -18,7 +18,7 @@ a paired TCR data frame with TCRs with unknown V-segments removed.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function removes TCR pairs with V-segments that are not found in \code{\link{TIRTLtools::params}()}.
+This function removes TCR pairs with V-segments that are not found in \code{\link{params}}.
 This is needed for pre-processing for \code{\link{TCRdist}()} and is part of \code{\link{prep_for_tcrdist}()},
 which is automatically run during \code{\link{TCRdist}()}.
 }

@@ -9,7 +9,7 @@
 #' @param folder_path the path of the folder with well-level data
 #' @param folder_out the path of the folder to write results to. The function will create the folder if it does not exist.
 #' @param prefix a prefix for the output file names
-#' @param wellfilter_thres wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
+#' @param well_filter_thres wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
 #' The default value is 0.75
 #' @param min_reads minimum number of reads a chain must have in a well to be considered observed
 #' (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)

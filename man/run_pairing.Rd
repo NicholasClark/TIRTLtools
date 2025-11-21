@@ -31,6 +31,9 @@ run_pairing(
 
 \item{prefix}{a prefix for the output file names}
 
+\item{well_filter_thres}{wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
+The default value is 0.75}
+
 \item{min_reads}{minimum number of reads a chain must have in a well to be considered observed
 (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)}
 
@@ -58,9 +61,6 @@ named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha
 \item{fork}{whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)}
 
 \item{shared}{whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)}
-
-\item{wellfilter_thres}{wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
-The default value is 0.75}
 }
 \value{
 A data frame with the TCR-alpha/TCR-beta pairs.

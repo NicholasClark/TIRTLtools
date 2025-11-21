@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' This function removes TCR pairs with V-segments that are not found in \code{\link{TIRTLtools::params}()}.
+#' This function removes TCR pairs with V-segments that are not found in \code{\link{params}}.
 #' This is needed for pre-processing for \code{\link{TCRdist}()} and is part of \code{\link{prep_for_tcrdist}()},
 #' which is automatically run during \code{\link{TCRdist}()}.
 #'

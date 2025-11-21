@@ -11,6 +11,8 @@ TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 
 \item{clean}{(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 excess pairs for individual alpha and beta chains (default is FALSE).}
+
+\item{remove_nonfunctional}{whether to remove non-functional TCR chains (default is FALSE)}
 }
 \value{
 a TIRTLseqData object with annotated and (optionally) cleaned data
