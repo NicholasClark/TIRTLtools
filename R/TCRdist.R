@@ -54,10 +54,27 @@
 #'
 #' @export
 #' @examples
-#' # example code
-#' # data = load_tirtlseq("your_directory/")
-#' # df = get_all_tcrs(data, chain="paired", remove_duplicates = TRUE)
-#' # out = TCRdist(df, tcrdist_cutoff = 90)
+#' folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
+#'   package = "TIRTLtools")
+#' sjtrc = load_tirtlseq(folder,
+#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
+#'   chain = "paired", verbose = FALSE)
+#' df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+#' result = TCRdist(df, tcrdist_cutoff = 90)
+#' edge_df = result[['TCRdist_df']] %>%
+#'   data.table::as.data.table() ### table of TCRdist values <= cutoff
+#' node_df = result[['tcr1']] %>%
+#'   data.table::as.data.table() ### table of input data with indices
+#'
+#' edge_df ## sparse 3-column output: node1, node2, TCRdist
+#' ## note that indices start at 0 and are found in node_df$tcr_index
+#'
+#' node_df %>%
+#'   select(tcr_index, everything()) %>%
+#'   mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+#'          beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = ""))
+#'
+#'
 
 TCRdist = function(
     tcr1,

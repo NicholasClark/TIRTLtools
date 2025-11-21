@@ -20,7 +20,7 @@
 #' @param color_scheme (optional) a color scheme to use
 #'
 #' @return
-#' (default) Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
+#' Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
 #' If return_data is TRUE, the data frame used to create the plot is returned instead.
 #'
 #' @family diversity
@@ -28,7 +28,13 @@
 #'
 #' @export
 #' @examples
-#' # example code
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+#'   package = "TIRTLtools")
+#' data = load_tirtlseq(folder,
+#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
+#'   verbose = FALSE)
+#'
+#' plot_clonotype_indices(data, chain = "beta")
 #'
 #'
 

@@ -36,7 +36,7 @@ to group samples}
 \item{color_scheme}{(optional) a color scheme to use}
 }
 \value{
-(default) Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
+Returns a stacked bar chart of relative frequencies of most-frequent clonotypes.
 If return_data is TRUE, the data frame used to create the plot is returned instead.
 }
 \description{
@@ -46,7 +46,13 @@ reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
 }
 \examples{
-# example code
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+data = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+
+plot_clonotype_indices(data, chain = "beta")
 
 
 }

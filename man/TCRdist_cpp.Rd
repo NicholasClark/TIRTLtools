@@ -31,6 +31,29 @@ run in parallel across available CPU cores.
 This version of TCRdist is currently less feature-rich than \code{\link{TCRdist}()} and returns
 a dense matrix as output. It does not yet allow for sparse output or writing output directly to a file.
 }
+\examples{
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  chain = "paired", verbose = FALSE)
+df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+
+result = TCRdist_cpp(df)
+
+mat = result$matrix
+node_df = result$tcr1
+
+mat[1:5,1:5]
+## note: TCRdist is symmetric. Returned matrix contains only lower-triangular values
+
+node_df \%>\%
+  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
+         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) \%>\%
+  data.table::as.data.table()
+
+
+}
 \seealso{
 Other tcr_similarity: 
 \code{\link{TCRdist}()},

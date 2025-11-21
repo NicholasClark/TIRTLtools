@@ -24,19 +24,21 @@
 #' @param color_scheme the color scheme to use for the plot
 #'
 #' @return
-#' Either a bar chart (ggplot object) with facets (sub-plots) for each sample or
-#' a list with two objects:
-#'
-#' \code{$plot} the plot referenced above
-#'
-#' \code{$data} the data used to create the plot
+#' A bar chart (ggplot object) with facets (sub-plots) for each sample.
+#' If `return_data` is TRUE, the data frame used to create the plot is returned instead.
 #'
 #' @family qc
 #' @seealso \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export
 #' @examples
-#' # example code
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+#'   package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder,
+#'   meta_columns = c("marker","timepoint", "version"),
+#'   sep = "_", verbose = FALSE)
+#'
+#' plot_num_partners(ts_data)
 #'
 #'
 

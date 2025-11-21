@@ -72,9 +72,14 @@ V-segments that do not specify an allele (e.g. "TRAV1-2" instead of "TRAV1-2*01"
 will be assigned to the "*01" allele.
 }
 \examples{
-# example code
-# paired = load_tirtlseq("your_directory/")
-# obj = cluster_tcrs(paired)
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  chain = "paired", verbose = FALSE)
+df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+
+result = cluster_tcrs(df)
 
 }
 \seealso{

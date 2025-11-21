@@ -29,7 +29,7 @@ useDynLib(TIRTLtools, .registration = TRUE)
 ## data_wrangling
 export(add_metadata) # docs 99% done, could use an example
 export(filter_dataset) # docs 99% done, could use real code in example
-export(load_tirtlseq) # docs 99% done, could use real code in example
+export(load_tirtlseq) # full docs
 export(reorder_samples) # docs 99% done, could use examples
 
 ## qc and data summary
@@ -46,7 +46,7 @@ export(rank_plot) ## deprecated for plot_ranks()
 export(plot_read_fraction_vs_pair_status) ## full docs
 export(plot_sample_overlap) ## full docs
 export(plot_n_reads) ## full docs
-export(plot_num_partners)
+export(plot_num_partners) ## full docs
 
 ## pairing
 export(run_pairing) # docs 90% done - needs details, examples
@@ -70,24 +70,24 @@ export(remove_duplicates) ## docs 99% done, could use an example -- maybe hide, 
 ## tcr_similarity
 #export(_TIRTLtools_tcrdist_cpp)
 #export(_TIRTLtools_tcrdist_parallel)
-export(TCRdist) ## docs 99% done, could use an example
+export(TCRdist) ## full docs
 #export(tcrdist_cpp)
-export(TCRdist_cpp) ## docs 99% done, could use an example
+export(TCRdist_cpp) ## full docs
 #export(tcrdist_parallel)
 export(cluster_tcrs) ## docs 99% done, could use a real example
 export(plot_clusters)
 
 
 ## longitudinal
-export(plot_clone_size_across_samples)
-export(plot_sample_vs_sample)
+export(plot_clone_size_across_samples) ## full docs
+export(plot_sample_vs_sample) ## full docs
 
 ## diversity
-export(calculate_diversity)
+export(calculate_diversity) ## full docs
 export(diversity) ## deprecated for calculate_diversity()
-export(plot_diversity)
+export(plot_diversity) ## full docs
 export(get_all_div_metrics) ## full docs
-export(plot_clonotype_indices)
+export(plot_clonotype_indices) ## full docs
 
 ## stitchr (external tools)
 export(create_thimble_df)

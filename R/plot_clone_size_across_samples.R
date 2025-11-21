@@ -2,6 +2,10 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' This function creates a line plot of clone read fraction for the specified clones
+#' across multiple samples. The function can color the lines by groups of clones.
+#' If `sum_readFraction` is TRUE, the read fraction for each group will be summed
+#' and presented in one line.
 #'
 #'
 #' @param data a TIRTLseqData object
@@ -16,8 +20,27 @@
 #' @param label_zero whether to label zero on the y-axis (default is FALSE)
 #' @param show_legend whether to show the legend (default is TRUE)
 #' @param log_scale (optional) if TRUE, use log-scale for the y-axis (default is FALSE)
+#' @param x_var a column of metadata for grouping samples in the plot. The default is NULL,
+#' which considers each sample its own group.
+#'
+#' @returns a ggplot object with a line plot of clone read fractions across samples.
 #'
 #' @family longitudinal
+#' @examples
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+#'   package = "TIRTLtools")
+#' sjtrc = load_tirtlseq(folder,
+#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
+#'   verbose = FALSE)
+#'
+#' top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>%
+#'   head(5) %>% extract2("targetSequences") %>% as.character()
+#' top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>%
+#'   head(5) %>% extract2("targetSequences") %>% as.character()
+#'
+#' plot_clone_size_across_samples(sjtrc,
+#'   clones = c(top_clones1, top_clones2), chain = "beta")
+#'
 #'
 plot_clone_size_across_samples = function(
     data,

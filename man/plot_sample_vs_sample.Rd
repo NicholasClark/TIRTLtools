@@ -10,14 +10,14 @@ plot_sample_vs_sample(
   chain = c("beta", "alpha"),
   log2fc_cutoff = 3,
   sem_cutoff = 2.5,
-  smooth_sem = c("window", "none"),
-  window_size = 30,
-  end_window_size = 5,
   pseudo1 = 1e-06,
   pseudo2 = 1e-06,
   labelx = "Frequency on timepoint 1",
   labely = "Frequency on timepoint 2",
-  return_data = FALSE
+  return_data = FALSE,
+  smooth_sem = c("window", "none"),
+  window_size = 30,
+  end_window_size = 5
 )
 }
 \arguments{
@@ -25,22 +25,51 @@ plot_sample_vs_sample(
 
 \item{data2}{a list of three data frames (alpha, beta, and paired) for one sample}
 
-\item{log2_cutoff}{the log2 fold-change cutoff to call a TCR up- or down-regulated (default 1.5)}
+\item{chain}{which chain to plot, alpha or beta (default is beta)}
+
+\item{log2fc_cutoff}{the log2 fold-change cutoff to call a TCR up- or down-regulated (default 1.5)}
+
+\item{sem_cutoff}{the standard-error of the mean (SEM) to use as a cutoff in calling
+clones expanded or contracted (default is 2.5)}
+
+\item{pseudo1}{the pseudocount to add to read frequency of the first sample (default is \code{10^-6}).}
+
+\item{pseudo2}{the pseudocount to add to read frequency of the second sample (default is \code{10^-6}).}
+
+\item{labelx}{the label for the x-axis}
+
+\item{labely}{the label for the y-axis}
+
+\item{return_data}{if TRUE, return the data frame used to make the plot rather than the plot itself.}
+
+\item{smooth_sem}{if "window", then SEM values for clones will be smoothed by comparing to
+other clones within a window of similar frequencies. Otherwise, no smoothing. (default is "window")}
+
+\item{window_size}{the number of similar clones to include within a window.}
+
+\item{end_window_size}{the number of clones to include in a window at the ends (most and least frequent)}
 }
 \value{
 A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each
 TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
+
+If \code{return_data} is TRUE, the data frame used to make the plot is returned instead of the plot.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-\code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples
-}
-\details{
+\code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples.
+
 The function labels each TCR as up-regulated, down-regulated, or stable, based on the
 log2 fold-change cutoff supplied (default 1.5).
 }
 \examples{
-# example code
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+
+plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
 
 
 }

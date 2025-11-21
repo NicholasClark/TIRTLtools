@@ -64,9 +64,10 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
-#' paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
-#' }
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+#'   package = "TIRTLtools")
+#' ts_data = load_tirtlseq(folder,
+#'   meta_columns = c("marker", "timepoint", "version"), sep = "_")
 #'
 load_tirtlseq = function(
     directory,

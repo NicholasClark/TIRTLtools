@@ -58,8 +58,7 @@ A list with two objects:
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 The \code{plot_diversity()} plots the requested clonal diversity metric
-}
-\details{
+
 This function can plot a variety of clonal diversity metrics for a dataset (richness,
 Simpson diversity index, Shannon-Wiener index, etc.). See \code{\link{get_all_div_metrics}()} for
 all available options. By default it return a barplot with one bar for each sample in
@@ -68,10 +67,14 @@ bar heights will reflect the average diversity metric across the group, with err
 showing the standard deviation.
 }
 \examples{
-# example code
-# data = load_tirtlseq("your_directory/")
-# div = diversity(data)
-# plot_diversity(div, metric = "richness")
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+
+div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+plot_diversity(div, metric = "d50")
 
 }
 \seealso{

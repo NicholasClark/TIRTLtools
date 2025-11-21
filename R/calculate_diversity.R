@@ -81,9 +81,16 @@
 #'
 #' @export
 #' @examples
-#' # example here
-#' # data = load_tirtlseq("your_directory/")
-#' # div = calculate_diversity(data)
+#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+#'   package = "TIRTLtools")
+#' sjtrc = load_tirtlseq(folder,
+#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
+#'   verbose = FALSE)
+#'
+#' div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+#' plot_diversity(div, metric = "d50")
+#'
+#'
 
 calculate_diversity = function(
   data,

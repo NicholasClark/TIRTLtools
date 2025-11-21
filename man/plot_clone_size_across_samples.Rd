@@ -42,9 +42,36 @@ If FALSE, plot each clone with a separate line.}
 \item{show_legend}{whether to show the legend (default is TRUE)}
 
 \item{log_scale}{(optional) if TRUE, use log-scale for the y-axis (default is FALSE)}
+
+\item{x_var}{a column of metadata for grouping samples in the plot. The default is NULL,
+which considers each sample its own group.}
+}
+\value{
+a ggplot object with a line plot of clone read fractions across samples.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function creates a line plot of clone read fraction for the specified clones
+across multiple samples. The function can color the lines by groups of clones.
+If \code{sum_readFraction} is TRUE, the read fraction for each group will be summed
+and presented in one line.
+}
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+
+top_clones1 = sjtrc$data$cd8_tp1_v2$beta \%>\% arrange(desc(readFraction)) \%>\%
+  head(5) \%>\% extract2("targetSequences") \%>\% as.character()
+top_clones2 = sjtrc$data$cd8_tp2_v2$beta \%>\% arrange(desc(readFraction)) \%>\%
+  head(5) \%>\% extract2("targetSequences") \%>\% as.character()
+
+plot_clone_size_across_samples(sjtrc,
+  clones = c(top_clones1, top_clones2), chain = "beta")
+
+
 }
 \seealso{
 Other longitudinal: 
