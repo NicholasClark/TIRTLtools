@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_sample_overlap.R, R/sample_overlap.R
 \name{plot_sample_overlap}
 \alias{plot_sample_overlap}
-\alias{diversity}
+\alias{sample_overlap}
 \title{Plot the overlap/agreement between samples (in terms of most frequent clones)}
 \usage{
 plot_sample_overlap(

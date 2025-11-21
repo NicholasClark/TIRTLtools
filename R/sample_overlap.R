@@ -1,7 +1,7 @@
 #' @rdname plot_sample_overlap
 #' @export
 #' @usage sample_overlap(...)
-diversity <- function(...) {
+sample_overlap <- function(...) {
   .Deprecated("plot_sample_overlap")
   plot_sample_overlap(...)
 }
