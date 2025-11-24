@@ -156,11 +156,11 @@ folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   chain = "paired", verbose = FALSE)
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...
+#> Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTLseq_minimal...
 #> Found 2 beta chain pseudo-bulk files.
 #> Found 2 paired chain files.
 #> Loaded 2 files from 2 samples.
-#> 1 seconds
+#> 0.2 seconds
 df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
 result = TCRdist(df, tcrdist_cutoff = 90)
 #> Removed 384 TCRs with unknown V-segments (1.2%) from a total of 32,164 TCRs.
@@ -192,109 +192,6 @@ node_df %>%
   select(tcr_index, everything()) %>%
   mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
          beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = ""))
-#>        tcr_index    wi    wj   wij               alpha_nuc
-#>            <num> <int> <int> <int>                  <char>
-#>     1:         0     0     0     3 TGTGTGAGAGCCGGAGGCTT...
-#>     2:         1     0     0     3 TGTGCAATGAGAAATCGTAG...
-#>     3:         2     0     0     3 TGTGCTCTGAGCCATACTGG...
-#>     4:         3     0     0     3 TGTGCTCTAATCCGCAATTC...
-#>     5:         4     0     0     3 TGTGCCGTGAAGGGCCTCGG...
-#>    ---                                                    
-#> 18440:     18439    76     0    41 TGTGCTGTGAGTGAGGGCTA...
-#> 18441:     18440    78     0    18 TGTGCTGTGTTGGATAGCAA...
-#> 18442:     18441    85     1    29 TGTGCTGCTATGGATAGCAA...
-#> 18443:     18442    95     0    36 TGCATCCTGAGAGAAGGGGG...
-#> 18444:     18443    97     0    51 TGTGCAGAGAGGGGTGGAGG...
-#>                       beta_nuc    wa    wb
-#>                         <char> <int> <int>
-#>     1: TGCAGTGCTACATCTCGGAG...     3     3
-#>     2: TGTGCCAGCAGTGAGACAGG...     3     3
-#>     3: TGTGCCAGCAGCCATGATGG...     3     3
-#>     4: TGTGCCAGCAGCTCCGGCGA...     3     3
-#>     5: TGTGCCAGCAAACACATCCG...     3     3
-#>    ---                                    
-#> 18440: TGCGCCAGCAGCTTGGGACA...   117    41
-#> 18441: TGTGCCAGCAGCCAAGAAGG...    96    18
-#> 18442: TGCAGTGCTAAACTAGCGGG...   114    30
-#> 18443: TGTGCCAGCAGCTTATGGGG...   131    36
-#> 18444: TGCGCCAGCAGCTTGCGGGA...   148    51
-#>                                                                                                     alpha_beta
-#>                                                                                                         <char>
-#>     1:                            TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT_TGCAGTGCTACATCTCGGAGAGAGCCCTACGAGCAGTACTTC
-#>     2:                   TGTGCAATGAGAAATCGTAGTTCCGGGTATGCACTCAACTTC_TGTGCCAGCAGTGAGACAGGGCTCTCCTACGAGCAGTACTTC
-#>     3:                         TGTGCTCTGAGCCATACTGGAGGCTTCAAAACTATCTTT_TGTGCCAGCAGCCATGATGGCTCCTACGAGCAGTACTTC
-#>     4:             TGTGCTCTAATCCGCAATTCAGGAAACACACCTCTTGTCTTT_TGTGCCAGCAGCTCCGGCGAAAGAAGGTCCTACAATGAGCAGTTCTTC
-#>     5: TGTGCCGTGAAGGGCCTCGGAGGAAGCCAAGGAAATCTCATCTTT_TGTGCCAGCAAACACATCCGGGACAGGGGGGGGTGGAGCAATCAGCCCCAGCATTTT
-#>    ---                                                                                                        
-#> 18440:                         TGTGCTGTGAGTGAGGGCTACAAGCTCAGCTTT_TGCGCCAGCAGCTTGGGACAGGGAGGCAACCAGCCCCAGCATTTT
-#> 18441:                   TGTGCTGTGTTGGATAGCAACTATCAGTTAATCTGG_TGTGCCAGCAGCCAAGAAGGCGGGGGGGACTACAATGAGCAGTTCTTC
-#> 18442:                TGTGCTGCTATGGATAGCAACTATCAGTTAATCTGG_TGCAGTGCTAAACTAGCGGGGGGAATAAGGATCCAAGAGACCCAGTACTTC
-#> 18443:                      TGCATCCTGAGAGAAGGGGGGAGTGACATGCGCTTT_TGTGCCAGCAGCTTATGGGGGGGGGGGGACACTGAAGCTTTCTTT
-#> 18444:                      TGTGCAGAGAGGGGTGGAGGCTTCAAAACTATCTTT_TGCGCCAGCAGCTTGCGGGACCAGCCCTACAACGAGCAGTTCTTC
-#>         method     r    ts  pval pval_adj loss_a_frac loss_b_frac     score
-#>         <char> <num> <num> <num>    <num>       <num>       <num>     <num>
-#>     1: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880
-#>     2: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880
-#>     3: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880
-#>     4: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880
-#>     5: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880
-#>    ---                                                                     
-#> 18440: madhype    NA    NA    NA       NA 0.000000000   0.6495726 4.6040515
-#> 18441: madhype    NA    NA    NA       NA 0.000000000   0.8125000 0.1574663
-#> 18442: madhype    NA    NA    NA       NA 0.008695652   0.7391304 0.5224540
-#> 18443: madhype    NA    NA    NA       NA 0.000000000   0.7251908 1.0736280
-#> 18444: madhype    NA    NA    NA       NA 0.000000000   0.6554054 1.1133147
-#>                  cdr3a            va     ja               cdr3b          vb
-#>                 <char>        <char> <char>              <char>      <char>
-#>     1:     CVRAGGFKTIF   TRAV12-1*01  TRAJ9      CSATSRREPYEQYF TRBV20-1*01
-#>     2:  CAMRNRSSGYALNF TRAV14/DV4*01 TRAJ41      CASSETGLSYEQYF TRBV25-1*01
-#>     3:   CALSHTGGFKTIF    TRAV9-2*01  TRAJ9       CASSHDGSYEQYF  TRBV3-1*01
-#>     4:  CALIRNSGNTPLVF     TRAV16*01 TRAJ29    CASSSGERRSYNEQFF  TRBV5-4*01
-#>     5: CAVKGLGGSQGNLIF   TRAV12-2*01 TRAJ42 CASKHIRDRGGWSNQPQHF   TRBV28*01
-#>    ---                                                                     
-#> 18440:     CAVSEGYKLSF    TRAV8-6*01 TRAJ20     CASSLGQGGNQPQHF  TRBV5-1*01
-#> 18441:    CAVLDSNYQLIW    TRAV1-2*01 TRAJ33    CASSQEGGGDYNEQFF  TRBV4-2*01
-#> 18442:    CAAMDSNYQLIW    TRAV1-2*01 TRAJ33   CSAKLAGGIRIQETQYF TRBV20-1*01
-#> 18443:    CILREGGSDMRF   TRAV26-2*01 TRAJ43     CASSLWGGGDTEAFF  TRBV7-2*01
-#> 18444:    CAERGGGFKTIF      TRAV5*01  TRAJ9     CASSLRDQPYNEQFF  TRBV5-1*01
-#>             jb  sample_id marker timepoint version
-#>         <char>     <char> <char>    <char>  <char>
-#>     1: TRBJ2-7 cd8_tp1_v2    cd8       tp1      v2
-#>     2: TRBJ2-7 cd8_tp1_v2    cd8       tp1      v2
-#>     3: TRBJ2-7 cd8_tp1_v2    cd8       tp1      v2
-#>     4: TRBJ2-1 cd8_tp1_v2    cd8       tp1      v2
-#>     5: TRBJ1-5 cd8_tp1_v2    cd8       tp1      v2
-#>    ---                                            
-#> 18440: TRBJ1-5 cd8_tp2_v2    cd8       tp2      v2
-#> 18441: TRBJ2-1 cd8_tp2_v2    cd8       tp2      v2
-#> 18442: TRBJ2-5 cd8_tp2_v2    cd8       tp2      v2
-#> 18443: TRBJ1-1 cd8_tp2_v2    cd8       tp2      v2
-#> 18444: TRBJ2-1 cd8_tp2_v2    cd8       tp2      v2
-#>                                             label    va_orig  vb_orig
-#>                                            <char>     <char>   <char>
-#>     1: marker: cd8 | timepoint: tp1 | version: v2   TRAV12-1 TRBV20-1
-#>     2: marker: cd8 | timepoint: tp1 | version: v2 TRAV14/DV4 TRBV25-1
-#>     3: marker: cd8 | timepoint: tp1 | version: v2    TRAV9-2  TRBV3-1
-#>     4: marker: cd8 | timepoint: tp1 | version: v2     TRAV16  TRBV5-4
-#>     5: marker: cd8 | timepoint: tp1 | version: v2   TRAV12-2   TRBV28
-#>    ---                                                               
-#> 18440: marker: cd8 | timepoint: tp2 | version: v2    TRAV8-6  TRBV5-1
-#> 18441: marker: cd8 | timepoint: tp2 | version: v2    TRAV1-2  TRBV4-2
-#> 18442: marker: cd8 | timepoint: tp2 | version: v2    TRAV1-2 TRBV20-1
-#> 18443: marker: cd8 | timepoint: tp2 | version: v2   TRAV26-2  TRBV7-2
-#> 18444: marker: cd8 | timepoint: tp2 | version: v2      TRAV5  TRBV5-1
-#>        is_functional
-#>               <lgcl>
-#>     1:          TRUE
-#>     2:          TRUE
-#>     3:          TRUE
-#>     4:          TRUE
-#>     5:          TRUE
-#>    ---              
-#> 18440:          TRUE
-#> 18441:          TRUE
-#> 18442:          TRUE
-#> 18443:          TRUE
-#> 18444:          TRUE
+#> Error in mutate(., alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...",     sep = ""), beta_nuc = paste(substr(beta_nuc, 0, 20), "...",     sep = "")): could not find function "mutate"
 
 ```

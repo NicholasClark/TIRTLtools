@@ -196,9 +196,9 @@ ts_data$data$cd8_tp1_v2$beta %>%
 We use computational algorithms based on occurrence patterns ([MAD-HYPE
 algorithm](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649))
 or correlation of read fractions
-([T-SHELL](https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2))
-of TCR chains across all wells to identify alpha and beta chains present
-in the same clone.
+([T-SHELL](http://doi.org/10.1038/s41592-025-02907-9)) of TCR chains
+across all wells to identify alpha and beta chains present in the same
+clone.
 
 In general, the MAD-HYPE method works well for moderately frequent
 clones, but fails for the most frequent clones if they are found in all

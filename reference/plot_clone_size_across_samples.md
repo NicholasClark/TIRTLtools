@@ -95,16 +95,20 @@ folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   verbose = FALSE)
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 12.8 seconds
+#> 12.5 seconds
 
-top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>%
-  head(5) %>% extract2("targetSequences") %>% as.character()
-top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>%
-  head(5) %>% extract2("targetSequences") %>% as.character()
+top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>%
+  dplyr::arrange(desc(readFraction)) %>%
+  head(5) %>%
+  magrittr::extract2("targetSequences") %>% as.character()
+top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>%
+  dplyr::arrange(desc(readFraction)) %>%
+  head(5) %>%
+  magrittr::extract2("targetSequences") %>% as.character()
 
 plot_clone_size_across_samples(sjtrc,
   clones = c(top_clones1, top_clones2), chain = "beta")

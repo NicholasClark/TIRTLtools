@@ -109,6 +109,14 @@
 </div>
 <p><strong><em>Package is in active development and may change frequently.</em></strong></p>
 <div class="section level2">
+<h2 id="news">News<a class="anchor" aria-label="anchor" href="#news"></a>
+</h2>
+<p>Nov. 24th 2025</p>
+<ul>
+<li>The TIRTLseq assay paper has been published in Nature Methods: <br><a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link"><strong>TIRTL-seq: deep, quantitative and affordable paired TCR repertoire sequencing</strong></a>.</li>
+</ul>
+</div>
+<div class="section level2">
 <h2 id="documentation-and-usage-instructions">Documentation and usage instructions<a class="anchor" aria-label="anchor" href="#documentation-and-usage-instructions"></a>
 </h2>
 <ul>
@@ -120,7 +128,7 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>TIRTLtools</code> is a software package for analyzing T-cell receptor (TCR) repertoires created using <strong>TIRTL-seq</strong> (<strong>T</strong>hroughput-<strong>I</strong>ntensive <strong>R</strong>apid <strong>T</strong>CR <strong>L</strong>ibrary <strong>seq</strong>uencing) <a href="https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2" class="external-link">(Pogorelyy and Kirk et al., bioRxiv 2024)</a>. We provide functions for analysis of <strong>paired TCR repertoires</strong> as well as <strong>single-chain bulk TCR-sequencing data</strong>.</p>
+<p><code>TIRTLtools</code> is a software package for analyzing T-cell receptor (TCR) repertoires created using <strong>TIRTL-seq</strong> (<strong>T</strong>hroughput-<strong>I</strong>ntensive <strong>R</strong>apid <strong>T</strong>CR <strong>L</strong>ibrary <strong>seq</strong>uencing) <a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link">(Pogorelyy and Kirk et al., Nature Methods 2025)</a>. We provide functions for analysis of <strong>paired TCR repertoires</strong> as well as <strong>single-chain bulk TCR-sequencing data</strong>.</p>
 <p>In addition to various <strong>analysis and plotting functions</strong>, we provide an <strong>efficient batched GPU implementation of TCRdist</strong> (<a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., Nature 2017</a>) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).</p>
 </div>
 <div class="section level2">
@@ -133,7 +141,7 @@
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>For details on our pairing pipeline, see the <a href="https://www.biorxiv.org/content/10.1101/2024.09.16.613345v2" class="external-link">TIRTLseq preprint (Pogorelyy and Kirk et al.)</a> and our <a href="https://github.com/pogorely/TIRTL" class="external-link">github repository</a>.</p>
+<p>For details on our pairing pipeline, see the <a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link">TIRTLseq paper (Pogorelyy and Kirk et al., Nature Methods 2025)</a> and our <a href="https://github.com/pogorely/TIRTL" class="external-link">github repository</a>.</p>
 <p>For details on the MAD-HYPE algorithm, see <a href="https://academic.oup.com/bioinformatics/article/35/8/1318/5095649" class="external-link">Holec and Berleant et al., 2019</a>.</p>
 <p>For details on MiXCR, see their <a href="https://mixcr.com/" class="external-link">website</a> and publications in <a href="https://www.nature.com/articles/nmeth.3364" class="external-link">Nature Methods (2015)</a> and <a href="https://www.nature.com/articles/nbt.3979" class="external-link">Nature Biotechnology (2017)</a>.</p>
 <p>For details on TCRdist, see <a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., Nature 2017</a></p>

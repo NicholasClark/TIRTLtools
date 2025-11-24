@@ -133,7 +133,7 @@ folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
   package = "TIRTLtools")
 ts_data = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_")
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
 #> Found 6 alpha chain pseudo-bulk files.
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
@@ -162,5 +162,5 @@ ts_data = load_tirtlseq(folder,
 #> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp3_v2_pseudobulk_TRB.tsv...
 #> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp3_v2_TIRTLoutput.tsv...
 #> Loaded 18 files from 6 samples.
-#> 11.9 seconds
+#> 15.9 seconds
 ```

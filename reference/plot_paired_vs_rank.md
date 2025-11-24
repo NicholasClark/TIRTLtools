@@ -69,11 +69,11 @@ Other qc:
 ``` r
 folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
 ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 12 seconds
+#> 13.1 seconds
 
 plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_not_paired", chain = "both", n_max = 100)
 

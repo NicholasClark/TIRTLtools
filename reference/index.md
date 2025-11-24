@@ -130,7 +130,7 @@
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads
