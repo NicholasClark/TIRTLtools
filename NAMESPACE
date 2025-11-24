@@ -28,9 +28,9 @@ useDynLib(TIRTLtools, .registration = TRUE)
 
 ## data_wrangling
 export(add_metadata) # docs 99% done, could use an example
-export(filter_dataset) # docs 99% done, could use real code in example
+export(filter_dataset) # full docs
 export(load_tirtlseq) # full docs
-export(reorder_samples) # docs 99% done, could use examples
+export(reorder_samples) # full docs
 
 ## qc and data summary
 export(get_pair_stats) ## full docs
@@ -95,7 +95,7 @@ export(write_stitchr_tsv) ## 95% docs, needs example
 
 ## well
 #export(filter_well_data) ## hidden for now
-export(get_well_subset) ##
+export(get_well_subset) ## full docs
 #export(get_wells_from_edges) ## hidden for now
 #export(load_well_data) ## hidden for now
 

@@ -25,6 +25,19 @@ A TIRTLseqData object with re-ordered samples.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function changes the order of the samples in a TIRTLseqData object to the order that the user specifies.
 }
+\examples{
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  chain = "paired", verbose = FALSE)
+print(sjtrc$meta)
+new_order = names(sjtrc$data) \%>\% rev()
+print(new_order)
+sjtrc = reorder_samples(sjtrc, new_order)
+print(sjtrc$meta)
+
+}
 \seealso{
 Other data_wrangling: 
 \code{\link{add_metadata}()},
