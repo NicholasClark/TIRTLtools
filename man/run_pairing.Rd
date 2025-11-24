@@ -13,7 +13,7 @@ run_pairing(
   min_wells = 2,
   well_pos = 3,
   wellset1 = get_well_subset(1:16, 1:24),
-  compute = T,
+  compute = TRUE,
   backend = c("auto", "cpu", "cupy", "mlx"),
   pval_thres_tshell = 1e-10,
   wij_thres_tshell = 2,
