@@ -1,14 +1,14 @@
-#' Imputes missing alpha and beta chains where possible for single-cell TIRTLseq data
-#'
-#' @description
-#' `r lifecycle::badge('experimental')`
-#'
-#' @param df a data frame with single-cell TIRTLseq data
-#' @param verbose print a before and after summary of clonotypes (default TRUE)
-#' @param keep_all_columns keep intermediate columns created by the function (default FALSE)
-#'
-#' @family single-cell
-#'
+# Imputes missing alpha and beta chains where possible for single-cell TIRTLseq data
+#
+# @description
+# `r lifecycle::badge('experimental')`
+#
+# @param df a data frame with single-cell TIRTLseq data
+# @param verbose print a before and after summary of clonotypes (default TRUE)
+# @param keep_all_columns keep intermediate columns created by the function (default FALSE)
+#
+# @family single-cell
+#
 clean_scTIRTLseq = function(df, verbose = TRUE, keep_all_columns = FALSE) {
   df = df %>%
     mutate(id = 1:nrow(df))

@@ -1,10 +1,4 @@
-#' Remove rare clones from well-level TIRTLseq data
-#'
-#' @description
-#' `r lifecycle::badge('experimental')`
-#'
-#'
-#' @family well
+
 filter_well_data = function(well_data_df, min_fraction = 1e-6) {
   well_data_df = well_data_df %>%
     mutate(v = get_segments_all(allVHitsWithScore), j = get_segments_all(allJHitsWithScore))  %>%

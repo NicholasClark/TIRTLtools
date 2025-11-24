@@ -6,13 +6,22 @@
 \usage{
 get_well_subset(row_range = 1:16, col_range = 1:24)
 }
+\arguments{
+\item{row_range}{a vector of row indices, from 1 (A) to 16 (P)}
+
+\item{col_range}{a vector of column indices, from 1 to 24}
+}
+\value{
+A vector of well names covering the specified rows and columns (e.g. "A1", "A2", ... "P24")
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function returns a vector of well names from the specified rows and columns.
 }
-\seealso{
-Other well: 
-\code{\link{filter_well_data}()},
-\code{\link{get_wells_from_edges}()},
-\code{\link{load_well_data}()}
+\examples{
+get_well_subset(1:16, 1:12) ## left half of plate
+
+get_well_subset(1:16, 13:24) ## right half of plate
+
 }
 \concept{well}

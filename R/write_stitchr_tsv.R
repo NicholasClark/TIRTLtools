@@ -1,9 +1,22 @@
 #' Write a tab-separated "thimble" text file for use with Stitchr
 #'
 #' `r lifecycle::badge('experimental')`
+#' This function takes a data frame created by \code{\link{create_thimble_df}()}
+#' and writes it to a .tsv file for use with Stitchr (https://jamieheather.github.io/stitchr/).
+#'
+#' @param df a data frame of properly formatted TCRs created by \code{\link{create_thimble_df}()}
+#' @param output_name the output name for the .tsv file (".tsv" will be appended)
+#' @param output_folder the folder to write the .tsv file to
+#'
+#' @returns this function returns NULL and writes a .tsv to the specified folder.
 #'
 #' @family stitchr
-write_stitchr_tsv = function(df, output_name, output_folder = "") {
+#'
+write_stitchr_tsv = function(
+    df,
+    output_name,
+    output_folder = ""
+    ) {
   cols = c("TCR_name", "TRAV", "TRAJ", "TRA_CDR3", "TRBV", "TRBJ", "TRB_CDR3",
            "TRAC", "TRBC", "TRA_leader", "TRB_leader", "Linker", "Link_order",
            "TRA_5_prime_seq", "TRA_3_prime_seq", "TRB_5_prime_seq", "TRB_3_prime_seq")

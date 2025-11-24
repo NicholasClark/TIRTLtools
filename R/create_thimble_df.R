@@ -1,14 +1,57 @@
-#' Convert paired TCRs to a "thimble" data frame for stitching together TCR nucleotide coding sequences with the Stitchr Python package
+#' Convert paired TCRs to a "thimble" data frame for Stitchr
 #'
 #' `r lifecycle::badge('experimental')`
+#' This function creates a "thimble" data frame for use with the Stitchr Python package
+#' (https://jamieheather.github.io/stitchr/) to stitch together TCR nucleotide coding sequences.
+#' The resulting data frame can be written to a .tsv with \code{\link{write_stitchr_tsv}()}.
+#'
+#' @param df a dataframe with paired TCRs.
+#' @param preset a preset for linker, link order, and TRAC/TRBC settings. The default ("default") setting
+#' uses "T2A" for the linker, "BA" for link order, "mTRAC\*01" for TRAC, and "mTRBC2\*01" for TRBC.
+#' @param TCR_names a vector of names for the TCRs. If a vector of length one, then TCR names will
+#' be "<TCR_names>_1", "<TCR_names>_2", ... , "<TCR_names>_N".
+#' @param exclude_non_functional whether to exclude TCRs with non-functional CDR3 sequences (default is TRUE).
+#' @param remove_duplicates whether to remove any duplicate TCRs (default is TRUE).
+#' @param verbose whether to print messages
+#' @param Linker the linker for TCRs (default "T2A")
+#' @param Link_order the link order for TCRs (default "BA")
+#' @param TRAC TCR alpha chain constant region (default "mTRAC*01")
+#' @param TRBC TCR beta chain constant region (default "mTRBC2*01")
+#' @param TRA_leader (optional) An alternative leader sequence for the alpha chain. This can be
+#' either a specified gene entry in the pre-programmed IMGT data or alternatively
+#' a simple DNA string can be entered (e.g. ‘ATG’ for a minimal start codon in the
+#' absence of a leader sequence).
+#' @param TRB_leader (optional) An alternative leader sequence for the beta chain. This can be
+#' either a specified gene entry in the pre-programmed IMGT data or alternatively
+#' a simple DNA string can be entered (e.g. ‘ATG’ for a minimal start codon in the
+#' absence of a leader sequence).
+#' @param TRA_5_prime_seq Optional arbitrary sequence to be appended to the 5’ of the alpha chain.
+#' @param TRA_3_prime_seq Optional arbitrary sequence to be appended to the 3’ of the alpha chain.
+#' @param TRB_5_prime_seq Optional arbitrary sequence to be appended to the 5’ of the beta chain.
+#' @param TRB_3_prime_seq Optional arbitrary sequence to be appended to the 3’ of the beta chain.
+#'
+#' @returns A data frame with TCRs properly formatted for use with Stitchr.
 #'
 #' @family stitchr
 #'
-create_thimble_df = function(df, preset = c("default", "none"), TCR_names = "TCR",
-                             exclude_non_functional = TRUE, remove_duplicates = TRUE, verbose = TRUE,
-                             Linker = NULL, Link_order = NULL, TRAC = NULL, TRBC = NULL,
-                             TRA_leader = NULL, TRB_leader = NULL, TRA_5_prime_seq = NULL,
-                             TRA_3_prime_seq = NULL, TRB_5_prime_seq = NULL, TRB_3_prime_seq = NULL) {
+create_thimble_df = function(
+    df,
+    preset = c("default", "none"),
+    TCR_names = "TCR",
+    exclude_non_functional = TRUE,
+    remove_duplicates = TRUE,
+    verbose = TRUE,
+    Linker = NULL,
+    Link_order = NULL,
+    TRAC = NULL,
+    TRBC = NULL,
+    TRA_leader = NULL,
+    TRB_leader = NULL,
+    TRA_5_prime_seq = NULL,
+    TRA_3_prime_seq = NULL,
+    TRB_5_prime_seq = NULL,
+    TRB_3_prime_seq = NULL
+    ) {
   preset = preset[1]
   if(remove_duplicates) {
     dupes = duplicated(paste(df$va, df$vb, df$ja, df$jb, df$cdr3a, df$cdr3b))

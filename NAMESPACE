@@ -90,14 +90,15 @@ export(get_all_div_metrics) ## full docs
 export(plot_clonotype_indices) ## full docs
 
 ## stitchr (external tools)
-export(create_thimble_df)
-export(write_stitchr_tsv)
+export(create_thimble_df) ## 95% docs, needs example
+export(write_stitchr_tsv) ## 95% docs, needs example
 
 ## well
-export(filter_well_data)
-export(get_well_subset)
-export(get_wells_from_edges)
-export(load_well_data)
+#export(filter_well_data) ## hidden for now
+export(get_well_subset) ##
+#export(get_wells_from_edges) ## hidden for now
+#export(load_well_data) ## hidden for now
+
 #export(load_well_data_to_df_single)
 #export(load_well_data_to_sparse_multi)
 #export(load_well_data_to_sparse_single)
@@ -115,8 +116,8 @@ export(load_well_data)
 
 
 ## single-cell
-export(clean_scTIRTLseq)
-export(summarize_scTIRTLseq)
+#export(clean_scTIRTLseq) ## hidden for now
+#export(summarize_scTIRTLseq) ## hidden for now
 
 ## python-deps
 export(install_python_env) ## full docs

@@ -6,8 +6,20 @@
 \usage{
 write_stitchr_tsv(df, output_name, output_folder = "")
 }
+\arguments{
+\item{df}{a data frame of properly formatted TCRs created by \code{\link{create_thimble_df}()}}
+
+\item{output_name}{the output name for the .tsv file (".tsv" will be appended)}
+
+\item{output_folder}{the folder to write the .tsv file to}
+}
+\value{
+this function returns NULL and writes a .tsv to the specified folder.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function takes a data frame created by \code{\link{create_thimble_df}()}
+and writes it to a .tsv file for use with Stitchr (https://jamieheather.github.io/stitchr/).
 }
 \seealso{
 Other stitchr: 

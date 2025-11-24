@@ -17,51 +17,51 @@ authors:
     href: https://scholar.google.com/citations?user=oiypK_UAAAAJ
 
 reference:
-- title: Bulk TIRTLseq data
+#- title: Bulk TIRTLseq data
 
-- subtitle: TCR-alpha/TCR-beta pairing
+- title: TCR-alpha/beta pairing
   contents:
   - has_concept("pairing")
-- subtitle: Data loading
+- title: Data loading
   contents:
   - has_concept("data_loading")
-- subtitle: Data wrangling
+- title: Data wrangling
   contents:
   - has_concept("data_wrangling")
-- subtitle: Data processing and cleaning
+- title: Data processing and cleaning
   contents:
   - has_concept("data_processing")
-- subtitle: Quality control and data summary
+- title: Quality control and data summary
   contents:
   - has_concept("qc")
-- subtitle: TCR similarity and clustering
+- title: TCR similarity and clustering
   contents:
   - has_concept("tcr_similarity")
-- subtitle: Longitudinal analysis
+- title: Longitudinal analysis
   contents:
   - has_concept("longitudinal")
-- subtitle: Diversity
+- title: Diversity
   contents:
   - has_concept("diversity")
-- subtitle: Export for external tools
+- title: Export for external tools
   contents:
   - has_concept("stitchr")
-- subtitle: Well-level data functions
+- title: Well-level data functions
   contents:
   - has_concept("well")
 # - subtitle: Download datasets
 #  contents:
 #  - has_concept("download")
-- subtitle: Python dependencies
+- title: Python dependencies
   contents:
   - has_concept("python-deps")
 - subtitle: Data
   contents:
   - has_concept("data")
 
-- title: Single-cell TIRTLseq data
-  contents:
-  - has_concept("single-cell")
+#- title: Single-cell TIRTLseq data
+#  contents:
+#  - has_concept("single-cell")
 
 - title: Other
   contents:
