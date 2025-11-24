@@ -75,13 +75,8 @@
     </div>
 
     <div class="section level2">
-      <h2 id="bulk-tirtlseq-data">Bulk TIRTLseq data<a class="anchor" aria-label="anchor" href="#bulk-tirtlseq-data"></a></h2>
+      <h2 id="tcr-alpha-beta-pairing">TCR-alpha/beta pairing<a class="anchor" aria-label="anchor" href="#tcr-alpha-beta-pairing"></a></h2>
 
-
-
-      <dl></dl></div><div class="section level2">
-
-      <h3 id="tcr-alpha-tcr-beta-pairing">TCR-alpha/TCR-beta pairing<a class="anchor" aria-label="anchor" href="#tcr-alpha-tcr-beta-pairing"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -96,8 +91,8 @@
         </dt>
         <dd>Find TCRalpha/beta pairs from individual well read counts</dd>
       </dl></div><div class="section level2">
+      <h2 id="data-loading">Data loading<a class="anchor" aria-label="anchor" href="#data-loading"></a></h2>
 
-      <h3 id="data-loading">Data loading<a class="anchor" aria-label="anchor" href="#data-loading"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -112,8 +107,8 @@
         </dt>
         <dd>Load data from TIRTLseq experiments</dd>
       </dl></div><div class="section level2">
+      <h2 id="data-wrangling">Data wrangling<a class="anchor" aria-label="anchor" href="#data-wrangling"></a></h2>
 
-      <h3 id="data-wrangling">Data wrangling<a class="anchor" aria-label="anchor" href="#data-wrangling"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -142,8 +137,8 @@
         </dt>
         <dd>Re-order samples in a TIRTLseqData object</dd>
       </dl></div><div class="section level2">
+      <h2 id="data-processing-and-cleaning">Data processing and cleaning<a class="anchor" aria-label="anchor" href="#data-processing-and-cleaning"></a></h2>
 
-      <h3 id="data-processing-and-cleaning">Data processing and cleaning<a class="anchor" aria-label="anchor" href="#data-processing-and-cleaning"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -235,8 +230,8 @@
         </dt>
         <dd>Removes duplicate paired TCRs</dd>
       </dl></div><div class="section level2">
+      <h2 id="quality-control-and-data-summary">Quality control and data summary<a class="anchor" aria-label="anchor" href="#quality-control-and-data-summary"></a></h2>
 
-      <h3 id="quality-control-and-data-summary">Quality control and data summary<a class="anchor" aria-label="anchor" href="#quality-control-and-data-summary"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -335,8 +330,8 @@
         </dt>
         <dd>Create a summary table with number of reads and unique alpha/beta chains</dd>
       </dl></div><div class="section level2">
+      <h2 id="tcr-similarity-and-clustering">TCR similarity and clustering<a class="anchor" aria-label="anchor" href="#tcr-similarity-and-clustering"></a></h2>
 
-      <h3 id="tcr-similarity-and-clustering">TCR similarity and clustering<a class="anchor" aria-label="anchor" href="#tcr-similarity-and-clustering"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -372,8 +367,8 @@
         </dt>
         <dd>Plot clusters of similar TCRs</dd>
       </dl></div><div class="section level2">
+      <h2 id="longitudinal-analysis">Longitudinal analysis<a class="anchor" aria-label="anchor" href="#longitudinal-analysis"></a></h2>
 
-      <h3 id="longitudinal-analysis">Longitudinal analysis<a class="anchor" aria-label="anchor" href="#longitudinal-analysis"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -395,8 +390,8 @@
         </dt>
         <dd>Scatterplot of TCR clone read fraction of clones between two samples</dd>
       </dl></div><div class="section level2">
+      <h2 id="diversity">Diversity<a class="anchor" aria-label="anchor" href="#diversity"></a></h2>
 
-      <h3 id="diversity">Diversity<a class="anchor" aria-label="anchor" href="#diversity"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -432,8 +427,8 @@
         </dt>
         <dd>Bar plot of clonal diversity metrics</dd>
       </dl></div><div class="section level2">
+      <h2 id="export-for-external-tools">Export for external tools<a class="anchor" aria-label="anchor" href="#export-for-external-tools"></a></h2>
 
-      <h3 id="export-for-external-tools">Export for external tools<a class="anchor" aria-label="anchor" href="#export-for-external-tools"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -446,7 +441,7 @@
           <code><a href="create_thimble_df.html">create_thimble_df()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Convert paired TCRs to a "thimble" data frame for stitching together TCR nucleotide coding sequences with the Stitchr Python package</dd>
+        <dd>Convert paired TCRs to a "thimble" data frame for Stitchr</dd>
 
         <dt>
 
@@ -455,8 +450,8 @@
         </dt>
         <dd>Write a tab-separated "thimble" text file for use with Stitchr</dd>
       </dl></div><div class="section level2">
+      <h2 id="well-level-data-functions">Well-level data functions<a class="anchor" aria-label="anchor" href="#well-level-data-functions"></a></h2>
 
-      <h3 id="well-level-data-functions">Well-level data functions<a class="anchor" aria-label="anchor" href="#well-level-data-functions"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -466,34 +461,13 @@
 
       <dl><dt>
 
-          <code><a href="filter_well_data.html">filter_well_data()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Remove rare clones from well-level TIRTLseq data</dd>
-
-        <dt>
-
           <code><a href="get_well_subset.html">get_well_subset()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Get well names from numerical rows and columns</dd>
-
-        <dt>
-
-          <code><a href="get_wells_from_edges.html">get_wells_from_edges()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Get well names from top left and bottom right wells</dd>
-
-        <dt>
-
-          <code><a href="load_well_data.html">load_well_data()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Load well-level TIRTLseq data</dd>
       </dl></div><div class="section level2">
+      <h2 id="python-dependencies">Python dependencies<a class="anchor" aria-label="anchor" href="#python-dependencies"></a></h2>
 
-      <h3 id="python-dependencies">Python dependencies<a class="anchor" aria-label="anchor" href="#python-dependencies"></a></h3>
 
 
       <dl></dl></div><div class="section level2">
@@ -530,29 +504,6 @@
 
         </dt>
         <dd>Substitution penalty matrix for TCRdist amino acids and V-segments</dd>
-      </dl></div><div class="section level2">
-      <h2 id="single-cell-tirtlseq-data">Single-cell TIRTLseq data<a class="anchor" aria-label="anchor" href="#single-cell-tirtlseq-data"></a></h2>
-
-
-
-      <dl></dl></div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="clean_scTIRTLseq.html">clean_scTIRTLseq()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Imputes missing alpha and beta chains where possible for single-cell TIRTLseq data</dd>
-
-        <dt>
-
-          <code><a href="summarize_scTIRTLseq.html">summarize_scTIRTLseq()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Summarize single-cell TIRTLseq data</dd>
       </dl></div><div class="section level2">
       <h2 id="other">Other<a class="anchor" aria-label="anchor" href="#other"></a></h2>
 

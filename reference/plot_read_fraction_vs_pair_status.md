@@ -78,7 +78,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 12.3 seconds
+#> 12 seconds
 
 plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100)
 

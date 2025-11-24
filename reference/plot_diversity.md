@@ -3,6 +3,16 @@
 **\[experimental\]** The `plot_diversity()` plots the requested clonal
 diversity metric
 
+This function can plot a variety of clonal diversity metrics for a
+dataset (richness, Simpson diversity index, Shannon-Wiener index, etc.).
+See
+[`get_all_div_metrics()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_div_metrics.md)
+for all available options. By default it return a barplot with one bar
+for each sample in the dataset. If a grouping column (of the metadata)
+is supplied, then samples will be grouped and bar heights will reflect
+the average diversity metric across the group, with error bars showing
+the standard deviation.
+
 ## Usage
 
 ``` r
@@ -93,18 +103,6 @@ metric
 
 `$data` - if return_data is TRUE, the data frame used to make the plot
 
-## Details
-
-This function can plot a variety of clonal diversity metrics for a
-dataset (richness, Simpson diversity index, Shannon-Wiener index, etc.).
-See
-[`get_all_div_metrics()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_div_metrics.md)
-for all available options. By default it return a barplot with one bar
-for each sample in the dataset. If a grouping column (of the metadata)
-is supplied, then samples will be grouped and bar heights will reflect
-the average diversity metric across the group, with error bars showing
-the standard deviation.
-
 ## See also
 
 [`diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md),
@@ -118,8 +116,25 @@ Other diversity:
 ## Examples
 
 ``` r
-# example code
-# data = load_tirtlseq("your_directory/")
-# div = diversity(data)
-# plot_diversity(div, metric = "richness")
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 11.9 seconds
+
+div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+#> 
+#> -- Calculating diversity indices for sample 1 of 6.
+#> -- Calculating diversity indices for sample 2 of 6.
+#> -- Calculating diversity indices for sample 3 of 6.
+#> -- Calculating diversity indices for sample 4 of 6.
+#> -- Calculating diversity indices for sample 5 of 6.
+#> -- Calculating diversity indices for sample 6 of 6.
+plot_diversity(div, metric = "d50")
+
 ```

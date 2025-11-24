@@ -99,7 +99,7 @@ sjtrc = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 11.6 seconds
+#> 12.8 seconds
 
 top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>%
   head(5) %>% extract2("targetSequences") %>% as.character()

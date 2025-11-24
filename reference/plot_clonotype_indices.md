@@ -60,9 +60,9 @@ plot_clonotype_indices(
 
 ## Value
 
-(default) Returns a stacked bar chart of relative frequencies of
-most-frequent clonotypes. If return_data is TRUE, the data frame used to
-create the plot is returned instead.
+Returns a stacked bar chart of relative frequencies of most-frequent
+clonotypes. If return_data is TRUE, the data frame used to create the
+plot is returned instead.
 
 ## See also
 
@@ -77,6 +77,18 @@ Other diversity:
 ## Examples
 
 ``` r
-# example code
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+data = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 14.9 seconds
+
+plot_clonotype_indices(data, chain = "beta")
+
 
 ```

@@ -67,7 +67,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 11.7 seconds
+#> 12.1 seconds
 
 get_all_tcrs(ts_data, chain = "paired")
 #>            wi    wj   wij                                        alpha_nuc

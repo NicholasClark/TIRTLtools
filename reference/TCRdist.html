@@ -206,10 +206,153 @@ or <code>numpy</code> (no GPU) to calculate TCRdist efficiently.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example code</span></span></span>
-<span class="r-in"><span><span class="co"># data = load_tirtlseq("your_directory/")</span></span></span>
-<span class="r-in"><span><span class="co"># df = get_all_tcrs(data, chain="paired", remove_duplicates = TRUE)</span></span></span>
-<span class="r-in"><span><span class="co"># out = TCRdist(df, tcrdist_cutoff = 90)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTLseq_minimal"</span>,</span></span>
+<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sjtrc</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>,</span></span>
+<span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>,</span></span>
+<span class="r-in"><span>  chain <span class="op">=</span> <span class="st">"paired"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 2 beta chain pseudo-bulk files.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 2 paired chain files.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 2 files from 2 samples.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 seconds</span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="get_all_tcrs.html">get_all_tcrs</a></span><span class="op">(</span><span class="va">sjtrc</span>, chain<span class="op">=</span><span class="st">"paired"</span>, remove_duplicates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">=</span> <span class="fu">TCRdist</span><span class="op">(</span><span class="va">df</span>, tcrdist_cutoff <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 384 TCRs with unknown V-segments (1.2%) from a total of 32,164 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 12 TCRs with short CDR3 segments (0.038%) from a total of 31,780 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 13,324 TCRs with non-functional CDR3 amino acid sequences (42%) from a total of 31,768 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtered data frame contains 18,444 TCRs (57%) of original 32,164 TCRs.</span>
+<span class="r-in"><span><span class="va">edge_df</span> <span class="op">=</span> <span class="va">result</span><span class="op">[[</span><span class="st">'TCRdist_df'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="op">)</span> <span class="co">### table of TCRdist values &lt;= cutoff</span></span></span>
+<span class="r-in"><span><span class="va">node_df</span> <span class="op">=</span> <span class="va">result</span><span class="op">[[</span><span class="st">'tcr1'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="op">)</span> <span class="co">### table of input data with indices</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">edge_df</span> <span class="co">## sparse 3-column output: node1, node2, TCRdist</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        node1_0index node2_0index TCRdist</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;int&gt;        &lt;int&gt;   &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:          158          157       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:          286          284      84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:          287          283      89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:          288          284      89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:          289          285      89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18422:        18434        18073       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18423:        18437        18406      72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18424:        18440        18241      90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18425:        18440        18324      66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18426:        18440        18422      84</span>
+<span class="r-in"><span><span class="co">## note that indices start at 0 and are found in node_df$tcr_index</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">node_df</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">tcr_index</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>alpha_nuc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">alpha_nuc</span>, <span class="fl">0</span>, <span class="fl">20</span><span class="op">)</span>, <span class="st">"..."</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         beta_nuc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">beta_nuc</span>, <span class="fl">0</span>, <span class="fl">20</span><span class="op">)</span>, <span class="st">"..."</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        tcr_index    wi    wj   wij               alpha_nuc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            &lt;num&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;                  &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:         0     0     0     3 TGTGTGAGAGCCGGAGGCTT...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:         1     0     0     3 TGTGCAATGAGAAATCGTAG...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:         2     0     0     3 TGTGCTCTGAGCCATACTGG...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:         3     0     0     3 TGTGCTCTAATCCGCAATTC...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:         4     0     0     3 TGTGCCGTGAAGGGCCTCGG...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440:     18439    76     0    41 TGTGCTGTGAGTGAGGGCTA...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441:     18440    78     0    18 TGTGCTGTGTTGGATAGCAA...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442:     18441    85     1    29 TGTGCTGCTATGGATAGCAA...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443:     18442    95     0    36 TGCATCCTGAGAGAAGGGGG...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444:     18443    97     0    51 TGTGCAGAGAGGGGTGGAGG...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       beta_nuc    wa    wb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;char&gt; &lt;int&gt; &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1: TGCAGTGCTACATCTCGGAG...     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2: TGTGCCAGCAGTGAGACAGG...     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3: TGTGCCAGCAGCCATGATGG...     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4: TGTGCCAGCAGCTCCGGCGA...     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: TGTGCCAGCAAACACATCCG...     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440: TGCGCCAGCAGCTTGGGACA...   117    41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441: TGTGCCAGCAGCCAAGAAGG...    96    18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442: TGCAGTGCTAAACTAGCGGG...   114    30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443: TGTGCCAGCAGCTTATGGGG...   131    36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444: TGCGCCAGCAGCTTGCGGGA...   148    51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                     alpha_beta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                         &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:                            TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT_TGCAGTGCTACATCTCGGAGAGAGCCCTACGAGCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:                   TGTGCAATGAGAAATCGTAGTTCCGGGTATGCACTCAACTTC_TGTGCCAGCAGTGAGACAGGGCTCTCCTACGAGCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:                         TGTGCTCTGAGCCATACTGGAGGCTTCAAAACTATCTTT_TGTGCCAGCAGCCATGATGGCTCCTACGAGCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:             TGTGCTCTAATCCGCAATTCAGGAAACACACCTCTTGTCTTT_TGTGCCAGCAGCTCCGGCGAAAGAAGGTCCTACAATGAGCAGTTCTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: TGTGCCGTGAAGGGCCTCGGAGGAAGCCAAGGAAATCTCATCTTT_TGTGCCAGCAAACACATCCGGGACAGGGGGGGGTGGAGCAATCAGCCCCAGCATTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440:                         TGTGCTGTGAGTGAGGGCTACAAGCTCAGCTTT_TGCGCCAGCAGCTTGGGACAGGGAGGCAACCAGCCCCAGCATTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441:                   TGTGCTGTGTTGGATAGCAACTATCAGTTAATCTGG_TGTGCCAGCAGCCAAGAAGGCGGGGGGGACTACAATGAGCAGTTCTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442:                TGTGCTGCTATGGATAGCAACTATCAGTTAATCTGG_TGCAGTGCTAAACTAGCGGGGGGAATAAGGATCCAAGAGACCCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443:                      TGCATCCTGAGAGAAGGGGGGAGTGACATGCGCTTT_TGTGCCAGCAGCTTATGGGGGGGGGGGGACACTGAAGCTTTCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444:                      TGTGCAGAGAGGGGTGGAGGCTTCAAAACTATCTTT_TGCGCCAGCAGCTTGCGGGACCAGCCCTACAACGAGCAGTTCTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         method     r    ts  pval pval_adj loss_a_frac loss_b_frac     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;     &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: madhype    NA    NA    NA       NA 0.000000000   0.0000000 0.6184880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440: madhype    NA    NA    NA       NA 0.000000000   0.6495726 4.6040515</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441: madhype    NA    NA    NA       NA 0.000000000   0.8125000 0.1574663</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442: madhype    NA    NA    NA       NA 0.008695652   0.7391304 0.5224540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443: madhype    NA    NA    NA       NA 0.000000000   0.7251908 1.0736280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444: madhype    NA    NA    NA       NA 0.000000000   0.6554054 1.1133147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  cdr3a            va     ja               cdr3b          vb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;char&gt;        &lt;char&gt; &lt;char&gt;              &lt;char&gt;      &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:     CVRAGGFKTIF   TRAV12-1*01  TRAJ9      CSATSRREPYEQYF TRBV20-1*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:  CAMRNRSSGYALNF TRAV14/DV4*01 TRAJ41      CASSETGLSYEQYF TRBV25-1*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:   CALSHTGGFKTIF    TRAV9-2*01  TRAJ9       CASSHDGSYEQYF  TRBV3-1*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:  CALIRNSGNTPLVF     TRAV16*01 TRAJ29    CASSSGERRSYNEQFF  TRBV5-4*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: CAVKGLGGSQGNLIF   TRAV12-2*01 TRAJ42 CASKHIRDRGGWSNQPQHF   TRBV28*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440:     CAVSEGYKLSF    TRAV8-6*01 TRAJ20     CASSLGQGGNQPQHF  TRBV5-1*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441:    CAVLDSNYQLIW    TRAV1-2*01 TRAJ33    CASSQEGGGDYNEQFF  TRBV4-2*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442:    CAAMDSNYQLIW    TRAV1-2*01 TRAJ33   CSAKLAGGIRIQETQYF TRBV20-1*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443:    CILREGGSDMRF   TRAV26-2*01 TRAJ43     CASSLWGGGDTEAFF  TRBV7-2*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444:    CAERGGGFKTIF      TRAV5*01  TRAJ9     CASSLRDQPYNEQFF  TRBV5-1*01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             jb  sample_id marker timepoint version</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;char&gt;     &lt;char&gt; &lt;char&gt;    &lt;char&gt;  &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1: TRBJ2-7 cd8_tp1_v2    cd8       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2: TRBJ2-7 cd8_tp1_v2    cd8       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3: TRBJ2-7 cd8_tp1_v2    cd8       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4: TRBJ2-1 cd8_tp1_v2    cd8       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: TRBJ1-5 cd8_tp1_v2    cd8       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440: TRBJ1-5 cd8_tp2_v2    cd8       tp2      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441: TRBJ2-1 cd8_tp2_v2    cd8       tp2      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442: TRBJ2-5 cd8_tp2_v2    cd8       tp2      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443: TRBJ1-1 cd8_tp2_v2    cd8       tp2      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444: TRBJ2-1 cd8_tp2_v2    cd8       tp2      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                             label    va_orig  vb_orig</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                            &lt;char&gt;     &lt;char&gt;   &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1: marker: cd8 | timepoint: tp1 | version: v2   TRAV12-1 TRBV20-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2: marker: cd8 | timepoint: tp1 | version: v2 TRAV14/DV4 TRBV25-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3: marker: cd8 | timepoint: tp1 | version: v2    TRAV9-2  TRBV3-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4: marker: cd8 | timepoint: tp1 | version: v2     TRAV16  TRBV5-4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5: marker: cd8 | timepoint: tp1 | version: v2   TRAV12-2   TRBV28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---                                                               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440: marker: cd8 | timepoint: tp2 | version: v2    TRAV8-6  TRBV5-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441: marker: cd8 | timepoint: tp2 | version: v2    TRAV1-2  TRBV4-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442: marker: cd8 | timepoint: tp2 | version: v2    TRAV1-2 TRBV20-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443: marker: cd8 | timepoint: tp2 | version: v2   TRAV26-2  TRBV7-2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444: marker: cd8 | timepoint: tp2 | version: v2      TRAV5  TRBV5-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        is_functional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     1:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     2:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     3:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     4:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     5:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    ---              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18440:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18441:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18442:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18443:          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18444:          TRUE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

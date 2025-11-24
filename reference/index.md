@@ -1,19 +1,17 @@
 # Package index
 
-## Bulk TIRTLseq data
-
-### TCR-alpha/TCR-beta pairing
+## TCR-alpha/beta pairing
 
 - [`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
   **\[experimental\]** : Find TCRalpha/beta pairs from individual well
   read counts
 
-### Data loading
+## Data loading
 
 - [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
   **\[experimental\]** : Load data from TIRTLseq experiments
 
-### Data wrangling
+## Data wrangling
 
 - [`add_metadata()`](https://nicholasclark.github.io/TIRTLtools/reference/add_metadata.md)
   **\[experimental\]** : Add metadata to a TIRTLseqData object
@@ -22,7 +20,7 @@
 - [`reorder_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/reorder_samples.md)
   **\[experimental\]** : Re-order samples in a TIRTLseqData object
 
-### Data processing and cleaning
+## Data processing and cleaning
 
 - [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.md)
   **\[experimental\]** : Run data processing functions on a TIRTLseqData
@@ -55,7 +53,7 @@
 - [`remove_duplicates()`](https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.md)
   **\[experimental\]** : Removes duplicate paired TCRs
 
-### Quality control and data summary
+## Quality control and data summary
 
 - [`get_all_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.md)
   **\[experimental\]** : Returns all of the paired TCRs from all samples
@@ -99,7 +97,7 @@
   **\[experimental\]** : Create a summary table with number of reads and
   unique alpha/beta chains
 
-### TCR similarity and clustering
+## TCR similarity and clustering
 
 - [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md)
   **\[experimental\]** : GPU implementation of TCRdist, a
@@ -113,7 +111,7 @@
 - [`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md)
   **\[experimental\]** : Plot clusters of similar TCRs
 
-### Longitudinal analysis
+## Longitudinal analysis
 
 - [`plot_clone_size_across_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.md)
   **\[experimental\]** : Line plot of clone read fraction across
@@ -122,7 +120,7 @@
   **\[experimental\]** : Scatterplot of TCR clone read fraction of
   clones between two samples
 
-### Diversity
+## Diversity
 
 - [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
   [`diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
@@ -141,30 +139,21 @@
 - [`plot_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_diversity.md)
   **\[experimental\]** : Bar plot of clonal diversity metrics
 
-### Export for external tools
+## Export for external tools
 
 - [`create_thimble_df()`](https://nicholasclark.github.io/TIRTLtools/reference/create_thimble_df.md)
   **\[experimental\]** : Convert paired TCRs to a "thimble" data frame
-  for stitching together TCR nucleotide coding sequences with the
-  Stitchr Python package
+  for Stitchr
 - [`write_stitchr_tsv()`](https://nicholasclark.github.io/TIRTLtools/reference/write_stitchr_tsv.md)
   **\[experimental\]** : Write a tab-separated "thimble" text file for
   use with Stitchr
 
-### Well-level data functions
+## Well-level data functions
 
-- [`filter_well_data()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_well_data.md)
-  **\[experimental\]** : Remove rare clones from well-level TIRTLseq
-  data
 - [`get_well_subset()`](https://nicholasclark.github.io/TIRTLtools/reference/get_well_subset.md)
   **\[experimental\]** : Get well names from numerical rows and columns
-- [`get_wells_from_edges()`](https://nicholasclark.github.io/TIRTLtools/reference/get_wells_from_edges.md)
-  **\[experimental\]** : Get well names from top left and bottom right
-  wells
-- [`load_well_data()`](https://nicholasclark.github.io/TIRTLtools/reference/load_well_data.md)
-  **\[experimental\]** : Load well-level TIRTLseq data
 
-### Python dependencies
+## Python dependencies
 
 - [`install_python_env()`](https://nicholasclark.github.io/TIRTLtools/reference/install_python_env.md)
   **\[experimental\]** : Install python environment
@@ -175,13 +164,5 @@
   : Table of permissible amino acids and V-segments for TCRdist
 - [`submat`](https://nicholasclark.github.io/TIRTLtools/reference/submat.md)
   : Substitution penalty matrix for TCRdist amino acids and V-segments
-
-## Single-cell TIRTLseq data
-
-- [`clean_scTIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_scTIRTLseq.md)
-  **\[experimental\]** : Imputes missing alpha and beta chains where
-  possible for single-cell TIRTLseq data
-- [`summarize_scTIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/summarize_scTIRTLseq.md)
-  **\[experimental\]** : Summarize single-cell TIRTLseq data
 
 ## Other

@@ -159,7 +159,26 @@ Other diversity:
 ## Examples
 
 ``` r
-# example here
-# data = load_tirtlseq("your_directory/")
-# div = calculate_diversity(data)
+folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
+  package = "TIRTLtools")
+sjtrc = load_tirtlseq(folder,
+  meta_columns = c("marker", "timepoint", "version"), sep = "_",
+  verbose = FALSE)
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Found 6 beta chain pseudo-bulk files.
+#> Found 6 paired chain files.
+#> Loaded 18 files from 6 samples.
+#> 12.1 seconds
+
+div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+#> 
+#> -- Calculating diversity indices for sample 1 of 6.
+#> -- Calculating diversity indices for sample 2 of 6.
+#> -- Calculating diversity indices for sample 3 of 6.
+#> -- Calculating diversity indices for sample 4 of 6.
+#> -- Calculating diversity indices for sample 5 of 6.
+#> -- Calculating diversity indices for sample 6 of 6.
+plot_diversity(div, metric = "d50")
+
+
 ```
