@@ -14,7 +14,7 @@ plot_read_fraction_vs_pair_status(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{sample}{the sample to plot (either by number or sample id)}
 

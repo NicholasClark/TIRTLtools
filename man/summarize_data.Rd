@@ -7,7 +7,7 @@
 summarize_data(data)
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 }
 \value{
 a data frame with the number of reads and unique chains observed for each sample.

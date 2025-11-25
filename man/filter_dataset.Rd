@@ -2,12 +2,12 @@
 % Please edit documentation in R/filter_dataset.R
 \name{filter_dataset}
 \alias{filter_dataset}
-\title{Subset a TIRTLseqData object}
+\title{Subset a TIRTLseqDataSet object}
 \usage{
 filter_dataset(data, samples)
 }
 \arguments{
-\item{data}{a TIRTLseqData object created by \code{\link{load_tirtlseq}()}}
+\item{data}{a TIRTLseqDataSet object created by \code{\link{load_tirtlseq}()}}
 
 \item{samples}{the selected samples. Either 1) a numeric vector of indices,
 2) a character vector of sample names, or 3) a character vector of metadata

@@ -10,7 +10,7 @@
 #' By default, it counts the number of pairs overall.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'
 #' @family qc

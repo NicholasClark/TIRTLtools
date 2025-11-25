@@ -11,7 +11,7 @@ get_paired_by_read_fraction_range(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{chain}{the TCR chain to use for read fraction (default is "beta")}
 

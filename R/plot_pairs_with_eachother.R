@@ -6,7 +6,7 @@
 #' and beta (right) chains with lines between alpha and beta chains indicating a
 #' pair and a cross indicating an unpaired single-chain.
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param sample the sample to plot (either by number or sample id)
 #' @param n_max the number of most frequent single-chains to plot
 #' @param show_num_partners whether to show the number of partners for each single-chain (default is FALSE)

@@ -11,7 +11,7 @@ get_all_tcrs(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object created by \code{\link{load_tirtlseq}()}}
+\item{data}{a TIRTLseqDataSet object created by \code{\link{load_tirtlseq}()}}
 
 \item{chain}{the TCR chain, "alpha", "beta", or "paired" (default is paired)}
 

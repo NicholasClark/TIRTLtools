@@ -14,7 +14,7 @@ plot_paired_by_read_fraction_range(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}}
+\item{data}{a TIRTLseqDataSet object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}}
 
 \item{chain}{the TCR chain to plot (default is "beta")}
 

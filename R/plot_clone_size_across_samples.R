@@ -8,7 +8,7 @@
 #' and presented in one line.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param clones a list of nucleotide sequences of TCR clones
 #' @param chain the TCR chain used (default is "beta")
 #' @param pseudo the value of the pseudocount added to all read fractions (default is 10^-6)

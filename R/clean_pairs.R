@@ -18,7 +18,7 @@
 #' We go through a similar process with each unique alpha chain, grouping partner beta
 #' chains by their V/J segments. However, we keep only one beta chain (can be changed with n_max_beta).
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param n_max_alpha (optional) the maximum number of alpha chains allowed
 #' paired with an individual beta chain (default 2)
 #' @param n_max_beta (optional) the maximum number of beta chains allowed
@@ -27,7 +27,7 @@
 #' @param verbose (optional) whether to print progress of the function (default is TRUE).
 #'
 #' @return
-#' Returns a TIRTLseqData object with excess pairs removed.
+#' Returns a TIRTLseqDataSet object with excess pairs removed.
 #'
 #'
 #' @family data_processing

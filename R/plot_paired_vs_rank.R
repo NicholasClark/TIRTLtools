@@ -8,7 +8,7 @@
 #' or beta chains (default is both) among the `n_max` most frequent chains.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param sample the sample to plot (either by number or sample id)
 #' @param y_axis whether to plot the cumulative number of paired or un-paired single-chains (default is "n_not_paired")
 #' @param chain the TCR chain to plot (default is both alpha and beta)

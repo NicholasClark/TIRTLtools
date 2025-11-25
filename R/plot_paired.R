@@ -5,7 +5,7 @@
 #' This function plots the number of TCRs paired by each algorithm. It can also plot the number
 #' of single-chains (alpha or beta) paired by the algorithms.
 #'
-#' @param data a TIRTLseqData object or a data frame created using \code{\link{get_pair_stats}()}
+#' @param data a TIRTLseqDataSet object or a data frame created using \code{\link{get_pair_stats}()}
 #' @param chain the TCR chain to plot (default is "paired")
 #' @param samples (optional) the samples to include in the plot (default is all)
 #' @param color_scheme (optional) the color scheme for the plot

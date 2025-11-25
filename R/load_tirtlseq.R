@@ -231,7 +231,7 @@ load_tirtlseq = function(
   n_secs = as.vector(time) %>% round(1)
   message(paste(n_secs, "seconds"))
   out = list(data = data_final, meta = meta_final)
-  class(out) = "TIRTLseqDataSet"
+  class(out) = "TIRTLseqDataSetSet"
   return(out)
 }
 

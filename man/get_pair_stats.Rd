@@ -7,7 +7,7 @@
 get_pair_stats(data, verbose = TRUE)
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }

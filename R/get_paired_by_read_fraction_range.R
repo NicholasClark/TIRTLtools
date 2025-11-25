@@ -9,7 +9,7 @@
 #' \code{\link{plot_paired_by_read_fraction_range}()}.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param chain the TCR chain to use for read fraction (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges
 #'

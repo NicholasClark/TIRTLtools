@@ -2,12 +2,12 @@
 % Please edit documentation in R/reorder_samples.R
 \name{reorder_samples}
 \alias{reorder_samples}
-\title{Re-order samples in a TIRTLseqData object}
+\title{Re-order samples in a TIRTLseqDataSet object}
 \usage{
 reorder_samples(data, samples)
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{samples}{the samples of 'data', in their desired order.
 
@@ -19,11 +19,11 @@ Either:
 }}
 }
 \value{
-A TIRTLseqData object with re-ordered samples.
+A TIRTLseqDataSet object with re-ordered samples.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function changes the order of the samples in a TIRTLseqData object to the order that the user specifies.
+This function changes the order of the samples in a TIRTLseqDataSet object to the order that the user specifies.
 }
 \examples{
 folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",

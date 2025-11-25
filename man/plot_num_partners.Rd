@@ -16,7 +16,7 @@ plot_num_partners(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{group_col}{a column of the metadata to use to group multiple samples into one bar plot
 The default is NULL, which uses the sample id.}

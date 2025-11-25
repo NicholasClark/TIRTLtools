@@ -4,7 +4,7 @@
 #' `r lifecycle::badge('experimental')`
 #' \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param chain the chain to plot, "alpha" or "beta" (default is "beta")
 #' @param column the variable to plot (default is "readFraction")
 #' @param color_scheme (optional) the color scheme for the plot

@@ -15,7 +15,7 @@ plot_ranks(
 rank_plot(...)
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{chain}{the chain to plot, "alpha" or "beta" (default is "beta")}
 

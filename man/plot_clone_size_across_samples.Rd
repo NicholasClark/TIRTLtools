@@ -20,7 +20,7 @@ plot_clone_size_across_samples(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{clones}{a list of nucleotide sequences of TCR clones}
 

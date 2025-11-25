@@ -66,7 +66,7 @@
 #' (or Renyi) number of order 'q', and the other contains the value of the corresponding 'q'.
 #' They return a data frame with many rows if supplied with a vector of orders (e.g. 1:5).
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param chain the chain to use when calculating metrics, alpha or beta (default is "beta")
 #' @param metrics the diversity indices or metrics to calculate.
 #' @param samples the samples to calculate diversity metrics for (default is NULL, all samples)

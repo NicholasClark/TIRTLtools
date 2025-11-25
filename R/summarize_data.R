@@ -5,7 +5,7 @@
 #' This function creates a summary table with the number of reads and unique alpha/beta chains observed
 #' for each sample.
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #'
 #' @returns a data frame with the number of reads and unique chains observed for each sample.
 #'

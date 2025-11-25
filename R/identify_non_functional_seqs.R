@@ -7,10 +7,10 @@
 #' would indicate a non-functional protein product.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #'
 #' @return
-#' A TIRTLseqData object with modified pseudobulk and paired data frames for each
+#' A TIRTLseqDataSet object with modified pseudobulk and paired data frames for each
 #' sample. Each dataframe in the ouptut object has added columns that identify
 #' whether the CDR3 alpha and beta
 #' nucleotide sequences contain any stop codons (*) or frame shifts (_) that would

@@ -12,7 +12,7 @@ plot_n_reads(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{chain}{the TCR chain to plot (default is both "alpha" and "beta")}
 

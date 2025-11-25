@@ -2,12 +2,12 @@
 % Please edit documentation in R/TIRTL_process.R
 \name{TIRTL_process}
 \alias{TIRTL_process}
-\title{Run data processing functions on a TIRTLseqData object}
+\title{Run data processing functions on a TIRTLseqDataSet object}
 \usage{
 TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{clean}{(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 excess pairs for individual alpha and beta chains (default is FALSE).}
@@ -15,12 +15,12 @@ excess pairs for individual alpha and beta chains (default is FALSE).}
 \item{remove_nonfunctional}{whether to remove non-functional TCR chains (default is FALSE)}
 }
 \value{
-a TIRTLseqData object with annotated and (optionally) cleaned data
+a TIRTLseqDataSet object with annotated and (optionally) cleaned data
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function runs annotation and data cleaning functions on a
-TIRTLseqData object. Specifically, it calls the functions \code{add_single_chain_data()},
+TIRTLseqDataSet object. Specifically, it calls the functions \code{add_single_chain_data()},
 \code{identify_paired()}, \code{identify_non_functional_seqs()}, and (optionally) \code{clean_pairs()}.
 }
 \seealso{

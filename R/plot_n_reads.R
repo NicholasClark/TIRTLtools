@@ -6,7 +6,7 @@
 #' for each sample.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param chain the TCR chain to plot (default is both "alpha" and "beta")
 #' @param samples (optional) which samples to plot (default is all samples)
 #' @param color_scheme a color scheme for the plot

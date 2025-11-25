@@ -7,7 +7,7 @@
 #' (default is ```[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]```) for each sample.
 #'
 #'
-#' @param data a TIRTLseqData object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}
+#' @param data a TIRTLseqDataSet object or a data frame created using \code{\link{get_paired_by_read_fraction_range}()}
 #' @param chain the TCR chain to plot (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges
 #' @param freq if TRUE, plot the number of pairs, if FALSE plot the fraction paired

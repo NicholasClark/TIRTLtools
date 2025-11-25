@@ -12,7 +12,7 @@ plot_paired(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object or a data frame created using \code{\link{get_pair_stats}()}}
+\item{data}{a TIRTLseqDataSet object or a data frame created using \code{\link{get_pair_stats}()}}
 
 \item{chain}{the TCR chain to plot (default is "paired")}
 

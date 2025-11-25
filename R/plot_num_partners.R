@@ -10,7 +10,7 @@
 #' showing the proportion of them (among all called pairs) that are paired with 1 chain,
 #' 2 chains, 3 chains, etc.
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param group_col a column of the metadata to use to group multiple samples into one bar plot
 #' The default is NULL, which uses the sample id.
 #' @param fraction whether to plot the fraction of chains or the total number of chains

@@ -1,9 +1,9 @@
-#' Re-order samples in a TIRTLseqData object
+#' Re-order samples in a TIRTLseqDataSet object
 #'
 #' `r lifecycle::badge('experimental')`
-#' This function changes the order of the samples in a TIRTLseqData object to the order that the user specifies.
+#' This function changes the order of the samples in a TIRTLseqDataSet object to the order that the user specifies.
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param samples the samples of 'data', in their desired order.
 #'
 #' Either:
@@ -11,7 +11,7 @@
 #' 2. A character vector of sample names
 #' 3. A character vector of metadata conditions where each entry is of the form \code{"column==value"}
 #'
-#' @return A TIRTLseqData object with re-ordered samples.
+#' @return A TIRTLseqDataSet object with re-ordered samples.
 #'
 #' @family data_wrangling
 #'

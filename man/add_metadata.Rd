@@ -2,12 +2,12 @@
 % Please edit documentation in R/add_metadata.R
 \name{add_metadata}
 \alias{add_metadata}
-\title{Add metadata to a TIRTLseqData object}
+\title{Add metadata to a TIRTLseqDataSet object}
 \usage{
 add_metadata(obj, meta_columns = NULL, sep = "_")
 }
 \arguments{
-\item{obj}{a TIRTLseqData object}
+\item{obj}{a TIRTLseqDataSet object}
 
 \item{meta_columns}{(optional) a vector of names for metadata for each field in the sample names.}
 
@@ -16,11 +16,11 @@ For example \code{c("marker", "timepoint", "donor")} for samples named something
 like "cd8_timepoint2_donor1".}
 }
 \value{
-a TIRTLseqData object with added metadata
+a TIRTLseqDataSet object with added metadata
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function adds a metadata data frame, \code{obj$meta}, to the input TIRTLseqData object based on
+This function adds a metadata data frame, \code{obj$meta}, to the input TIRTLseqDataSet object based on
 the sample names. This can be useful when the metadata was not specified when the initial object was loaded.
 }
 \seealso{

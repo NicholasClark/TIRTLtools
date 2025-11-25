@@ -7,7 +7,7 @@
 #' clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.
 #'
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param chain the TCR chain to use (default is "beta")
 #' @param cutoffs the indices used for the end of each group in the bar chart.
 #' The default is 10^(1:5), i.e. the 10th most-frequent clone, the 100th most-frequent clone,

@@ -7,12 +7,12 @@
 filter_nonfunctional_TCRs(data, verbose = TRUE)
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{verbose}{whether to print number of TCRs removed}
 }
 \value{
-Returns a TIRTLseqData object with nonfunctional TCRs removed.
+Returns a TIRTLseqDataSet object with nonfunctional TCRs removed.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

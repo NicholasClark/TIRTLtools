@@ -13,7 +13,7 @@ clean_pairs(
 )
 }
 \arguments{
-\item{data}{a TIRTLseqData object}
+\item{data}{a TIRTLseqDataSet object}
 
 \item{n_max_alpha}{(optional) the maximum number of alpha chains allowed
 paired with an individual beta chain (default 2)}
@@ -26,7 +26,7 @@ paired with an individual alpha chain (default 1)}
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
 }
 \value{
-Returns a TIRTLseqData object with excess pairs removed.
+Returns a TIRTLseqDataSet object with excess pairs removed.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

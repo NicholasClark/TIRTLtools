@@ -8,7 +8,7 @@
 #' This function creates a plot similar to \code{\link{plot_pairs_with_eachother}()},
 #' but does not mirror the alpha chains plot and add connections between paired alpha and beta chains.
 #'
-#' @param data a TIRTLseqData object
+#' @param data a TIRTLseqDataSet object
 #' @param sample the sample to plot (either by number or sample id)
 #' @param chain the chain to plot, "alpha", "beta", or "both" (default is "both")
 #' @param n_max the number of most frequent single-chains to plot
