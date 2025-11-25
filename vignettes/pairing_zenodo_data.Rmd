@@ -1,0 +1,173 @@
+---
+title: "TCR-alpha/beta pairing for COVID-19 related TCRs"
+output: html_document
+date: "2025-11-24"
+---
+
+## Tutorial overview
+
+This vignette shows how to generate paired TCR and single-chain "pseudo-bulk" data using raw TIRTLseq TCR-alpha/beta read counts from half of a 384-well plate.
+We find TCR pairs for CD8+ T-cells isolated from patient samples before and after naturally acquired SARS-CoV-2 infection and re-create a figure from the [TIRTLseq paper](http://doi.org/10.1038/s41592-025-02907-9) showing changes in the patient's TCR repertoire over time.
+
+## Study details
+
+For this example, we use data from the St. Jude Tracking Study of Immune Responses Associated with COVID-19 (SJTRC), a clinical trial launched in 2020 to study the T-cell receptor repertoires of adults with naturally acquired COVID-19. This was a prospective, longitudinal cohort study involving adult employees (18 years and older) at St. Jude Children’s Research Hospital in Memphis, TN, USA.
+
+Participants underwent weekly PCR screening for SARS-CoV-2 infection while on the St. Jude campus. Blood samples were collected in 8-ml cell preparation tubes, processed within 24 h into cellular and plasma components, aliquoted and then frozen for future analysis.
+
+Here, we use samples from a healthy 33-year-old female donor with naturally acquired mild SARS-CoV-2 infection and no prior history of SARS-CoV-2 infection or vaccination. Samples were collected 143 days before this donor’s first positive SARS-CoV-2 PCR test (`baseline` sample), 6 days after (`acute` sample) and 29 days after (`convalescent` sample).
+
+## Instructions
+
+### Download data
+
+You will need to download the data from [Zenodo](https://zenodo.org/records/14010377) before running this code. The data we are using is `exp3_clones.tar.gz`, which includes well-level TIRTLseq data from three 384-well plates. You will need to unzip the tar.gz file as well as the data for each plate.
+
+Note: These are large files. The tar.gz file is 1.4 GB and the uncompressed data is 7.8 GB.
+
+### Set up input/output directories
+
+Change the folder locations in the following code block to the directory with your downloaded and unzipped data (`folder`) and the directory you would like to save the paired TCR output to (`save_folder`).
+
+```{r}
+folder = "~/Downloads/zenodo/exp3_clones/" ### change this to the directory with your downloaded data!
+save_folder = "~/git/TIRTLtools/extra/exp3_cd8" ### change this to the folder you would like to save paired output in (if the folder does not exist it will be created)
+```
+
+### Select plate rows and columns
+
+CD4+ and CD8+ T-cells were isolated from peripheral blood mononuclear cells (PBMCs) in each sample. For each timepoint, CD8+ cells were plated on the left half of wells in a 384-well plate and CD4+ cells were plated on the right half.
+
+In this case, we will pair the CD8+ cells, so we select columns 1 through 12 (the left half of the plate) and rows 1 through 16 (or A through P, all rows).
+
+```{r}
+library(TIRTLtools)
+
+tp1 = file.path(folder, "TCR_clones_ID02") ## baseline (pre-infection)
+tp2 = file.path(folder, "TCR_clones_ID03") ## acute (6 days after infection)
+tp3 = file.path(folder, "TCR_clones_ID04") ## convalescent (29 days after infection)
+
+cd8_wells = get_well_subset(row_range = 1:16, col_range = 1:12) ## left half of the plate (CD8+)
+```
+
+### Run pairing algorithms
+
+The `run_pairing()` function will run the pairing scripts, which implement the MAD-HYPE and T-SHELL algorithms.
+These algorithms are implemented in Python using GPU-accelerated packages (with numpy as a CPU-only backup) for fast calculation. The package should automatically install a python environment with the necessary packages and detect the GPU type (NVIDIA or Apple Silicon) of your machine, if it has one available.
+
+Each function call may take a few minutes to run.
+
+The main arguments of the function are:
+
+- `folder_path` - the path of the folder with well-level data
+- `folder_out` - 	the path of the folder to write results to (the function will create the folder if it does not exist)
+- `prefix` - a prefix (e.g. the sample name) for the output file names
+- `well_filter_thres` - a threshold on the number of unique clones found in a well, for quality control
+- `well_pos` - the position of the well ID (e.g. "B5") in the file names.
+- `wellset1` - a vector of wells to use for the pairing.
+
+For more information, check the documentation with `?run_pairing`.
+
+The well-level data files in each folder are named something like `MVP113_TIRTLseq_P12_S263.TCRa_ID02.clones_TRA.tsv`, so the well ID (`P12` in this case) is in the third position (separate by underscores) so we use `well_pos=3`. We use the `get_well_subset()` function above to generate the vector of wells for the left side of the plate. With this, we run the `run_pairing()` function, saving the output from CD8+ cells in each plate to the same folder, with a different prefix for each: `<experiment>_<timepoint>_<marker>`.
+
+```{r}
+run_pairing(folder_path = tp1, folder_out = save_folder, prefix = "exp3_tp1_cd8", well_filter_thres = 0.5,
+          well_pos = 3, wellset1 = cd8_wells)
+run_pairing(folder_path = tp2, folder_out = save_folder, prefix = "exp3_tp2_cd8", well_filter_thres = 0.5,
+            well_pos = 3, wellset1 = cd8_wells)
+run_pairing(folder_path = tp3, folder_out = save_folder, prefix = "exp3_tp3_cd8", well_filter_thres = 0.5,
+            well_pos = 3, wellset1 = cd8_wells)
+```
+
+### Load paired TCR data
+
+The output from each call to `run_pairing()` is 3 tab-separated text files (.tsv):
+
+- `<sample-name>_TIRTLoutput.tsv(.gz)`-- Paired TCRs -- a table of computationally paired alpha/beta TCRs
+- `<sample-name>_pseudobulk_TRA.tsv(.gz)` -- Alpha chain "pseudo-bulk" data -- a table of read count summary metrics for alpha-chains across all wells on a plate
+- `<sample-name>_pseudobulk_TRB.tsv(.gz)` -- Beta chain "pseudo-bulk" data -- a table of read count summary metrics for beta-chains across all wells on a plate
+
+The `load_tirtlseq()` function can be used to load all of the data in the folder.
+
+This function loads the data into a "list", which can contain any type of unstructured data, with the following structure:
+
+```
+your_data_object (list)
+├───meta (metadata dataframe)
+└───data (list)
+    └───sample_1 (list)
+     	├───alpha (alpha pseudobulk dataframe)
+     	├───beta (beta pseudobulk dataframe)
+     	└───paired (paired pseudobulk dataframe)
+	...
+    └───sample_n (list)
+     	├───alpha (alpha pseudobulk dataframe)
+     	├───beta (beta pseudobulk dataframe)
+     	└───paired (paired pseudobulk dataframe)
+```
+
+The list contains two slots.
+
+- `meta` - a data frame with sample metadata
+- `data` - a list with data for each sample
+
+Since we used `<experiment>_<timepoint>_<marker>` for the `prefix` for each set of output files, we add this in the `meta_columns` argument, so that the function creates a data frame of sample metadata with this information.
+
+```{r}
+data = load_tirtlseq(save_folder, sep = "_", verbose = FALSE,
+                     meta_columns = c("experiment", "timepoint", "marker"))
+```
+
+### Plot changes in TCR repertoire over time
+
+After loading the data, we can use the `plot_sample_vs_sample()` function to make a scatter plot of clone frequencies between two samples.
+
+We can re-create the top half of Figure 3B from the [paper](http://doi.org/10.1038/s41592-025-02907-9), showing clone comparisons from baseline (pre-infection) to acute (6 days post-infection) and from acute to convalescent (29 days post-infection)
+
+```{r}
+gg1 = plot_sample_vs_sample(
+  data$data$exp3_tp1_cd8, data$data$exp3_tp2_cd8, 
+  labelx = "Frequency at baseline", labely = "Frequency at acute",
+  log2fc_cutoff = 3,
+  sem_cutoff = 2.5,
+  smooth_sem = "none"
+  )
+gg2 = plot_sample_vs_sample(
+  data$data$exp3_tp2_cd8, data$data$exp3_tp3_cd8, 
+  labelx = "Frequency at acute", labely = "Frequency at conv",
+  log2fc_cutoff = 3,
+  sem_cutoff = 2.5,
+  smooth_sem = "none"
+  )
+gg1 ## baseline vs. acute (top left of Fig. 3B)
+gg2 ## acute vs. convalescent (top right of Fig. 3B)
+```
+
+Note that the objects returned by the plotting functions in the package are almost all `ggplot` objects, so they can be modified by any functions in the `ggplot2` package such as the `theme()` function. `ggplot2` function are loaded by default in `TIRTLtools`, so they are available to the user without specifying `ggplot2::` before the function name.
+
+Since the figures are smaller in the paper and without a legend, we can re-create that here.
+
+```{r fig.width=3, fig.height = 3}
+gg1 + theme(legend.position = "none") ## baseline vs. acute (top left of Fig. 3B)
+gg2 + theme(legend.position = "none") ## acute vs. convalescent (top right of Fig. 3B)
+```
+
+### Find the number of expanded and contracted clones
+
+We can also call the same function with `return_data = TRUE` to get the data used to create the plot, with read fractions, log2 fold-change, and labels for whether the clone is expanded, contracted, or stable.
+
+```{r}
+baseline_to_acute_df = plot_sample_vs_sample(data$data$exp3_tp1_cd8, data$data$exp3_tp2_cd8, 
+                                             return_data = TRUE, smooth_sem = "none")
+acute_to_conv_df = plot_sample_vs_sample(data$data$exp3_tp2_cd8, data$data$exp3_tp3_cd8, 
+                                         return_data = TRUE, smooth_sem = "none")
+
+baseline_to_acute_df
+
+acute_to_conv_df
+
+table(baseline_to_acute_df$sign)
+table(acute_to_conv_df$sign)
+```
+
+The numbers of expanded and contracted clones match the figures from the paper, with small differences due to differing quality control settings.

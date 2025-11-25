@@ -107,6 +107,7 @@ articles:
       - "TIRTLtools"
       - "data_loading"
       - "plot_examples"
+      - "pairing_zenodo_data"
       - "TCRdist"
       - "structure_in_R"
       - "working_with_tirtlseq_data_in_R"

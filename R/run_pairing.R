@@ -10,7 +10,7 @@
 #' @param folder_out the path of the folder to write results to. The function will create the folder if it does not exist.
 #' @param prefix a prefix for the output file names
 #' @param well_filter_thres wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
-#' The default value is 0.75
+#' The default value is 0.5
 #' @param min_reads minimum number of reads a chain must have in a well to be considered observed
 #' (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)
 #' @param min_wells minimum number of wells a chain must be observed in to be paired.
@@ -42,8 +42,8 @@
 run_pairing = function(
     folder_path,
     folder_out,
-    prefix="tmp",
-    well_filter_thres=0.75,
+    prefix,
+    well_filter_thres=0.5,
     min_reads=0,
     min_wells=2,
     well_pos=3,
