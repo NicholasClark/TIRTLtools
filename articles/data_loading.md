@@ -1,4 +1,4 @@
-# Loading TIRTLseq data in R
+# Loading Paired TCR TIRTLseq data in R
 
 ## TIRTLseq text file data structure
 

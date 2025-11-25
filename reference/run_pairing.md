@@ -9,8 +9,8 @@ find TCRalpha-beta pairs originating from the same clone.
 run_pairing(
   folder_path,
   folder_out,
-  prefix = "tmp",
-  well_filter_thres = 0.75,
+  prefix,
+  well_filter_thres = 0.5,
   min_reads = 0,
   min_wells = 2,
   well_pos = 3,
@@ -46,7 +46,7 @@ run_pairing(
 
   wells are removed if they have fewer unique clones than:
   wellfilter_thres\*(Avg. \# of unique clones per well). The default
-  value is 0.75
+  value is 0.5
 
 - min_reads:
 

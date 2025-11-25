@@ -46,11 +46,11 @@ folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   chain = "paired", verbose = FALSE)
-#> Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 6 files from 6 samples.
-#> 0.6 seconds
+#> 0.5 seconds
 print(sjtrc$meta)
 #> # A tibble: 6 × 5
 #>   sample_id  marker timepoint version label                                     

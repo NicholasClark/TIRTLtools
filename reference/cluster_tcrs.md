@@ -116,7 +116,7 @@ folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   chain = "paired", verbose = FALSE)
-#> Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTLseq_minimal...
+#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...
 #> Found 2 beta chain pseudo-bulk files.
 #> Found 2 paired chain files.
 #> Loaded 2 files from 2 samples.
