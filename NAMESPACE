@@ -25,6 +25,9 @@ importFrom(Rcpp, sourceCpp)
 importFrom(RcppParallel, RcppParallelLibs)
 useDynLib(TIRTLtools, .registration = TRUE)
 
+## S3 methods
+S3method(print,TIRTLseqDataSet)
+S3method(summary,TIRTLseqDataSet)
 
 ## data_wrangling
 export(add_metadata) # docs 99% done, could use an example
