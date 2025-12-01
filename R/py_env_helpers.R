@@ -13,7 +13,10 @@
 # }
 
 # Internal: trigger basilisk env creation without doing real work
-install_python_env_silently <- function() {
+install_python_env_silently <- function(force = FALSE) {
+  if (env_is_installed() && !force) {
+    return(invisible(TRUE))
+  }
   basilisk::basiliskRun(
     env = TIRTLtools_py_env,
     fun = function() NULL

@@ -92,6 +92,7 @@ input_tcrs %>%
 TCRs are processed in chunks (default 1000). For a dataset of this size (~100k TCRs), computation on a laptop with an Apple Silicon M4 Pro GPU takes about 30 seconds.
 
 ```{r}
+install_python_env() ## if you do not run this line, you may be prompted to install the python environment necessary for TCRdist()
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 ```
 

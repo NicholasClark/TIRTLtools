@@ -4,7 +4,13 @@
 \alias{install_python_env}
 \title{Install python environment}
 \usage{
-install_python_env()
+install_python_env(force = FALSE)
+}
+\arguments{
+\item{force}{whether to force installation (default if FALSE)}
+}
+\value{
+returns NULL
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

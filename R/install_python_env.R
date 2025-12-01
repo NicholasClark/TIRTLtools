@@ -7,13 +7,17 @@
 #'
 #' It will run automatically when needed, but is available to the user if needed.
 #'
+#' @param force whether to force installation (default if FALSE)
+#'
+#' @return returns NULL
+#'
 #' @family python-deps
 #' @export
 #'
 
-install_python_env <- function() {
+install_python_env <- function(force = FALSE) {
   message("Installing/updating the Python environment for TIRTLtools...")
-  install_python_env_silently()
+  install_python_env_silently(force = force)
   message("Done.")
   return(invisible(NULL))
 }

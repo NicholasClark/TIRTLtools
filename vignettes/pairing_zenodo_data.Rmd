@@ -71,6 +71,8 @@ For more information, check the documentation with `?run_pairing`.
 The well-level data files in each folder are named something like `MVP113_TIRTLseq_P12_S263.TCRa_ID02.clones_TRA.tsv`, so the well ID (`P12` in this case) is in the third position (separate by underscores) so we use `well_pos=3`. We use the `get_well_subset()` function above to generate the vector of wells for the left side of the plate. With this, we run the `run_pairing()` function, saving the output from CD8+ cells in each plate to the same folder, with a different prefix for each: `<experiment>_<timepoint>_<marker>`.
 
 ```{r}
+install_python_env() ## if you do not run this line, you may be prompted to install the python environment necessary for run_pairing()
+
 run_pairing(folder_path = tp1, folder_out = save_folder, prefix = "exp3_tp1_cd8", well_filter_thres = 0.5,
           well_pos = 3, wellset1 = cd8_wells)
 run_pairing(folder_path = tp2, folder_out = save_folder, prefix = "exp3_tp2_cd8", well_filter_thres = 0.5,
