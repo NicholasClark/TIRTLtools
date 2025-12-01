@@ -14,7 +14,7 @@ filter_nonfunctional_TCRs(data, verbose = TRUE)
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - verbose:
 
@@ -22,7 +22,7 @@ filter_nonfunctional_TCRs(data, verbose = TRUE)
 
 ## Value
 
-Returns a TIRTLseqData object with nonfunctional TCRs removed.
+Returns a TIRTLseqDataSet object with nonfunctional TCRs removed.
 
 ## See also
 

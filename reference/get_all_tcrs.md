@@ -17,7 +17,7 @@ get_all_tcrs(
 
 - data:
 
-  a TIRTLseqData object created by
+  a TIRTLseqDataSet object created by
   [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
 
 - chain:
@@ -67,7 +67,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 15.3 seconds
+#> 15.9 seconds
 
 get_all_tcrs(ts_data, chain = "paired")
 #>            wi    wj   wij                                        alpha_nuc

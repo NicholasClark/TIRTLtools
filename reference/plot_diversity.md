@@ -125,7 +125,7 @@ sjtrc = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 15.3 seconds
+#> 15.2 seconds
 
 div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
 #> 

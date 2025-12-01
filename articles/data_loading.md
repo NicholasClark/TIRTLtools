@@ -46,7 +46,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 ## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz
 ```
 
-## The TIRTLseq data object
+## The “TIRTLseqDataSet” object
 
 In R, we store TIRTLseq data in a “list”, which can contain any type of
 unstructured data, with the following structure:
@@ -70,16 +70,47 @@ The list contains two slots.
 - `data` - a list with data for each sample
 
 ``` r
-class(ts_data) ## list
-```
-
-    ## [1] "list"
-
-``` r
 names(ts_data) ## [1] "data" "meta"
 ```
 
     ## [1] "data" "meta"
+
+``` r
+## slots are accessible via "$"
+## ts_data$meta ## a data frame
+## ts_data$data ## a list with data for each sample
+```
+
+For convenience, this list is given the class “TIRTLseqDataSet”, which
+has [`print()`](https://rdrr.io/r/base/print.html) and
+[`summary()`](https://rdrr.io/r/base/summary.html) methods.
+
+``` r
+class(ts_data) ## "TIRTLseqDataSet"
+```
+
+    ## [1] "TIRTLseqDataSet"
+
+``` r
+print(ts_data)
+```
+
+    ## <TIRTLseqDataSet>
+    ##   Number of samples: 2 
+    ##   Samples: cd8_tp1_v2 cd8_tp2_v2
+
+``` r
+summary(ts_data)
+```
+
+    ## <TIRTLseqDataSet>
+    ##   Number of samples: 2 
+    ##   Per-sample TCR counts (alpha / beta / paired):
+    ## # A tibble: 2 × 5
+    ##   sample_id  `Paired TCRs` `Unique Paired TCRs` `Alpha Chains` `Beta Chains`
+    ##   <chr>              <int>                <int>          <int>         <int>
+    ## 1 cd8_tp1_v2         20690                14273         937875        928777
+    ## 2 cd8_tp2_v2         26260                17891         980522        895688
 
 ### The metadata table
 

@@ -24,7 +24,7 @@ plot_clonotype_indices(
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - chain:
 
@@ -86,7 +86,7 @@ data = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 17.1 seconds
+#> 18 seconds
 
 plot_clonotype_indices(data, chain = "beta")
 

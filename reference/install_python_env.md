@@ -13,5 +13,15 @@ needed.
 ## Usage
 
 ``` r
-install_python_env()
+install_python_env(force = FALSE)
 ```
+
+## Arguments
+
+- force:
+
+  whether to force installation (default if FALSE)
+
+## Value
+
+returns NULL

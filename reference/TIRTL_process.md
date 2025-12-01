@@ -1,7 +1,8 @@
-# Run data processing functions on a TIRTLseqData object
+# Run data processing functions on a TIRTLseqDataSet object
 
 **\[experimental\]** This function runs annotation and data cleaning
-functions on a TIRTLseqData object. Specifically, it calls the functions
+functions on a TIRTLseqDataSet object. Specifically, it calls the
+functions
 [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md),
 [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md),
 [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md),
@@ -18,7 +19,7 @@ TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - clean:
 
@@ -32,7 +33,7 @@ TIRTL_process(data, clean = FALSE, remove_nonfunctional = FALSE)
 
 ## Value
 
-a TIRTLseqData object with annotated and (optionally) cleaned data
+a TIRTLseqDataSet object with annotated and (optionally) cleaned data
 
 ## See also
 

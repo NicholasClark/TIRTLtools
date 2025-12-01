@@ -1,4 +1,4 @@
-# Subset a TIRTLseqData object
+# Subset a TIRTLseqDataSet object
 
 **\[experimental\]** The `filter_dataset()` function is used to select a
 subset of samples from a loaded TIRTLseq dataset and create a new
@@ -14,7 +14,7 @@ filter_dataset(data, samples)
 
 - data:
 
-  a TIRTLseqData object created by
+  a TIRTLseqDataSet object created by
   [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
 
 - samples:

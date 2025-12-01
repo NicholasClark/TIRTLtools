@@ -23,7 +23,7 @@ plot_num_partners(
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - group_col:
 
@@ -100,7 +100,7 @@ ts_data = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 13.8 seconds
+#> 12.8 seconds
 
 plot_num_partners(ts_data)
 

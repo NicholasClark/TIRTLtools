@@ -14,17 +14,17 @@
 ## Data wrangling
 
 - [`add_metadata()`](https://nicholasclark.github.io/TIRTLtools/reference/add_metadata.md)
-  **\[experimental\]** : Add metadata to a TIRTLseqData object
+  **\[experimental\]** : Add metadata to a TIRTLseqDataSet object
 - [`filter_dataset()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_dataset.md)
-  **\[experimental\]** : Subset a TIRTLseqData object
+  **\[experimental\]** : Subset a TIRTLseqDataSet object
 - [`reorder_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/reorder_samples.md)
-  **\[experimental\]** : Re-order samples in a TIRTLseqData object
+  **\[experimental\]** : Re-order samples in a TIRTLseqDataSet object
 
 ## Data processing and cleaning
 
 - [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.md)
-  **\[experimental\]** : Run data processing functions on a TIRTLseqData
-  object
+  **\[experimental\]** : Run data processing functions on a
+  TIRTLseqDataSet object
 - [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md)
   **\[experimental\]** : Add single-chain read counts/fractions to the
   paired TCR data
@@ -130,7 +130,7 @@
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads

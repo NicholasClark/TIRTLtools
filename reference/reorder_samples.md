@@ -1,7 +1,7 @@
-# Re-order samples in a TIRTLseqData object
+# Re-order samples in a TIRTLseqDataSet object
 
 **\[experimental\]** This function changes the order of the samples in a
-TIRTLseqData object to the order that the user specifies.
+TIRTLseqDataSet object to the order that the user specifies.
 
 ## Usage
 
@@ -13,7 +13,7 @@ reorder_samples(data, samples)
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - samples:
 
@@ -30,7 +30,7 @@ reorder_samples(data, samples)
 
 ## Value
 
-A TIRTLseqData object with re-ordered samples.
+A TIRTLseqDataSet object with re-ordered samples.
 
 ## See also
 
@@ -50,7 +50,7 @@ sjtrc = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 6 files from 6 samples.
-#> 0.5 seconds
+#> 0.6 seconds
 print(sjtrc$meta)
 #> # A tibble: 6 × 5
 #>   sample_id  marker timepoint version label                                     

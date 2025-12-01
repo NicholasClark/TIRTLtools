@@ -20,7 +20,7 @@ clean_pairs(
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - n_max_alpha:
 
@@ -44,7 +44,7 @@ clean_pairs(
 
 ## Value
 
-Returns a TIRTLseqData object with excess pairs removed.
+Returns a TIRTLseqDataSet object with excess pairs removed.
 
 ## Details
 

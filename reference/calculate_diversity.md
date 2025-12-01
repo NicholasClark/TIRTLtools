@@ -24,7 +24,7 @@ diversity(...)
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - chain:
 
@@ -168,7 +168,7 @@ sjtrc = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 23.7 seconds
+#> 17.6 seconds
 
 div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
 #> 

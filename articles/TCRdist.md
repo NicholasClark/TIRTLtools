@@ -138,7 +138,7 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loaded 6 files from 6 samples.
 
-    ## 0.8 seconds
+    ## 0.7 seconds
 
 ``` r
 data$meta %>%
@@ -185,6 +185,14 @@ input_tcrs %>%
 TCRs are processed in chunks (default 1000). For a dataset of this size
 (~100k TCRs), computation on a laptop with an Apple Silicon M4 Pro GPU
 takes about 30 seconds.
+
+``` r
+install_python_env() ## if you do not run this line, you may be prompted to install the python environment necessary for TCRdist()
+```
+
+    ## Installing/updating the Python environment for TIRTLtools...
+
+    ## Done.
 
 ``` r
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)

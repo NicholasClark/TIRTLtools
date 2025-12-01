@@ -162,5 +162,5 @@ ts_data = load_tirtlseq(folder,
 #> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp3_v2_pseudobulk_TRB.tsv...
 #> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp3_v2_TIRTLoutput.tsv...
 #> Loaded 18 files from 6 samples.
-#> 14.3 seconds
+#> 17 seconds
 ```

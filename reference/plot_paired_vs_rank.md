@@ -21,7 +21,7 @@ plot_paired_vs_rank(
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - sample:
 
@@ -73,7 +73,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 13.3 seconds
+#> 13.8 seconds
 
 plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_not_paired", chain = "both", n_max = 100)
 

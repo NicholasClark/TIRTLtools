@@ -19,7 +19,7 @@ plot_paired(
 
 - data:
 
-  a TIRTLseqData object or a data frame created using
+  a TIRTLseqDataSet object or a data frame created using
   [`get_pair_stats()`](https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.md)
 
 - chain:
@@ -64,7 +64,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 12.9 seconds
+#> 14.4 seconds
 
 plot_paired(ts_data)
 

@@ -29,7 +29,7 @@ plot_clone_size_across_samples(
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - clones:
 
@@ -99,7 +99,7 @@ sjtrc = load_tirtlseq(folder,
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 18.3 seconds
+#> 21.6 seconds
 
 top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>%
   dplyr::arrange(desc(readFraction)) %>%

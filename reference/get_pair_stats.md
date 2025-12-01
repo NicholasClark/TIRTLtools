@@ -16,7 +16,7 @@ get_pair_stats(data, verbose = TRUE)
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 - verbose:
 
@@ -59,7 +59,7 @@ ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 18.1 seconds
+#> 19.8 seconds
 
 get_pair_stats(ts_data)
 #> Calculating pairing stats for sample 1

@@ -14,11 +14,11 @@ identify_non_functional_seqs(data)
 
 - data:
 
-  a TIRTLseqData object
+  a TIRTLseqDataSet object
 
 ## Value
 
-A TIRTLseqData object with modified pseudobulk and paired data frames
+A TIRTLseqDataSet object with modified pseudobulk and paired data frames
 for each sample. Each dataframe in the ouptut object has added columns
 that identify whether the CDR3 alpha and beta nucleotide sequences
 contain any stop codons (\*) or frame shifts (\_) that would indicate a
