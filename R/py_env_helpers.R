@@ -1,18 +1,16 @@
-.env_installed_flag <- function() {
-  # Per-user cache dir for TIRTLtools
-  file.path(tools::R_user_dir("TIRTLtools", which = "cache"),
-            "env_installed.flag")
-}
+# .env_installed_flag <- function() {
+#   # Per-user cache dir for TIRTLtools
+#   file.path(tools::R_user_dir("TIRTLtools", which = "cache"),
+#             "env_installed.flag")
+# }
 
-env_is_installed <- function() {
-  file.exists(.env_installed_flag())
-}
 
-mark_env_installed <- function() {
-  dir.create(dirname(.env_installed_flag()),
-             showWarnings = FALSE, recursive = TRUE)
-  file.create(.env_installed_flag())
-}
+
+# mark_env_installed <- function() {
+#   dir.create(dirname(.env_installed_flag()),
+#              showWarnings = FALSE, recursive = TRUE)
+#   file.create(.env_installed_flag())
+# }
 
 # Internal: trigger basilisk env creation without doing real work
 install_python_env_silently <- function() {
@@ -20,7 +18,7 @@ install_python_env_silently <- function() {
     env = TIRTLtools_py_env,
     fun = function() NULL
   )
-  mark_env_installed()
+  #mark_env_installed()
   invisible(TRUE)
 }
 
@@ -38,8 +36,10 @@ ensure_python_env <- function(ask = TRUE) {
   }
 
   # Interactive + ask = TRUE: prompt the user
-  message("This is the first time you are using the Python backend for TIRTLtools.")
-  message("We need to install a Python environment (via basilisk) for this package.")
+  version = packageVersion("TIRTLtools")
+  message("This function requires installation of a Python environment.")
+  message(paste("This is the first time you are using the Python backend for TIRTLtools v", version, sep = ""))
+
 
   ans <- utils::menu(
     choices = c("Yes, install now", "No, cancel"),

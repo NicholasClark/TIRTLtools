@@ -47,11 +47,33 @@ if (.is_apple_silicon()) {
   base_deps <- c(base_deps,"mlx==0.29.4")
 }
 
+envname = "TIRTLtools_py_env"
+pkgname = "TIRTLtools"
+
 TIRTLtools_py_env <- basilisk::BasiliskEnvironment(
-  envname = "TIRTLtools_py_env",
-  pkgname = "TIRTLtools",
+  envname = envname,
+  pkgname = pkgname,
   packages = base_deps
 )
+
+env_is_installed <- function() {
+  exdir <- basilisk::getExternalDir()
+  envdir <- file.path(exdir, pkgname, packageVersion(pkgname))
+  envpath <- file.path(envdir, envname) ## envname defined above this function
+  return(file.exists(envpath))
+  # if (is.null(pkgname)) {
+  #   envpath <- envname
+  # } else if (basilisk::useSystemDir()) {
+  #   envpath <- file.path(basilisk:::.get_env_system_dir(pkgname, installed = TRUE),
+  #                        envname)
+  # } else {
+  #   exdir <- basilisk::getExternalDir()
+  #   envdir <- file.path(exdir, pkgname, packageVersion(pkgname))
+  #   envpath <- file.path(envdir, envname)
+  # }
+  # file.exists(envpath)
+  #file.exists(.env_installed_flag())
+}
 
 # TIRTLtools_env_no_gpu <- basilisk::BasiliskEnvironment(
 #   envname = "TIRTLtools_env_no_gpu",
