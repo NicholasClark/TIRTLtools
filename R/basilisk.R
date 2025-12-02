@@ -57,7 +57,13 @@ TIRTLtools_py_env <- basilisk::BasiliskEnvironment(
 )
 
 env_is_installed <- function() {
-  exdir <- basilisk::getExternalDir()
+  if("getExternalDir" %in% getNamespaceExports("basilisk")) {
+    exdir <- basilisk::getExternalDir()
+  } else if("getExternalDir" %in% getNamespaceExports("basilisk.utils")) {
+    exdir <- basilisk.utils::getExternalDir()
+  } else {
+    return(TRUE) ## not sure if python installed or not, don't ask to install
+  }
   envdir <- file.path(exdir, pkgname, packageVersion(pkgname))
   envpath <- file.path(envdir, envname) ## envname defined above this function
   return(file.exists(envpath))
