@@ -143,6 +143,8 @@ TCRdist = function(
   # return(TCR_dist_res)
 
   # reticulate version
+  # py_path = system.file("python/TCRdist/", package = "TIRTLtools")
+  # TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = py_path, convert = TRUE, delay_load = TRUE)
   TCRdist_gpu = reticulate::import_from_path("TCRdist_gpu", path = system.file("python/TCRdist/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
   pd = reticulate::import("pandas", delay_load = TRUE)
   np = reticulate::import("numpy", delay_load = TRUE)

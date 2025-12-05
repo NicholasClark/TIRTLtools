@@ -56,8 +56,9 @@ TIRTLtools_py_env <- basilisk::BasiliskEnvironment(
   packages = base_deps
 )
 
-get_py_deps = function() {
-  return(base_deps)
+get_py_deps = function(with_versions = FALSE) {
+  if(with_versions) return(base_deps)
+  return( gsub("==.*", "", base_deps) )
 }
 
 env_is_installed <- function() {
