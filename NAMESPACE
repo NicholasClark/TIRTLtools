@@ -123,7 +123,7 @@ export(get_well_subset) ## full docs
 #export(summarize_scTIRTLseq) ## hidden for now
 
 ## python-deps
-export(install_python_env) ## full docs
+#export(install_python_env) ## full docs
 
 ## edgeR
 #export(make_pseudo_replicates)

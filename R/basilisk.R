@@ -8,7 +8,7 @@
 
 ## deps for basilisk 1.22 (using pyenv)
 base_deps <- c(
-  "python==3.14",
+  #"python==3.14",
   "numpy==2.3.5",
   "scipy==1.16.3",
   "pandas==2.3.3"
@@ -55,6 +55,10 @@ TIRTLtools_py_env <- basilisk::BasiliskEnvironment(
   pkgname = pkgname,
   packages = base_deps
 )
+
+get_py_deps = function() {
+  return(base_deps)
+}
 
 env_is_installed <- function() {
   if("getExternalDir" %in% getNamespaceExports("basilisk")) {

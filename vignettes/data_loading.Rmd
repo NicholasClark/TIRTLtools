@@ -27,9 +27,11 @@ Here, our files are named `(marker)_(timepoint)_(version)_ ... .tsv.gz`, e.g.
 library(TIRTLtools)
 library(dplyr)
 library(rmarkdown)
-folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal", 
+                     package = "TIRTLtools")
 dir(folder)
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
+ts_data = load_tirtlseq(folder, 
+  meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz
 ```
 
@@ -136,11 +138,13 @@ For each clonotype defined by a unique CDR3 nucleotide sequence, the following a
 
 ```{r}
 ts_data$data$cd8_tp1_v2$alpha %>%
-  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20),
+                                 "...", sep = "")) %>%
   paged_table()
 
 ts_data$data$cd8_tp1_v2$beta %>%
-  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20),
+                                 "...", sep = "")) %>%
   paged_table()
 ```
 
