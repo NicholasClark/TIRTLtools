@@ -91,8 +91,10 @@ run_pairing = function(
     #print(names(mlist))
     print(Sys.time())
   }
-  wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
-  clone_thres=round(well_filter_thres*mean(sapply(mlist,nrow)[wellsub]))
+  #wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
+  #clone_thres=round(well_filter_thres*mean(sapply(mlist,nrow)[wellsub]))
+  wellsub<-sapply(strsplit(names(mlista),split="_",fixed=T),"[[",well_pos)%in%wellset1
+  clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)[wellsub]))
   rm(mlist)
 
   qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
