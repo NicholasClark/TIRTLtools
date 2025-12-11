@@ -95,7 +95,7 @@ TCRdist = function(
     ) {
   #ensure_python_env() ## for basilisk
   #reticulate::py_available(initialize = TRUE)
-  py_require( packages = get_py_deps() )
+  py_require( packages = get_py_deps(), , exclude_newer = "2025-12-12" )
 
   tcr1 = prep_for_tcrdist(tcr1, params = params, remove_MAIT = remove_MAIT)
   if(!is.null(tcr2)) tcr2 = prep_for_tcrdist(tcr2, params = params, remove_MAIT = remove_MAIT)
