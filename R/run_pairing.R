@@ -59,7 +59,7 @@ run_pairing = function(
     shared = NULL
 ){
   #ensure_python_env()
-  py_require( packages = get_py_deps(), exclude_newer = "2025-12-12")
+  py_require( packages = get_py_deps() )
 
   backend = backend[1]
   if(verbose) {
