@@ -63,7 +63,7 @@ identify_non_functional_seqs = function(data) {
         has_stop_codon = grepl("\\*", aaSeqCDR3), # stop codon
         has_frameshift = grepl("_", aaSeqCDR3), # frame shift
       ) %>%
-      mutate(is_functional = !(has_stop_codon & has_frameshift))
+      mutate(is_functional = !(has_stop_codon | has_frameshift))
   }
   if(!"data.table" %in% class(df_out)) {
     #print("converting to data.table")
