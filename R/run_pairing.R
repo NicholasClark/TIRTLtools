@@ -58,8 +58,8 @@ run_pairing = function(
     fork = NULL,
     shared = NULL
 ){
-  #ensure_python_env()
-  py_require( packages = get_py_deps() )
+  ensure_python_env()
+  #py_require( packages = get_py_deps() )
 
   backend = backend[1]
   if(verbose) {
@@ -169,47 +169,47 @@ run_pairing = function(
 
   if(compute==T) {
     # basilisk stuff =====================
-    # is_loaded = pkgload::is_dev_package("TIRTLtools")
-    # if(is_loaded) {
-    #   if(is.null(fork)) fork = FALSE
-    #   if(is.null(shared)) shared = TRUE
-    #   #print("package loaded by pkgload/devtools")
-    # } else {
-    #   if(is.null(fork)) fork = FALSE
-    #   if(is.null(shared)) shared = FALSE
-    #   #print("package loaded from installed version")
-    # }
-    # #env = .choose_basilisk_env(backend)
-    # env = TIRTLtools_py_env
-    # proc <- basilisk::basiliskStart(env, fork = fork, shared = shared)
-    # on.exit(basilisk::basiliskStop(proc))
-    # py_path = system.file("python/pairing/", package = "TIRTLtools")
-    #
-    # pair_res = basilisk::basiliskRun(proc, fun=function(prefix, folder_out, bigmas, bigmbs, mdh, backend, filter_before_top3) {
-    #   pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
-    #
-    #   bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
-    #   bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
-    #   mdh_py = r_to_py(mdh)
-    #
-    #   pairing_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
-    #                              bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
-    #                              backend = backend, filter_before_top3 = filter_before_top3)
-    #   return(pairing_res)
-    # }, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
+    is_loaded = pkgload::is_dev_package("TIRTLtools")
+    if(is_loaded) {
+      if(is.null(fork)) fork = FALSE
+      if(is.null(shared)) shared = TRUE
+      #print("package loaded by pkgload/devtools")
+    } else {
+      if(is.null(fork)) fork = FALSE
+      if(is.null(shared)) shared = FALSE
+      #print("package loaded from installed version")
+    }
+    #env = .choose_basilisk_env(backend)
+    env = TIRTLtools_py_env
+    proc <- basilisk::basiliskStart(env, fork = fork, shared = shared)
+    on.exit(basilisk::basiliskStop(proc))
+    py_path = system.file("python/pairing/", package = "TIRTLtools")
+
+    pair_res = basilisk::basiliskRun(proc, fun=function(prefix, folder_out, bigmas, bigmbs, mdh, backend, filter_before_top3) {
+      pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
+
+      bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
+      bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
+      mdh_py = r_to_py(mdh)
+
+      pairing_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
+                                 bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
+                                 backend = backend, filter_before_top3 = filter_before_top3)
+      return(pairing_res)
+    }, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
 
     # reticulate stuff =======================
     #pair_res = basilisk::basiliskRun(proc, fun=function(prefix, folder_out, bigmas, bigmbs, mdh, backend, filter_before_top3) {
-    py_path = system.file("python/pairing/", package = "TIRTLtools")
-    pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
-
-    bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
-    bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
-    mdh_py = r_to_py(mdh)
-
-    pair_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
-                                  bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
-                                  backend = backend, filter_before_top3 = filter_before_top3)
+    # py_path = system.file("python/pairing/", package = "TIRTLtools")
+    # pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
+    #
+    # bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
+    # bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
+    # mdh_py = r_to_py(mdh)
+    #
+    # pair_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
+    #                               bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
+    #                               backend = backend, filter_before_top3 = filter_before_top3)
       #return(pairing_res)
     #}, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
 
