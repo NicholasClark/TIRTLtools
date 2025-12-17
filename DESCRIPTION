@@ -1,7 +1,7 @@
 Package: TIRTLtools
 Type: Package
 Title: Analysis Tools for TIRTLseq Data
-Version: 0.1.13
+Version: 0.1.14
 Authors@R: c(
     person(
       "Nicholas", "Clark",
