@@ -23,6 +23,6 @@ git clone https://github.com/NicholasClark/TIRTLtools.git
 
 Load the package from your local folder in R
 ```{r eval=FALSE}
-# install.packages("devtools") ## Run if you need to install the 'devtools' package
-devtools::load_all("./TIRTLtools") ### location of cloned repo on your machine
+# install.packages("pkgload") ## Run if you need to install the 'pkgload' package
+pkgload::load_all("./TIRTLtools") ### location of cloned repo on your machine
 ```
