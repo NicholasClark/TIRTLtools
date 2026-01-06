@@ -77,8 +77,15 @@ run_pairing = function(
     if(verbose) print(msg)
   }
 
-  mlist<-lapply(list.files(path = folder_path,full.names = T),fread)
-  names(mlist)<-gsub(".","_",list.files(path = folder_path,full.names = F),fixed=T)
+  files = list.files(path = folder_path,full.names = F)
+  files_no_dot = gsub(".","_",files,fixed=T)
+  file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
+  files_bool = file_wells %in% wellset1
+  mlist<-lapply(file.path(folder_path, files[files_bool]),fread)
+  names(mlist) = files_no_dot[files_bool]
+
+  #mlist<-lapply(list.files(path = folder_path,full.names = T),fread)
+  #names(mlist)<-gsub(".","_",list.files(path = folder_path,full.names = F),fixed=T)
   mlista<-geta(mlist)
   mlistb<-getb(mlist)
   if(verbose) {
@@ -94,8 +101,9 @@ run_pairing = function(
   }
   #wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
   #clone_thres=round(well_filter_thres*mean(sapply(mlist,nrow)[wellsub]))
-  wellsub<-sapply(strsplit(names(mlista),split="_",fixed=T),"[[",well_pos)%in%wellset1
-  clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)[wellsub]))
+  #wellsub<-sapply(strsplit(names(mlista),split="_",fixed=T),"[[",well_pos)%in%wellset1
+  #clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)[wellsub]))
+  clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)))
   rm(mlist)
 
   qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
