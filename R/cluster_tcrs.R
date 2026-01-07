@@ -82,6 +82,7 @@ cluster_tcrs = function(
     df_all_obs = data %>% mutate(source = "observed")
   }
   if(with_db && is.data.frame(db)) {
+    if("is_functional" %in% colnames(df_all_obs)) db = .identify_non_functional_seqs_single(db)
     df_all = bind_rows(df_all_obs, db)
   } else {
     df_all = df_all_obs
