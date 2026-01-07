@@ -81,6 +81,8 @@ run_pairing = function(
   files_no_dot = gsub(".","_",files,fixed=T)
   file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
   files_bool = file_wells %in% wellset1
+  msg = paste("Reading", sum(files_bool), "wells from", folder_path)
+  if(verbose) print(msg)
   mlist<-lapply(file.path(folder_path, files[files_bool]),fread)
   names(mlist) = files_no_dot[files_bool]
 
@@ -92,7 +94,7 @@ run_pairing = function(
     n_filesA = length(mlista)
     n_filesB = length(mlistb)
     msgA = paste(n_filesA, "TCRalpha well files loaded")
-    msgB = paste(n_filesB, "TCRalpha well files loaded")
+    msgB = paste(n_filesB, "TCRbeta well files loaded")
     print(msgA)
     print(msgB)
     #print("clonesets loaded")
