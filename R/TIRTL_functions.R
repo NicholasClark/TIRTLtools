@@ -40,6 +40,17 @@ get_good_wells_sub<-function(alpha_list,beta_list,thres,pos=4,wellset=get_well_s
   list(a=wellinds_a%in%intersect(good_wells,wellset),b=wellinds_b%in%intersect(good_wells,wellset),well_ids=intersect(good_wells,wellset))
 }
 
+get_good_wells_sub_multi<-function(alpha_list,beta_list,thres,pos=4){
+  wellinds_a<-(sapply(strsplit(names(alpha_list),"_"),"[[",pos))
+  plates_a = sapply(strsplit(names(alpha_list),"_"), function(x) rev(x)[[1]])
+  wellinds_a = paste(wellinds_a, plates_a)
+  wellinds_b<-(sapply(strsplit(names(beta_list),"_"),"[[",pos))
+  plates_b = sapply(strsplit(names(beta_list),"_"), function(x) rev(x)[[1]])
+  wellinds_b = paste(wellinds_b, plates_b)
+  good_wells<-intersect(wellinds_a[sapply(alpha_list,nrow)>thres],wellinds_b[sapply(beta_list,nrow)>thres])
+  list(a=wellinds_a%in%good_wells,b=wellinds_b%in%good_wells,well_ids=good_wells)
+}
+
 madhyper_surface<-function(n_wells,cells=1000,alpha=2,prior=1){
   new_cube=matrix(0,nrow=n_wells+1,ncol=n_wells+1)
   i=1
