@@ -157,3 +157,33 @@
   result = paste(lines, collapse = "\n")
   return(result)
 }
+
+.get_mode <- function(x) {
+  unique_x <- unique(x)
+  unique_x[which.max(tabulate(match(x, unique_x)))]
+}
+
+
+.summarize_by_cdr3_nt = function(df) {
+  #if(length(unique(df$targetSequences)) < nrow(df)) {
+  df = df %>%
+    mutate(
+      allVHitsWithScore = gsub("\\*.*", "", allVHitsWithScore),
+      allJHitsWithScore = gsub("\\*.*", "", allJHitsWithScore)
+      ) %>%
+    group_by(targetSequences) %>%
+    summarize(
+      aaSeqCDR3 = aaSeqCDR3[which.max(readCount)],
+      allVHitsWithScore = allVHitsWithScore[which.max(readCount)],
+      allJHitsWithScore = allJHitsWithScore[which.max(readCount)],
+      readCount = sum(readCount),
+      readFraction = sum(readFraction),
+      .groups = "drop") %>%
+    arrange(desc(readCount))
+  #}
+  return(df)
+}
+
+.get_well_from_name = function(str_vec, well_pos) {
+  sapply(strsplit(str_vec, split = "_"), function(x) x[[well_pos]])
+}

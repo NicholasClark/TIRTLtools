@@ -169,6 +169,8 @@ run_pairing = function(
     write(rownames(bigmbs),file=file.path(folder_out, paste0(prefix,"_bigmbs_names.tsv")))
     write_dat(as.matrix(bigmas),fname = file.path(folder_out, paste0(prefix,"_bigmas.tsv")))
     write_dat(as.matrix(bigmbs),fname = file.path(folder_out, paste0(prefix,"_bigmbs.tsv")))
+    write.table(summary(bigmas), file.path(folder_out, paste0(prefix,"_bigmas_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
+    write.table(summary(bigmbs), file.path(folder_out, paste0(prefix,"_bigmbs_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
   }
   if(verbose) print(Sys.time())
   n_wells=ncol(bigmas)

@@ -40,6 +40,13 @@ get_good_wells_sub<-function(alpha_list,beta_list,thres,pos=4,wellset=get_well_s
   list(a=wellinds_a%in%intersect(good_wells,wellset),b=wellinds_b%in%intersect(good_wells,wellset),well_ids=intersect(good_wells,wellset))
 }
 
+get_good_wells_sub_longitudinal<-function(alpha_list,beta_list,thres){
+  good_wells_alpha = sapply(alpha_list,nrow)>thres
+  good_wells_beta = sapply(beta_list,nrow)>thres
+  good_wells = good_wells_alpha & good_wells_beta
+  list(a=good_wells,b=good_wells,well_ids=good_wells)
+}
+
 get_good_wells_sub_multi<-function(alpha_list,beta_list,thres,pos=4){
   wellinds_a<-(sapply(strsplit(names(alpha_list),"_"),"[[",pos))
   plates_a = sapply(strsplit(names(alpha_list),"_"), function(x) rev(x)[[1]])

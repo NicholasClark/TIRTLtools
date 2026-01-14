@@ -1,10 +1,10 @@
-#' Find TCRalpha/beta pairs from individual well read counts across multiple plates
+#' Find TCRalpha/beta pairs from individual well read counts with longitudinal samples.
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
 #' This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
-#' originating from the same clone. This function allows for the case where one sample
-#' is spread across multiple plates.
+#' originating from the same clone. This function allows for simultaneous pairing of a
+#' sample from the same donor, using TIRTLseq data from multiple timepoints.
 #'
 #'
 #' @param folder_paths a vector of the paths of the folder with well-level data
@@ -27,6 +27,7 @@
 #' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
 #' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
+#' @param randomize whether to randomize the wells on each plate when stacking counts. Default is FALSE.
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -40,7 +41,7 @@
 #' @export
 #'
 
-run_pairing_multiplate = function(
+run_pairing_longitudinal = function(
     folder_paths,
     folder_out,
     prefix,
@@ -58,11 +59,13 @@ run_pairing_multiplate = function(
     filter_before_top3 = FALSE,
     fork = NULL,
     shared = NULL,
-    testing = FALSE
+    testing = FALSE,
+    randomize = FALSE
 ){
 
   if(!is.list(wellsets)) stop("Input 'wellsets' needs to be a list where each item is a vector of wells for a plate.")
   if(length(folder_paths) != length(wellsets)) stop("Input 'folder_paths' needs to be the same length as 'wellsets'")
+  if(length(unique(sapply(wellsets, length))) > 1) stop("All wellsets need to be the same length")
 
   #ensure_python_env()
   py_require( packages = get_py_deps() )
@@ -101,19 +104,30 @@ run_pairing_multiplate = function(
       print(j)
       x = file.path(folder_path, files[files_bool])[j]
       fread(x, select = read_cols)
-      })
+    })
     names(mlist) = paste(files_no_dot[files_bool], i, sep= "_")[1:len] ## add plate number to name
     return(mlist)
-  }) %>% rlang::flatten()
+  })
 
 
   #mlist<-lapply(list.files(path = folder_path,full.names = T),fread)
   #names(mlist)<-gsub(".","_",list.files(path = folder_path,full.names = F),fixed=T)
-  mlista<-geta(mlist_all)
-  mlistb<-getb(mlist_all)
+  mlista<-lapply(mlist_all, function(x) {
+    list_tmp = geta(x)
+    names_full = names(list_tmp)
+    names(list_tmp) = .get_well_from_name(names(list_tmp), well_pos)
+    list_tmp = list_tmp[sort(names(list_tmp))]
+    })
+  mlistb<-lapply(mlist_all, function(x) {
+    list_tmp = getb(x)
+    names_full = names(list_tmp)
+    names(list_tmp) = .get_well_from_name(names(list_tmp), well_pos)
+    list_tmp = list_tmp[sort(names(list_tmp))]
+  })
+
   if(verbose) {
-    n_filesA = length(mlista)
-    n_filesB = length(mlistb)
+    n_filesA = sum(sapply(mlista, length))
+    n_filesB = sum(sapply(mlistb, length))
     msgA = paste(n_filesA, "TCRalpha well files loaded")
     msgB = paste(n_filesB, "TCRbeta well files loaded")
     print(msgA)
@@ -122,6 +136,11 @@ run_pairing_multiplate = function(
     #print(names(mlist))
     print(Sys.time())
   }
+  print("Stacking plate read counts for alpha TCRs...")
+  mlista = stack_plate_dfs(mlista, randomize = randomize)
+  print("Stacking plate read counts for beta TCRs...")
+  mlistb = stack_plate_dfs(mlistb, randomize = randomize)
+  print("Done stacking plate read counts")
   #wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
   #clone_thres=round(well_filter_thres*mean(sapply(mlist,nrow)[wellsub]))
   #wellsub<-sapply(strsplit(names(mlista),split="_",fixed=T),"[[",well_pos)%in%wellset1
@@ -129,7 +148,8 @@ run_pairing_multiplate = function(
   clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)))
   rm(mlist_all)
 
-  qc<-get_good_wells_sub_multi(mlista,mlistb,clone_thres,pos=well_pos)
+  qc<-get_good_wells_sub_longitudinal(mlista,mlistb,clone_thres)
+
   if(verbose) {
     print("Clone threshold for QC:")
     print(clone_thres)
@@ -335,4 +355,33 @@ run_pairing_multiplate = function(
   }
   fwrite(result, file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv")),sep="\t")
   return(result)
+}
+
+
+## df_list is a list of data frames, one for a well on each plate
+stack_well_dfs = function(df_list) {
+  df_list = lapply(df_list, .summarize_by_cdr3_nt) ## make sure NT seqs are unique within each df
+  df_stack = bind_rows(df_list, .id = "timepoint") %>%
+    group_by(targetSequences) %>%
+    summarize(
+      n_samples_found = n(),
+      aaSeqCDR3 = .get_mode(aaSeqCDR3),
+      allVHitsWithScore = get_most_popularV(allVHitsWithScore),
+      allJHitsWithScore = get_most_popularV(allJHitsWithScore),
+      readCount = sum(readCount, na.rm = TRUE),
+      .groups = "drop") %>%
+    mutate(readFraction = readCount/sum(readCount, na.rm = TRUE)) %>%
+    arrange(desc(readCount))
+  return(df_stack)
+}
+
+## df_list is a list where each slot is a list of dataframes of data for wells for each plate
+stack_plate_dfs = function(df_list, randomize = FALSE) {
+  if(randomize) df_list = lapply(df_list, function(x) x[sample.int(length(x))] )
+  list_out = lapply(1:length(df_list[[1]]), function(i) { ## for each well index
+    print(i)
+    list_i = lapply(df_list, function(x) x[[i]]) ## list of data frames for one well across multiple plates
+    stack_well_dfs(list_i)
+  })
+  return(list_out)
 }
