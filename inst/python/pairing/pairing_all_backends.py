@@ -29,13 +29,18 @@ else:
     print("Loading numpy")
     import numpy as mx #use this for CPU only
 
-def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_before_top3 = False) :
-  #get_backend(backend) ### load cupy, mlx, or numpy as mx.
-  bigmas = mx.array(bigmas)
-  bigmbs = mx.array(bigmbs)
-  mdh = mx.array(mdh)
-  mdh = madhyper_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh)
-  corr = correlation_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, filter_before_top3 = filter_before_top3)
+def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_before_top3 = False, read_files = False, write_files = False) :
+  if read_files:
+    print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
+    bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
+    mdh = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_mdh.tsv'), delimiter='\t', dtype=np.int32))
+  else:
+    bigmas = mx.array(bigmas)
+    bigmbs = mx.array(bigmbs)
+    mdh = mx.array(mdh)
+  mdh = madhyper_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, write_files = write_files)
+  corr = correlation_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, filter_before_top3 = filter_before_top3, write_files = write_files)
   res = {"mdh": mdh, "corr": corr}
   return(res)
 
@@ -64,7 +69,7 @@ def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_befo
 #         #import numpy_backend_script
 #   return(None)
 
-def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh):
+def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = False):
     #print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     #bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
     #bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
@@ -127,11 +132,12 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh):
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
-    #results_df.to_csv(os.path.join(folder_out, prefix+'_madhyperesults.csv'), index=False)
+    if write_files:
+      results_df.to_csv(os.path.join(folder_out, prefix+'_madhyperesults.csv'), index=False)
     print(f"Number of pairs: {results_df.shape[0]}")
     return(results_df)
 
-def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_before_top3=False):
+def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_before_top3=False, write_files = False):
     #print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     #bigmas = mx.array(np.loadtxt(os.path.join(folder_out,prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
     #bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
@@ -242,5 +248,6 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
-    #results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)
+    if write_files:
+      results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)
     return(results_df)
