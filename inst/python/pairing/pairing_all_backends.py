@@ -29,7 +29,7 @@ else:
     print("Loading numpy")
     import numpy as mx #use this for CPU only
 
-def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_before_top3 = False, read_files = False, write_files = False) :
+def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_before_top3 = False, read_files = False, write_files = False, chunk_size = 500) :
   if read_files:
     print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
@@ -39,8 +39,8 @@ def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_befo
     bigmas = mx.array(bigmas)
     bigmbs = mx.array(bigmbs)
     mdh = mx.array(mdh)
-  mdh = madhyper_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, write_files = write_files)
-  corr = correlation_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, filter_before_top3 = filter_before_top3, write_files = write_files)
+  mdh = madhyper_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, write_files = write_files, chunk_size = chunk_size)
+  corr = correlation_process(prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, filter_before_top3 = filter_before_top3, write_files = write_files, chunk_size = chunk_size)
   res = {"mdh": mdh, "corr": corr}
   return(res)
 
@@ -69,7 +69,7 @@ def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_befo
 #         #import numpy_backend_script
 #   return(None)
 
-def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = False):
+def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = False, chunk_size = 500):
     #print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     #bigmas = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
     #bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
@@ -77,7 +77,7 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = Fals
     rowinds_bigmas=mx.arange(bigmas.shape[0])
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
     results = []
-    chunk_size =500  # Define your chunk size
+    #chunk_size =500  # Define your chunk size
     n_wells = bigmas.shape[1]  # Assuming n_wells is the number of columns in bigmas
     print('total number of chunks', bigmas.shape[0]//chunk_size)
     total_chunks = bigmas.shape[0] // chunk_size
@@ -137,7 +137,7 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = Fals
     print(f"Number of pairs: {results_df.shape[0]}")
     return(results_df)
 
-def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_before_top3=False, write_files = False):
+def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_before_top3=False, write_files = False, chunk_size = 500):
     #print("start load:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     #bigmas = mx.array(np.loadtxt(os.path.join(folder_out,prefix+'_bigmas.tsv'), delimiter='\t', dtype=np.float32))
     #bigmbs = mx.array(np.loadtxt(os.path.join(folder_out, prefix+'_bigmbs.tsv'), delimiter='\t', dtype=np.float32))
@@ -163,7 +163,7 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
       ## add filter step in mlx
     
     results = []
-    chunk_size =500  # Define your chunk size
+    #chunk_size =500  # Define your chunk size
     n_wells = bigmas.shape[1]  # Assuming n_wells is the number of columns in bigmas
     print('total number of chunks', bigmas.shape[0]//chunk_size)
     total_chunks = bigmas.shape[0] // chunk_size
