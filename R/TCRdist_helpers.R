@@ -23,6 +23,6 @@
 }
 
 .dist_obj_to_matrix = function(obj, idx_keep) {
-  tmp = .dist_df_to_matrix(obj$TCRdist_df, n_vertices_all = dim(obj$tcr1)[1], idx_keep = idx_keep)
+  tmp = .dist_df_to_matrix(obj$dist_df, n_vertices_all = dim(obj$df)[1], idx_keep = idx_keep)
   return(tmp)
 }
