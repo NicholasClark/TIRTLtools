@@ -163,19 +163,21 @@ TCRdist = function(
   ### call python TCRdist_batch function
   res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_tsv = write_to_tsv)
   ### fix for when r_to_py doesn't convert data frames
-  if(reticulate::is_py_object(res[[1]])) res = .fix_py_to_r(res)
+  if(reticulate::is_py_object(res[[1]])) res = .fix_py_to_r_df_list(res)
   return(res)
 }
 
-.fix_py_to_r = function(res) {
-  res = lapply(res, function(x) {
-    mat = x$values
-    ncols = length(x$columns$values)
-    cols = sapply(0:(ncols-1), function(i) x$columns$values[i])
-    ll = lapply(1:ncols, function(i) sapply(mat[,i], function(x) x[[1]]))
-    df_tmp = as.data.frame(ll)
-    colnames(df_tmp) = cols
-    return(df_tmp)
-  })
+.fix_py_to_r_df_list = function(res) {
+  res = lapply(res, .fix_py_to_r_df)
   return(res)
+}
+
+.fix_py_to_r_df = function(df) {
+  mat = df$values
+  ncols = length(df$columns$values)
+  cols = sapply(0:(ncols-1), function(i) df$columns$values[i])
+  ll = lapply(1:ncols, function(i) sapply(mat[,i], function(x) x[[1]]))
+  df_tmp = as.data.frame(ll)
+  colnames(df_tmp) = cols
+  return(df_tmp)
 }

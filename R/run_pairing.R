@@ -26,6 +26,7 @@
 #' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
 #' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
+#' @param chunk_size batch size for calculations in pairing scripts
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -56,7 +57,8 @@ run_pairing = function(
     write_extra_files = FALSE,
     filter_before_top3 = FALSE,
     fork = NULL,
-    shared = NULL
+    shared = NULL,
+    chunk_size = 500
 ){
   #ensure_python_env()
   py_require( packages = get_py_deps() )
@@ -219,13 +221,17 @@ run_pairing = function(
     bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
     mdh_py = r_to_py(mdh)
 
-    pair_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
-                                  bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
-                                  backend = backend, filter_before_top3 = filter_before_top3)
+    pair_res = pairing$pairing(
+      prefix = prefix, folder_out = folder_out, bigmas = bigmas_py, bigmbs = bigmbs_py,
+      mdh = mdh_py, backend = backend, filter_before_top3 = filter_before_top3, chunk_size = chunk_size,
+      write_files = write_extra_files
+      )
       #return(pairing_res)
     #}, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
 
   }
+  ### fix for when r_to_py doesn't convert data frames
+  if(reticulate::is_py_object(pair_res[[1]])) pair_res = .fix_py_to_r_df_list(pair_res)
 
   print("Filtering results, adding amino acid and V segment information")
 

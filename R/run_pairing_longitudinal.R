@@ -27,7 +27,9 @@
 #' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
 #' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
+#' @param testing whether to run on testing mode (only load first ten wells of each plate). Default is FALSE.
 #' @param randomize whether to randomize the wells on each plate when stacking counts. Default is FALSE.
+#' @param chunk_size batch size for calculations in pairing scripts
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -60,7 +62,8 @@ run_pairing_longitudinal = function(
     fork = NULL,
     shared = NULL,
     testing = FALSE,
-    randomize = FALSE
+    randomize = FALSE,
+    chunk_size = 500
 ){
 
   if(!is.list(wellsets)) stop("Input 'wellsets' needs to be a list where each item is a vector of wells for a plate.")
@@ -266,11 +269,15 @@ run_pairing_longitudinal = function(
 
     pair_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
                                bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
-                               backend = backend, filter_before_top3 = filter_before_top3)
+                               backend = backend, filter_before_top3 = filter_before_top3,
+                               chunk_size = chunk_size, write_files = write_extra_files
+                               )
     #return(pairing_res)
     #}, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
 
   }
+  ### fix for when r_to_py doesn't convert data frames
+  if(reticulate::is_py_object(pair_res[[1]])) pair_res = .fix_py_to_r_df_list(pair_res)
 
   print("Filtering results, adding amino acid and V segment information")
 
