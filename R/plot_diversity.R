@@ -11,7 +11,7 @@
 #' bar heights will reflect the average diversity metric across the group, with error bars
 #' showing the standard deviation.
 #'
-#' @param div a list created by the \code{\link{diversity}()} function with diversity metrics for each sample
+#' @param div a list created by the \code{\link{calculate_diversity}()} function with diversity metrics for each sample
 #' @param metric the diversity metric to use (e.g. shannon, simpson, etc.)
 #' @param q (optional) for 'renyi' and 'hill' metrics, the order q of the diversity index
 #' @param percent (optional) for 'dXX' metric, the percentage 'XX' between 0 and 100

@@ -39,12 +39,13 @@ filter_nonfunctional_TCRs = function(data, verbose = TRUE) {
 
 
 .filter_nonfunctional_TCRs_single = function(df, verbose = TRUE, version = "data.table") {
-  if("is_functional" %in% colnames(df)) {
-    cols = colnames(df)
-  } else {
-    cols = c(colnames(df), "is_functional")
-    df = .identify_non_functional_seqs_single(df)
-  }
+  #if("is_functional" %in% colnames(df)) {
+  #  cols = colnames(df)
+  #} else {
+  #cols = c(colnames(df), "is_functional")
+  df = .identify_non_functional_seqs_single(df)
+  #}
+  cols = colnames(df)
   n_tcr_orig = nrow(df)
   n_nonfunc = sum(!df$is_functional)
   pct_nonfunc = signif(100*n_nonfunc/n_tcr_orig,2)

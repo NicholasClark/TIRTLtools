@@ -41,7 +41,7 @@ identify_non_functional_seqs = function(data) {
 
 .identify_non_functional_seqs_single = function(df) {
   if(.is.DataFrame(df)) df = as.data.table(df)
-  if("is_functional" %in% colnames(df)) return(df)
+  #if("is_functional" %in% colnames(df)) return(df) ## this causes errors
   if("cdr3a" %in% colnames(df) && "cdr3b" %in% colnames(df)) {
     ### for paired data
     df_out = df %>%

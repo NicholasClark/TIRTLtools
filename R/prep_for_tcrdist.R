@@ -6,7 +6,7 @@
 #' adding alleles to V-segments (i.e. "*01") if they are missing and removing
 #' TCRs with unrecognized V-segments or non-functional CDR3 sequences.
 #'
-#' @param df a data frame of paired TCRs
+#' @param df a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"
 #' @param params (optional) a data frame with permissible amino acids and V-segments.
 #' By default, the \code{\link{params}} data frame is used.
 #' @param remove_duplicate_tcrs (optional) whether or not to remove duplicate TCRs (default is FALSE, do not remove duplicates).
