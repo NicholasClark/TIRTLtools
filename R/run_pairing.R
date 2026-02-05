@@ -27,6 +27,7 @@
 #' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param chunk_size batch size for calculations in pairing scripts
+#' @param exclude_nonfunctional whether to exclude non-functional chains before pairing (default FALSE)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -58,7 +59,8 @@ run_pairing = function(
     filter_before_top3 = FALSE,
     fork = NULL,
     shared = NULL,
-    chunk_size = 500
+    chunk_size = 500,
+    exclude_nonfunctional = FALSE
 ){
   #ensure_python_env()
   py_require( packages = get_py_deps() )
@@ -85,7 +87,11 @@ run_pairing = function(
   files_bool = file_wells %in% wellset1
   msg = paste("Reading", sum(files_bool), "wells from", folder_path)
   if(verbose) print(msg)
-  mlist<-lapply(file.path(folder_path, files[files_bool]),fread)
+  files_load = file.path(folder_path, files[files_bool])
+  mlist<-lapply(1:length(files_load),function(i){
+    print(i)
+    fread(files_load[i])
+  })
   names(mlist) = files_no_dot[files_bool]
 
   #mlist<-lapply(list.files(path = folder_path,full.names = T),fread)
@@ -120,9 +126,25 @@ run_pairing = function(
     print(table(qc$b))
   }
 
+  if(write_extra_files) {
+    plate_stats = data.table::data.table(
+      a_names=names(mlista),b_names=names(mlistb),
+      a_sum_counts=sapply(mlista,function(x)x[,sum(readCount),]),
+      b_sum_counts=sapply(mlistb,function(x)x[,sum(readCount),]),
+      a_rows=sapply(mlista,nrow),
+      b_rows=sapply(mlistb,nrow),
+      qc_pass_a=qc$a,qc_pass_b=qc$b)
+    fwrite(plate_stats,file.path(folder_out, paste0(prefix,"_plate_stats.tsv")),sep="\t")
+  }
+
   #result<-do_analysis_madhyper_r_optim_both(mlista[qc$a],mlistb[qc$b],n_cells = clone_thres)
   mlista<-mlista[qc$a]#downsize to qc
   mlistb<-mlistb[qc$b]#downsize to qc
+
+  if(exclude_nonfunctional) {
+    mlista = lapply(mlista, .get_functional)
+    mlistb = lapply(mlistb, .get_functional)
+  }
 
   if(verbose) {
     print("Tabulating TCRalpha pseudobulk counts")
@@ -340,4 +362,10 @@ run_pairing = function(
   ]
   out[, readFraction := readCount / sum(readCount)]
   out  #get most popular V and J and aaSeqCDR3 for each target
+}
+
+.get_functional = function(df) {
+  check1 = !grepl("\\*", df$aaSeqCDR3)
+  check2 = !grepl("_", df$aaSeqCDR3)
+  df[check1 & check2,]
 }
