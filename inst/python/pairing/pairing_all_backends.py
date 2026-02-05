@@ -44,6 +44,7 @@ def pairing(prefix, folder_out, bigmas, bigmbs, mdh, backend="auto", filter_befo
   res = {"mdh": mdh, "corr": corr}
   return(res)
 
+
 # def get_backend(backend = "auto"):
 #   ### if backend is specified, load it
 #   if backend == "cupy":
@@ -80,7 +81,7 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = Fals
     #chunk_size =500  # Define your chunk size
     n_wells = bigmas.shape[1]  # Assuming n_wells is the number of columns in bigmas
     print('total number of chunks', bigmas.shape[0]//chunk_size)
-    total_chunks = bigmas.shape[0] // chunk_size
+    total_chunks = (bigmas.shape[0] // chunk_size)+1
     b_total = mx.sum(bigmbs > 0, axis=1,keepdims=True)
     bigmbs=(bigmbs > 0).T.astype(mx.float32)
     print("start time for MAD-HYPE:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -166,7 +167,7 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
     #chunk_size =500  # Define your chunk size
     n_wells = bigmas.shape[1]  # Assuming n_wells is the number of columns in bigmas
     print('total number of chunks', bigmas.shape[0]//chunk_size)
-    total_chunks = bigmas.shape[0] // chunk_size
+    total_chunks = (bigmas.shape[0] // chunk_size)+1
     bigmb_w1_scaled = bigmbs - mx.mean(bigmbs, axis=1, keepdims=True) #uncomment for cor
     bigmb_w1_scaled = (bigmb_w1_scaled / mx.linalg.norm(bigmb_w1_scaled,ord=2,axis=1, keepdims=True)).T #uncomment for cor
     b_total = mx.sum(bigmbs > 0, axis=1,keepdims=True)
@@ -251,3 +252,4 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
     if write_files:
       results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)
     return(results_df)
+
