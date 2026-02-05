@@ -27,7 +27,9 @@
 #' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param chunk_size batch size for calculations in pairing scripts
-#' @param exclude_nonfunctional whether to exclude non-functional chains before pairing (default FALSE)
+#' @param exclude_nonfunctional whether to exclude non-functional chains before pairing (default is FALSE)
+#' @param select_best_madhype whether to use a secondary algorithm on the pairs from the MAD-HYPE algorithm to select
+#' the best pairs for each clone (default is FALSE)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -60,7 +62,8 @@ run_pairing = function(
     fork = NULL,
     shared = NULL,
     chunk_size = 500,
-    exclude_nonfunctional = FALSE
+    exclude_nonfunctional = FALSE,
+    select_best_madhype = FALSE
 ){
   #ensure_python_env()
   py_require( packages = get_py_deps() )
@@ -331,6 +334,9 @@ run_pairing = function(
   result$vb=tp_b$v
   result$jb=tp_b$j
 
+  ### secondary algorithm to select best MAD-HYPE clones
+  if(select_best_madhype) result = .filter_madhype(result)
+
   if(verbose) {
     print(Sys.time())
     print("All is done! Number of paired clones:")
@@ -368,4 +374,25 @@ run_pairing = function(
   check1 = !grepl("\\*", df$aaSeqCDR3)
   check2 = !grepl("_", df$aaSeqCDR3)
   df[check1 & check2,]
+}
+
+.filter_madhype = function(df) {
+  df_mdh = df %>% filter(method == "madhype") %>%
+    mutate(is_functional = (!grepl("\\*", cdr3a)) & (!grepl("_", cdr3a)) & (!grepl("\\*", cdr3b)) & (!grepl("_", cdr3b)) ) %>%
+    arrange(desc(is_functional), desc(score))
+  df_other = df %>% filter(method != "madhype")
+  pairs = df_mdh[c(),]
+  for(i in 1:nrow(df_mdh)) {
+    #print(i)
+    alpha_tmp = df_mdh$alpha_nuc[i]
+    beta_tmp = df_mdh$beta_nuc[i]
+    n_beta_paired = sum(pairs$beta_nuc %in% beta_tmp)
+    n_alpha_paired = sum(pairs$alpha_nuc %in% alpha_tmp)
+    if(n_beta_paired <= 1 && n_alpha_paired == 0) {
+      tmp = df_mdh[i,]
+      pairs = bind_rows(pairs, tmp)
+    } ## else discard row
+  }
+  pairs = pairs %>% select(-is_functional)
+  return(bind_rows(pairs, df_other))
 }
