@@ -17,7 +17,10 @@ plot_sample_vs_sample(
   return_data = FALSE,
   smooth_sem = c("window", "none"),
   window_size = 30,
-  end_window_size = 5
+  end_window_size = 5,
+  highlight_clones = c(),
+  highlight_color = "red",
+  interactive = FALSE
 )
 }
 \arguments{
@@ -48,6 +51,12 @@ other clones within a window of similar frequencies. Otherwise, no smoothing. (d
 \item{window_size}{the number of similar clones to include within a window.}
 
 \item{end_window_size}{the number of clones to include in a window at the ends (most and least frequent)}
+
+\item{highlight_clones}{a vector of nucleotides of clones to highlight}
+
+\item{highlight_color}{a color for highlighted clones}
+
+\item{interactive}{whether to return an interactive plot (default FALSE)}
 }
 \value{
 A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each

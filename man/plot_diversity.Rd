@@ -21,7 +21,7 @@ plot_diversity(
 )
 }
 \arguments{
-\item{div}{a list created by the \code{\link{diversity}()} function with diversity metrics for each sample}
+\item{div}{a list created by the \code{\link{calculate_diversity}()} function with diversity metrics for each sample}
 
 \item{metric}{the diversity metric to use (e.g. shannon, simpson, etc.)}
 

@@ -13,7 +13,7 @@ prep_for_tcrdist(
 )
 }
 \arguments{
-\item{df}{a data frame of paired TCRs}
+\item{df}{a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"}
 
 \item{params}{(optional) a data frame with permissible amino acids and V-segments.
 By default, the \code{\link{params}} data frame is used.}

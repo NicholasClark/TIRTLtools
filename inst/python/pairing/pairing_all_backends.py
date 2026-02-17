@@ -79,6 +79,7 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = Fals
     rowinds_bigmbs=mx.arange(bigmbs.shape[0])
     results = []
     #chunk_size =500  # Define your chunk size
+    chunk_size = int(chunk_size)
     n_wells = bigmas.shape[1]  # Assuming n_wells is the number of columns in bigmas
     print('total number of chunks', bigmas.shape[0]//chunk_size)
     total_chunks = (bigmas.shape[0] // chunk_size)+1
@@ -165,6 +166,7 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
     
     results = []
     #chunk_size =500  # Define your chunk size
+    chunk_size = int(chunk_size)
     n_wells = bigmas.shape[1]  # Assuming n_wells is the number of columns in bigmas
     print('total number of chunks', bigmas.shape[0]//chunk_size)
     total_chunks = (bigmas.shape[0] // chunk_size)+1
