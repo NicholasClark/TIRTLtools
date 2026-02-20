@@ -137,7 +137,7 @@ This next plot shows the same information as the last one, but with both alpha a
 We can see that most of the top 100 alpha clones have a partner in the top 100 beta clones, which makes sense.
 
 ```{r}
-plot_pairs_with_eachother(sjtrc, sample = 1)
+plot_pairs_with_eachother(sjtrc, sample = 4)
 ```
 
 We can also plot the rank versus read fraction for all clones and compare the shapes of these curves among samples.
