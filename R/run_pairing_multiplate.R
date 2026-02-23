@@ -39,7 +39,6 @@
 #'  - A data frame ("<prefix>_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
 #'
 #' @family pairing
-#' @export
 #'
 
 run_pairing_multiplate = function(
