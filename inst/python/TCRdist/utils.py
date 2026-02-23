@@ -58,4 +58,4 @@ def check_cupy_or_mlx():
         return("mlx")
     else:
         print("Neither 'cupy' or 'mlx' are installed")
-        return("neither")
+        return("numpy")
