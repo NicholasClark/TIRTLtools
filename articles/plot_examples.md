@@ -89,8 +89,8 @@ We can see they are highly frequent at CD8 timepoint 3, but not in any
 of the CD4 samples.
 
 ``` r
-top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% extract2("targetSequences") %>% as.character()
-top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% extract2("targetSequences") %>% as.character()
+top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
+top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
 
 plot_clone_size_across_samples(sjtrc, clones = c(top_clones1, top_clones2), chain = "beta")
 ```
@@ -242,7 +242,7 @@ We can see that most of the top 100 alpha clones have a partner in the
 top 100 beta clones, which makes sense.
 
 ``` r
-plot_pairs_with_eachother(sjtrc, sample = 1)
+plot_pairs_with_eachother(sjtrc, sample = 4)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-14-1.png)

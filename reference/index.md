@@ -130,7 +130,7 @@
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads
@@ -153,12 +153,7 @@
 - [`get_well_subset()`](https://nicholasclark.github.io/TIRTLtools/reference/get_well_subset.md)
   **\[experimental\]** : Get well names from numerical rows and columns
 
-## Python dependencies
-
-- [`install_python_env()`](https://nicholasclark.github.io/TIRTLtools/reference/install_python_env.md)
-  **\[experimental\]** : Install python environment
-
-### Data
+## Data
 
 - [`params`](https://nicholasclark.github.io/TIRTLtools/reference/params.md)
   : Table of permissible amino acids and V-segments for TCRdist

@@ -25,7 +25,7 @@ from a given directory. It can also automatically assemble metadata from filenam
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,7 @@ from a given directory. It can also automatically assemble metadata from filenam
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  pseudobulk_columns <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  paired_columns <span class="op">=</span> <span class="st">"auto"</span>,</span>
-<span>  n_threads <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  n_threads <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  n_max <span class="op">=</span> <span class="cn">Inf</span></span>
@@ -203,7 +203,7 @@ then the metadata table will look like something like this:</p><div class="sourc
 <span class="r-in"><span>  package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu">load_tirtlseq</span><span class="op">(</span><span class="va">folder</span>,</span></span>
 <span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/temp_build/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 alpha chain pseudo-bulk files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 beta chain pseudo-bulk files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 paired chain files.</span>
@@ -232,7 +232,7 @@ then the metadata table will look like something like this:</p><div class="sourc
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp3_v2_pseudobulk_TRB.tsv...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp3_v2_TIRTLoutput.tsv...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 18 files from 6 samples.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 17 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 15.8 seconds</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

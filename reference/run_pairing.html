@@ -25,7 +25,7 @@ originating from the same clone."><meta property="og:image" content="https://nic
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,11 @@ originating from the same clone.</p>
 <span>  write_extra_files <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  filter_before_top3 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fork <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  shared <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  shared <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  chunk_size <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  exclude_nonfunctional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  select_best_madhype <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  select_best_tshell <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -184,6 +188,24 @@ named "<lab><em><project></project></em>&lt;well_id&gt;_TCRalpha.tsv" would use 
 <dt id="arg-shared">shared<a class="anchor" aria-label="anchor" href="#arg-shared"></a></dt>
 <dd><p>whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)</p></dd>
 
+
+<dt id="arg-chunk-size">chunk_size<a class="anchor" aria-label="anchor" href="#arg-chunk-size"></a></dt>
+<dd><p>batch size for calculations in pairing scripts</p></dd>
+
+
+<dt id="arg-exclude-nonfunctional">exclude_nonfunctional<a class="anchor" aria-label="anchor" href="#arg-exclude-nonfunctional"></a></dt>
+<dd><p>whether to exclude non-functional chains before pairing (default is FALSE)</p></dd>
+
+
+<dt id="arg-select-best-madhype">select_best_madhype<a class="anchor" aria-label="anchor" href="#arg-select-best-madhype"></a></dt>
+<dd><p>whether to use a secondary algorithm on the pairs from the MAD-HYPE algorithm to select
+the best pairs for each clone (default is FALSE)</p></dd>
+
+
+<dt id="arg-select-best-tshell">select_best_tshell<a class="anchor" aria-label="anchor" href="#arg-select-best-tshell"></a></dt>
+<dd><p>whether to use a secondary algorithm on the pairs from the T-SHELL algorithm to select
+the best pairs for each clone (default is FALSE)</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -192,6 +214,12 @@ named "<lab><em><project></project></em>&lt;well_id&gt;_TCRalpha.tsv" would use 
 <li><p>A data frame ("<prefix>_pseudobulk_TRB.tsv") of pseudobulk counts for TCRbeta chains</prefix></p></li>
 <li><p>A data frame ("<prefix>_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.</prefix></p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other pairing:
+<code>run_pairing_longitudinal()</code>,
+<code>run_pairing_multiplate()</code></p></div>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

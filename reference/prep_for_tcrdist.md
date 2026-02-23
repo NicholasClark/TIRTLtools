@@ -21,7 +21,8 @@ prep_for_tcrdist(
 
 - df:
 
-  a data frame of paired TCRs
+  a data frame with one TCR per row. It must have the columns "va",
+  "vb", "cdr3a", and "cdr3b"
 
 - params:
 

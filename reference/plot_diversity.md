@@ -38,7 +38,7 @@ plot_diversity(
 - div:
 
   a list created by the
-  [`diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
   function with diversity metrics for each sample
 
 - metric:
@@ -121,11 +121,11 @@ folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   verbose = FALSE)
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Loading files from: /Users/nclark52/git/temp_build/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
 #> Loaded 18 files from 6 samples.
-#> 15.2 seconds
+#> 16.5 seconds
 
 div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
 #> 

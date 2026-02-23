@@ -7,10 +7,10 @@
 ``` r
 # install.packages("remotes") ## Run if you need to install the 'remotes' package
 remotes::install_github("NicholasClark/TIRTLtools")
-library(TIRLTtools)
+library(TIRTLtools)
 ```
 
-### Option 2: (advanced) Download to local folder and load using ‘devtools’
+### Option 2: (advanced) Download to local folder and load using ‘pkgload’
 
 Run the following line from the terminal to download the git repository.
 
@@ -19,6 +19,6 @@ Run the following line from the terminal to download the git repository.
 Load the package from your local folder in R
 
 ``` r
-# install.packages("devtools") ## Run if you need to install the 'devtools' package
-devtools::load_all("./TIRTLtools") ### location of cloned repo on your machine
+# install.packages("pkgload") ## Run if you need to install the 'pkgload' package
+pkgload::load_all("./TIRTLtools") ### location of cloned repo on your machine
 ```

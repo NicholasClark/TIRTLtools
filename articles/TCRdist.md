@@ -187,14 +187,7 @@ TCRs are processed in chunks (default 1000). For a dataset of this size
 takes about 30 seconds.
 
 ``` r
-install_python_env() ## if you do not run this line, you may be prompted to install the python environment necessary for TCRdist()
-```
-
-    ## Installing/updating the Python environment for TIRTLtools...
-
-    ## Done.
-
-``` r
+### This function will attempt to automatically install a Python environment with necessary packages for GPU computation
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 ```
 

@@ -27,7 +27,7 @@ and clusters the results using the Leiden algorithm."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,7 +178,7 @@ will be assigned to the "*01" allele.</p>
 <span class="r-in"><span><span class="va">sjtrc</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>,</span></span>
 <span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>,</span></span>
 <span class="r-in"><span>  chain <span class="op">=</span> <span class="st">"paired"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/temp_build/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 2 beta chain pseudo-bulk files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 2 paired chain files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 2 files from 2 samples.</span>
@@ -186,14 +186,14 @@ will be assigned to the "*01" allele.</p>
 <span class="r-in"><span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="get_all_tcrs.html">get_all_tcrs</a></span><span class="op">(</span><span class="va">sjtrc</span>, chain<span class="op">=</span><span class="st">"paired"</span>, remove_duplicates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">=</span> <span class="fu">cluster_tcrs</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 1,470 MAIT TCRs (2.5%) from a total of 58,377 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 1,583 MAIT TCRs (2.2%) from a total of 71,206 TCRs.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 999 MAIT TCRs (3.1%) from a total of 32,164 TCRs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 384 TCRs with unknown V-segments (0.67%) from a total of 56,907 TCRs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 12 TCRs with short CDR3 segments (0.021%) from a total of 56,523 TCRs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (23%) from a total of 56,511 TCRs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtered data frame contains 43,374 TCRs (76%) of original 56,907 TCRs.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Out of 43374 valid TCRs, 4914 clusters detected and 28631 singleton TCRs.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94 clusters of size &gt;= 10, 7 clusters of size &gt;= 50, 3 clusters of size &gt;=100.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 452 TCRs with unknown V-segments (0.65%) from a total of 69,623 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 15 TCRs with short CDR3 segments (0.022%) from a total of 69,171 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,156 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Filtered data frame contains 56,019 TCRs (80%) of original 69,623 TCRs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Out of 56019 valid TCRs, 5721 clusters detected and 37992 singleton TCRs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130 clusters of size &gt;= 10, 14 clusters of size &gt;= 50, 5 clusters of size &gt;=100.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

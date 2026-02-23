@@ -23,7 +23,11 @@ run_pairing(
   write_extra_files = FALSE,
   filter_before_top3 = FALSE,
   fork = NULL,
-  shared = NULL
+  shared = NULL,
+  chunk_size = 500,
+  exclude_nonfunctional = FALSE,
+  select_best_madhype = FALSE,
+  select_best_tshell = FALSE
 )
 ```
 
@@ -111,6 +115,25 @@ run_pairing(
   whether to use a "shared" python process for basilisk (default is
   NULL, which automatically chooses an appropriate option)
 
+- chunk_size:
+
+  batch size for calculations in pairing scripts
+
+- exclude_nonfunctional:
+
+  whether to exclude non-functional chains before pairing (default is
+  FALSE)
+
+- select_best_madhype:
+
+  whether to use a secondary algorithm on the pairs from the MAD-HYPE
+  algorithm to select the best pairs for each clone (default is FALSE)
+
+- select_best_tshell:
+
+  whether to use a secondary algorithm on the pairs from the T-SHELL
+  algorithm to select the best pairs for each clone (default is FALSE)
+
 ## Value
 
 A data frame with the TCR-alpha/TCR-beta pairs.
@@ -124,3 +147,7 @@ The function also writes three files to "folder_out":
   chains
 
 - A data frame ("\_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
+
+## See also
+
+Other pairing: `run_pairing_longitudinal()`, `run_pairing_multiplate()`

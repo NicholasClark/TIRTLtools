@@ -33,7 +33,8 @@ e.g. `cd8_tp1_v2_TIRTLoutput.tsv`.
 library(TIRTLtools)
 library(dplyr)
 library(rmarkdown)
-folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
+folder = system.file("extdata/SJTRC_TIRTLseq_minimal", 
+                     package = "TIRTLtools")
 dir(folder)
 ```
 
@@ -42,7 +43,8 @@ dir(folder)
     ## [5] "cd8_tp2_v2_pseudobulk_TRB.tsv.gz" "cd8_tp2_v2_TIRTLoutput.tsv.gz"
 
 ``` r
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
+ts_data = load_tirtlseq(folder, 
+  meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz
 ```
 
@@ -212,13 +214,15 @@ pseudo-bulk data for alpha and beta chains, respectively.
 
 ``` r
 ts_data$data$cd8_tp1_v2$alpha %>%
-  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20),
+                                 "...", sep = "")) %>%
   paged_table()
 ```
 
 ``` r
 ts_data$data$cd8_tp1_v2$beta %>%
-  mutate(targetSequences = paste(substr(targetSequences, 0, 20), "...", sep = "")) %>%
+  mutate(targetSequences = paste(substr(targetSequences, 0, 20),
+                                 "...", sep = "")) %>%
   paged_table()
 ```
 

@@ -156,11 +156,11 @@ folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   chain = "paired", verbose = FALSE)
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...
+#> Loading files from: /Users/nclark52/git/temp_build/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...
 #> Found 2 beta chain pseudo-bulk files.
 #> Found 2 paired chain files.
 #> Loaded 2 files from 2 samples.
-#> 0.1 seconds
+#> 0.2 seconds
 df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
 result = TCRdist(df, tcrdist_cutoff = 90)
 #> Removed 384 TCRs with unknown V-segments (1.2%) from a total of 32,164 TCRs.

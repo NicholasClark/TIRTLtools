@@ -116,7 +116,7 @@ folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
 sjtrc = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_",
   chain = "paired", verbose = FALSE)
-#> Loading files from: /Users/nclark52/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...
+#> Loading files from: /Users/nclark52/git/temp_build/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal...
 #> Found 2 beta chain pseudo-bulk files.
 #> Found 2 paired chain files.
 #> Loaded 2 files from 2 samples.
@@ -124,12 +124,12 @@ sjtrc = load_tirtlseq(folder,
 df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
 
 result = cluster_tcrs(df)
-#> Removed 1,470 MAIT TCRs (2.5%) from a total of 58,377 TCRs.
+#> Removed 1,583 MAIT TCRs (2.2%) from a total of 71,206 TCRs.
 #> Removed 999 MAIT TCRs (3.1%) from a total of 32,164 TCRs.
-#> Removed 384 TCRs with unknown V-segments (0.67%) from a total of 56,907 TCRs.
-#> Removed 12 TCRs with short CDR3 segments (0.021%) from a total of 56,523 TCRs.
-#> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (23%) from a total of 56,511 TCRs.
-#> Filtered data frame contains 43,374 TCRs (76%) of original 56,907 TCRs.
-#> Out of 43374 valid TCRs, 4914 clusters detected and 28631 singleton TCRs.
-#> 94 clusters of size >= 10, 7 clusters of size >= 50, 3 clusters of size >=100.
+#> Removed 452 TCRs with unknown V-segments (0.65%) from a total of 69,623 TCRs.
+#> Removed 15 TCRs with short CDR3 segments (0.022%) from a total of 69,171 TCRs.
+#> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,156 TCRs.
+#> Filtered data frame contains 56,019 TCRs (80%) of original 69,623 TCRs.
+#> Out of 56019 valid TCRs, 5721 clusters detected and 37992 singleton TCRs.
+#> 130 clusters of size >= 10, 14 clusters of size >= 50, 5 clusters of size >=100.
 ```
