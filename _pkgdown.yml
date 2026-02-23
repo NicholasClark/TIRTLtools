@@ -52,10 +52,10 @@ reference:
 # - subtitle: Download datasets
 #  contents:
 #  - has_concept("download")
-- title: Python dependencies
-  contents:
-  - has_concept("python-deps")
-- subtitle: Data
+#- title: Python dependencies
+#  contents:
+#  - has_concept("python-deps")
+- title: Data
   contents:
   - has_concept("data")
 
@@ -65,7 +65,7 @@ reference:
 
 - title: Other
   contents:
-  - lacks_concept(c("data", "data_processing", "data_loading", "data_wrangling", "diversity", "download", "pairing", "longitudinal", "python-deps", "qc", "tcr_similarity", "single-cell", "stitchr", "well"))
+  - lacks_concept(c("data", "data_processing", "data_loading", "data_wrangling", "diversity", "download", "pairing", "longitudinal", "qc", "tcr_similarity", "single-cell", "stitchr", "well"))
 
 
 
