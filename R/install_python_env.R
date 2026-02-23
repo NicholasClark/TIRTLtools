@@ -12,7 +12,6 @@
 #' @return returns NULL
 #'
 #' @family python-deps
-#' @export
 #'
 
 install_python_env <- function(force = FALSE) {
