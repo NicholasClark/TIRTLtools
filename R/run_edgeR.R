@@ -11,7 +11,8 @@ run_edgeR_list = function(
     readFraction_cutoff = 1e-5,
     n_groups = 3,
     robust = TRUE,
-    show_numbers = TRUE
+    show_numbers = TRUE,
+    title = ""
 ) {
   mat1 = ll$matrix_list[[1]]
   mat2 = ll$matrix_list[[2]]
@@ -36,7 +37,8 @@ run_edgeR_list = function(
     reads_min = reads_min,
     n_wells_cutoff = n_wells_cutoff,
     robust = robust,
-    show_numbers = show_numbers
+    show_numbers = show_numbers,
+    title = title
   )
   return(res)
 }
@@ -57,7 +59,8 @@ run_edgeR = function(
     reads_min = 10,
     n_wells_cutoff = 10,
     robust = TRUE,
-    show_numbers = TRUE
+    show_numbers = TRUE,
+    title = ""
     ) {
 
   mat1_full = mat1
@@ -252,7 +255,8 @@ run_edgeR = function(
     scale_color_manual(values = c(stable = "grey70", not_tested = "grey60", down = TIRTL_pallette[10], up = TIRTL_pallette[7]))+
     scale_x_log10(breaks = log_labs_x$brks, labels = log_labs_x$labels) +
     scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels)
-  if(show_numbers) gg = gg + ggtitle(paste("Up:", n_up, "Down:", n_down, "Tested:", n_tested))
+  #if(show_numbers) gg = gg + ggtitle(paste("Up:", n_up, "Down:", n_down, "Tested:", n_tested))
+  if(show_numbers) gg = gg + ggtitle(label = title, subtitle = paste("Up:", n_up, "Down:", n_down))
   print(gg)
   # gg = ggplot(tbl1) + geom_point(aes(x=readFraction1, y=readFraction2, color = call_char), alpha = 0.4) +
   #   geom_abline(slope = 1, intercept = 0) +

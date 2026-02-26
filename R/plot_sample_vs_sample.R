@@ -22,6 +22,9 @@
 #' other clones within a window of similar frequencies. Otherwise, no smoothing. (default is "window")
 #' @param window_size the number of similar clones to include within a window.
 #' @param end_window_size the number of clones to include in a window at the ends (most and least frequent)
+#' @param highlight_clones a vector of nucleotides of clones to highlight
+#' @param highlight_color a color for highlighted clones
+#' @param interactive whether to return an interactive plot (default FALSE)
 #'
 #' @returns
 #' A scatterplot (ggplot object) with read frequencies (proportions), colored by whether each
@@ -56,7 +59,10 @@ plot_sample_vs_sample = function(data1,
                                  return_data = FALSE,
                                  smooth_sem = c("window", "none"),
                                  window_size = 30,
-                                 end_window_size = 5
+                                 end_window_size = 5,
+                                 highlight_clones = c(),
+                                 highlight_color = "red",
+                                 interactive = FALSE
                                  ) {
   chain = chain[1]
   smooth_sem = smooth_sem[1]
@@ -90,7 +96,9 @@ plot_sample_vs_sample = function(data1,
                          sem_cutoff = sem_cutoff, log2fc_cutoff = log2fc_cutoff
                          )
   gg = .plot_timepoints(gg_df, pseudo1 = pseudo1, pseudo2 = pseudo2,
-                        labelx = labelx, labely = labely)
+                        labelx = labelx, labely = labely,
+                        highlight_clones = highlight_clones, highlight_color = highlight_color,
+                        chain = chain, interactive = interactive)
   if(return_data) return(gg_df)
   return(gg)
 }
@@ -146,30 +154,66 @@ plot_sample_vs_sample = function(data1,
 }
 
 .plot_timepoints = function(dt,
+                            chain,
                            labelx="Frequency on timepoint 1",
                            labely="Frequency on timepoint 2",
                            pseudo1 = 1e-6,
-                           pseudo2 = 1e-6
+                           pseudo2 = 1e-6,
+                           highlight_clones = c(),
+                           highlight_color = "red",
+                           interactive = FALSE
                            ) {
   TIRTL_pallette = .get_tirtl_pallette()
   #col="#C5CBD3"
   dt$sign = factor(dt$sign, levels = c("stable", "down", "up"))
   log_labs_x = .get_log_labels_neg(dt$avg.x, pseudo1)
   log_labs_y = .get_log_labels_neg(dt$avg.y, pseudo2)
-  ggplot(dt[dt$sign=="stable",], aes ((avg.x+pseudo1), (avg.y+pseudo2), color = sign))+
+  dt$highlight = dt$targetSequences %in% highlight_clones
+  # dt$metadata = paste("ntSeqCDR3:", dt$targetSequences, "<br>",
+  #                     "aaSeqCDR3:", dt$aaSeqCDR3, "<br>",
+  #                     "v:", dt$v, "<br>",
+  #                     "j:", dt$j, "<br>",
+  #                     "chain:", chain, "<br>",
+  #                     "sign:", dt$sign#, "<br>",
+  #                     #"log2FC:", dt$log2FC, "<br>",
+  #                     #"highlight:", dt$highlight, "<br>",
+  #                     #"read_fraction_x", dt$readFraction.x, "<br>",
+  #                     #"read_fraction_y", dt$readFraction.y, "<br>",
+  #                     #"read_count_x", dt$readCount.x, "<br>",
+  #                     #"read_count_y", dt$readCount.y
+  #                     )
+  dt$metadata = paste(dt$targetSequences, "<br>",
+                      dt$aaSeqCDR3, ", v:", dt$v, ", j:", dt$j, "<br>",
+                      "chain:", chain, ", sign:", dt$sign#, "<br>",
+                      #"log2FC:", dt$log2FC, "<br>",
+                      #"highlight:", dt$highlight, "<br>",
+                      #"read_fraction_x", dt$readFraction.x, "<br>",
+                      #"read_fraction_y", dt$readFraction.y, "<br>",
+                      #"read_count_x", dt$readCount.x, "<br>",
+                      #"read_count_y", dt$readCount.y
+  )
+  gg = ggplot(dt[dt$sign=="stable",], aes ((avg.x+pseudo1), (avg.y+pseudo2), color = sign, text=metadata))+
     geom_point(alpha=0.6, size=2)+
-    geom_point(data=dt[dt$sign!="stable",], aes ((avg.x+pseudo1), (avg.y+pseudo2),color=sign), alpha=0.6, size=2)+
+    geom_point(data=dt[dt$sign!="stable",], aes ((avg.x+pseudo1), (avg.y+pseudo2),color=sign, text=metadata), alpha=0.6, size=2)+
     theme_classic()+
     xlab(labelx)+
     ylab(labely)+
     geom_abline(linetype="dashed", col="black")+
     #  scale_color_manual(values=clrs[c(8,1,3)])+
     #theme(legend.position = "none")+
-    scale_color_manual(values = c(stable = "grey70", down = TIRTL_pallette[10], up = TIRTL_pallette[7]))+
+    scale_color_manual(values = c(up = TIRTL_pallette[7], stable = "grey70", down = TIRTL_pallette[10]))+
     scale_x_log10(breaks = log_labs_x$brks, labels = log_labs_x$labels) +
     scale_y_log10(breaks = log_labs_y$brks, labels = log_labs_y$labels)
     # scale_y_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))+
     # scale_x_log10(breaks=c(1e-6, 1e-5, 1e-4, 1e-3, 1e-2),labels=c(expression("0"), expression("10"^"-5"), expression("10"^"-4"), expression("10"^"-3"), expression("10"^"-2")))#+
+  if(length(highlight_clones) > 0) {
+    dt2 = dt[dt$targetSequences %in% highlight_clones,]
+    if(nrow(dt2) > 0) {
+      gg = gg + geom_point(data = dt2, aes((avg.x+pseudo1), (avg.y+pseudo2), text=metadata), color = highlight_color)
+    }
+  }
+  if(interactive) gg = ggplotly(gg, tooltip = "text")
+  return(gg)
 }
 
 .merge_TIRTL_pseudo = function(tp1,tp2,thres1=4,thres2=4,pseudo1=1e-6,pseudo2=1e-6,mreads_thres=0)

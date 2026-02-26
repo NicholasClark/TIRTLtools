@@ -25,7 +25,7 @@ summarize_scTIRTLseq = function(df) {
   msg1 = paste(n_wells_total, " wells of data", sep = "")
   msg2 = paste(n_wells_both, " wells (", percent_both, "%) with both alpha and beta chains", sep = "")
   msg3 = paste(n_wells_no_alpha, " wells (", percent_no_alpha, "%) missing an alpha chain", sep = "")
-  msg4 = paste(n_wells_no_beta, " wells (", percent_no_beta, "%) missing an alpha chain", sep = "")
+  msg4 = paste(n_wells_no_beta, " wells (", percent_no_beta, "%) missing a beta chain", sep = "")
   msg5 = paste(n_wells_second_alpha, " wells (", percent_second_alpha, "%) with second alpha chain")
 
   message(msg1)

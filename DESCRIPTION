@@ -31,12 +31,14 @@ Imports:
     magrittr,
     Matrix (>= 1.7.3),
     pkgload,
+    plotly,
     R.utils,
     Rcpp,
     RcppParallel,
     reshape2,
     reticulate (>= 1.41.0.1),
     suggests,
+    tictoc,
     tidyr,
     vctrs
 Depends: 
