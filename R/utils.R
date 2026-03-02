@@ -187,3 +187,29 @@
 .get_well_from_name = function(str_vec, well_pos) {
   sapply(strsplit(str_vec, split = "_"), function(x) x[[well_pos]])
 }
+
+.create_folder = function(folder_out, verbose = TRUE) {
+  ## Create folder for results
+  if (!dir.exists(folder_out)) {
+    dir.create(folder_out, recursive = TRUE)
+    msg = paste("Created folder:", folder_out)
+    if(verbose) print(msg)
+  } else {
+    msg = paste("Folder already exists:", folder_out)
+    if(verbose) print(msg)
+  }
+  return(invisible(NULL))
+}
+
+
+my_apply <- function(X, FUN, ..., parallel = FALSE, mc.cores = 2) {
+
+  if (parallel) {
+    apply_fun <- function(...) parallel::mclapply(..., mc.cores = mc.cores)
+  } else {
+    apply_fun <- lapply
+  }
+
+  apply_fun(X, FUN, ...)
+}
+
