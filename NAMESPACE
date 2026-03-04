@@ -101,6 +101,10 @@ export(write_stitchr_tsv) ## 95% docs, needs example
 export(get_well_subset) ## full docs
 #export(get_wells_from_edges) ## hidden for now
 #export(load_well_data) ## hidden for now
+export(write_well_data_to_binary)
+export(load_well_counts_binary)
+export(plot_tshell)
+export(choose_pair_manual)
 
 #export(load_well_data_to_df_single)
 #export(load_well_data_to_sparse_multi)
