@@ -213,12 +213,12 @@ my_apply <- function(X, FUN, ..., parallel = FALSE, mc.cores = 2) {
   apply_fun(X, FUN, ...)
 }
 
-calc_fisher_pval_df = function(df) {
+calc_fisher_pval_df = function(df, n) {
   sapply(1:nrow(df), function(i) {
     m11 = df$wij[i]
     m12 = df$wi[i]
     m21 = df$wj[i]
-    m22 = length(vec) - m11 - m12 - m21
+    m22 = n - m11 - m12 - m21
     mat = matrix(c(m11, m12, m21, m22), nrow = 2)
     tmp = fisher.test(mat)
     return(tmp$p.value)

@@ -33,7 +33,7 @@
 #'
 
 
-load_wells_counts_binary = function(folder, prefix, lazy = TRUE) {
+load_well_counts_binary = function(folder, prefix, lazy = TRUE) {
   alpha_mat_file = file.path(folder, paste(prefix, "alpha.rds", sep="_"))
   beta_mat_file = file.path(folder, paste(prefix, "beta.rds", sep="_"))
 

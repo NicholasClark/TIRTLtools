@@ -156,7 +156,7 @@ plot_tshell = function(
 
   cor_df_sub = cor_df[keep_indices,]
 
-  if(calc_fisher_pval_all) cor_df_sub$fisher_pval = calc_fisher_pval_df(cor_df_sub)
+  if(calc_fisher_pval_all) cor_df_sub$fisher_pval = calc_fisher_pval_df(cor_df_sub, n= length(vec))
 
   if(is_lazy) {
     if(chain == "alpha") other_meta_sub = extract_rows_by_index_parquet(well_data$beta_meta_file, row_indices = keep_indices)
@@ -170,15 +170,15 @@ plot_tshell = function(
 
   cor_df_sub = bind_cols(other_meta_sub, cor_df_sub) %>% as_tibble() %>%
     select(chain, row_id, aaSeqCDR3, r, t, p, p_adj, wa, wb, wij, n, targetSequences, v,j, everything()) %>%
-    arrange(p)
+    arrange(desc(t)) %>% mutate(rank = row_number())
 
 
   nrow_final = min(n_plot, nrow(cor_df_sub))
-  cor_df_top_n = cor_df_sub[1:nrow_final,] %>% mutate(rank = rank(p)) %>%
-    mutate(chain_name = paste(paste("rank ", rank, ":", sep = ""), chain, row_id)) %>%
+  cor_df_top_n = cor_df_sub[1:nrow_final,] %>%
+    mutate(chain_name = paste(paste("rank ", rank, ":", sep = ""), chain, row_id, "\n", aaSeqCDR3)) %>%
     mutate(chain_name = factor(chain_name, levels = chain_name))
 
-  if(!calc_fisher_pval_all) cor_df_top_n$fisher_pval = calc_fisher_pval_df(cor_df_top_n)
+  if(!calc_fisher_pval_all) cor_df_top_n$fisher_pval = calc_fisher_pval_df(cor_df_top_n, n =length(vec))
 
   # meta_gg = extract_rows_by_index_parquet(well_data$beta_meta_file, cor_df_top_n$row_id) %>%
   #   mutate(chain_name = paste("beta", row_id))
@@ -216,11 +216,11 @@ plot_tshell = function(
     #print(gg)
     gg2 = ggplot(cor_df_sub, aes(x=r, y=-log10(p), aa = aaSeqCDR3, v = v, j = j, wa = wa, wb = wb, wij = wij)) + geom_point(alpha = 0.5) + theme_bw()
     gg3 = ggplot(cor_df_sub, aes(x=r, y=-log10(p_adj), aa = aaSeqCDR3, v= v, j = j, wa = wa, wb = wb, wij = wij)) + geom_point(alpha = 0.5) + theme_bw()
-    gg4 = ggplot(cor_df_sub, aes(x = rank(p_adj), y = -log10(p_adj))) +
-      geom_segment(aes(x = rank(p_adj), xend = rank(p_adj), y = 0, yend = -log10(p_adj))) +          # color by significance
+    gg4 = ggplot(cor_df_sub, aes(x = rank, y = -log10(p_adj))) +
+      geom_segment(aes(x = rank, xend = rank, y = 0, yend = -log10(p_adj))) +          # color by significance
       geom_hline(yintercept = -log10(0.05),          # significance threshold line
                  linetype = "dashed", color = "red") +
-      geom_point(data = filter(cor_df_sub, rank(p_adj) == 1), size = 4, color = "darkgreen") +
+      geom_point(data = filter(cor_df_sub, rank == 1), size = 4, color = "darkgreen") +
       geom_text(data = label_df[1,], aes(x = 1, y = Inf, label = label),
                 hjust = -0.5, vjust = 1.5, size = 3, inherit.aes = FALSE) +
       labs(x = "Rank", y = expression(-log[10](p))) +
@@ -240,8 +240,8 @@ plot_tshell = function(
 
 
   return(
-    list(data = list(df_top_n = cor_df_top_n, df_all = cor_df_sub, input_meta = vec_meta),
-         plots = list(scatter = gg, r_vs_p = gg2, r_vs_p_adj = gg3, rank_vs_p_adj = gg4),
+    list(data = list(input_meta = vec_meta, df_all = cor_df_sub, df_top_n = cor_df_top_n),
+         plots = list(scatter = gg, rank_vs_p_adj = gg4, r_vs_p = gg2, r_vs_p_adj = gg3),
          call = call
          )
     )
