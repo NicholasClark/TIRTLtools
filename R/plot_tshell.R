@@ -211,8 +211,13 @@ plot_tshell = function(
       geom_text(data = label_df, aes(x = 0, y = Inf, label = label),
                 hjust = -0.1, vjust = 1.5, size = 3, inherit.aes = FALSE) +
       facet_wrap(~chain_name, scales = "free") +
-      theme_bw()
-    if(plot_log_scale) gg = gg + scale_x_log10() + scale_y_log10()
+      #scale_x_continuous(labels = scales::label_scientific()) +
+      #scale_y_continuous(labels = scales::label_scientific()) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    if(plot_log_scale) {
+      gg = gg + scale_x_log10() + scale_y_log10()
+    }
     #print(gg)
     gg2 = ggplot(cor_df_sub, aes(x=r, y=-log10(p), aa = aaSeqCDR3, v = v, j = j, wa = wa, wb = wb, wij = wij)) + geom_point(alpha = 0.5) + theme_bw()
     gg3 = ggplot(cor_df_sub, aes(x=r, y=-log10(p_adj), aa = aaSeqCDR3, v= v, j = j, wa = wa, wb = wb, wij = wij)) + geom_point(alpha = 0.5) + theme_bw()

@@ -193,3 +193,77 @@
 #   #names(ll) = files_no_ending[keep]
 #   return(ll)
 # }
+
+# Python/Basilisk helpers ----------------------
+
+## install_python_env ----------------
+
+#' Install python environment
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' This function install a python environment via the `basilisk` package that is
+#' needed for some functions: \code{\link{TCRdist}()}, \code{\link{cluster_tcrs}()}, and \code{\link{run_pairing}()}.
+#'
+#' It will run automatically when needed, but is available to the user if needed.
+#'
+#' @param force whether to force installation (default if FALSE)
+#'
+#' @return returns NULL
+#'
+#' @family python-deps
+#' @noRd
+
+# install_python_env <- function(force = FALSE) {
+#   message("Installing/updating the Python environment for TIRTLtools...")
+#   install_python_env_silently(force = force)
+#   message("Done.")
+#   return(invisible(NULL))
+# }
+
+## install_python_env_silently -----------------
+# Internal: trigger basilisk env creation without doing real work
+# install_python_env_silently <- function(force = FALSE) {
+#   if (env_is_installed() && !force) {
+#     return(invisible(TRUE))
+#   }
+#   basilisk::basiliskRun(
+#     env = TIRTLtools_py_env,
+#     fun = function() NULL
+#   )
+#   #mark_env_installed()
+#   invisible(TRUE)
+# }
+
+## ensure_python_env -------------
+# ensure_python_env <- function(ask = TRUE) {
+#
+#   if (env_is_installed()) {
+#     return(invisible(TRUE))
+#   }
+#
+#   # Non-interactive or explicit "don't ask": auto-install
+#   if (!interactive() || !isTRUE(ask)) {
+#     install_python_env_silently()
+#     return(invisible(TRUE))
+#   }
+#
+#   # Interactive + ask = TRUE: prompt the user
+#   version = packageVersion("TIRTLtools")
+#   message("This function requires installation of a Python environment.")
+#   message(paste("This is the first time you are using the Python backend for TIRTLtools v", version, sep = ""))
+#
+#
+#   ans <- utils::menu(
+#     choices = c("Yes, install now", "No, cancel"),
+#     title = "Allow TIRTLtools to install its Python environment now?"
+#   )
+#
+#   if (ans != 1) {
+#     stop("Installation of the Python environment was cancelled by the user.")
+#   }
+#
+#   install_python_env_silently()
+#   invisible(TRUE)
+# }
+

@@ -20,6 +20,7 @@ sparse_overlap <- function(X, y) {
 #' Normalize rows of a dgCMatrix by their row sums
 #' @param X  dgCMatrix
 #' @return   dgCMatrix with rows summing to 1 (zero-sum rows → NA or 0)
+#' @noRd
 normalize_rows <- function(X) {
   rs <- Matrix::rowSums(X)
   if (any(rs == 0)) stop("Zero-sum rows found: ", paste(which(rs == 0), collapse = ", "))
@@ -44,6 +45,7 @@ extract_col_dense <- function(mat, j) {
 #' @param X  dgCMatrix of shape (n x p)
 #' @param y  numeric vector of length n
 #' @return   data.frame with columns: r, t, p, n_overlap
+#' @noRd
 sparse_col_cor <- function(X, y, use_overlap = FALSE) {
   stopifnot(is(X, "sparseMatrix"), length(y) == nrow(X))
 

@@ -90,7 +90,7 @@ load_tirtlseq = function(
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
   ll = lapply(directory, function(dir_tmp) {
     msg = paste("Loading files from: ", dir_tmp, "...", sep = "")
-    message(msg)
+    if(verbose) message(msg)
     # if(chain == "alpha") ptn = "*TRA.tsv.gz"
     # if(chain == "beta") ptn = "*TRB.tsv.gz"
     # if(chain == "paired") ptn = "*TIRTLoutput.tsv.gz"
@@ -118,7 +118,7 @@ load_tirtlseq = function(
     msg2 = paste("Found", length(files_beta), "beta chain pseudo-bulk files.")
     files_paired = dir(dir_tmp, pattern = paired_post )
     msg3 = paste("Found", length(files_paired), "paired chain files.")
-    if(verbose) message(msg1); message(msg2); message(msg3)
+    if(verbose) { message(msg1); message(msg2); message(msg3) }
 
     files_pre_paired = gsub("_TIRTLoutput\\.tsv.*", "",files_paired)
     files_pre_alpha = gsub("_pseudobulk_TRA\\.tsv.*", "",files_alpha)
@@ -220,7 +220,7 @@ load_tirtlseq = function(
 
     }
     msg = paste("Loaded ", file_counter, " files from ", length(list_tmp), " samples.", sep = "")
-    message(msg)
+    if(verbose) message(msg)
     return(list(data = list_tmp, meta = meta_tmp))
   })
   meta_final = lapply(ll, function(x) x$meta) %>% bind_rows()
@@ -229,7 +229,7 @@ load_tirtlseq = function(
   end = Sys.time()
   time = end-start
   n_secs = as.vector(time) %>% round(1)
-  message(paste(n_secs, "seconds"))
+  if(verbose) message(paste(n_secs, "seconds"))
   out = list(data = data_final, meta = meta_final)
   class(out) = "TIRTLseqDataSet"
   return(out)

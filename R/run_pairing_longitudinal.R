@@ -41,7 +41,7 @@
 #'  - A data frame ("<prefix>_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
 #'
 #' @family pairing
-#'
+#' @noRd
 
 run_pairing_longitudinal = function(
     folder_paths,

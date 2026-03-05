@@ -24,4 +24,11 @@ get_well_subset(1:16, 1:12) ## left half of plate
 get_well_subset(1:16, 13:24) ## right half of plate
 
 }
+\seealso{
+Other well: 
+\code{\link{choose_pair_manual}()},
+\code{\link{load_well_counts_binary}()},
+\code{\link{plot_tshell}()},
+\code{\link{write_well_data_to_binary}()}
+}
 \concept{well}

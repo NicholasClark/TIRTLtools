@@ -91,9 +91,4 @@ The function also writes three files to "folder_out":
 This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
 originating from the same clone.
 }
-\seealso{
-Other pairing: 
-\code{\link{run_pairing_longitudinal}()},
-\code{\link{run_pairing_multiplate}()}
-}
 \concept{pairing}
