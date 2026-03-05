@@ -71,8 +71,8 @@ plot_tshell = function(
   rc_alpha = Matrix::colSums(alpha_mat)
   rc_beta = Matrix::colSums(beta_mat)
   ## total read frequency of each alpha or beta
-  rf_alpha = Matrix::colSums(alpha_mat_rf)
-  rf_beta = Matrix::colSums(beta_mat_rf)
+  rf_alpha = rc_alpha/sum(rc_alpha)
+  rf_beta = rc_beta/sum(rc_beta)
 
   if(normalize_counts) {
     alpha_mat = alpha_mat_rf
