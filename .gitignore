@@ -7,3 +7,5 @@ docs
 __pycache__
 *.Rproj
 extra
+R/dev
+R/archive

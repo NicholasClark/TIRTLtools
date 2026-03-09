@@ -15,3 +15,5 @@
 ^_pkgdown\.yml$
 ^docs$
 ^\.github$
+R/archive
+R/dev
