@@ -92,3 +92,58 @@ sparse_col_cor <- function(X, y, use_overlap = FALSE) {
     row.names = colnames(X)
   )
 }
+
+## for correlations of all vs. all
+sparse_col_cor_all <- function(X, Y) {
+  # X and Y must be dgCMatrix with the same number of rows
+  stopifnot(nrow(X) == nrow(Y))
+
+  n <- nrow(X)
+
+  # --- Efficient sparse column stats ---
+  col_means <- function(M) Matrix::colMeans(M)
+
+  col_sd <- function(M) {
+    # Var = E[x^2] - E[x]^2, computed sparsely
+    means  <- col_means(M)
+    means2 <- Matrix::colMeans(M^2)
+    sqrt(pmax(means2 - means^2, 0) * (n / (n - 1)))  # unbiased (Bessel's correction)
+  }
+
+  # --- Center columns (returns a regular dense matrix only for cross-product) ---
+  # We compute cov(X, Y) = (1/(n-1)) * t(X_centered) %*% Y_centered sparsely
+
+  mx <- col_means(X)
+  my <- col_means(Y)
+  sx <- col_sd(X)
+  sy <- col_sd(Y)
+
+  # Efficient cross-product using sparse arithmetic:
+  # cov(xi, yj) = [sum(xi * yj) - n * mean(xi) * mean(yj)] / (n - 1)
+  # crossprod gives t(X) %*% Y  (p x q), sum of elementwise products per column pair
+  XtY <- Matrix::crossprod(X, Y)  # p x q sparse/dense matrix
+
+  # Outer product of means scaled by n
+  mean_correction <- outer(mx, my) * n  # p x q dense
+
+  cov_mat <- (as.matrix(XtY) - mean_correction) / (n - 1)  # p x q
+
+  # Correlation = cov / (sd_x * sd_y)
+  cor_mat <- cov_mat / outer(sx, sy)  # p x q
+
+  # Clip to [-1, 1] to avoid numerical issues
+  cor_mat <- pmin(pmax(cor_mat, -1), 1)
+
+  # --- t-statistic and p-value ---
+  # t = r * sqrt(n - 2) / sqrt(1 - r^2)
+  t_mat <- cor_mat * sqrt(n - 2) / sqrt(1 - cor_mat^2)
+
+  # Two-sided p-value from t-distribution with df = n - 2
+  p_mat <- 2 * pt(-abs(t_mat), df = n - 2)
+
+  list(
+    correlation = cor_mat,
+    t_statistic = t_mat,
+    p_value     = p_mat
+  )
+}
