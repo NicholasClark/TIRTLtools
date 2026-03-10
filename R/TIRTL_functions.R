@@ -1,8 +1,11 @@
 big_merge_freqs2<-function(dtlist,min_reads=0){ #optimised
   all_data <- rbindlist(dtlist, idcol = "source")[readCount>min_reads,]
+  all_data_summ = all_data %>% group_by(targetSequences) %>%
+    summarize(readCount = sum(readCount)) %>% arrange(desc(readCount))
   all_data$source <- factor(all_data$source, levels=unique(all_data$source))
   cols <- levels(all_data$source)
-  all_data$targetSequences <- factor(all_data$targetSequences,levels=unique(all_data$targetSequences))
+  #all_data$targetSequences <- factor(all_data$targetSequences,levels=unique(all_data$targetSequences))
+  all_data$targetSequences <- factor(all_data$targetSequences,levels= all_data_summ$targetSequences)
   rows <- levels(all_data$targetSequences)
   stmpsp<-sparseMatrix(
     i = as.integer(all_data$targetSequences),    # row indices
@@ -33,11 +36,22 @@ getb_sm<-function(dtlist){ #same, but smaller files!
 #   unlist(sapply(LETTERS[row_range],function(x)paste(x,col_range,sep=""),simplify = F))
 # }
 
-get_good_wells_sub<-function(alpha_list,beta_list,thres,pos=4,wellset=get_well_subset(1:16,1:24)){
-  wellinds_a<-(sapply(strsplit(names(alpha_list),"_"),"[[",pos))
-  wellinds_b<-(sapply(strsplit(names(beta_list),"_"),"[[",pos))
-  good_wells<-intersect(wellinds_a[sapply(alpha_list,nrow)>thres],wellinds_b[sapply(beta_list,nrow)>thres])
-  list(a=wellinds_a%in%intersect(good_wells,wellset),b=wellinds_b%in%intersect(good_wells,wellset),well_ids=intersect(good_wells,wellset))
+get_good_wells_sub = function(alpha_list, beta_list, thres, pos=4, wellset=get_well_subset(1:16,1:24)) {
+  wells_a = (sapply(strsplit(names(alpha_list),"_"),"[[",pos))
+  wells_b = (sapply(strsplit(names(beta_list),"_"),"[[",pos))
+  if(!all.equal(wells_a,wells_b)) stop("Alpha and beta wells not in the same order")
+  good_wells_a = wells_a[sapply(alpha_list,nrow)>thres]
+  good_wells_b = wells_b[sapply(beta_list,nrow)>thres]
+  good_wells = intersect(good_wells_a,good_wells_b)
+  wells_keep = intersect(good_wells,wellset)
+  wells_removed = wellset[!wellset %in% good_wells]
+  n_wells = length(wellset)
+  if(length(wells_removed) > 0) {
+    message(paste0(c(length(wells_removed), "out of", n_wells, "wells removed by QC:", wells_removed), sep = " "))
+  } else {
+    message(paste("0 out of", n_wells,"wells removed by QC"))
+  }
+  list(a = wells_a %in% wells_keep, b = wells_b %in% wells_keep, well_ids = wells_keep)
 }
 
 get_good_wells_sub_longitudinal<-function(alpha_list,beta_list,thres){

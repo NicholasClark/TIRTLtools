@@ -34,13 +34,13 @@
 
 
 load_well_counts_binary = function(folder, prefix, lazy = TRUE) {
-  alpha_mat_file = file.path(folder, paste(prefix, "alpha.rds", sep="_"))
-  beta_mat_file = file.path(folder, paste(prefix, "beta.rds", sep="_"))
+  alpha_mat_file = file.path(folder, paste(prefix, "alpha_mat.rds", sep="_"))
+  beta_mat_file = file.path(folder, paste(prefix, "beta_mat.rds", sep="_"))
 
-  alpha_row_file = file.path(folder, paste(prefix, "alpha.parquet", sep="_"))
-  beta_row_file = file.path(folder, paste(prefix, "beta.parquet", sep="_"))
+  alpha_row_file = file.path(folder, paste(prefix, "alpha_meta.parquet", sep="_"))
+  beta_row_file = file.path(folder, paste(prefix, "beta_meta.parquet", sep="_"))
 
-  col_file = file.path(folder, paste(prefix, "cols.parquet", sep="_"))
+  col_file = file.path(folder, paste(prefix, "well_meta.parquet", sep="_"))
 
   alpha_mat = readRDS(alpha_mat_file)
   beta_mat = readRDS(beta_mat_file)

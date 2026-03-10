@@ -41,6 +41,15 @@
 #'  - A data frame ("<prefix>_pseudobulk_TRB.tsv") of pseudobulk counts for TCRbeta chains
 #'  - A data frame ("<prefix>_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
 #'
+#'  These files can be loaded using the \code{\link{load_tirtlseq}()} function.
+#'
+#'  If write_extra_files is TRUE, the function also writes sparse matrices of per-well read
+#'  counts (well x chain) for TCR-alpha and beta to "<prefix>_alpha_mat.rds" and "<prefix>_beta_mat.rds".
+#'  Metadata for the chains in these matrices are written to "<prefix>_alpha_meta.parquet" and
+#'  "<prefix>_beta_meta.parquet" and metadata for the wells is written to "<prefix>_well_meta.parquet".
+#'
+#'  These files can be loaded using the \code{\link{load_well_counts_binary}()} function.
+#'
 #' @family pairing
 #' @export
 #'
@@ -68,40 +77,27 @@ run_pairing = function(
     select_best_madhype = FALSE,
     select_best_tshell = FALSE
 ){
+  tictoc::tic()
   #ensure_python_env()
   py_require( packages = get_py_deps() )
 
   backend = backend[1]
-  if(verbose) {
-    print("start")
-    print(Sys.time())
-  }
 
-  ## Create folder for results
-  if (!dir.exists(folder_out)) {
-    dir.create(folder_out, recursive = TRUE)
-    msg = paste("Created folder:", folder_out)
-    if(verbose) print(msg)
-  } else {
-    msg = paste("Folder already exists:", folder_out)
-    if(verbose) print(msg)
-  }
+  .create_folder(folder_out)
 
   files = list.files(path = folder_path,full.names = F)
   files_no_dot = gsub(".","_",files,fixed=T)
   file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
   files_bool = file_wells %in% wellset1
-  msg = paste("Reading", sum(files_bool), "wells from", folder_path)
-  if(verbose) print(msg)
+  msg = paste("Reading", sum(files_bool), "files from", folder_path)
+  if(verbose) message(msg)
   files_load = file.path(folder_path, files[files_bool])
   mlist<-lapply(1:length(files_load),function(i){
-    print(i)
+    if(verbose) if(i %% 25 == 0 | i == length(files_load)) message(paste(i, "of", length(files_load), "files loaded"))
     fread(files_load[i])
   })
   names(mlist) = files_no_dot[files_bool]
 
-  #mlist<-lapply(list.files(path = folder_path,full.names = T),fread)
-  #names(mlist)<-gsub(".","_",list.files(path = folder_path,full.names = F),fixed=T)
   mlista<-geta(mlist)
   mlistb<-getb(mlist)
   if(verbose) {
@@ -109,32 +105,44 @@ run_pairing = function(
     n_filesB = length(mlistb)
     msgA = paste(n_filesA, "TCRalpha well files loaded")
     msgB = paste(n_filesB, "TCRbeta well files loaded")
-    print(msgA)
-    print(msgB)
-    #print("clonesets loaded")
-    #print(names(mlist))
-    print(Sys.time())
+    message(msgA)
+    message(msgB)
   }
-  #wellsub<-sapply(strsplit(names(mlist),split="_",fixed=T),"[[",well_pos)%in%wellset1
-  #clone_thres=round(well_filter_thres*mean(sapply(mlist,nrow)[wellsub]))
-  #wellsub<-sapply(strsplit(names(mlista),split="_",fixed=T),"[[",well_pos)%in%wellset1
-  #clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)[wellsub]))
+  tmpa = bind_rows(mlista)
+  tmpb = bind_rows(mlistb)
+  n_counts_char_alpha = sum(tmpa$readCount) %>% scales::scientific()
+  n_counts_char_beta = sum(tmpb$readCount) %>% scales::scientific()
+  msg1 = paste("Total number of TCRalpha reads:", n_counts_char_alpha)
+  msg2 = paste("Total number of TCRbeta reads:", n_counts_char_beta)
+  if(verbose) message(msg1)
+  if(verbose) message(msg2)
+  n_unique_alpha = length(unique(tmpa$targetSequences))
+  n_unique_beta = length(unique(tmpb$targetSequences))
+  msg1 = paste("Total number of unique TCRalpha chains:", n_unique_alpha)
+  msg2 = paste("Total number of unique TCRbeta chains:", n_unique_beta)
+  if(verbose) message(msg1)
+  if(verbose) message(msg2)
+
   clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)))
   rm(mlist)
 
   qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
   if(verbose) {
-    print("Clone threshold for QC:")
-    print(clone_thres)
-    print("Alpha wells passing QC:")
-    print(table(qc$a))
-    print("Beta wells passing QC:")
-    print(table(qc$b))
+    msg1 = paste("Clone threshold for QC:", clone_thres)
+    message(msg1)
+    msg2 = paste("Alpha wells passing QC:", sum(qc$a))
+    message(msg2)
+    msg4 = paste("Beta wells passing QC:", sum(qc$b))
+    message(msg4)
+    msg3 = paste("Alpha wells failing QC:", sum(!qc$a))
+    message(msg3)
+    msg5 = paste("Beta wells failing QC:", sum(!qc$b))
+    message(msg5)
   }
 
+  wells_a = sapply(strsplit(names(mlista), "_"), function(x) x[[well_pos]])
+  wells_b = sapply(strsplit(names(mlistb), "_"), function(x) x[[well_pos]])
   if(write_extra_files) {
-    wells_a = sapply(strsplit(names(mlista), "_"), function(x) x[[well_pos]])
-    wells_b = sapply(strsplit(names(mlistb), "_"), function(x) x[[well_pos]])
     stats_a = tibble(
       a_names=names(mlista),
       well = wells_a,
@@ -160,105 +168,103 @@ run_pairing = function(
     fwrite(plate_stats,file.path(folder_out, paste0(prefix,"_plate_stats.tsv")),sep="\t")
   }
 
+  names(mlista) = wells_a
+  names(mlistb) = wells_b
   #result<-do_analysis_madhyper_r_optim_both(mlista[qc$a],mlistb[qc$b],n_cells = clone_thres)
   mlista<-mlista[qc$a]#downsize to qc
   mlistb<-mlistb[qc$b]#downsize to qc
 
+  ## reorder wells
+  all_wells = get_well_subset(1:16,1:24)
+  sub_wells = all_wells[all_wells %in% wells_a]
+  mlista = mlista[sub_wells]
+  mlistb = mlistb[sub_wells]
+
   if(exclude_nonfunctional) {
+    message("Excluding chains with stop codons or frameshifts...")
     mlista = lapply(mlista, .get_functional)
     mlistb = lapply(mlistb, .get_functional)
+
+    # tmpa2 = bind_rows(mlista)
+    # tmpb2 = bind_rows(mlista)
+    #
+    # n_unique_alpha2 = length(unique(tmpa2$targetSequences))
+    # n_unique_beta2 = length(unique(tmpb2$targetSequences))
+    #
+    # msg1 = paste(n_unique_alpha-n_unique_alpha2, "non-functional TCRalpha chains excluded")
+    # msg2 = paste(n_unique_beta-n_unique_beta2, "non-functional TCRbeta chains excluded")
+    # if(verbose) message(msg1)
+    # if(verbose) message(msg2)
+
   }
 
-  if(verbose) {
-    print("Tabulating TCRalpha pseudobulk counts")
-    print(Sys.time())
-  }
+  if(verbose) message("Tabulating TCRalpha pseudobulk counts")
   combd_a<-.combineTCR(rbindlist(mlista,idcol="file"))
   combd_a$max_wells<-sum(qc$a)
-  fwrite(combd_a[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv")),sep="\t")
-  if(verbose) {
-    print("Tabulating TCRbeta pseudobulk counts")
-    print(Sys.time())
-  }
+  combd_a = combd_a[order(-readCount),]
+
+  file_tra = paste0(prefix,"_pseudobulk_TRA.tsv")
+  msg = paste("Writing TCRalpha pseudobulk file...", file_tra)
+  if(verbose) message(msg)
+  fwrite(combd_a,file.path(folder_out, file_tra),sep="\t")
+  if(verbose) message("Tabulating TCRbeta pseudobulk counts")
   combd_b<-.combineTCR(rbindlist(mlistb,idcol="file"))
   combd_b$max_wells<-sum(qc$b)
-  fwrite(combd_b[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv")),sep="\t")
-  if(verbose) print("Pseudobulk done.")
+  combd_b = combd_b[order(-readCount),]
+  file_trb = paste0(prefix,"_pseudobulk_TRB.tsv")
+  msg = paste("Writing TCRbeta pseudobulk file...", file_trb)
+  if(verbose) message(msg)
+  fwrite(combd_b,file.path(folder_out, file_trb),sep="\t")
+  if(verbose) message("Pseudobulk done")
 
-  if(verbose) {
-    print(Sys.time())
-    print("Merging alpha clonesets...")
-  }
+  if(verbose) message("Merging alpha clonesets...")
   bigma<-big_merge_freqs2(mlista,min_reads = min_reads)
-  if(verbose) {
-    print("Done! Unique alpha clones and wells after filtering:")
-    print(dim(bigma))
-  }
+  if(verbose) message(paste("Done! Unique alpha clones after filtering:", nrow(bigma)))
   bigmas<-bigma[rowSums(bigma>0)>min_wells,]
-  if(verbose) {
-    print(Sys.time())
-    print(paste0("Unique alpha clones and wells in more than: ",min_wells," wells"))
-    print(dim(bigmas))
-  }
+  if(verbose) message(paste0("Unique alpha clones in more than ",min_wells," wells: ", nrow(bigmas)))
   bigmb<-big_merge_freqs2(mlistb,min_reads = min_reads)
-  if(verbose) {
-    print("Done! beta clones and wells after filtering:")
-    print(dim(bigmb))
-  }
+  if(verbose) message(paste("Done! Unique beta clones after filtering:", nrow(bigmb)))
   bigmbs<-bigmb[rowSums(bigmb>0)>min_wells,]
-  if(verbose) {
-    print(Sys.time())
-    print(paste0("Unique beta clones and wells in more than: ",min_wells," wells"))
-    print(dim(bigmbs))
-  }
+  if(verbose) message(paste0("Unique beta clones and wells in more than ",min_wells," wells: ", nrow(bigmbs)))
   if(write_extra_files) {
-    write(rownames(bigmas),file=file.path(folder_out, paste0(prefix,"_bigmas_names.tsv")))
-    write(rownames(bigmbs),file=file.path(folder_out, paste0(prefix,"_bigmbs_names.tsv")))
-    write_dat(as.matrix(bigmas),fname = file.path(folder_out, paste0(prefix,"_bigmas.tsv")))
-    write_dat(as.matrix(bigmbs),fname = file.path(folder_out, paste0(prefix,"_bigmbs.tsv")))
-    write.table(summary(bigmas), file.path(folder_out, paste0(prefix,"_bigmas_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
-    write.table(summary(bigmbs), file.path(folder_out, paste0(prefix,"_bigmbs_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
+    if(verbose) message("Writing TCRalpha/beta read count matrices (well x chain) and single-chain metadata...")
+    check = all.equal(colnames(bigmas), colnames(bigmbs))
+    if(!check) stop("Error creating alpha/beta read count matrices: wells are not in the same order")
+    alpha_meta = combd_a[match(rownames(bigmas), combd_a$targetSequences),]
+    beta_meta = combd_b[match(rownames(bigmbs), combd_b$targetSequences),]
+    col_data = data.frame(idx = 1:length(colnames(bigmas)),well = colnames(bigmas))
+
+    file_alpha_mat = paste(prefix,"alpha_mat.rds",sep="_")
+    file_beta_mat = paste(prefix,"beta_mat.rds",sep="_")
+    file_alpha_meta = paste(prefix,"alpha_meta.parquet",sep="_")
+    file_beta_meta = paste(prefix,"beta_meta.parquet",sep="_")
+    file_well_meta = paste(prefix,"well_meta.parquet",sep="_")
+
+    if(verbose) message(paste("Writing TCRalpha read count matrix...", file_alpha_mat))
+    saveRDS(t(bigmas), file = file.path(folder_out, file_alpha_mat)) ## columns are clones
+    if(verbose) message(paste("Writing TCRbeta read count matrix...", file_beta_mat))
+    saveRDS(t(bigmbs), file = file.path(folder_out, file_beta_mat)) ## columns are clones
+    if(verbose) message(paste("Writing chain metadata for TCRalpha matrix...", file_alpha_meta))
+    arrow::write_parquet(alpha_meta,file.path(folder_out, file_alpha_meta))
+    if(verbose) message(paste("Writing chain metadata for TCRbeta matrix...", file_beta_meta))
+    arrow::write_parquet(beta_meta,file.path(folder_out, file_beta_meta))
+    if(verbose) message(paste("Writing well metadata for read count matrices...", file_well_meta))
+    arrow::write_parquet(col_data,file.path(folder_out, file_well_meta))
+    #write(rownames(bigmas),file=file.path(folder_out, paste0(prefix,"_bigmas_names.tsv")))
+    #write(rownames(bigmbs),file=file.path(folder_out, paste0(prefix,"_bigmbs_names.tsv")))
+    # write_dat(as.matrix(bigmas),fname = file.path(folder_out, paste0(prefix,"_bigmas.tsv")))
+    # write_dat(as.matrix(bigmbs),fname = file.path(folder_out, paste0(prefix,"_bigmbs.tsv")))
+    # write.table(summary(bigmas), file.path(folder_out, paste0(prefix,"_bigmas_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
+    # write.table(summary(bigmbs), file.path(folder_out, paste0(prefix,"_bigmbs_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
   }
-  if(verbose) print(Sys.time())
   n_wells=ncol(bigmas)
-  if(verbose) print("Pre-computing look-up table:")
+  if(verbose) message("Pre-computing look-up table:")
   mdh<-madhyper_surface(n_wells = ncol(bigmas),cells = clone_thres,alpha=2,prior = 1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5)
   if(write_extra_files) write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
-  if(verbose) print(Sys.time())
 
   if(compute==T) {
-    # basilisk stuff =====================
-    # is_loaded = pkgload::is_dev_package("TIRTLtools")
-    # if(is_loaded) {
-    #   if(is.null(fork)) fork = FALSE
-    #   if(is.null(shared)) shared = TRUE
-    #   #print("package loaded by pkgload/devtools")
-    # } else {
-    #   if(is.null(fork)) fork = FALSE
-    #   if(is.null(shared)) shared = FALSE
-    #   #print("package loaded from installed version")
-    # }
-    # #env = .choose_basilisk_env(backend)
-    # env = TIRTLtools_py_env
-    # proc <- basilisk::basiliskStart(env, fork = fork, shared = shared)
-    # on.exit(basilisk::basiliskStop(proc))
-    # py_path = system.file("python/pairing/", package = "TIRTLtools")
-    #
-    # pair_res = basilisk::basiliskRun(proc, fun=function(prefix, folder_out, bigmas, bigmbs, mdh, backend, filter_before_top3) {
-    #   pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
-    #
-    #   bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
-    #   bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
-    #   mdh_py = r_to_py(mdh)
-    #
-    #   pairing_res = pairing$pairing(prefix = prefix, folder_out = folder_out,
-    #                              bigmas = bigmas_py, bigmbs = bigmbs_py, mdh = mdh_py,
-    #                              backend = backend, filter_before_top3 = filter_before_top3)
-    #   return(pairing_res)
-    # }, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
-
+    message("Running pairing algorithms...")
     # reticulate stuff =======================
-    #pair_res = basilisk::basiliskRun(proc, fun=function(prefix, folder_out, bigmas, bigmbs, mdh, backend, filter_before_top3) {
     py_path = system.file("python/pairing/", package = "TIRTLtools")
     pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
 
@@ -271,25 +277,12 @@ run_pairing = function(
       mdh = mdh_py, backend = backend, filter_before_top3 = filter_before_top3, chunk_size = chunk_size,
       write_files = write_extra_files
       )
-      #return(pairing_res)
-    #}, prefix = prefix, folder_out = folder_out, bigmas = bigmas, bigmbs = bigmbs, mdh = mdh, backend = backend, filter_before_top3 = filter_before_top3)
-
   }
+  message("Pairing is finished.")
   ### fix for when r_to_py doesn't convert data frames
   if(reticulate::is_py_object(pair_res[[1]])) pair_res = .fix_py_to_r_df_list(pair_res)
 
-  print("Filtering results, adding amino acid and V segment information")
-
-  # cupy_madhype_script = reticulate::import_from_path("cupy_madhype_script", path = system.file("python/pairing/", package = "TIRTLtools"), convert = TRUE, delay_load = TRUE)
-  # cupy_madhype_script$madhyper_process(prefix)
-  # cupy_madhype_script$correlation_process(prefix)
-  # if(compute==T)system(paste0("python3 cupy_madhype_script.py ",prefix,collapse=""))
-  # here goes SYS call to python script.
-  #python3 mlx_madhype_script ~/R_projects/mlx_dev/plate6
-  # and here we go read it:
-
-  #gpu_res<-read_gpu(file.path(folder_out, prefix))
-  #gpu_res_corr<-read_gpu_corr(file.path(folder_out, prefix))
+  print("Filtering results, adding amino acid and V segment information...")
 
   n_wells = ncol(bigmas)
 
@@ -357,12 +350,16 @@ run_pairing = function(
   ### (optional) secondary algorithm to select best MAD-HYPE/T-SHELL clones
   result = .filter_pairs(result, filter_madhype = select_best_madhype, filter_tshell = select_best_tshell)
 
+  file_paired = paste0(prefix,"_TIRTLoutput.tsv")
+  if(verbose) message(paste("Writing TCRalpha/beta pairs...", file_paired))
+  fwrite(result, file.path(folder_out, file_paired),sep="\t")
   if(verbose) {
-    print(Sys.time())
-    print("All is done! Number of paired clones:")
-    print(table(result$method))
+    message("All pairing is finished!")
+    message(paste("Number of clones paired by MAD-HYPE algorithm:", sum(result$method == "madhype")))
+    message(paste("Number of clones paired by T-SHELL algorithm:", sum(result$method == "tshell")))
+    message(paste("Total number of unique TCRalpha/beta pairs:", length(unique(result$alpha_beta))))
   }
-  fwrite(result, file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv")),sep="\t")
+  tictoc::toc()
   return(result)
 }
 
