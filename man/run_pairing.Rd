@@ -85,6 +85,15 @@ The function also writes three files to "folder_out":
 \item A data frame ("\if{html}{\out{<prefix>}}_pseudobulk_TRB.tsv") of pseudobulk counts for TCRbeta chains
 \item A data frame ("\if{html}{\out{<prefix>}}_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
 }
+
+These files can be loaded using the \code{\link{load_tirtlseq}()} function.
+
+If write_extra_files is TRUE, the function also writes sparse matrices of per-well read
+counts (well x chain) for TCR-alpha and beta to "\if{html}{\out{<prefix>}}_alpha_mat.rds" and "\if{html}{\out{<prefix>}}_beta_mat.rds".
+Metadata for the chains in these matrices are written to "\if{html}{\out{<prefix>}}_alpha_meta.parquet" and
+"\if{html}{\out{<prefix>}}_beta_meta.parquet" and metadata for the wells is written to "\if{html}{\out{<prefix>}}_well_meta.parquet".
+
+These files can be loaded using the \code{\link{load_well_counts_binary}()} function.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
