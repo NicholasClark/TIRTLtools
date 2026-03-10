@@ -8,7 +8,7 @@ def check_nvidia_gpu():
         result = subprocess.run(["nvidia-smi"], capture_output=True, text=True)
         if result.returncode == 0:
             return True, result.stdout.split('\n')[2].strip()  # A line with GPU info
-    except FileNotFoundError:
+    except:
         pass
     return False, None
 
