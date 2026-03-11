@@ -24,6 +24,7 @@ a user to choose the partner for the input chain used to create that object.
 \seealso{
 Other well: 
 \code{\link{get_well_subset}()},
+\code{\link{get_wells_from_edges}()},
 \code{\link{load_well_counts_binary}()},
 \code{\link{plot_tshell}()},
 \code{\link{write_well_data_to_binary}()}

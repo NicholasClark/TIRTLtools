@@ -70,6 +70,7 @@ with the highest correlation/T-SHELL value.
 Other well: 
 \code{\link{choose_pair_manual}()},
 \code{\link{get_well_subset}()},
+\code{\link{get_wells_from_edges}()},
 \code{\link{load_well_counts_binary}()},
 \code{\link{write_well_data_to_binary}()}
 }

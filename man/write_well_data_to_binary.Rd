@@ -74,6 +74,7 @@ the \code{\link{plot_tshell}()} function.
 Other well: 
 \code{\link{choose_pair_manual}()},
 \code{\link{get_well_subset}()},
+\code{\link{get_wells_from_edges}()},
 \code{\link{load_well_counts_binary}()},
 \code{\link{plot_tshell}()}
 }

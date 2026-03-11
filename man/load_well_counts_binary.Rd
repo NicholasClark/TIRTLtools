@@ -42,6 +42,7 @@ Data loaded this way can be used as input to the \code{\link{plot_tshell}()} fun
 Other well: 
 \code{\link{choose_pair_manual}()},
 \code{\link{get_well_subset}()},
+\code{\link{get_wells_from_edges}()},
 \code{\link{plot_tshell}()},
 \code{\link{write_well_data_to_binary}()}
 }

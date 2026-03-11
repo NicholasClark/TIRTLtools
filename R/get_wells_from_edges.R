@@ -21,8 +21,7 @@
 #'
 #' get_wells_from_edges("A13", "P24") ## right half of plate
 #'
-#' get_wells_from_edges("A13", "P24", return_type = "rows_and_columns)
-#'
+#' get_wells_from_edges("A13", "P24", return_type = "rows_and_columns")
 #'
 get_wells_from_edges = function(top_left, bottom_right, return_type = c("wells", "rows_and_columns")){
   return_type = return_type[1]
