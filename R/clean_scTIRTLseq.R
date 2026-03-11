@@ -158,6 +158,7 @@ clean_scTIRTLseq = function(df, verbose = TRUE, keep_all_columns = FALSE) {
     mutate_at(vars(aaSeqCDR3u_beta, bestV_beta, bestJ_beta, nSeqCDR3_beta,
                    aaSeqCDR3u_alpha, bestV_alpha, bestJ_alpha, nSeqCDR3_alpha), ~replace(., .=="" , NA)) %>%
     mutate_at(vars(alpha_full, alpha_full2, beta_full), ~replace(., .=="|||" , NA))
+
   if(!keep_all_columns) {
     df_return = df_return %>%
       select(!starts_with("noNA_")) %>%
@@ -166,6 +167,10 @@ clean_scTIRTLseq = function(df, verbose = TRUE, keep_all_columns = FALSE) {
     df_return = df_return %>%
       select(c(!starts_with("noNA_"), !ends_with("_orig")), ends_with("_orig"), starts_with("noNA_"))
   }
+
+  df_beta_summ = df_beta2 %>% select(beta, n_beta) %>% dplyr::rename(beta_full = beta)
+  df_return = df_return %>% left_join(df_beta_summ, by = "beta_full") %>%
+    arrange(desc(n_beta), alpha_full, alpha_full2)
 
   if(verbose) {
     message("Before cleaning/imputation:")

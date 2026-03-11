@@ -53,8 +53,6 @@ export(plot_num_partners) ## full docs
 
 ## pairing
 export(run_pairing) # docs 90% done - needs details, examples
-#export(run_single_point_analysis_sub_pseudobulk_only)
-#export(run_single_point_analysis_sub_gpu)
 
 ## data_processing
 export(TIRTL_process) ## docs 99% done, could use an example
