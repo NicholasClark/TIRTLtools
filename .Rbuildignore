@@ -17,3 +17,4 @@
 ^\.github$
 R/archive
 R/dev
+vignettes/dev
