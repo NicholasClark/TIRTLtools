@@ -30,9 +30,9 @@ This function returns a vector of well names in a rectangle containing the top
 left well and the bottom right well.
 }
 \examples{
-get_wells_from_edges("A1", "H12") ## top left half of plate
-
 get_wells_from_edges("A13", "P24") ## right half of plate
+
+get_wells_from_edges("A1", "H12") ## top left half of plate
 
 get_wells_from_edges("A13", "P24", return_type = "rows_and_columns")
 
