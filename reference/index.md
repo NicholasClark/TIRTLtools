@@ -130,7 +130,7 @@
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads
@@ -150,8 +150,22 @@
 
 ## Well-level data functions
 
+- [`choose_pair_manual()`](https://nicholasclark.github.io/TIRTLtools/reference/choose_pair_manual.md)
+  **\[experimental\]** : Choose a partner manually for an input chain
+  using T-SHELL
 - [`get_well_subset()`](https://nicholasclark.github.io/TIRTLtools/reference/get_well_subset.md)
   **\[experimental\]** : Get well names from numerical rows and columns
+- [`get_wells_from_edges()`](https://nicholasclark.github.io/TIRTLtools/reference/get_wells_from_edges.md)
+  **\[experimental\]** : Get well names from the top left and bottom
+  right wells
+- [`load_well_counts_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/load_well_counts_binary.md)
+  **\[experimental\]** : Load well-level data written to binary format
+- [`plot_tshell()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_tshell.md)
+  **\[experimental\]** : Calculate and plot read fraction correlation
+  across wells (T-SHELL)
+- [`write_well_data_to_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/write_well_data_to_binary.md)
+  **\[experimental\]** : Convert individual well .tsv files to faster
+  loading binary format
 
 ## Data
 

@@ -44,7 +44,7 @@
 
     <a class="navbar-brand me-2" href="index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,23 +63,9 @@
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
     <li><a class="dropdown-item" href="articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="articles/pairing_zenodo_data.html">TCR-alpha/beta pairing for COVID-19 related TCRs</a></li>
+    <li><a class="dropdown-item" href="articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
-    <li><a class="dropdown-item" href="articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
-    <li><a class="dropdown-item" href="articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
     <li><a class="dropdown-item" href="articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
-    <li><a class="dropdown-item" href="articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
-    <li><a class="dropdown-item" href="articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
@@ -105,21 +91,39 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.svg" class="logo" alt=""><h1 id="tirtltools-r-package">TIRTLtools R package<a class="anchor" aria-label="anchor" href="#tirtltools-r-package"></a>
+<img src="logo.svg" class="logo" alt=""><h1 id="tirtltools-r-package-">TIRTLtools R package 
+<a class="anchor" aria-label="anchor" href="#tirtltools-r-package-"></a>
 </h1>
 </div>
 <p><strong><em>Package is in active development and may change frequently.</em></strong></p>
 <div class="section level2">
 <h2 id="news">News<a class="anchor" aria-label="anchor" href="#news"></a>
 </h2>
+<p>Dec. 8th 2025</p>
+<ul>
+<li>
+<em>Nature Methods</em> highlights TIRTL-seq in an <em>Immunology News &amp; Views</em> article: <br><a href="https://doi.org/10.1038/s41592-025-02984-w" class="external-link"><strong>TIRTL-seq: heroes with T-SHELL</strong></a>.</li>
+</ul>
 <p>Nov. 24th 2025</p>
 <ul>
-<li>The TIRTLseq assay paper has been published in Nature Methods: <br><a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link"><strong>TIRTL-seq: deep, quantitative and affordable paired TCR repertoire sequencing</strong></a>.</li>
+<li>The TIRTL-seq assay paper has been published in <em>Nature Methods</em>: <br><a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link"><strong>TIRTL-seq: deep, quantitative and affordable paired TCR repertoire sequencing</strong></a>.</li>
 </ul>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>Run the following code in R or Rstudio to install TIRTLtools:</p>
+<pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"remotes"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> <span class="co">## Run if you do not have the 'remotes' package installed</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"NicholasClark/TIRTLtools"</span><span class="op">)</span> <span class="co">## install via the GitHub Repo</span></span></code></pre>
+<p>Load the package in R with:</p>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://nicholasclark.github.io/TIRTLtools/">TIRTLtools</a></span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="documentation-and-usage-instructions">Documentation and usage instructions<a class="anchor" aria-label="anchor" href="#documentation-and-usage-instructions"></a>
 </h2>
+<p>For more information, see our website: <a href="https://nicholasclark.github.io/TIRTLtools/">https://nicholasclark.github.io/TIRTLtools/</a></p>
 <ul>
 <li><a href="https://nicholasclark.github.io/TIRTLtools/articles/TIRTLtools.html">Installation instructions</a></li>
 <li><a href="https://nicholasclark.github.io/TIRTLtools/reference/index.html">Reference manual</a></li>
@@ -133,19 +137,53 @@
 <p>In addition to various <strong>analysis and plotting functions</strong>, we provide an <strong>efficient batched GPU implementation of TCRdist</strong> (<a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., Nature 2017</a>) that works with both NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours using a MacBook Pro (16-core GPU, M4 Pro).</p>
 </div>
 <div class="section level2">
-<h2 id="the-tirtlseq-assay">The TIRTLseq assay<a class="anchor" aria-label="anchor" href="#the-tirtlseq-assay"></a>
+<h2 id="the-tirtl-seq-assay">The TIRTL-seq assay<a class="anchor" aria-label="anchor" href="#the-tirtl-seq-assay"></a>
 </h2>
 <p>The T-cell receptor (TCR), which allows for adaptive immune response, is made up of two separate protein chains, TCR-alpha and TCR-beta. Bulk single-chain TCR-sequencing allows for cost-effective in-depth TCR-repertoire profiling, but does not provide chain pairings, which are essential for determining T-cell specificity. Single-cell TCR sequencing can produce paired chain data, but is much more expensive and thus limited to thousands of cells in total and cost-prohibitive for cohort-scale studies.</p>
 <p><a href="https://doi.org/10.1101/2024.09.16.613345" class="external-link">TIRTL-seq</a> is a novel assay (published Nov. 2025) that can rapidly and economically sequence single-chain TCRs from <strong>millions of human T-cells</strong> and produce <strong>paired TCR-sequencing</strong> information for tens of thousands of T cell clones per sample at a <strong>fraction of the cost of single-cell sequencing</strong>. Cells are split across wells in <a href="https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/" class="external-link">384-well</a> or <a href="https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/" class="external-link">96-well</a> plates with between 2,500 and 25,000 cells per well and alpha/beta TCR chains are sequenced simultaneously in each well. Computational algorithms based on chain co-occurrence and correlation of chain frequency are used to identify alpha/beta chain pairs that derive from the same T-cell clone.</p>
-<p>A simple <strong>new algorithm (T-SHELL)</strong> allows for <strong>effective pairing of the most abundant clones</strong>, which had frustrated previous algorithms. Along with paired TCR information, single-chain read frequency can be used to identify expanded clones in one sample as well as to track clone expansions and contractions longitudinally across samples.</p>
+<p>We developed a <strong>new algorithm (T-SHELL)</strong> allows for <strong>effective pairing of the most abundant clones</strong>, which had frustrated previous algorithms. Along with paired TCR information, single-chain read frequency can be used to identify expanded clones in one sample as well as to track clone expansions and contractions longitudinally across samples.</p>
+</div>
+<div class="section level2">
+<h2 id="tirtl-seq-assay-protocols">TIRTL-seq assay protocols<a class="anchor" aria-label="anchor" href="#tirtl-seq-assay-protocols"></a>
+</h2>
+<p>See <em>protocols.io</em> for the 384-well and 96-well TIRTL-seq protocols.</p>
+<ul>
+<li>384-well TIRTL-seq protocol: <a href="https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/" class="external-link uri">https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/</a>
+</li>
+<li>96-well TIRTL-seq protocol: <a href="https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/" class="external-link uri">https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/</a>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="bug-reports">Bug reports<a class="anchor" aria-label="anchor" href="#bug-reports"></a>
+</h2>
+<p>For any bug reports or new feature requests, please create a GitHub Issue:</p>
+<ul>
+<li><a href="https://github.com/NicholasClark/TIRTLtools/issues" class="external-link uri">https://github.com/NicholasClark/TIRTLtools/issues</a></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>For details on our pairing pipeline, see the <a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link">TIRTLseq paper (Pogorelyy and Kirk et al., Nature Methods 2025)</a> and our <a href="https://github.com/pogorely/TIRTL" class="external-link">github repository</a>.</p>
+<p>For details on our pairing pipeline, see the <a href="http://doi.org/10.1038/s41592-025-02907-9" class="external-link"><strong>TIRTL-seq paper (Pogorelyy and Kirk et al., <em>Nature Methods</em> 2025)</strong></a> and our <a href="https://github.com/pogorely/TIRTL" class="external-link">github repository</a>.</p>
+<p>For a summary of the TIRTL-seq method and its importance, see the <em>Immunology News &amp; Views</em> article in <em>Nature Methods</em> highlighting TIRTL-seq: <a href="https://doi.org/10.1038/s41592-025-02984-w" class="external-link"><strong>TIRTL-seq: heroes with T-SHELL</strong></a>.</p>
 <p>For details on the MAD-HYPE algorithm, see <a href="https://academic.oup.com/bioinformatics/article/35/8/1318/5095649" class="external-link">Holec and Berleant et al., 2019</a>.</p>
-<p>For details on MiXCR, see their <a href="https://mixcr.com/" class="external-link">website</a> and publications in <a href="https://www.nature.com/articles/nmeth.3364" class="external-link">Nature Methods (2015)</a> and <a href="https://www.nature.com/articles/nbt.3979" class="external-link">Nature Biotechnology (2017)</a>.</p>
-<p>For details on TCRdist, see <a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., Nature 2017</a></p>
+<p>For details on MiXCR, see their <a href="https://mixcr.com/" class="external-link">website</a> and publications in <a href="https://www.nature.com/articles/nmeth.3364" class="external-link"><em>Nature Methods</em> (2015)</a> and <a href="https://www.nature.com/articles/nbt.3979" class="external-link"><em>Nature Biotechnology</em> (2017)</a>.</p>
+<p>For details on TCRdist, see <a href="https://doi.org/10.1038/nature22383" class="external-link">Dash et al., <em>Nature</em> 2017</a></p>
+</div>
+<div class="section level2">
+<h2 id="citing-tirtl-seq">Citing TIRTL-seq<a class="anchor" aria-label="anchor" href="#citing-tirtl-seq"></a>
+</h2>
+<p>Please cite the TIRTL-seq paper:</p>
+<ul>
+<li>Pogorelyy, M.V., Kirk, A.M., Adhikari, S. <em>et al.</em> TIRTL-seq: deep, quantitative and affordable paired TCR repertoire sequencing. <em>Nat Methods</em> 23, 56–64 (2026). <a href="https://doi.org/10.1038/s41592-025-02907-9" class="external-link uri">https://doi.org/10.1038/s41592-025-02907-9</a>
+</li>
+</ul>
+<p>If using the 384-well or 96-well TIRTL-seq protocol, please cite the <em>protocols.io</em> protocols:</p>
+<ul>
+<li><p>Mikhail Pogorelyy, Allison Kirk, Samir Adhikari, Balaji Sundararaman, Paul Thomas 2025. TIRTL-seq 384-well. <em>protocols.io</em> <a href="https://dx.doi.org/10.17504/protocols.io.eq2lyx37wgx9/" class="external-link uri">https://dx.doi.org/10.17504/protocols.io.eq2lyx37wgx9/</a></p></li>
+<li><p>Mikhail Pogorelyy, Allison Kirk, Samir Adhikari, Balaji Sundararaman, Paul Thomas 2025. TIRTL-seq 96-well. <em>protocols.io</em> <a href="https://dx.doi.org/10.17504/protocols.io.kqdg3k6xpv25/" class="external-link uri">https://dx.doi.org/10.17504/protocols.io.kqdg3k6xpv25/</a></p></li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

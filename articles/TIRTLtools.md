@@ -5,7 +5,9 @@
 ### Option 1: Install directly from GitHub
 
 ``` r
-# install.packages("remotes") ## Run if you need to install the 'remotes' package
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes") ## Run if you need to install the 'remotes' package
+}
 remotes::install_github("NicholasClark/TIRTLtools")
 library(TIRTLtools)
 ```

@@ -27,7 +27,7 @@ log2 fold-change cutoff supplied (default 1.5)."><meta property="og:image" conte
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,23 +44,9 @@ log2 fold-change cutoff supplied (default 1.5)."><meta property="og:image" conte
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">TCR-alpha/beta pairing for COVID-19 related TCRs</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
-    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
-    <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
-    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
-    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
   </ul></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -105,7 +91,10 @@ log2 fold-change cutoff supplied (default 1.5).</p>
 <span>  return_data <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  smooth_sem <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"window"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  window_size <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>  end_window_size <span class="op">=</span> <span class="fl">5</span></span>
+<span>  end_window_size <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  highlight_clones <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  highlight_color <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  interactive <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -166,6 +155,18 @@ other clones within a window of similar frequencies. Otherwise, no smoothing. (d
 <dt id="arg-end-window-size">end_window_size<a class="anchor" aria-label="anchor" href="#arg-end-window-size"></a></dt>
 <dd><p>the number of clones to include in a window at the ends (most and least frequent)</p></dd>
 
+
+<dt id="arg-highlight-clones">highlight_clones<a class="anchor" aria-label="anchor" href="#arg-highlight-clones"></a></dt>
+<dd><p>a vector of nucleotides of clones to highlight</p></dd>
+
+
+<dt id="arg-highlight-color">highlight_color<a class="anchor" aria-label="anchor" href="#arg-highlight-color"></a></dt>
+<dd><p>a color for highlighted clones</p></dd>
+
+
+<dt id="arg-interactive">interactive<a class="anchor" aria-label="anchor" href="#arg-interactive"></a></dt>
+<dd><p>whether to return an interactive plot (default FALSE)</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -186,13 +187,9 @@ TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cuto
 <span class="r-in"><span><span class="va">sjtrc</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>,</span></span>
 <span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>,</span></span>
 <span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/temp_build/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 beta chain pseudo-bulk files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 paired chain files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 18 files from 6 samples.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 12.7 seconds</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_sample_vs_sample</span><span class="op">(</span><span class="va">sjtrc</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp1_v2</span>, <span class="va">sjtrc</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp2_v2</span>, chain <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ignoring unknown aesthetics: <span style="color: #00BB00;">text</span></span>
 <span class="r-plt img"><img src="plot_sample_vs_sample-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

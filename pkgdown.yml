@@ -5,16 +5,10 @@ articles:
   data_loading: data_loading.html
   pairing_zenodo_data: pairing_zenodo_data.html
   plot_examples: plot_examples.html
-  scTIRTLseq_data: scTIRTLseq_data.html
-  SJTRC_identifying_covid_epitopes: SJTRC_identifying_covid_epitopes.html
-  stitchr: stitchr.html
-  structure_in_R: structure_in_R.html
   summarizing_diversity: summarizing_diversity.html
   TCRdist: TCRdist.html
   TIRTLtools: TIRTLtools.html
-  well_level_data: well_level_data.html
-  working_with_tirtlseq_data_in_R: working_with_tirtlseq_data_in_R.html
-last_built: 2026-02-23T20:16Z
+last_built: 2026-03-12T02:06Z
 urls:
   reference: https://nicholasclark.github.io/TIRTLtools/reference
   article: https://nicholasclark.github.io/TIRTLtools/articles

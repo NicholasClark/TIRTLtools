@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,23 +38,9 @@
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">TCR-alpha/beta pairing for COVID-19 related TCRs</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
-    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
-    <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
-    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
-    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
   </ul></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -412,7 +398,7 @@
           <code><a href="get_all_div_metrics.html">get_all_div_metrics()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Returns all diversity metric options for <code><a href="../reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
+        <dd>Returns all diversity metric options for <code><a href="https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
 
         <dt>
 
@@ -462,10 +448,45 @@
 
       <dl><dt>
 
+          <code><a href="choose_pair_manual.html">choose_pair_manual()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Choose a partner manually for an input chain using T-SHELL</dd>
+
+        <dt>
+
           <code><a href="get_well_subset.html">get_well_subset()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Get well names from numerical rows and columns</dd>
+
+        <dt>
+
+          <code><a href="get_wells_from_edges.html">get_wells_from_edges()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Get well names from the top left and bottom right wells</dd>
+
+        <dt>
+
+          <code><a href="load_well_counts_binary.html">load_well_counts_binary()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Load well-level data written to binary format</dd>
+
+        <dt>
+
+          <code><a href="plot_tshell.html">plot_tshell()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Calculate and plot read fraction correlation across wells (T-SHELL)</dd>
+
+        <dt>
+
+          <code><a href="write_well_data_to_binary.html">write_well_data_to_binary()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Convert individual well .tsv files to faster loading binary format</dd>
       </dl></div><div class="section level2">
       <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
 

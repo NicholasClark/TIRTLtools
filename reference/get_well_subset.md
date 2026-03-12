@@ -24,6 +24,15 @@ get_well_subset(row_range = 1:16, col_range = 1:24)
 A vector of well names covering the specified rows and columns (e.g.
 "A1", "A2", ... "P24")
 
+## See also
+
+Other well:
+[`choose_pair_manual()`](https://nicholasclark.github.io/TIRTLtools/reference/choose_pair_manual.md),
+[`get_wells_from_edges()`](https://nicholasclark.github.io/TIRTLtools/reference/get_wells_from_edges.md),
+[`load_well_counts_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/load_well_counts_binary.md),
+[`plot_tshell()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_tshell.md),
+[`write_well_data_to_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/write_well_data_to_binary.md)
+
 ## Examples
 
 ``` r

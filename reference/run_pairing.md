@@ -148,6 +148,16 @@ The function also writes three files to "folder_out":
 
 - A data frame ("\_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.
 
-## See also
+These files can be loaded using the
+[`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
+function.
 
-Other pairing: `run_pairing_longitudinal()`, `run_pairing_multiplate()`
+If write_extra_files is TRUE, the function also writes sparse matrices
+of per-well read counts (well x chain) for TCR-alpha and beta to
+"\_alpha_mat.rds" and "\_beta_mat.rds". Metadata for the chains in these
+matrices are written to "\_alpha_meta.parquet" and "\_beta_meta.parquet"
+and metadata for the wells is written to "\_well_meta.parquet".
+
+These files can be loaded using the
+[`load_well_counts_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/load_well_counts_binary.md)
+function.

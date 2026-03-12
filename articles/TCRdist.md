@@ -138,7 +138,7 @@ data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"),
 
     ## Loaded 6 files from 6 samples.
 
-    ## 0.7 seconds
+    ## 0.8 seconds
 
 ``` r
 data$meta %>%

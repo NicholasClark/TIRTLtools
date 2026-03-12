@@ -25,7 +25,7 @@ originating from the same clone."><meta property="og:image" content="https://nic
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,23 +42,9 @@ originating from the same clone."><meta property="og:image" content="https://nic
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
     <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">TCR-alpha/beta pairing for COVID-19 related TCRs</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
-    <li><a class="dropdown-item" href="../articles/structure_in_R.html">(coming soon) The structure of TIRTLseq data in R</a></li>
-    <li><a class="dropdown-item" href="../articles/working_with_tirtlseq_data_in_R.html">(coming soon) Working with TIRTLseq data in R</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Basic TIRTLseq data analysis</h6></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
-    <li><a class="dropdown-item" href="../articles/SJTRC_identifying_covid_epitopes.html">(coming soon) Identifying SARS-CoV-2 epitopes from TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Constructing full TCR nucleotide sequences</h6></li>
-    <li><a class="dropdown-item" href="../articles/stitchr.html">(coming soon) Create output for Stitchr</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Single-cell TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/scTIRTLseq_data.html">(coming soon) Working with single-cell TIRTLseq data</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Well-level TIRTLseq analysis</h6></li>
-    <li><a class="dropdown-item" href="../articles/well_level_data.html">(coming soon) Working with well-level TIRTLseq data</a></li>
   </ul></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/NicholasClark/TIRTLtools"><span class="fa fa-github fa-lg"></span> Github</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -213,12 +199,12 @@ the best pairs for each clone (default is FALSE)</p></dd>
 <p>The function also writes three files to "folder_out":</p><ul><li><p>A data frame ("<prefix>_pseudobulk_TRA.tsv") of pseudobulk counts for TCRalpha chains</prefix></p></li>
 <li><p>A data frame ("<prefix>_pseudobulk_TRB.tsv") of pseudobulk counts for TCRbeta chains</prefix></p></li>
 <li><p>A data frame ("<prefix>_TIRTLoutput.tsv") of TCR-alpha/TCR-beta pairs.</prefix></p></li>
-</ul></div>
-    <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>Other pairing:
-<code>run_pairing_longitudinal()</code>,
-<code>run_pairing_multiplate()</code></p></div>
+</ul><p>These files can be loaded using the <code><a href="load_tirtlseq.html">load_tirtlseq()</a></code> function.</p>
+<p>If write_extra_files is TRUE, the function also writes sparse matrices of per-well read
+counts (well x chain) for TCR-alpha and beta to "<prefix>_alpha_mat.rds" and "<prefix>_beta_mat.rds".
+Metadata for the chains in these matrices are written to "<prefix>_alpha_meta.parquet" and
+"<prefix>_beta_meta.parquet" and metadata for the wells is written to "<prefix>_well_meta.parquet".</prefix></prefix></prefix></prefix></prefix></p>
+<p>These files can be loaded using the <code><a href="load_well_counts_binary.html">load_well_counts_binary()</a></code> function.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
