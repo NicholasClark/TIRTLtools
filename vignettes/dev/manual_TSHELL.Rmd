@@ -1,0 +1,80 @@
+---
+title: "Manual T-SHELL for individual chains"
+output:
+  html_document:
+    df_print: paged
+---
+
+The following functions are meant to be used to investigate the pairing of 
+individual chains of interest.
+
+This could be useful for multi-paired chains,
+abundant chains that have unexpectedly failed to pair, or for chains that 
+expanded between timepoints or are of interest for other experimental reasons.
+
+It could also be useful for exploring possible alterations to the pairing algorithms
+or for generating figures for sanity checks and to show confident pairing for
+individual clones.
+
+```{r}
+pkgload::load_all("~/git/TIRTLtools")
+```
+
+First, we load already-paired data. If we look at the alpha pseudobulk, we can see here that there are many very abundant clones that were not paired.
+The most abundant un-paired alpha clone is 15.9% of the repertoire.
+
+```{r}
+## Bleakly miH expanded sample -- had issues pairing most abundant clones
+data = load_tirtlseq("~/git/Bleakley_miH/data/Bleakley_miH_project", 
+                     samples = c("Bleakley_miH_4_1_D28_HA1_exp"), verbose = F)
+data = data %>% identify_paired(verbose = F)
+
+un_paired = data$data$Bleakley_miH_4_1_D28_HA1_exp$alpha %>% 
+  filter(!is_paired) %>% 
+  select(targetSequences, readCount, readFraction, everything())
+un_paired
+```
+
+## Reading well data and writing to a convenient, fast-loading format
+
+Well-level data comes in the form of a directory of text files (.tsv) with
+read counts for TCRalpha and TCRbeta chains. Each text file has the chain and the
+well in the file name. Reading up to 384 text files is slow and can take multiple
+minutes, even when optimized, so after loading the first time, we write them
+to a more convenient, fast-loading format.
+
+This format consists of sparse matrices of read counts (wells x clones) for TCRalpha
+and TCRbeta saved as .rds, an R-specific binary format. The matrices are "dgCMatrix",
+a column-based format that allows for extremely fast extraction of any column
+(read counts for one clone across all wells).
+
+This only needs to be run once.
+```{r}
+# Note: "Bleakley_miH_4_1_D28_HA1_exp" is MVP175, UD-21, A1 to H24
+dir_in1 = "/Volumes/thomagrp/home/common/TIRTL/tirtlSeq_data/MVP175_Bleakley_miH/clones_MVP175_Bleakley_miH/TCR_clones_UD21/"
+dir_out1 = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/Bleakley_miH_4_1_D28_HA1_exp/"
+prefix1 = "Bleakley_miH_4_1_D28_HA1_exp"
+wells1 = get_well_subset(row_range = 1:8, col_range = 1:24)
+
+### run once
+# write_well_data_to_binary(
+#   folder_in = dir_in1, folder_out = dir_out1, prefix = prefix1, wells = wells1, 
+#   in_file_type = ".tsv", out_file_type = ".rds", 
+#   well_pos = 3, to_sparse_matrix = TRUE
+#   )
+```
+
+Next, we load the well-level data and run `plot_tshell()` for the most abundant un-paired clone:
+
+```{r}
+well_data = load_well_counts_binary(dir_out1, prefix1, lazy = FALSE)
+nuc_seq = un_paired$targetSequences[1] ## most abundant un-paired clone (15% of repertoire)
+res = plot_tshell(well_data, nuc_seq, chain="alpha", interactive = F, 
+                  plot_log_scale = F, n_plot = 9, loss_frac_cutoff = 0.5)
+res$plots
+```
+
+```{r}
+res$data$df_top_n
+```
+

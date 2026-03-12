@@ -1,0 +1,120 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+pkgload::load_all("~/git/TIRTLtools")
+```
+
+```{r}
+folder = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/TCR_clones_UD18_rds/"
+prefix = "MVP175"
+well_data = load_well_counts_binary(folder, prefix, lazy = T)
+nuc_seq = "TGTGTCGGGATGGATAGCAGCTATAAATTGATCTTC"
+chain = "alpha"
+n_plot = 9
+
+res = plot_tshell(well_data, nuc_seq, chain=chain, interactive = F, loss_frac_cutoff = 0.8, plot = T)
+res
+
+pick_df = choose_pair_manual(res, rank = 1)
+pick_df
+```
+
+
+```{r}
+plot_tshell_test(well_data, nuc_seq = "TGTGCTGTGAGTGACAAAAGCGACTACAAGCTCAGCTTT", chain="alpha", interactive = F)
+```
+
+
+```{r}
+df = readr::read_tsv("~/git/Bleakley_miH/data/Bleakley_miH_project/Bleakley_miH_1_2_D28_TIRTLoutput.tsv")
+
+## try with super expanded samples
+data = load_tirtlseq("~/git/Bleakley_miH/data/Bleakley_miH_project", samples = "Bleakley_miH_1_2_D28")
+data = data %>% identify_paired()
+View(data$data$Bleakley_miH_1_2_D28$alpha %>% filter(!is_paired))
+
+folder = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/TCR_clones_UD18_one_parquet/"
+prefix = "MVP175"
+tictoc::tic()
+df_alpha = arrow::read_parquet(file.path(folder, paste(prefix,"alpha.parquet",sep="_")), col_select = c("readCount", "targetSequences", "v", "j", "well", "aaSeqCDR3", "chain"))
+
+
+df_beta = arrow::read_parquet(file.path(folder, paste(prefix,"beta.parquet",sep="_")), col_select = c("readCount", "targetSequences", "v", "j", "well", "aaSeqCDR3", "chain"))
+
+ll_alpha = well_data_df_to_sparse(df_alpha, cols = get_well_subset(), transpose = T)
+ll_beta = well_data_df_to_sparse(df_beta, cols = get_well_subset(), transpose = T)
+tictoc::toc()
+
+```
+
+```{r}
+## real clone + 3 sequencing errors
+res = plot_tshell(
+  ll_alpha = ll_alpha,
+  ll_beta = ll_beta,
+  nuc_seq = "TGTGTCGGGATGGATAGCAGCTATAAATTGATCTTC",
+  chain = "alpha",
+  n_plot = 9,
+  interactive = TRUE
+  )
+res
+```
+```{r}
+## clear best one
+res = plot_tshell(
+  well_data,
+  nuc_seq = "TGTGCTGTGAGTGACAAAAGCGACTACAAGCTCAGCTTT",
+  chain = "alpha",
+  n_plot = 9)
+res
+```
+
+```{r}
+## only 3 wells, but called by T-shell
+
+res = plot_tshell(
+  ll_alpha = ll_alpha,
+  ll_beta = ll_beta,
+  nuc_seq = "TGTGCATCTCCGCCTCTTAACAAATTTTACTTT",
+  chain = "alpha",
+  n_plot = 9)
+res
+```
+
+```{r}
+df2 = df %>% filter(!duplicated(alpha_beta))
+multi = table(df2$alpha_nuc) %>% sort() %>% rev() %>% head()
+
+lapply(1:length(names(multi)), function(i) {
+  x = names(multi)[i]
+  gg = plot_tshell(
+  ll_alpha = ll_alpha,
+  ll_beta = ll_beta,
+  nuc_seq = x,
+  chain = "alpha",
+  n_plot = 9)
+  gg + ggtitle(paste(i, x))
+}) 
+```
+
+```{r}
+## unpaired example -- 95th most abundant alpha
+#idx = match("TGTGCTGTGAGAGATAGCAACTATCAGTTAATCTGG", ll_alpha$row_data$targetSequences)
+#extract_col_dense(ll_alpha$matrix, idx)
+
+res = plot_tshell(
+  ll_alpha = ll_alpha,
+  ll_beta = ll_beta,
+  nuc_seq = "TGTGTGGTGAACCAGGCAGGAACTGCTCTGATCTTT",
+  chain = "alpha",
+  n_plot = 9)
+res
+
+#View(res$cor_df2)
+```
+
+

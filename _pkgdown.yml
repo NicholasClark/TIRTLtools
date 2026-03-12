@@ -109,14 +109,15 @@ articles:
       - "plot_examples"
       - "pairing_zenodo_data"
       - "TCRdist"
+      - "summarizing_diversity"
       # - "structure_in_R"
       # - "working_with_tirtlseq_data_in_R"
 
-  - title: "Basic TIRTLseq data analysis"
-    #desc: "An introduction to the package."
-    navbar: "Basic TIRTLseq data analysis"
-    contents:
-      - "summarizing_diversity"
+  # - title: "Basic TIRTLseq data analysis"
+  #   #desc: "An introduction to the package."
+  #   navbar: "Basic TIRTLseq data analysis"
+  #   contents:
+  #     - "summarizing_diversity"
       # - "SJTRC_identifying_covid_epitopes"
 #
 #   - title: "Constructing full TCR nucleotide sequences"

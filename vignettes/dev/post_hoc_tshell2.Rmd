@@ -1,0 +1,56 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+pkgload::load_all("~/git/TIRTLtools")
+```
+
+```{r}
+#df = readr::read_tsv("~/git/Bleakley_miH/data/Bleakley_miH_project/Bleakley_miH_1_1_D80_HA1_exp_TIRTLoutput.tsv")
+
+## try with super expanded samples
+data = load_tirtlseq("~/git/Bleakley_miH/data/Bleakley_miH_project", samples = c("Bleakley_miH_4_1_D28_HA1_exp", "Bleakley_miH_4_1_D28_HA1_exp01"))
+data = data %>% identify_paired()
+
+View(data$data$Bleakley_miH_4_1_D28_HA1_exp$alpha)# %>% filter(!is_paired))
+View(data$data$Bleakley_miH_4_1_D28_HA1_exp$beta)# %>% filter(!is_paired))
+#View(data$data$Bleakley_miH_4_1_D28_HA1_exp01$alpha)# %>% filter(!is_paired))
+```
+
+```{r}
+# "Bleakley_miH_4_1_D28_HA1_exp" is MVP175, UD-21, A1 to H24
+# "Bleakley_miH_4_1_D28_HA1_exp01" is MVP175, UD-21, I1 to P24
+
+### run once
+# dir_in1 = "/Volumes/thomagrp/home/common/TIRTL/tirtlSeq_data/MVP175_Bleakley_miH/clones_MVP175_Bleakley_miH/TCR_clones_UD21/"
+# write_well_data_to_binary(folder_in = dir_in1, folder_out = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/Bleakley_miH_4_1_D28_HA1_exp/", prefix = "Bleakley_miH_4_1_D28_HA1_exp", wells = get_well_subset(row_range = 1:8, col_range = 1:24), in_file_type = ".tsv", out_file_type = ".rds", well_pos = 3, to_sparse_matrix = TRUE)
+# 
+# write_well_data_to_binary(folder_in = dir_in1, folder_out = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/Bleakley_miH_4_1_D28_HA1_exp01/", prefix = "Bleakley_miH_4_1_D28_HA1_exp01", wells = get_well_subset(row_range = 9:16, col_range = 1:24), in_file_type = ".tsv", out_file_type = ".rds", well_pos = 3, to_sparse_matrix = TRUE)
+
+
+```
+
+```{r}
+folder = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/Bleakley_miH_4_1_D28_HA1_exp/"
+prefix = "Bleakley_miH_4_1_D28_HA1_exp"
+well_data = load_well_counts_binary(folder, prefix, lazy = FALSE)
+nuc_seq = "TGTGCTGGGCAGAACGGCACTGCCAGTAAACTCACCTTT" # second most abundant alpha - 16% of repertoire -- pairs w/ second most abundant beta - r = 0.56, pval 10^-17 
+#nuc_seq = "TGTGCAGCCCCCCGCCAAACCTCCTACGACAAGGTGATATTT" # 3rd most abundant alpha - 13% of repertoire -- pairs w/ most abundant beta - r = 0.33, p-val 10^-6
+# note: both are foiled by shadow clones/sequencing errors.
+
+plot_tshell(well_data, nuc_seq, chain="alpha", interactive = T)
+```
+```{r}
+folder = "/Volumes/thomagrp/home/common/nclark52/temp/MVP175_Bleakley_miH/Bleakley_miH_4_1_D28_HA1_exp/"
+prefix = "Bleakley_miH_4_1_D28_HA1_exp"
+well_data = load_well_counts_binary(folder, prefix, lazy = TRUE)
+nuc_seq = "TGCAGTGCTAGAGAAACAGGGGTTAGAGAGCAGTACTTC" ## second most abundant  beta
+
+nuc_seq = "TGTGCCAGCAGCGCCACGGTTCTTAATGAGCAGTTCTTC" ## 3rd most abundant beta
+
+res = plot_tshell(well_data, nuc_seq, chain="beta", interactive = T)
+res
+```
+
