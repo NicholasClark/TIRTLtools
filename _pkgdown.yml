@@ -109,30 +109,30 @@ articles:
       - "plot_examples"
       - "pairing_zenodo_data"
       - "TCRdist"
-      - "structure_in_R"
-      - "working_with_tirtlseq_data_in_R"
+      # - "structure_in_R"
+      # - "working_with_tirtlseq_data_in_R"
 
   - title: "Basic TIRTLseq data analysis"
     #desc: "An introduction to the package."
     navbar: "Basic TIRTLseq data analysis"
     contents:
       - "summarizing_diversity"
-      - "SJTRC_identifying_covid_epitopes"
-
-  - title: "Constructing full TCR nucleotide sequences"
-    #desc: "For users who have mastered the basics."
-    navbar: "Constructing full TCR nucleotide sequences"
-    contents:
-      - "stitchr"
-
-  - title: "Single-cell TIRTLseq analysis"
-    #desc: "An introduction to the package."
-    navbar: "Single-cell TIRTLseq analysis"
-    contents:
-      - "scTIRTLseq_data"
-
-  - title: "Well-level TIRTLseq analysis"
-    #desc: "An introduction to the package."
-    navbar: "Well-level TIRTLseq analysis"
-    contents:
-      - "well_level_data"
+      # - "SJTRC_identifying_covid_epitopes"
+#
+#   - title: "Constructing full TCR nucleotide sequences"
+#     #desc: "For users who have mastered the basics."
+#     navbar: "Constructing full TCR nucleotide sequences"
+#     contents:
+#       - "stitchr"
+#
+#   - title: "Single-cell TIRTLseq analysis"
+#     #desc: "An introduction to the package."
+#     navbar: "Single-cell TIRTLseq analysis"
+#     contents:
+#       - "scTIRTLseq_data"
+#
+#   - title: "Well-level TIRTLseq analysis"
+#     #desc: "An introduction to the package."
+#     navbar: "Well-level TIRTLseq analysis"
+#     contents:
+#       - "well_level_data"

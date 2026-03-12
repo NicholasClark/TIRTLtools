@@ -1,5 +1,5 @@
 ---
-title: "TCR-alpha/beta pairing for COVID-19 related TCRs"
+title: "Pairing of alpha/beta TCR chains"
 output: html_document
 date: "2025-11-24"
 ---
