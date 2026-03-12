@@ -32,3 +32,19 @@
 #' params
 #'
 "params"
+
+#' Table of known TCRs from VDJ-db
+#'
+#' @format A data frame with metadata for known TCRs from VDJ-db (\link{http://vdjdb.com/})
+#'
+#' The current table contains 39,042 TCRs annotated to 30 different antigen species and 750
+#' different epitopes. The current data is from the VDJ-db 2025 Autumn release
+#' (\link{https://github.com/antigenomics/vdjdb-db/releases}). Only human TCRs are
+#' included and self-antigens were excluded due to excessive interconnection when clustering.
+#'
+#' @concept data
+#'
+#' @examples
+#' vdj_db
+#'
+"vdj_db"

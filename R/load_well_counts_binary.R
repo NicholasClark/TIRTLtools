@@ -4,7 +4,8 @@
 #' `r lifecycle::badge('experimental')`
 #'
 #' This function loads well-level data written to binary files (.parquet and .rds)
-#' by the \code{\link{write_well_data_to_binary}()} function. The data contains
+#' by the \code{\link{write_well_data_to_binary}()} function or the
+#' \code{\link{run_pairing}()} function. The data contains
 #' sparse matrices (well x clone) of read counts for TCRalpha and TCRbeta
 #' along with metadata data frames for each clone.
 #'

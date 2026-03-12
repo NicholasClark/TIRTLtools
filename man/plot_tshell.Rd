@@ -45,15 +45,19 @@ Default is FALSE because this is computationally demanding.}
 A list of output with the following elements:
 \itemize{
 \item data (list)
+\itemize{
 \item df_top_n - a data frame with results for the top N potential partner chains
 \item df_all - a data frame with results for all potential partners passing the \code{loss_frac_cutoff}
 \item input_meta - a one-row data frame with the metadata for the input chain
+}
 \item plots (list)
+\itemize{
 \item scatter - a scatter plot of read fractions for the input chain vs. the
 top N potential partner chains
 \item r_vs_p - a point plot of correlation (r) vs. -log10(raw p-value)
 \item r_vs_p_adj - a point plot of correlation (r) vs. -log10(FDR adjusted p-value)
 \item rank_vs_p_adj - a Manhattan plot of chain rank vs. -log10(FDR adjusted p-value)
+}
 \item call - a list with all arguments given to the function
 }
 }
