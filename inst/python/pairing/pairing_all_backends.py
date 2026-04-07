@@ -134,6 +134,7 @@ def madhyper_process(prefix, folder_out, bigmas, bigmbs, mdh, write_files = Fals
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
+    results_df = results_df.reset_index(drop=True) 
     if write_files:
       results_df.to_csv(os.path.join(folder_out, prefix+'_madhyperesults.csv'), index=False)
     print(f"Number of pairs: {results_df.shape[0]}")
@@ -251,6 +252,7 @@ def correlation_process(prefix, folder_out, bigmas, bigmbs, min_wells=2, filter_
 
 #make pandas dataframe from each element of results and concatenate them
     results_df = pd.concat([pd.DataFrame(result) for result in results])
+    results_df = results_df.reset_index(drop=True) 
     if write_files:
       results_df.to_csv(os.path.join(folder_out, prefix+'_corresults.csv'), index=False)
     return(results_df)
