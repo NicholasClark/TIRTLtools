@@ -1,0 +1,56 @@
+---
+title: "Single-cell TIRTLseq functions"
+output:
+  html_document:
+    df_print: paged
+---
+
+So far I've written the following functions for single-cell TIRTLseq data:
+
+- **clean_scTIRTLseq** (in the "R/dev" folder in TIRTLtools - https://github.com/NicholasClark/TIRTLtools/tree/main/R/dev) - attempts to "clean" the data by imputing missing alpha and beta chains. When there are two alpha chains for a clone that is in many wells, it also attempts to switch them all to the same order (i.e. same alpha as primary, same alpha as secondary).
+- **summarize_scTIRTLseq** (in the "R/dev" folder in TIRTLtools - https://github.com/NicholasClark/TIRTLtools/tree/main/R/dev) - prints the number of wells of data, percentage of wells with both chains, percentage of wells missing an alpha/beta, and percentage of with a second alpha chain
+- **tabulate_scTIRTLseq** (written below) - tabulates the clones, calculating the number of wells that each clone is found in and its total percentage of the repertoire.
+
+```{r message=FALSE}
+library(readr)
+library(dplyr)
+library(TIRTLtools)
+source("../R/dev/clean_scTIRTLseq.R")
+source("../R/dev/summarize_scTIRTLseq.R")
+```
+Load a single-cell TIRTLseq data from a tsv file:
+```{r}
+df = read_tsv("~/Downloads/from_Misha/norovirus_one_cell_well.tsv")
+df
+```
+
+The "summarize" function lists the number of wells of data, the percentage of wells with both chains, percentage missing an alpha/beta chain, and percentage with a second alpha chain.
+
+```{r}
+summarize_scTIRTLseq(df)
+```
+
+The "cleaning" function attempts to impute missing alpha or beta chains if some of the wells contain both. For clones with two alpha chains, it also attempts to impute in instances where one is missing and standardize the order of the two alphas in cases where the order is switched between different wells.
+
+The function prints a summary of the data before and after imputation and returns a "list" containing the original data frame and the new "cleaned/imputed" data frame.
+
+```{r}
+clean_list = clean_scTIRTLseq(df)
+clean_list$df_new
+```
+```{r message=FALSE}
+tabulate_scTIRTLseq = function(df, columns = c("aaSeqCDR3u_beta", "bestV_beta", "bestJ_beta", "aaSeqCDR3u_alpha", "bestV_alpha", "bestJ_alpha", "aaSeqCDR3u_alpha_second", "bestV_alpha_second", "bestJ_alpha_second")) {
+  check = sum(!columns %in% colnames(df))
+  if(check != 0) stop("All of the input columns must match columns of the data frame")
+  summ_df = df %>% 
+    group_by(!!!syms(columns)) %>% 
+    summarize(n = n()) %>%
+    ungroup() %>%
+    arrange(desc(n)) %>%
+    mutate(fraction = n/sum(n)) %>%
+    select(n, fraction, everything())
+  return(summ_df)
+}
+
+tabulate_scTIRTLseq(df)
+```
