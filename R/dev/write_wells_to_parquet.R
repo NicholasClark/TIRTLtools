@@ -9,7 +9,7 @@ write_wells_to_parquet = function(folder_in, folder_out, nproc = data.table::get
     file = files_tsv[i]
     tmp = data.table::fread(file)
     file_out_base = gsub("\\.tsv$",".parquet", basename(file))
-    arrow::write_parquet(tmp, sink = file.path(folder_out, file_out_base))
+    nanoparquet::write_parquet(tmp, file.path(folder_out, file_out_base))
     return(NULL)
   }, mc.cores = nproc)
 

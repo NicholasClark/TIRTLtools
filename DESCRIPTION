@@ -1,7 +1,7 @@
 Package: TIRTLtools
 Type: Package
 Title: Analysis Tools for TIRTLseq Data
-Version: 0.1.16
+Version: 0.1.17
 Authors@R: c(
     person(
       "Nicholas", "Clark",
@@ -24,14 +24,17 @@ Imports:
     BiocManager,
     data.table,
     DBI,
+    dbplyr,
     dplyr,
     dtplyr,
     duckdb,
+    duckplyr,
     ggh4x,
     glue,
     lifecycle,
     magrittr,
     Matrix (>= 1.7.3),
+    nanoparquet,
     pkgload,
     plotly,
     R.utils,
@@ -57,7 +60,6 @@ Roxygen: list(markdown = TRUE)
 Suggests: 
     Biostrings,
     ComplexHeatmap,
-    dbplyr,
     DelayedDataFrame,
     dendsort,
     DFplyr,

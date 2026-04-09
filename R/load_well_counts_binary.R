@@ -49,11 +49,11 @@ load_well_counts_binary = function(folder, prefix, lazy = TRUE) {
   if(lazy) {
     alpha_row = lazy_load_parquet(alpha_row_file)
     beta_row = lazy_load_parquet(beta_row_file)
-    cols = arrow::read_parquet(col_file)
+    cols = nanoparquet::read_parquet(col_file)
   } else {
-    alpha_row = arrow::read_parquet(alpha_row_file)
-    beta_row = arrow::read_parquet(beta_row_file)
-    cols = arrow::read_parquet(col_file)
+    alpha_row = nanoparquet::read_parquet(alpha_row_file)
+    beta_row = nanoparquet::read_parquet(beta_row_file)
+    cols = nanoparquet::read_parquet(col_file)
   }
 
   out_list = list(alpha = alpha_mat, beta = beta_mat,

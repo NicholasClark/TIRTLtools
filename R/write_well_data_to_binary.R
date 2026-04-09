@@ -102,20 +102,20 @@ write_well_data_to_binary = function(
       saveRDS(ll_alpha$matrix, file = file.path(folder_out, paste(prefix,"alpha_mat.rds",sep="_")))
       saveRDS(ll_beta$matrix, file = file.path(folder_out, paste(prefix,"beta_mat.rds",sep="_")))
     }
-    arrow::write_parquet(
+    nanoparquet::write_parquet(
       ll_alpha$row_data,
       file.path(folder_out, paste(prefix,"alpha_meta.parquet",sep="_")))
-    arrow::write_parquet(
+    nanoparquet::write_parquet(
       ll_beta$row_data,
       file.path(folder_out, paste(prefix,"beta_meta.parquet",sep="_")))
-    arrow::write_parquet(
+    nanoparquet::write_parquet(
       ll_beta$col_data,
       file.path(folder_out, paste(prefix,"well_meta.parquet",sep="_")))
   } else {
-    arrow::write_parquet(
+    nanoparquet::write_parquet(
       df_alpha,
       file.path(folder_out, paste(prefix,"alpha.parquet",sep="_")))
-    arrow::write_parquet(
+    nanoparquet::write_parquet(
       df_beta,
       file.path(folder_out, paste(prefix,"beta.parquet",sep="_")))
   }

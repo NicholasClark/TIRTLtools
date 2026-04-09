@@ -163,9 +163,9 @@ load_wells_counts_h5 = function(prefix, folder) {
   alpha_mat = HDF5Array::TENxMatrix(alpha_mat_file, group = "matrix") %>% t() %>% as("dgCMatrix")
   beta_mat = HDF5Array::TENxMatrix(beta_mat_file, group = "matrix") %>% t() %>% as("dgCMatrix")
 
-  alpha_row = arrow::read_parquet(alpha_row_file)
-  beta_row = arrow::read_parquet(beta_row_file)
-  cols = arrow::read_parquet(col_file)
+  alpha_row = nanoparquet::read_parquet(alpha_row_file)
+  beta_row = nanoparquet::read_parquet(beta_row_file)
+  cols = nanoparquet::read_parquet(col_file)
 
   out_list = list(alpha = alpha_mat, beta = beta_mat, rows_alpha = alpha_row, rows_beta = beta_row, cols = cols)
   return(out_list)

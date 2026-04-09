@@ -55,7 +55,7 @@ load_well_data_to_df_single = function(
         mutate(chain = chain_tmp, well = well_tmp, file_short = file_short_tmp) %>%
         mutate(well_chain = paste(well, chain))
     } else if(file_type == ".parquet") {
-      df_tmp = arrow::read_parquet(file_full_tmp) %>%
+      df_tmp = nanoparquet::read_parquet(file_full_tmp) %>%
         mutate(chain = chain_tmp, well = well_tmp, file_short = file_short_tmp) %>%
         mutate(well_chain = paste(well, chain))
       if(!is.null(columns)) df_tmp = df_tmp[,columns, drop = FALSE]
@@ -77,7 +77,7 @@ load_well_data_to_df_single = function(
   #       mutate(chain = chain_tmp, well = well_tmp, file_short = file_short_tmp) %>%
   #       mutate(well_chain = paste(well, chain))
   #   } else if(file_type == ".parquet") {
-  #     df_tmp = arrow::read_parquet(file_full_tmp) %>%
+  #     df_tmp = nanoparquet::read_parquet(file_full_tmp) %>%
   #       mutate(chain = chain_tmp, well = well_tmp, file_short = file_short_tmp) %>%
   #       mutate(well_chain = paste(well, chain))
   #     if(!is.null(columns)) df_tmp = df_tmp[,columns, drop = FALSE]

@@ -48,11 +48,11 @@ save_TIRTL_meta = function(se_list, prefix, chains = c("alpha", "beta", "paired"
   sample_meta = colData(se_list[[1]])
   if(type == "parquet") {
     #saveRDS(sample_meta, file = paste(prefix,"_col_meta.rds",sep=""))
-    write_parquet(sample_meta %>% as_tibble(), sink = paste(prefix,"_col_meta.parquet",sep=""))
+    nanoparquet::write_parquet(sample_meta %>% as_tibble(), paste(prefix,"_col_meta.parquet",sep=""))
     for(chain in chains) {
       message(paste("Saving ", chain, " metadata...", sep = ""))
       tcr_meta = rowData(se_list[[chain]]) %>% as_tibble()
-      write_parquet(tcr_meta, sink = paste(prefix, "_", chain, "_row_meta.parquet", sep = ""))
+      nanoparquet::write_parquet(tcr_meta, paste(prefix, "_", chain, "_row_meta.parquet", sep = ""))
     }
   } else {
     cols = colnames(sample_meta)
@@ -213,12 +213,12 @@ read_meta_parquet = function(prefix, cols = "row_id") {
   ll = lapply(1:length(files), function(i) {
     message(paste("Loading ", list_names[i], "...", sep = ""))
     if(list_names[i] %in% c("alpha", "beta")) {
-      df = arrow::read_parquet(files[i], col_select = cols)
+      df = nanoparquet::read_parquet(files[i], col_select = cols)
       #df = DataFrame(df)
       #df$targetSequences = DNAStringSet(df$targetSequences)
       #df$aaSeqCDR3 = BStringSet(df$aaSeqCDR3)
     } else {
-      df = arrow::read_parquet(files[i])
+      df = nanoparquet::read_parquet(files[i])
     }
   }) %>% set_names(list_names)
   names(files) = list_names
