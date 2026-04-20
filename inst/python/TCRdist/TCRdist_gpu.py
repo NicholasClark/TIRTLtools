@@ -101,14 +101,6 @@ def TCRdist_inner(tcr1, tcr2, submat, tcrdist_cutoff=90,
 def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_size=1000, chunk_size_col = None, print_chunk_size=10, print_res = True, only_lower_tri = True, write_to_tsv=False, output_folder = ".", return_data = True):
     #chunk_size = np.int64(chunk_size)
     #print_chunk_size = np.int64(print_chunk_size)
-    if write_to_tsv:
-        os.makedirs(output_folder, exist_ok=True)
-        output_file_edges = os.path.join(output_folder, 'TCRdist_df.tsv')
-        output_file_tcr1 = os.path.join(output_folder, 'tcr1.tsv')
-        if tcr2 is not None:
-            output_file_tcr2 = os.path.join(output_folder, 'tcr2.tsv')
-            tcr2.to_csv(output_file_tcr2, sep='\t', header=True, index=False)
-        tcr1.to_csv(output_file_tcr1, sep='\t', header=True, index=False)
     compare_to_self = False
     submat = mx.array(submat, dtype = mx.uint8)
     params_vec = dict(zip(params_df["feature"], params_df["value"]))
@@ -122,6 +114,14 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
         tcr2 = tcr2.copy()
         tcr2_mx = process_TCRs(tcr2, params_vec=params_vec)
         tcr2['tcr_index'] = range(len(tcr2))
+    if write_to_tsv:
+        os.makedirs(output_folder, exist_ok=True)
+        output_file_edges = os.path.join(output_folder, 'TCRdist_df.tsv')
+        output_file_tcr1 = os.path.join(output_folder, 'tcr1.tsv')
+        tcr1.to_csv(output_file_tcr1, sep='\t', header=True, index=False)
+        if tcr2 is not None:
+            output_file_tcr2 = os.path.join(output_folder, 'tcr2.tsv')
+            tcr2.to_csv(output_file_tcr2, sep='\t', header=True, index=False)
     n1 = tcr1_mx.shape[0]
     n2 = tcr2_mx.shape[0]
     num_chunks1 = np.int64(np.ceil(n1//chunk_size))
