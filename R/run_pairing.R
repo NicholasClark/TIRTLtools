@@ -85,29 +85,99 @@ run_pairing = function(
 
   .create_folder(folder_out)
 
-  files = list.files(path = folder_path,full.names = F)
-  files_no_dot = gsub(".","_",files,fixed=T)
-  file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
-  files_bool = file_wells %in% wellset1
-  msg = paste("Reading", sum(files_bool), "files from", folder_path)
-  if(verbose) message(msg)
-  files_load = file.path(folder_path, files[files_bool])
-  mlist<-lapply(1:length(files_load),function(i){
-    if(verbose) if(i %% 25 == 0 | i == length(files_load)) message(paste(i, "of", length(files_load), "files loaded"))
-    fread(files_load[i])
-  })
-  names(mlist) = files_no_dot[files_bool]
-
-  mlista<-geta(mlist)
-  mlistb<-getb(mlist)
-  if(verbose) {
-    n_filesA = length(mlista)
-    n_filesB = length(mlistb)
-    msgA = paste(n_filesA, "TCRalpha well files loaded")
-    msgB = paste(n_filesB, "TCRbeta well files loaded")
-    message(msgA)
-    message(msgB)
+  df_alpha = tibble(file_alpha = list.files(path = folder_path,full.names = F, pattern = ".*_TRA\\.tsv")) %>%
+    mutate(file_alpha_no_dot = gsub(".","_",file_alpha,fixed=T),
+           well = strsplit(file_alpha_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
+           well_row = substr(well, 0, 1),
+           well_column = substr(well,2,3) %>% as.integer(),
+           in_wellset = well %in% wellset1) %>%
+    filter(in_wellset) %>%
+    arrange(well_row, well_column) %>%
+    select(-well_row, -well_column, -in_wellset)
+  df_beta = tibble(file_beta = list.files(path = folder_path,full.names = F, pattern = ".*_TRB\\.tsv")) %>%
+    mutate(file_beta_no_dot = gsub(".","_",file_beta,fixed=T),
+           well = strsplit(file_beta_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
+           well_row = substr(well, 0, 1),
+           well_column = substr(well,2,3) %>% as.integer(),
+           in_wellset = well %in% wellset1)  %>%
+    filter(in_wellset) %>%
+    arrange(well_row, well_column) %>%
+    select(-well_row, -well_column, -in_wellset)
+  missing_alpha_wells = df_alpha$well[!wellset1 %in% df_alpha$well]
+  missing_beta_wells = df_beta$well[!wellset1 %in% df_beta$well]
+  n_files_alpha = nrow(df_alpha)
+  n_files_beta = nrow(df_beta)
+  if(length(missing_alpha_wells) > 0) {
+    msg = paste(length(missing_alpha_wells), "wells missing .tsv file (TCRalpha):", paste0(missing_alpha_wells, collapse = ", "))
+    if(verbose) message(msg)
   }
+  if(length(missing_beta_wells) > 0) {
+    msg = paste(length(missing_beta_wells), "wells missing .tsv file (TCRbeta):", paste0(missing_beta_wells, collapse = ", "))
+    if(verbose) message(msg)
+  }
+  df_meta = full_join(df_alpha, df_beta, by = "well")
+  wells_missing = wellset1[!wellset1 %in% df_meta$well]
+  df_meta = df_meta %>%
+    bind_rows(tibble(well = wells_missing)) %>%
+    mutate(well_row = substr(well, 0, 1), well_column = substr(well,2,3) %>% as.integer()) %>%
+    arrange(well_row, well_column)
+  # missing_wells_final = wellset1[!wellset1 %in% df_meta$well]
+  # if(length(missing_wells_final) > 0) {
+  #   msg = paste(length(missing_wells_final), "wells excluded for missing .tsv files:", paste0(missing_wells_final, collapse = ", "))
+  #   if(verbose) message(msg)
+  # }
+
+  # files = list.files(path = folder_path,full.names = F)
+  # files_no_dot = gsub(".","_",files,fixed=T)
+  # file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
+  # files_bool = file_wells %in% wellset1
+  # msg = paste("Reading", sum(files_bool), "files from", folder_path)
+  # if(verbose) message(msg)
+  # files_load = file.path(folder_path, files[files_bool])
+
+  if(verbose) message(paste("Loading clone files (TCRalpha) for", n_files_alpha, "wells...", collapse=" "))
+  n_files_loaded_alpha = 0
+  mlista = lapply(1:nrow(df_meta),function(i){
+    ff = df_meta$file_alpha[i]
+    if(!is.na(ff)) {
+      tmp = fread(file.path(folder_path, ff))
+      n_files_loaded_alpha <<- n_files_loaded_alpha + 1
+      if(verbose) if(n_files_loaded_alpha %% 25 == 0 | n_files_loaded_alpha == n_files_alpha) message(paste(n_files_loaded_alpha, "of", n_files_alpha, "files loaded"))
+    } else {
+      tmp = tibble()
+    }
+    return(tmp)
+  }) %>% set_names(df_meta$well)
+  if(verbose) message(paste("Loading clone files (TCRbeta) for", n_files_beta, "wells...", collapse=" "))
+  n_files_loaded_beta = 0
+  mlistb = lapply(1:nrow(df_meta),function(i){
+    ff = df_meta$file_beta[i]
+    if(!is.na(ff)) {
+      tmp = fread(file.path(folder_path, ff))
+      n_files_loaded_beta <<- n_files_loaded_beta + 1
+      if(verbose) if(n_files_loaded_beta %% 25 == 0 | n_files_loaded_beta == n_files_beta) message(paste(n_files_loaded_beta, "of", n_files_beta, "files loaded"))
+    } else {
+      tmp = tibble()
+    }
+    return(tmp)
+  }) %>% set_names(df_meta$well)
+
+  # mlist<-lapply(1:length(files_load),function(i){
+  #   if(verbose) if(i %% 25 == 0 | i == length(files_load)) message(paste(i, "of", length(files_load), "files loaded"))
+  #   fread(files_load[i])
+  # })
+  # names(mlist) = files_no_dot[files_bool]
+
+  # mlista<-geta(mlist)
+  # mlistb<-getb(mlist)
+  # if(verbose) {
+  #   n_filesA = length(mlista)
+  #   n_filesB = length(mlistb)
+  #   msgA = paste(n_filesA, "TCRalpha well files loaded")
+  #   msgB = paste(n_filesB, "TCRbeta well files loaded")
+  #   message(msgA)
+  #   message(msgB)
+  # }
   tmpa = bind_rows(mlista)
   tmpb = bind_rows(mlistb)
   n_counts_char_alpha = sum(tmpa$readCount) %>% scales::scientific()
@@ -123,10 +193,11 @@ run_pairing = function(
   if(verbose) message(msg1)
   if(verbose) message(msg2)
 
-  clone_thres = round(well_filter_thres * mean(sapply(mlista,nrow)))
-  rm(mlist)
+  alpha_nrow = sapply(mlista,nrow)
+  clone_thres = round(well_filter_thres * mean(alpha_nrow[alpha_nrow != 0]))
+  #rm(mlist)
 
-  qc<-get_good_wells_sub(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
+  qc<-get_good_wells_new(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
   if(verbose) {
     msg1 = paste("Clone threshold for QC:", clone_thres)
     message(msg1)
@@ -140,20 +211,20 @@ run_pairing = function(
     message(msg5)
   }
 
-  wells_a = sapply(strsplit(names(mlista), "_"), function(x) x[[well_pos]])
-  wells_b = sapply(strsplit(names(mlistb), "_"), function(x) x[[well_pos]])
+  #wells_a = sapply(strsplit(names(mlista), "_"), function(x) x[[well_pos]])
+  #wells_b = sapply(strsplit(names(mlistb), "_"), function(x) x[[well_pos]])
   if(write_extra_files) {
     stats_a = tibble(
-      a_names=names(mlista),
-      well = wells_a,
-      a_sum_counts=sapply(mlista,function(x)x[,sum(readCount),]),
+      a_names=df_meta$file_alpha,
+      well = df_meta$well,
+      a_sum_counts=sapply(mlista,function(x) { if(nrow(x) > 0) { return(x[,sum(readCount),]) } else { return(0) } }),
       a_rows=sapply(mlista,nrow),
       qc_pass_a=qc$a
     )
     stats_b = tibble(
-      b_names=names(mlistb),
-      well = wells_b,
-      b_sum_counts=sapply(mlistb,function(x)x[,sum(readCount),]),
+      b_names=df_meta$file_beta,
+      well = df_meta$well,
+      b_sum_counts=sapply(mlistb,function(x) { if(nrow(x) > 0) { return(x[,sum(readCount),]) } else { return(0) } }),
       b_rows=sapply(mlistb,nrow),
       qc_pass_b=qc$b
     )
@@ -168,17 +239,17 @@ run_pairing = function(
     fwrite(plate_stats,file.path(folder_out, paste0(prefix,"_plate_stats.tsv")),sep="\t")
   }
 
-  names(mlista) = wells_a
-  names(mlistb) = wells_b
+  # names(mlista) = df_meta$well
+  # names(mlistb) = df_meta$well
   #result<-do_analysis_madhyper_r_optim_both(mlista[qc$a],mlistb[qc$b],n_cells = clone_thres)
   mlista<-mlista[qc$a]#downsize to qc
   mlistb<-mlistb[qc$b]#downsize to qc
 
   ## reorder wells
-  all_wells = get_well_subset(1:16,1:24)
-  sub_wells = all_wells[all_wells %in% wells_a]
-  mlista = mlista[sub_wells]
-  mlistb = mlistb[sub_wells]
+  # all_wells = get_well_subset(1:16,1:24)
+  # sub_wells = all_wells[all_wells %in% qc$well_ids]
+  # mlista = mlista[sub_wells]
+  # mlistb = mlistb[sub_wells]
 
   if(exclude_nonfunctional) {
     message("Excluding chains with stop codons or frameshifts...")
@@ -218,11 +289,11 @@ run_pairing = function(
   if(verbose) message("Pseudobulk done")
 
   if(verbose) message("Merging alpha clonesets...")
-  bigma<-big_merge_freqs2(mlista,min_reads = min_reads)
+  bigma<-big_merge_freqs2(mlista, min_reads = min_reads)
   if(verbose) message(paste("Done! Unique alpha clones after filtering:", nrow(bigma)))
   bigmas<-bigma[rowSums(bigma>0)>min_wells,]
   if(verbose) message(paste0("Unique alpha clones in more than ",min_wells," wells: ", nrow(bigmas)))
-  bigmb<-big_merge_freqs2(mlistb,min_reads = min_reads)
+  bigmb<-big_merge_freqs2(mlistb, min_reads = min_reads)
   if(verbose) message(paste("Done! Unique beta clones after filtering:", nrow(bigmb)))
   bigmbs<-bigmb[rowSums(bigmb>0)>min_wells,]
   if(verbose) message(paste0("Unique beta clones and wells in more than ",min_wells," wells: ", nrow(bigmbs)))
