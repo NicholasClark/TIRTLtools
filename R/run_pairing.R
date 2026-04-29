@@ -103,8 +103,8 @@ run_pairing = function(
     filter(in_wellset) %>%
     arrange(well_row, well_column) %>%
     select(-well_row, -well_column, -in_wellset)
-  missing_alpha_wells = df_alpha$well[!wellset1 %in% df_alpha$well]
-  missing_beta_wells = df_beta$well[!wellset1 %in% df_beta$well]
+  missing_alpha_wells = wellset1[!wellset1 %in% df_alpha$well]
+  missing_beta_wells = wellset1[!wellset1 %in% df_beta$well]
   n_files_alpha = nrow(df_alpha)
   n_files_beta = nrow(df_beta)
   if(length(missing_alpha_wells) > 0) {
