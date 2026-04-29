@@ -48,7 +48,7 @@ The T-cell receptor (TCR), which allows for adaptive immune response, is made up
 [TIRTL-seq](https://doi.org/10.1101/2024.09.16.613345) is a novel assay (published Nov. 2025) that can rapidly and economically sequence single-chain TCRs from **millions of human T-cells** and produce **paired TCR-sequencing** information for tens of thousands of T cell clones per sample at a **fraction of the cost of single-cell sequencing**.
 Cells are split across wells in [384-well](https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/) or [96-well](https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/) plates with between 2,500 and 25,000 cells per well and alpha/beta TCR chains are sequenced simultaneously in each well. Computational algorithms based on chain co-occurrence and correlation of chain frequency are used to identify alpha/beta chain pairs that derive from the same T-cell clone.
 
-We developed a **new algorithm (T-SHELL)** allows for **effective pairing of the most abundant clones**, which had frustrated previous algorithms. Along with paired TCR information, single-chain read frequency can be used to identify expanded clones in one sample as well as to track clone expansions and contractions longitudinally across samples.
+We developed a **new algorithm (T-SHELL)** that allows for **effective pairing of the most abundant clones**, which had frustrated previous algorithms. Along with paired TCR information, single-chain read frequency can be used to identify expanded clones in one sample as well as to track clone expansions and contractions longitudinally across samples.
 
 ## TIRTL-seq assay protocols
 
