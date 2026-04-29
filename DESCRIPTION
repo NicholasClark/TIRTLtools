@@ -1,7 +1,7 @@
 Package: TIRTLtools
 Type: Package
 Title: Analysis Tools for TIRTLseq Data
-Version: 0.1.19
+Version: 0.1.20
 Authors@R: c(
     person(
       "Nicholas", "Clark",
@@ -30,6 +30,7 @@ Imports:
     duckdb,
     duckplyr,
     ggh4x,
+    ggplate,
     glue,
     lifecycle,
     magrittr,

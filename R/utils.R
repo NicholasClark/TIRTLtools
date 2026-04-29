@@ -184,8 +184,9 @@
   return(df)
 }
 
-.get_well_from_name = function(str_vec, well_pos) {
-  sapply(strsplit(str_vec, split = "_"), function(x) x[[well_pos]])
+.get_well_from_filename = function(str_vec, well_pos=3) {
+  str_vec2 = gsub(".", "_", basename(str_vec), fixed = TRUE)
+  sapply(strsplit(str_vec2, split = "_"), function(x) x[[well_pos]])
 }
 
 .create_folder = function(folder_out, verbose = TRUE) {

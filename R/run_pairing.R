@@ -87,7 +87,8 @@ run_pairing = function(
 
   df_alpha = tibble(file_alpha = list.files(path = folder_path,full.names = F, pattern = ".*_TRA\\.tsv")) %>%
     mutate(file_alpha_no_dot = gsub(".","_",file_alpha,fixed=T),
-           well = strsplit(file_alpha_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
+           #well = strsplit(file_alpha_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
+           well = .get_well_from_filename(file_alpha_no_dot),
            well_row = substr(well, 0, 1),
            well_column = substr(well,2,3) %>% as.integer(),
            in_wellset = well %in% wellset1) %>%
@@ -96,7 +97,8 @@ run_pairing = function(
     select(-well_row, -well_column, -in_wellset)
   df_beta = tibble(file_beta = list.files(path = folder_path,full.names = F, pattern = ".*_TRB\\.tsv")) %>%
     mutate(file_beta_no_dot = gsub(".","_",file_beta,fixed=T),
-           well = strsplit(file_beta_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
+           #well = strsplit(file_beta_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
+           well = .get_well_from_filename(file_beta_no_dot),
            well_row = substr(well, 0, 1),
            well_column = substr(well,2,3) %>% as.integer(),
            in_wellset = well %in% wellset1)  %>%
@@ -469,24 +471,31 @@ run_pairing = function(
   df = df %>%
     mutate(is_functional = (!grepl("\\*", cdr3a)) & (!grepl("_", cdr3a)) & (!grepl("\\*", cdr3b)) & (!grepl("_", cdr3b)) )
 
-  ### make final pairs data frame after sorting by score (or p-value for t-shell)
+  ### make final pairs data frame after sorting initial pairs by score (or p-value for t-shell)
+  #' input: df is a data frame with pairs, sorted by p-value (t-shell) or score (mad-hype)
+  #' with the most significant/high-scoring pairs at the top
   .build_pairs_df = function(df) {
+    ## initialize an empty dataframe for final pairs
     pairs = df[c(),]
+    ## iterate through all initial pairs, starting with most significant
     for(i in 1:nrow(df)) {
-      #print(i)
-      alpha_tmp = df$alpha_nuc[i]
-      beta_tmp = df$beta_nuc[i]
-      n_beta_paired = sum(pairs$beta_nuc %in% beta_tmp)
-      n_alpha_paired = sum(pairs$alpha_nuc %in% alpha_tmp)
+      ## for each initial pair:
+        ## count how many times the alpha and beta chain appears in the final pairs data frame
+      alpha_tmp = df$alpha_nuc[i] ## current alpha
+      beta_tmp = df$beta_nuc[i] ## current beta
+      n_beta_paired = sum(pairs$beta_nuc %in% beta_tmp) ## current beta count in final pairs data frame
+      n_alpha_paired = sum(pairs$alpha_nuc %in% alpha_tmp) ## current alpha count in final pairs data frame
+      ## if alpha is not in final pairs and beta is in final pairs at most once, add pair to final pairs!
       if(n_beta_paired <= 1 && n_alpha_paired == 0) {
         tmp = df[i,]
         pairs = bind_rows(pairs, tmp)
       } ## else discard row
     }
-    pairs = pairs %>% select(-is_functional)
+    pairs = pairs %>% select(-is_functional) ## remove "is_functional" column
     return(pairs)
   }
-
+  #' sort initial pairs data frames by score (madhype) and p-value (t-shell)
+  #' with most significant chains at the top. sort all functional chains higher than all non-functional.
   df_mdh = df %>% filter(method == "madhype") %>%
     arrange(desc(is_functional), desc(score))
   df_tshell = df %>% filter(method == "tshell") %>%
