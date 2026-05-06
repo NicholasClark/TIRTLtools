@@ -227,9 +227,9 @@ load_tirtlseq = function(
   data_final = lapply(ll, function(x) x$data) %>% do.call(c, .)
   #tictoc::toc()
   end = Sys.time()
-  time = end-start
-  n_secs = as.vector(time) %>% round(1)
-  if(verbose) message(paste(n_secs, "seconds"))
+  duration = end-start
+  #n_secs = as.vector(time) %>% round(2)
+  if(verbose) message(paste(round(duration[[1]], 2), units(duration)))
   out = list(data = data_final, meta = meta_final)
   class(out) = "TIRTLseqDataSet"
   return(out)
