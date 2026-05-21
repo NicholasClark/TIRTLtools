@@ -1,6 +1,12 @@
 ## multi -- if FALSE, only take one beta and best two alpha, else take all pairs
 ## separate_rows -- if TRUE, report each pair on a separate row, instead of extra columns for second alpha
-read_external = function(path, format = c("auto","10X", "ParseBio"), multi = TRUE, separate_rows = TRUE, verbose = TRUE) {
+read_external = function(
+    path,
+    format = c("auto","10X", "ParseBio"),
+    id_cols = make_tcr_schema(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_alpha = FALSE),
+    multi = FALSE,
+    separate_rows = TRUE,
+    verbose = TRUE) {
   format = format[1]
   df_orig = fread(path)
   if(format == "auto") format = infer_format(df_orig)
@@ -33,11 +39,12 @@ read_external = function(path, format = c("auto","10X", "ParseBio"), multi = TRU
     select(-alpha_id) %>%
     ungroup()
 
-  df_alpha_multi = df_alpha_all %>%
-    filter(alpha_id > 2) %>% ## second alpha chain
-    dplyr::rename(cdr3a2 = cdr3_aa, cdr3a2_nt = cdr3_nt, va2 = v_gene, ja2 = j_gene, reads_alpha2 = reads, umis_alpha2 = umis) %>%
-    select(-alpha_id) %>%
-    ungroup()
+  # df_alpha_multi = df_alpha_all %>%
+  #   filter(alpha_id > 2) %>% ## second alpha chain
+  #   dplyr::rename(cdr3a2 = cdr3_aa, cdr3a2_nt = cdr3_nt, va2 = v_gene, ja2 = j_gene, reads_alpha2 = reads, umis_alpha2 = umis) %>%
+  #   select(-alpha_id) %>%
+  #   ungroup()
+
   ## make df with top beta for each cell barcode (most umis)
   df_beta_all = df %>%
     filter(chain == "TRB") %>%
@@ -91,29 +98,36 @@ read_external = function(path, format = c("auto","10X", "ParseBio"), multi = TRU
 
   df_all1 = df_all1 %>%
     mutate(has_beta = !is.na(cdr3b_nt), has_alpha = !is.na(cdr3a_nt)) %>%
-    mutate(has_alpha_and_beta = has_alpha & has_beta)
+    mutate(has_alpha_and_beta = has_alpha & has_beta) %>%
+    dplyr::rename(alpha_nuc = cdr3a_nt, beta_nuc = cdr3b_nt) %>%
+    mutate(receptor_id = paste(!!!syms(id_cols), sep = "_")) %>%
+    add_count(receptor_id, name = "n_receptor") %>%
+    arrange(desc(n_receptor), receptor_id, desc(umis_beta), desc(reads_beta), desc(umis_alpha), desc(reads_alpha))
+
+  if(!separate_rows) df_all1 = df_all1 %>% dplyr::rename(alpha2_nuc = cdr3a2_nt)
+
   df_all2 = df_all1 %>% filter(has_alpha_and_beta)
 
-  id_cols = c("va", "ja", "cdr3a", "cdr3b", "vb", "jb", "cdr3a_nt", "cdr3b_nt")
-  if(!separate_rows) id_cols = c("va", "ja", "cdr3a", "cdr3b", "vb", "jb", "va2", "ja2", "cdr3a2", "cdr3a_nt", "cdr3b_nt", "cdr3a2_nt")
+  # id_cols = c("va", "ja", "cdr3a", "cdr3b", "vb", "jb", "alpha_nuc", "beta_nuc")
+  # if(!separate_rows) id_cols = c("va", "ja", "cdr3a", "cdr3b", "vb", "jb", "va2", "ja2", "cdr3a2", "alpha_nuc", "beta_nuc", "alpha2_nuc")
 
   ## df_all1 is all pairs of receptors in all cells
   ## df_summ is a cell count for unique pairs of receptors as defined by "id_cols"
   df_summ = df_all1 %>%
     #mutate(alpha_beta = paste(cdr3a_nt, cdr3b_nt, sep = "_")) %>%
-    mutate(receptor_id = paste(!!!syms(id_cols), sep = "_")) %>%
     #add_count(barcode, name = "n_in_barcode") %>%
     summarize(n_cells = sum(1/n_in_barcode),
               total_umis_alpha = sum(umis_alpha, na.rm = TRUE), total_reads_alpha = sum(reads_alpha, na.rm = TRUE),
               total_umis_beta = sum(umis_beta, na.rm = TRUE), total_reads_beta = sum(reads_beta, na.rm = TRUE),
               .by = c(!!!syms(id_cols),receptor_id)) %>%
     #add_count(alpha_beta, name = "n_cells") %>%
-    mutate(has_beta = !is.na(cdr3b_nt), has_alpha = !is.na(cdr3a_nt)) %>%
+    mutate(has_alpha = !is.na(alpha_nuc), has_beta = !is.na(beta_nuc)) %>%
     mutate(has_alpha_and_beta = has_alpha & has_beta) %>%
-    arrange(desc(n_cells)) %>%
-    dplyr::rename(beta_nuc = cdr3b_nt, alpha_nuc = cdr3a_nt)
+    ## order rows by number of cells, then by beta umis/reads if tied, then if still tied by alpha umis/reads, then by receptor_id
+    arrange(desc(n_cells), desc(total_umis_beta), desc(total_reads_beta), desc(total_umis_alpha), desc(total_reads_alpha), receptor_id)
+
   if(!separate_rows) {
-    df_summ = df_summ %>% mutate(has_alpha2 = !is.na(cdr3a2_nt)) %>% dplyr::rename(alpha2_nuc = cdr3a2_nt)
+    df_summ = df_summ %>% mutate(has_alpha2 = !is.na(alpha2_nuc))
   }
   df_summ_clean = df_summ %>% filter(has_alpha_and_beta)
   #df_complete <- as.data.table(df_clean)[order(-n_cells),][!duplicated(paste0(beta_nuc,"_",alpha_nuc)),][!is.na(beta_nuc)&!is.na(alpha_nuc),]
