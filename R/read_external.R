@@ -1,6 +1,22 @@
+## example:
+# path = "data/BM03_processed-data/neb/N-F5L/N-F5L_TRA.tsv"
+# path = "data/BM03_processed-data/cellecta_RNA/C2-R-F5L/C2-R-F5L_TRA.tsv"
+# path = "data/BM03_processed-data/takara/T-F5L/T-F5L_TRA.tsv"
+# path = "data/BM03_processed-data/qiaseq/Q-combined-F5L_combined_run2/Q-combined-F5L.clones_TRA.tsv"
+read_external_bulk = function(path) {
+  df_orig = fread(path)
+  cols = .get_necessary_cols_bulk()
+  .check_cols(df_orig, cols) ## errors if it doesn't have the needed columns
+  df = df_orig %>%
+    mutate(v = gsub("\\*.*", "", allVHitsWithScore),
+           j = gsub("\\*.*", "", allJHitsWithScore)) %>%
+    select(targetSequences, readCount, v, j, aaSeqCDR3, readFraction, everything())
+  return(list(df = df, df_raw = df_orig))
+}
+
 ## multi -- if FALSE, only take one beta and best two alpha, else take all pairs
 ## separate_rows -- if TRUE, report each pair on a separate row, instead of extra columns for second alpha
-read_external = function(
+read_external_paired = function(
     path,
     format = c("auto","10x", "ParseBio"),
     id_cols = make_tcr_schema(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_alpha = FALSE),
@@ -11,7 +27,7 @@ read_external = function(
   format = format[1]
   df_orig = fread(path)
   if(format == "auto") format = .infer_format(df_orig)
-  cols = .get_necessary_cols(format)
+  cols = .get_necessary_cols_paired(format)
   .check_cols(df_orig, cols) ## errors if it doesn't have the needed columns
   if(format=="ParseBio") df_orig = df_orig %>% mutate(productive = .convert_char_to_boolean(productive), rev_comp = .convert_char_to_boolean(rev_comp))
   df = rename_columns(df_orig, format=format, rename_df = get_names_df_single_chain(), verbose = TRUE)
@@ -165,7 +181,7 @@ read_external = function(
 }
 
 #' list columns needed in each format
-.get_necessary_cols = function(format = c("10x", "ParseBio")) {
+.get_necessary_cols_paired = function(format = c("10x", "ParseBio")) {
   format = format[1]
   if(format == "ParseBio") {
     ## note: this is for tcr_annotation_airr.tsv
@@ -190,6 +206,19 @@ read_external = function(
   } else {
     stop("'format' is not recognized: must be either '10x' or 'ParseBio'")
   }
+  return(necessary_cols)
+}
+
+#' list columns needed in each format
+.get_necessary_cols_bulk = function() {
+  full_cols = c("cloneId", "readCount", "readFraction", "uniqueMoleculeCount",
+    "uniqueMoleculeFraction", "targetSequences", "targetQualities",
+    "allVHitsWithScore", "allDHitsWithScore", "allJHitsWithScore",
+    "allCHitsWithScore", "allVAlignments", "allDAlignments", "allJAlignments",
+    "allCAlignments", "nSeqCDR3", "minQualCDR3", "aaSeqCDR3", "refPoints",
+    "uniqueUMICount")
+  necessary_cols = c("targetSequences", "readCount", "readFraction", "uniqueMoleculeCount", "uniqueMoleculeFraction", "aaSeqCDR3")
+  ## note: might also want targetQualities and minQualCDR3
   return(necessary_cols)
 }
 
