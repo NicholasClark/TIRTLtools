@@ -5,6 +5,7 @@ rename_columns <- function(df, format = c("10X", "ParseBio"), rename_df = get_na
   if (!is.data.frame(df)) stop("'df' must be a data frame.")
   if (!is.data.frame(rename_df)) stop("'rename_df' must be a data frame.")
 
+
   # Find which old_names are missing from df
   missing_cols <- rename_df[[col_name]][!rename_df[[col_name]] %in% colnames(df)]
 
@@ -24,7 +25,7 @@ rename_columns <- function(df, format = c("10X", "ParseBio"), rename_df = get_na
 
 get_names_df_single_chain = function() {
   rename_df <- tribble(
-    ~name,      ~name_10X,   ~name_ParseBio,
+    ~name,      ~name_10x,   ~name_ParseBio,
     "barcode",  "barcode",   "cell_barcode",
     "chain",    "chain",     "locus",
     "cdr3_aa",  "cdr3",      "cdr3_aa",

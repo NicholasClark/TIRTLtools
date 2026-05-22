@@ -2,15 +2,20 @@
 ## separate_rows -- if TRUE, report each pair on a separate row, instead of extra columns for second alpha
 read_external = function(
     path,
-    format = c("auto","10X", "ParseBio"),
+    format = c("auto","10x", "ParseBio"),
     id_cols = make_tcr_schema(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_alpha = FALSE),
     multi = FALSE,
     separate_rows = TRUE,
+    productive_only = TRUE,
     verbose = TRUE) {
   format = format[1]
   df_orig = fread(path)
-  if(format == "auto") format = infer_format(df_orig)
+  if(format == "auto") format = .infer_format(df_orig)
+  cols = .get_necessary_cols(format)
+  .check_cols(df_orig, cols) ## errors if it doesn't have the needed columns
+  if(format=="ParseBio") df_orig = df_orig %>% mutate(productive = .convert_char_to_boolean(productive), rev_comp = .convert_char_to_boolean(rev_comp))
   df = rename_columns(df_orig, format=format, rename_df = get_names_df_single_chain(), verbose = TRUE)
+  if(productive_only) df = df %>% filter(productive)
 
   n_cells_total = length(unique(df$barcode))
   chain_df = df %>% summarize(n = n(), .by=chain) %>% arrange(chain)
@@ -146,15 +151,66 @@ read_external = function(
   return(out)
 }
 
-infer_format = function(df, verbose = TRUE) {
+.infer_format = function(df, verbose = TRUE) {
   if("locus" %in% colnames(df)) {
     if(verbose) message("Reading as 'ParseBio'...")
     return("ParseBio")
   }
   if("chain" %in% colnames(df)) {
-    if(verbose) message("Reading as '10X'...")
-    return("10X")
+    if(verbose) message("Reading as '10x'...")
+    return("10x")
   }
-  if(verbose) message("Format could not be identified, trying to read as '10X'...")
-  return("10X")
+  if(verbose) message("Format could not be identified, trying to read as '10x'...")
+  return("10x")
+}
+
+#' list columns needed in each format
+.get_necessary_cols = function(format = c("10x", "ParseBio")) {
+  format = format[1]
+  if(format == "ParseBio") {
+    ## note: this is for tcr_annotation_airr.tsv
+    ## other ParseBio output files not included yet: barcode_report.tsv, clonotype_frequency.tsv, tcr_contigs.fa
+    full_cols = c("sequence_id", "sequence", "locus", "rev_comp", "productive",
+                  "v_call", "d_call", "j_call", "c_call", "sequence_alignment",
+                  "germline_alignment", "cdr1", "cdr2", "cdr3", "cdr3_aa", "v_cigar",
+                  "d_cigar", "j_cigar", "v_identity", "j_identity", "cell_barcode",
+                  "complete_vdj", "read_count", "transcript_count") ## for reference
+    necessary_cols =c("cell_barcode", "locus", "productive", "v_call", "j_call", "cdr3", "cdr3_aa", "read_count", "transcript_count")
+  } else if(format == "10x") {
+    ## note: this is for filtered_contig_annotations.csv or all_contig_annotations.csv
+    ## "filtered" contig annotations are all of those that are TRUE for "is_cell", "high confidence", "full_length", and "productive"
+    ## other 10x/CellRanger output files not included yet:
+    full_cols = c("barcode", "is_cell", "contig_id", "high_confidence", "length",
+                  "chain", "v_gene", "d_gene", "j_gene", "c_gene", "full_length",
+                  "productive", "fwr1", "fwr1_nt", "cdr1", "cdr1_nt", "fwr2", "fwr2_nt",
+                  "cdr2", "cdr2_nt", "fwr3", "fwr3_nt", "cdr3", "cdr3_nt", "fwr4",
+                  "fwr4_nt", "reads", "umis", "raw_clonotype_id", "raw_consensus_id",
+                  "exact_subclonotype_id") ## for reference
+    necessary_cols = c("barcode", "chain", "productive", "v_gene", "j_gene", "cdr3_nt", "cdr3", "reads", "umis")
+  } else {
+    stop("'format' is not recognized: must be either '10x' or 'ParseBio'")
+  }
+  return(necessary_cols)
+}
+
+.check_cols = function(df, cols) {
+  missing_cols = cols[!cols %in% colnames(df)]
+  if(length(missing_cols) > 0) {
+    msg = paste("Missing columns:", paste(missing_cols, collapse = ", "))
+    stop(msg)
+  } else {
+    return(invisible(NULL))
+  }
+}
+
+.convert_char_to_boolean = function(vec) {
+  if(class(vec) == "logical") return(vec)
+  trues = c("T", "TRUE", "True", "true")
+  falses = c("F", "FALSE", "False", "false")
+  new_vec = case_when(
+    vec %in% trues ~ TRUE,
+    vec %in% falses ~ FALSE,
+    .default = NA
+  )
+  return(new_vec)
 }
