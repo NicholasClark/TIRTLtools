@@ -113,7 +113,7 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
     else:
         tcr2 = tcr2.copy()
         tcr2_mx = process_TCRs(tcr2, params_vec=params_vec)
-        tcr2['tcr_index'] = range(len(tcr2))
+        tcr2['tcr_index'] = range(len(tcr1), len(tcr1) + len(tcr2))
     if write_to_tsv:
         os.makedirs(output_folder, exist_ok=True)
         output_file_edges = os.path.join(output_folder, 'TCRdist_df.tsv')
@@ -193,6 +193,7 @@ def TCRdist_batch(tcr1, submat, params_df, tcr2=None, tcrdist_cutoff=90, chunk_s
         if compare_to_self:
             res_dict = {'TCRdist_df': res, 'tcr1': tcr1}
         else:
+            res['node2_0index'] = res['node2_0index'] + len(tcr1)
             res_dict = { 'TCRdist_df': res, 'tcr1': tcr1, 'tcr2': tcr2}
         out = res_dict
     else:
