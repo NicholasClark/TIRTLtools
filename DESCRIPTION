@@ -20,17 +20,12 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    basilisk,
     BiocManager,
     checkmate,
     data.table,
-    DBI,
-    dbplyr,
     digest,
     dplyr,
     dtplyr,
-    duckdb,
-    duckplyr,
     ggh4x,
     ggplate,
     glue,
@@ -62,9 +57,13 @@ Roxygen: list(markdown = TRUE)
 Suggests: 
     Biostrings,
     ComplexHeatmap,
+    DBI,
+    dbplyr,
     DelayedDataFrame,
     dendsort,
     DFplyr,
+    duckdb,
+    duckplyr,
     HDF5Array,
     igraph (>= 2.1.4),
     irlba (>= 2.3.5.1),
