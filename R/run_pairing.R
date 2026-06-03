@@ -442,7 +442,7 @@ run_pairing = function(
   #result<-result[order(-method),][!duplicated(alpha_beta),]
   #result<-merge(result, unique_combinations, by = c("wi", "wj", "wij"), all.x = TRUE)[method=="madhype"|(`method`=="tshell"&`wij`>get("wij_thres_tshell")&`pval_adj`<get("pval_thres_tshell")&(`loss_a_frac`+`loss_b_frac`)<0.5),]#there was no filter here before, check if it works!!!
   merged <- merge(result, unique_combinations, by = c("wi", "wj", "wij"), all.x = TRUE)
-  result <- merged[method=="madhype"|(`method`=="tshell"&`wij`>wij_thres_tshell&`pval_adj`<pval_thres_tshell&(`loss_a_frac`+`loss_b_frac`)<0.5),]
+  result <- merged[method=="madhype"|(`method`=="tshell"&`wij`>tshell_settings$wij_thres_tshell&`pval_adj`<tshell_settings$pval_thres_tshell&(`loss_a_frac`+`loss_b_frac`)<0.5),]
 
   #result<-result[(((loss_a_frac+loss_b_frac)<0.5)&(wij>3))|(score>0.1),]
 
