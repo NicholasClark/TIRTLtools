@@ -46,7 +46,7 @@ Imports:
     vctrs
 Depends: 
     ggplot2,
-    R (>= 4.1)
+    R (>= 4.4)
 biocViews: 
 LinkingTo: 
     Rcpp,
