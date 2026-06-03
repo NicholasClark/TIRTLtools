@@ -1,7 +1,7 @@
 Package: TIRTLtools
 Type: Package
 Title: Analysis Tools for TIRTLseq Data
-Version: 0.1.21
+Version: 0.1.22
 Authors@R: c(
     person(
       "Nicholas", "Clark",
@@ -22,9 +22,11 @@ LazyData: true
 Imports: 
     basilisk,
     BiocManager,
+    checkmate,
     data.table,
     DBI,
     dbplyr,
+    digest,
     dplyr,
     dtplyr,
     duckdb,
@@ -51,7 +53,6 @@ Depends:
     ggplot2,
     R (>= 4.1)
 biocViews: 
-RoxygenNote: 7.3.3
 LinkingTo: 
     Rcpp,
     RcppParallel
@@ -72,3 +73,4 @@ Suggests:
     S4Vectors,
     stringdist,
     uwot (>= 0.2.3)
+Config/roxygen2/version: 8.0.0

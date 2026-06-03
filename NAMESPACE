@@ -53,6 +53,7 @@ export(plot_num_partners) ## full docs
 
 ## pairing
 export(run_pairing) # docs 90% done - needs details, examples
+export(get_tshell_settings)
 
 ## data_processing
 export(TIRTL_process) ## docs 99% done, could use an example

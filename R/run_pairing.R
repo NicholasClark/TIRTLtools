@@ -16,11 +16,12 @@
 #' @param min_wells minimum number of wells a chain must be observed in to be paired.
 #' @param well_pos the position of the well ID (e.g. "B5") in the file names. For example, files
 #' named "<lab>_<project>_<well_id>_TCRalpha.tsv" would use well_pos=3. (default is 3)
-#' @param wellset1 a vector of wells to use for the pairing
+#' @param tshell_settings a named list with pairing settings for T-SHELL: `pval_thres_tshell` and `wij_thres_tshell`. You may pass your own list or call \code{\link{get_tshell_settings}()} with setting "auto", "384_well", or "96_well". By default, "auto" is selected and "384_well" settings will be used if there are >= 150 wells passing QC, otherwise "96_well" settings will be used.
+#' - `pval_thres_tshell` is the adjusted p-value threshold for T-SHELL significance (default 1e-10 for 384-well plate, 1e-3 for 96-well plate)
+#' - `wij_thres_tshell` is the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells for 384-well plate, >3 wells for 96-well plate)
+#' @param wellset a vector of wells to use for the pairing
 #' @param compute whether or not to run the pairing algorithms after tabulating and writing pseudobulk data (default TRUE)
 #' @param backend the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.
-#' @param pval_thres_tshell the adjusted p-value threshold for T-SHELL significance (default 1e-10)
-#' @param wij_thres_tshell the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells)
 #' @param verbose whether to print out messages (default TRUE)
 #' @param write_extra_files whether to write un-necessary intermediate files (default FALSE)
 #' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
@@ -62,11 +63,13 @@ run_pairing = function(
     min_reads=0,
     min_wells=2,
     well_pos=3,
-    wellset1=get_well_subset(1:16,1:24),
+    tshell_settings = get_tshell_settings(format = "auto"),
+    wellset = get_well_subset(1:16,1:24),
+    wellset1 = lifecycle::deprecated(),
     compute=TRUE,
     backend = c("auto", "cpu", "cupy", "mlx"),
-    pval_thres_tshell=1e-10,
-    wij_thres_tshell=2,
+    pval_thres_tshell = lifecycle::deprecated(),
+    wij_thres_tshell= lifecycle::deprecated(),
     verbose = TRUE,
     write_extra_files = FALSE,
     filter_before_top3 = FALSE,
@@ -78,6 +81,21 @@ run_pairing = function(
     select_best_tshell = FALSE
 ){
   tictoc::tic()
+
+  if (lifecycle::is_present(wellset1)) {
+    lifecycle::deprecate_warn(
+      when = "0.1.22",
+      what = "run_pairing(wellset1=)",
+      with = "run_pairing(wellset=)"
+    )
+    wellset = wellset1
+  }
+  if(!is.null(tshell_settings)) {
+    assert_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
+    assert_number(tshell_settings$pval_thres_tshell, lower = 0, upper = 1)
+    assert_int(tshell_settings$wij_thres_tshell, lower = 0, upper = 383)
+  }
+
   #ensure_python_env()
   py_require( packages = get_py_deps() )
 
@@ -91,7 +109,7 @@ run_pairing = function(
            well = .get_well_from_filename(file_alpha_no_dot),
            well_row = substr(well, 0, 1),
            well_column = substr(well,2,3) %>% as.integer(),
-           in_wellset = well %in% wellset1) %>%
+           in_wellset = well %in% wellset) %>%
     filter(in_wellset) %>%
     arrange(well_row, well_column) %>%
     select(-well_row, -well_column, -in_wellset)
@@ -101,12 +119,12 @@ run_pairing = function(
            well = .get_well_from_filename(file_beta_no_dot),
            well_row = substr(well, 0, 1),
            well_column = substr(well,2,3) %>% as.integer(),
-           in_wellset = well %in% wellset1)  %>%
+           in_wellset = well %in% wellset)  %>%
     filter(in_wellset) %>%
     arrange(well_row, well_column) %>%
     select(-well_row, -well_column, -in_wellset)
-  missing_alpha_wells = wellset1[!wellset1 %in% df_alpha$well]
-  missing_beta_wells = wellset1[!wellset1 %in% df_beta$well]
+  missing_alpha_wells = wellset[!wellset %in% df_alpha$well]
+  missing_beta_wells = wellset[!wellset %in% df_beta$well]
   n_files_alpha = nrow(df_alpha)
   n_files_beta = nrow(df_beta)
   if(length(missing_alpha_wells) > 0) {
@@ -118,12 +136,12 @@ run_pairing = function(
     if(verbose) message(msg)
   }
   df_meta = full_join(df_alpha, df_beta, by = "well")
-  wells_missing = wellset1[!wellset1 %in% df_meta$well]
+  wells_missing = wellset[!wellset %in% df_meta$well]
   df_meta = df_meta %>%
     bind_rows(tibble(well = wells_missing)) %>%
     mutate(well_row = substr(well, 0, 1), well_column = substr(well,2,3) %>% as.integer()) %>%
     arrange(well_row, well_column)
-  # missing_wells_final = wellset1[!wellset1 %in% df_meta$well]
+  # missing_wells_final = wellset[!wellset %in% df_meta$well]
   # if(length(missing_wells_final) > 0) {
   #   msg = paste(length(missing_wells_final), "wells excluded for missing .tsv files:", paste0(missing_wells_final, collapse = ", "))
   #   if(verbose) message(msg)
@@ -132,7 +150,7 @@ run_pairing = function(
   # files = list.files(path = folder_path,full.names = F)
   # files_no_dot = gsub(".","_",files,fixed=T)
   # file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
-  # files_bool = file_wells %in% wellset1
+  # files_bool = file_wells %in% wellset
   # msg = paste("Reading", sum(files_bool), "files from", folder_path)
   # if(verbose) message(msg)
   # files_load = file.path(folder_path, files[files_bool])
@@ -199,7 +217,7 @@ run_pairing = function(
   clone_thres = round(well_filter_thres * mean(alpha_nrow[alpha_nrow != 0]))
   #rm(mlist)
 
-  qc<-get_good_wells_new(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset1)
+  qc<-get_good_wells_new(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset)
   if(verbose) {
     msg1 = paste("Clone threshold for QC:", clone_thres)
     message(msg1)
@@ -246,6 +264,23 @@ run_pairing = function(
   #result<-do_analysis_madhyper_r_optim_both(mlista[qc$a],mlistb[qc$b],n_cells = clone_thres)
   mlista<-mlista[qc$a]#downsize to qc
   mlistb<-mlistb[qc$b]#downsize to qc
+
+  n_wells_pass = length(mlista)
+  has_tshell_settings = check_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
+  if(!has_tshell_settings) {
+    msg = "Using 'auto' T-SHELL settings, selecting 'pval_thres_tshell' and 'wij_thres_tshell' based on the number of wells passing QC"
+    if(verbose) message(msg)
+    n_well_thres = 150
+    if(n_wells_pass >= n_well_thres) {
+      tshell_settings = get_tshell_settings("384_well")
+      msg = paste(n_wells_pass, "wells passing: Using '384_well' T-SHELL settings")
+      if(verbose) message(msg)
+    } else {
+      tshell_settings = get_tshell_settings("96_well")
+      msg = paste(n_wells_pass, "wells passing: Using '96_well' T-SHELL settings")
+      if(verbose) message(msg)
+    }
+  }
 
   ## reorder wells
   # all_wells = get_well_subset(1:16,1:24)
@@ -349,7 +384,7 @@ run_pairing = function(
       prefix = prefix, folder_out = folder_out, bigmas = bigmas_py, bigmbs = bigmbs_py,
       mdh = mdh_py, backend = backend, filter_before_top3 = filter_before_top3, chunk_size = chunk_size,
       write_files = write_extra_files
-      )
+      ) ## returns a list with two data frames: "mdh" (mad-hype) and "corr" (T-shell)
   }
   message("Pairing is finished.")
   ### fix for when r_to_py doesn't convert data frames
@@ -367,6 +402,7 @@ run_pairing = function(
     mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
     mutate(method = "madhype") %>%
     as.data.table()
+  ## T-shell results -- top 3 betas for each alpha
   gpu_res_corr = pair_res$corr %>%
     mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
            beta_nuc_seq = rownames(bigmbs)[beta_nuc]) %>%

@@ -12,11 +12,13 @@ run_pairing(
   min_reads = 0,
   min_wells = 2,
   well_pos = 3,
-  wellset1 = get_well_subset(1:16, 1:24),
+  tshell_settings = get_tshell_settings(format = "auto"),
+  wellset = get_well_subset(1:16, 1:24),
+  wellset1 = lifecycle::deprecated(),
   compute = TRUE,
   backend = c("auto", "cpu", "cupy", "mlx"),
-  pval_thres_tshell = 1e-10,
-  wij_thres_tshell = 2,
+  pval_thres_tshell = lifecycle::deprecated(),
+  wij_thres_tshell = lifecycle::deprecated(),
   verbose = TRUE,
   write_extra_files = FALSE,
   filter_before_top3 = FALSE,
@@ -46,15 +48,17 @@ The default value is 0.5}
 \item{well_pos}{the position of the well ID (e.g. "B5") in the file names. For example, files
 named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha.tsv" would use well_pos=3. (default is 3)}
 
-\item{wellset1}{a vector of wells to use for the pairing}
+\item{tshell_settings}{a named list with pairing settings for T-SHELL: \code{pval_thres_tshell} and \code{wij_thres_tshell}. You may pass your own list or call \code{\link{get_tshell_settings}()} with setting "auto", "384_well", or "96_well". By default, "auto" is selected and "384_well" settings will be used if there are >= 150 wells passing QC, otherwise "96_well" settings will be used.
+\itemize{
+\item \code{pval_thres_tshell} is the adjusted p-value threshold for T-SHELL significance (default 1e-10 for 384-well plate, 1e-3 for 96-well plate)
+\item \code{wij_thres_tshell} is the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells for 384-well plate, >3 wells for 96-well plate)
+}}
+
+\item{wellset}{a vector of wells to use for the pairing}
 
 \item{compute}{whether or not to run the pairing algorithms after tabulating and writing pseudobulk data (default TRUE)}
 
 \item{backend}{the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.}
-
-\item{pval_thres_tshell}{the adjusted p-value threshold for T-SHELL significance (default 1e-10)}
-
-\item{wij_thres_tshell}{the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells)}
 
 \item{verbose}{whether to print out messages (default TRUE)}
 
@@ -99,5 +103,9 @@ These files can be loaded using the \code{\link{load_well_counts_binary}()} func
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
 originating from the same clone.
+}
+\seealso{
+Other pairing:
+\code{\link[=get_tshell_settings]{get_tshell_settings()}}
 }
 \concept{pairing}
