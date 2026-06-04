@@ -266,7 +266,7 @@ run_pairing = function(
   mlistb<-mlistb[qc$b]#downsize to qc
 
   n_wells_pass = length(mlista)
-  has_tshell_settings = checkmate::check_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
+  has_tshell_settings = sum(c("pval_thres_tshell", "wij_thres_tshell") %in% names(tshell_settings)) == 2
   if(!has_tshell_settings) {
     msg = "Using 'auto' T-SHELL settings, selecting 'pval_thres_tshell' and 'wij_thres_tshell' based on the number of wells passing QC"
     if(verbose) message(msg)
