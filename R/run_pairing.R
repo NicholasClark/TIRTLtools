@@ -91,9 +91,9 @@ run_pairing = function(
     wellset = wellset1
   }
   if(!is.null(tshell_settings)) {
-    assert_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
-    assert_number(tshell_settings$pval_thres_tshell, lower = 0, upper = 1)
-    assert_int(tshell_settings$wij_thres_tshell, lower = 0, upper = 383)
+    checkmate::assert_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
+    checkmate::assert_number(tshell_settings$pval_thres_tshell, lower = 0, upper = 1)
+    checkmate::assert_int(tshell_settings$wij_thres_tshell, lower = 0, upper = 383)
   }
 
   #ensure_python_env()
@@ -266,7 +266,7 @@ run_pairing = function(
   mlistb<-mlistb[qc$b]#downsize to qc
 
   n_wells_pass = length(mlista)
-  has_tshell_settings = check_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
+  has_tshell_settings = checkmate::check_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
   if(!has_tshell_settings) {
     msg = "Using 'auto' T-SHELL settings, selecting 'pval_thres_tshell' and 'wij_thres_tshell' based on the number of wells passing QC"
     if(verbose) message(msg)
