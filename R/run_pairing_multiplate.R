@@ -29,6 +29,10 @@
 #' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param chunk_size batch size for calculations in pairing scripts
 #' @param exclude_nonfunctional whether to exclude non-functional chains before pairing (default FALSE)
+#' @param select_best_madhype whether to use a secondary algorithm on the pairs from the MAD-HYPE algorithm to select
+#' the best pairs for each clone (default is FALSE)
+#' @param select_best_tshell whether to use a secondary algorithm on the pairs from the T-SHELL algorithm to select
+#' the best pairs for each clone (default is FALSE)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -57,10 +61,13 @@ run_pairing_multiplate = function(
     verbose = TRUE,
     write_extra_files = FALSE,
     filter_before_top3 = FALSE,
-    fork = NULL,
-    shared = NULL,
+    fork = lifecycle::deprecated(),
+    shared = lifecycle::deprecated(),
     testing = FALSE,
-    chunk_size = 500
+    chunk_size = 500,
+    exclude_nonfunctional = FALSE,
+    select_best_madhype = FALSE,
+    select_best_tshell = FALSE
 ){
 
   if(!is.list(wellsets)) stop("Input 'wellsets' needs to be a list where each item is a vector of wells for a plate.")
@@ -349,6 +356,9 @@ run_pairing_multiplate = function(
   result$cdr3b=tp_b$cdr3aa
   result$vb=tp_b$v
   result$jb=tp_b$j
+
+  ### (optional) secondary algorithm to select best MAD-HYPE/T-SHELL clones
+  result = .filter_pairs(result, filter_madhype = select_best_madhype, filter_tshell = select_best_tshell)
 
   if(verbose) {
     print(Sys.time())
