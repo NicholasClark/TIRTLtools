@@ -59,7 +59,7 @@ export(run_pairing) # docs 90% done - needs details, examples
 export(get_tshell_settings)
 
 ## data_processing
-export(process_TIRTLseq) ## docs 99% done, could use an example
+#export(process_TIRTLseq) ## docs 99% done, could use an example
 export(TIRTL_process) ## deprecated, use process_TIRTLseq
 export(add_single_chain_data) ## docs 99% done, could use an example
 export(clean_pairs) ## docs 99% done, could use an example
