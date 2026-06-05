@@ -26,6 +26,8 @@ read_external_paired = function(
     verbose = TRUE) {
   format = format[1]
   df_orig = fread(path)
+  alpha_cols = get_tcr_schema_single_chain(id_cols, chain ="alpha")
+  beta_cols = get_tcr_schema_single_chain(id_cols, chain ="beta")
   if(format == "auto") format = .infer_format(df_orig)
   cols = .get_necessary_cols_paired(format)
   .check_cols(df_orig, cols) ## errors if it doesn't have the needed columns
@@ -37,14 +39,21 @@ read_external_paired = function(
   chain_df = df %>% summarize(n = n(), .by=chain) %>% arrange(chain)
   NA_chains = df %>% filter(is.na(chain)) ## should be nothing with NA for chain
   df = df %>% filter(!is.na(chain))
-  df_summ = df %>%
-    summarize(n_chains = n(), n_alphas = sum(chain == "TRA"), n_betas = sum(chain == "TRB"), .by = barcode) %>%
+  df_summ_barcodes = df %>%
+    summarize(n_chains = n(),
+              n_alphas = sum(chain == "TRA"),
+              n_betas = sum(chain == "TRB"),
+              n_reads = sum(reads),
+              n_umis = sum(umis),
+              .by = barcode) %>%
     mutate(complete = (n_alphas > 0) & (n_betas > 0)) %>%
     arrange(desc(n_chains))
-  n_cells_complete = sum(df_summ$complete)
+  n_cells_complete = sum(df_summ_barcodes$complete)
 
-  complete_barcodes = df_summ %>% filter(complete) %>% extract2("barcode")
+  complete_barcodes = df_summ_barcodes %>% filter(complete) %>% extract2("barcode")
   df_complete_tcr_only = df %>% filter(barcode %in% complete_barcodes)
+
+
 
   df_alpha_all = df %>%
     filter(chain == "TRA") %>%
@@ -56,7 +65,8 @@ read_external_paired = function(
   ## make df with first alpha for each cell barcode
   df_alpha1 = df_alpha_all %>%
     filter(alpha_id == 1) %>% ## first alpha chain
-    dplyr::rename(cdr3a = cdr3_aa, cdr3a_nt = cdr3_nt, va = v_gene, ja = j_gene, reads_alpha = reads, umis_alpha = umis) %>%
+    dplyr::rename(cdr3a = cdr3_aa, alpha_nuc = cdr3_nt, va = v_gene, ja = j_gene, reads_alpha = reads, umis_alpha = umis) %>%
+    mutate(alpha_receptor_id = paste(!!!syms(alpha_cols), sep = "|")) %>%
     select(-alpha_id) %>%
     ungroup()
 
@@ -73,13 +83,14 @@ read_external_paired = function(
     arrange(desc(umis), .by_group = T) %>%
     mutate(beta_id = row_number(), n_betas = n()) %>%
     select(barcode, cdr3_aa, cdr3_nt, v_gene, j_gene, reads, umis, beta_id, n_betas) %>%
-    dplyr::rename(cdr3b = cdr3_aa, cdr3b_nt = cdr3_nt, vb = v_gene, jb = j_gene, reads_beta = reads, umis_beta = umis) %>%
+    dplyr::rename(cdr3b = cdr3_aa, beta_nuc = cdr3_nt, vb = v_gene, jb = j_gene, reads_beta = reads, umis_beta = umis) %>%
+    mutate(beta_receptor_id = paste(!!!syms(beta_cols), sep = "|")) %>%
     ungroup()
   df_beta = df_beta_all %>% filter(beta_id == 1)
-  df_beta_multi = df_beta_all %>% filter(beta_id > 1)
 
-  df_beta_test = df_beta_all %>% filter(n_betas > 1) %>% arrange(barcode)
-  df_alpha_test = df_alpha_all %>% filter(n_alphas > 1) %>% arrange(barcode)
+  # df_beta_multi = df_beta_all %>% filter(beta_id > 1)
+  # df_beta_test = df_beta_all %>% filter(n_betas > 1) %>% arrange(barcode)
+  # df_alpha_test = df_alpha_all %>% filter(n_alphas > 1) %>% arrange(barcode)
 
   ## join dfs to make df with top beta and top two alphas for each cell barcode
 
@@ -89,8 +100,8 @@ read_external_paired = function(
       filter(alpha_id == 2) %>% ## use only second alpha chain
       select(-alpha_id) %>%
       ungroup() %>%
-      dplyr::rename(cdr3a2 = cdr3_aa, cdr3a2_nt = cdr3_nt, va2 = v_gene, ja2 = j_gene, reads_alpha2 = reads, umis_alpha2 = umis)
-    df_all1 = df_beta %>%
+      dplyr::rename(cdr3a2 = cdr3_aa, alpha2_nuc = cdr3_nt, va2 = v_gene, ja2 = j_gene, reads_alpha2 = reads, umis_alpha2 = umis)
+    df_pairs_long = df_beta %>%
       full_join(df_alpha1, by=c("barcode")) %>%
       full_join(df_alpha2, by=c("barcode")) %>%
       ungroup() %>%
@@ -101,46 +112,52 @@ read_external_paired = function(
         filter(alpha_id == 2) %>% ## use only second alpha chain
         select(-alpha_id) %>%
         ungroup() %>%
-        dplyr::rename(cdr3a = cdr3_aa, cdr3a_nt = cdr3_nt, va = v_gene, ja = j_gene, reads_alpha = reads, umis_alpha = umis)
+        dplyr::rename(cdr3a = cdr3_aa, alpha_nuc = cdr3_nt, va = v_gene, ja = j_gene, reads_alpha = reads, umis_alpha = umis) %>%
+        mutate(alpha_receptor_id = paste(!!!syms(alpha_cols), sep = "|"))
       df_alpha12 = bind_rows(df_alpha1, df_alpha2)
-      df_all1 = df_beta %>%
+      df_pairs_long = df_beta %>%
         full_join(df_alpha12, by=c("barcode")) %>%
         #inner_join(df_alpha12, by=c("barcode")) %>% ## get rid of un-paired chains
         ungroup() %>%
         add_count(barcode, name = "n_in_barcode")
     } else { ## if multi
       df_join = df_alpha_all %>%
-        dplyr::rename(cdr3a = cdr3_aa, cdr3a_nt = cdr3_nt, va = v_gene, ja = j_gene, reads_alpha = reads, umis_alpha = umis)
-      df_all1 = df_beta_all %>%
+        dplyr::rename(cdr3a = cdr3_aa, alpha_nuc = cdr3_nt, va = v_gene, ja = j_gene, reads_alpha = reads, umis_alpha = umis)
+      df_pairs_long = df_beta_all %>%
         full_join(df_join, by=c("barcode"))  %>%
         add_count(barcode, name = "n_in_barcode")
     }
   }
 
-  df_all1 = df_all1 %>%
-    mutate(has_beta = !is.na(cdr3b_nt), has_alpha = !is.na(cdr3a_nt)) %>%
+  df_pairs_long = df_pairs_long %>%
+    mutate(has_beta = !is.na(beta_nuc), has_alpha = !is.na(alpha_nuc)) %>%
     mutate(has_alpha_and_beta = has_alpha & has_beta) %>%
-    dplyr::rename(alpha_nuc = cdr3a_nt, beta_nuc = cdr3b_nt) %>%
-    mutate(receptor_id = paste(!!!syms(id_cols), sep = "_")) %>%
+    #dplyr::rename(alpha_nuc = cdr3a_nt, beta_nuc = cdr3b_nt) %>%
+    mutate(receptor_id = paste(!!!syms(id_cols), sep = "|"),
+           alpha_receptor_id = paste(!!!syms(alpha_cols), sep = "|"),
+           beta_receptor_id = paste(!!!syms(beta_cols), sep = "|")
+           ) %>%
     add_count(receptor_id, name = "n_receptor") %>%
     arrange(desc(n_receptor), receptor_id, desc(umis_beta), desc(reads_beta), desc(umis_alpha), desc(reads_alpha))
 
-  if(!separate_rows) df_all1 = df_all1 %>% dplyr::rename(alpha2_nuc = cdr3a2_nt)
+  if(!separate_rows) df_pairs_long = df_pairs_long %>% dplyr::rename(alpha2_nuc = cdr3a2_nt)
 
-  df_all2 = df_all1 %>% filter(has_alpha_and_beta)
+  df_pairs_long_complete = df_pairs_long %>% filter(has_alpha_and_beta)
 
   # id_cols = c("va", "ja", "cdr3a", "cdr3b", "vb", "jb", "alpha_nuc", "beta_nuc")
   # if(!separate_rows) id_cols = c("va", "ja", "cdr3a", "cdr3b", "vb", "jb", "va2", "ja2", "cdr3a2", "alpha_nuc", "beta_nuc", "alpha2_nuc")
 
-  ## df_all1 is all pairs of receptors in all cells
-  ## df_summ is a cell count for unique pairs of receptors as defined by "id_cols"
-  df_summ = df_all1 %>%
+  ## df_pairs_long is all pairs of receptors in all cells
+  ## df_pairs is a cell count for unique pairs of receptors as defined by "id_cols"
+  df_pairs = df_pairs_long %>%
     #mutate(alpha_beta = paste(cdr3a_nt, cdr3b_nt, sep = "_")) %>%
     #add_count(barcode, name = "n_in_barcode") %>%
-    summarize(n_cells = sum(1/n_in_barcode),
+    summarize(n_cells = sum(1/n_in_barcode), ## number of cells, but dividing if multiple alphas
+              n_in_barcode = max(n_in_barcode), ## number of cells not dividing if multiple alphas
+              n_cells_in_barcode = max(n_receptor),
               total_umis_alpha = sum(umis_alpha, na.rm = TRUE), total_reads_alpha = sum(reads_alpha, na.rm = TRUE),
               total_umis_beta = sum(umis_beta, na.rm = TRUE), total_reads_beta = sum(reads_beta, na.rm = TRUE),
-              .by = c(!!!syms(id_cols),receptor_id)) %>%
+              .by = c(!!!syms(id_cols),receptor_id, alpha_receptor_id, beta_receptor_id)) %>%
     #add_count(alpha_beta, name = "n_cells") %>%
     mutate(has_alpha = !is.na(alpha_nuc), has_beta = !is.na(beta_nuc)) %>%
     mutate(has_alpha_and_beta = has_alpha & has_beta) %>%
@@ -148,21 +165,31 @@ read_external_paired = function(
     arrange(desc(n_cells), desc(total_umis_beta), desc(total_reads_beta), desc(total_umis_alpha), desc(total_reads_alpha), receptor_id)
 
   if(!separate_rows) {
-    df_summ = df_summ %>% mutate(has_alpha2 = !is.na(alpha2_nuc))
+    df_pairs = df_pairs %>% mutate(has_alpha2 = !is.na(alpha2_nuc))
   }
-  df_summ_clean = df_summ %>% filter(has_alpha_and_beta)
+  df_pairs$method = format
+  df_pairs_complete = df_pairs %>% filter(has_alpha_and_beta)
   #df_complete <- as.data.table(df_clean)[order(-n_cells),][!duplicated(paste0(beta_nuc,"_",alpha_nuc)),][!is.na(beta_nuc)&!is.na(alpha_nuc),]
 
-  out = list(df_pairs_complete = df_summ_clean,    ## df with number of cells for each paired receptor (with both alpha & beta)
-             df_pairs = df_summ,                   ## df with number of cells for each paired receptor
-             df_pairs_long = df_all1,              ## df with all individual paired receptors
-             df_pairs_long_complete = df_all2,     ## df with all individual paired receptors (with both alpha & beta)
-             df_raw = df_orig,                     ## un-edited input data
-             n_cells_total = n_cells_total,        ## total number of cells
-             n_cells_complete = n_cells_complete,  ## number of cells with both chains
-             chain_df = chain_df,                  ## summary of total number of each chain in input data
-             barcode_df = df_summ,                 ## summary of number of chains found in each cell
-             id_cols = id_cols)                    ## columns used as IDs to uniquely define receptor pairs
+  ## summary of how often each complete TCR is found vs. just alpha or just beta
+  df_rec = df_pairs_complete %>%
+    select(receptor_id, alpha_receptor_id, beta_receptor_id) %>%
+    mutate(
+      n_cells_with_both = sapply(receptor_id, function(x) sum(df_pairs_long$receptor_id == x)),
+      n_cells_with_alpha = sapply(alpha_receptor_id, function(x) sum(df_pairs_long$alpha_receptor_id == x)),
+      n_cells_with_beta = sapply(beta_receptor_id, function(x) sum(df_pairs_long$beta_receptor_id == x))
+      )
+
+  out = list(df_pairs_complete = df_pairs_complete,    ## (data frame) paired receptors - one row for each receptor (excluding those missing an alpha or beta chain)
+             df_pairs = df_pairs,                   ## (data frame) with paired receptors - one row for each receptor (including those missing an alpha or beta chain)
+             df_pairs_long = df_pairs_long,              ## (data frame) with paired receptors - one row for each cell (including those missing an alpha or beta chain)
+             df_pairs_long_complete = df_pairs_long_complete,     ## (data frame) with paired receptors - one row for each cell (excluding those missing an alpha or beta chain)
+             df_raw = df_orig,                     ## (data frame) un-edited input data
+             n_cells_total = n_cells_total,        ## (integer) total number of cells
+             n_cells_complete = n_cells_complete,  ## (integer) number of cells with both chains
+             chain_df = chain_df,                  ## (data frame) summary of total number of each chain in input data
+             barcode_df = df_summ_barcodes,        ## (data frame) summary of number of chains found in each cell
+             id_cols = id_cols)                    ## (character vector) columns used as IDs to uniquely define receptor pairs
 
   return(out)
 }

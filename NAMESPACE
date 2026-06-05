@@ -34,6 +34,9 @@ export(add_metadata) # docs 99% done, could use an example
 export(filter_dataset) # full docs
 export(load_tirtlseq) # full docs
 export(reorder_samples) # full docs
+export(read_external_bulk)
+export(read_external_paired)
+export(make_tcr_schema)
 
 ## qc and data summary
 export(get_pair_stats) ## full docs
@@ -56,7 +59,8 @@ export(run_pairing) # docs 90% done - needs details, examples
 export(get_tshell_settings)
 
 ## data_processing
-export(TIRTL_process) ## docs 99% done, could use an example
+export(process_TIRTLseq) ## docs 99% done, could use an example
+export(TIRTL_process) ## deprecated, use process_TIRTLseq
 export(add_single_chain_data) ## docs 99% done, could use an example
 export(clean_pairs) ## docs 99% done, could use an example
 #export(filter_duplicate_tcrs) ## hide this for internal use, create df w/ unique pairs upon loading
