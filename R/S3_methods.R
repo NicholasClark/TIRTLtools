@@ -64,8 +64,8 @@ summary.TIRTLseqDataSet = function(x, ...) {
     beta_rows[i]   <- nrow(s$beta)
     paired_rows[i] <- nrow(s$paired)
 
-    s_unique = remove_duplicates(s)
-    paired_rows2[i] <- nrow(s_unique$paired)
+    s_unique = remove_duplicates(s$paired)
+    paired_rows2[i] <- nrow(s_unique)
   }
   cat("  Per-sample TCR counts (alpha / beta / paired):\n")
   summary_df <- data.frame(
