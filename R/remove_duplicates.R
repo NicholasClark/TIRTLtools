@@ -21,8 +21,8 @@ remove_duplicates = function(data) {
   if(.is_df(data)) {
     if(!"alpha_beta" %in% colnames(data)) {
       data = data %>% mutate(alpha_beta = paste(alpha_nuc, beta_nuc, sep="_"))
+      out = data[!duplicated(data$alpha_beta),]
     }
-    out = data[!duplicated(data$alpha_beta),]
   } else {
     out = lapply(data, function(x) {
       if(!"alpha_beta" %in% colnames(x)) {
