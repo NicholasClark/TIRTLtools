@@ -20,9 +20,9 @@ get_all_div_metrics()
 \seealso{
 \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 
-Other diversity: 
-\code{\link{calculate_diversity}()},
-\code{\link{plot_clonotype_indices}()},
-\code{\link{plot_diversity}()}
+Other diversity:
+\code{\link[=calculate_diversity]{calculate_diversity()}},
+\code{\link[=plot_clonotype_indices]{plot_clonotype_indices()}},
+\code{\link[=plot_diversity]{plot_diversity()}}
 }
 \concept{diversity}

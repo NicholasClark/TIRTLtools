@@ -22,7 +22,7 @@ This function takes a data frame created by \code{\link{create_thimble_df}()}
 and writes it to a .tsv file for use with Stitchr (https://jamieheather.github.io/stitchr/).
 }
 \seealso{
-Other stitchr: 
-\code{\link{create_thimble_df}()}
+Other stitchr:
+\code{\link[=create_thimble_df]{create_thimble_df()}}
 }
 \concept{stitchr}

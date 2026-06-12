@@ -112,9 +112,9 @@ node_df \%>\%
 \seealso{
 \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 
-Other tcr_similarity: 
-\code{\link{TCRdist_cpp}()},
-\code{\link{cluster_tcrs}()},
-\code{\link{plot_clusters}()}
+Other tcr_similarity:
+\code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
+\code{\link[=cluster_tcrs]{cluster_tcrs()}},
+\code{\link[=plot_clusters]{plot_clusters()}}
 }
 \concept{tcr_similarity}

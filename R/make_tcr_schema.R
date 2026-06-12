@@ -1,4 +1,29 @@
-make_tcr_schema = function(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_alpha = FALSE, rearrange=TRUE) {
+#' Make a "schema" for defining a T-Cell Receptor
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' This is a convenience function that simply returns a vector of column names
+#' that are used by \code{\link{read_external_paired}()} to define a unique
+#' T-Cell receptor.
+#'
+#' For example, using \code{features = c("v", "cdr3_aa")} will group all chains
+#' with the same V-alpha/beta and CDR3-alpha/beta amino acid sequence together, while
+#' using \code{features = c("v", "cdr3_aa", "cdr3_nt")} will require that their
+#' nucleotide sequence is also matching.
+#'
+#' @param features some subset of \code{c("v", "j", "cdr3_aa", "cdr3_nt")} that
+#' you would like to use to define a unique receptor.
+#' @param second_alpha whether to include a second alpha chain (default is FALSE)
+#'
+#' @return A vector containing
+#'
+#' @examples
+#' make_tcr_schema() ## default: v, j, and cdr3 amino acid and nucleotide sequence
+#' make_tcr_schema(c("v", "j")) ## only v and j segments
+#'
+#' @family data_processing
+
+make_tcr_schema = function(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_alpha = FALSE) {
   cols = c()
   permitted_features = c("v", "j", "cdr3_aa", "cdr3_nt")
   check1 = sum(!features %in% permitted_features) > 0
@@ -17,7 +42,7 @@ make_tcr_schema = function(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_
     if("cdr3_aa" %in% features) cols = c(cols, "cdr3a2")
     if("cdr3_nt" %in% features) cols = c(cols, "alpha2_nuc")
   }
-  if(rearrange) cols = permitted_cols[permitted_cols %in% cols]
+  cols = permitted_cols[permitted_cols %in% cols]
   return(cols)
 }
 

@@ -71,11 +71,11 @@ and used in the future as input to
 the \code{\link{plot_tshell}()} function.
 }
 \seealso{
-Other well: 
-\code{\link{choose_pair_manual}()},
-\code{\link{get_well_subset}()},
-\code{\link{get_wells_from_edges}()},
-\code{\link{load_well_counts_binary}()},
-\code{\link{plot_tshell}()}
+Other well:
+\code{\link[=choose_pair_manual]{choose_pair_manual()}},
+\code{\link[=get_well_subset]{get_well_subset()}},
+\code{\link[=get_wells_from_edges]{get_wells_from_edges()}},
+\code{\link[=load_well_counts_binary]{load_well_counts_binary()}},
+\code{\link[=plot_tshell]{plot_tshell()}}
 }
 \concept{well}

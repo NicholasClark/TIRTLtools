@@ -38,11 +38,11 @@ get_wells_from_edges("A13", "P24", return_type = "rows_and_columns")
 
 }
 \seealso{
-Other well: 
-\code{\link{choose_pair_manual}()},
-\code{\link{get_well_subset}()},
-\code{\link{load_well_counts_binary}()},
-\code{\link{plot_tshell}()},
-\code{\link{write_well_data_to_binary}()}
+Other well:
+\code{\link[=choose_pair_manual]{choose_pair_manual()}},
+\code{\link[=get_well_subset]{get_well_subset()}},
+\code{\link[=load_well_counts_binary]{load_well_counts_binary()}},
+\code{\link[=plot_tshell]{plot_tshell()}},
+\code{\link[=write_well_data_to_binary]{write_well_data_to_binary()}}
 }
 \concept{well}

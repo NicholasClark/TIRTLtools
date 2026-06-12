@@ -55,9 +55,9 @@ node_df \%>\%
 
 }
 \seealso{
-Other tcr_similarity: 
-\code{\link{TCRdist}()},
-\code{\link{cluster_tcrs}()},
-\code{\link{plot_clusters}()}
+Other tcr_similarity:
+\code{\link[=TCRdist]{TCRdist()}},
+\code{\link[=cluster_tcrs]{cluster_tcrs()}},
+\code{\link[=plot_clusters]{plot_clusters()}}
 }
 \concept{tcr_similarity}

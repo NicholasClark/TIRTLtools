@@ -22,11 +22,11 @@ This function takes in an object created by \code{\link{plot_tshell}()} and allo
 a user to choose the partner for the input chain used to create that object.
 }
 \seealso{
-Other well: 
-\code{\link{get_well_subset}()},
-\code{\link{get_wells_from_edges}()},
-\code{\link{load_well_counts_binary}()},
-\code{\link{plot_tshell}()},
-\code{\link{write_well_data_to_binary}()}
+Other well:
+\code{\link[=get_well_subset]{get_well_subset()}},
+\code{\link[=get_wells_from_edges]{get_wells_from_edges()}},
+\code{\link[=load_well_counts_binary]{load_well_counts_binary()}},
+\code{\link[=plot_tshell]{plot_tshell()}},
+\code{\link[=write_well_data_to_binary]{write_well_data_to_binary()}}
 }
 \concept{well}

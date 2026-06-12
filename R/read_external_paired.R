@@ -1,24 +1,48 @@
-## example:
-# path = "data/BM03_processed-data/neb/N-F5L/N-F5L_TRA.tsv"
-# path = "data/BM03_processed-data/cellecta_RNA/C2-R-F5L/C2-R-F5L_TRA.tsv"
-# path = "data/BM03_processed-data/takara/T-F5L/T-F5L_TRA.tsv"
-# path = "data/BM03_processed-data/qiaseq/Q-combined-F5L_combined_run2/Q-combined-F5L.clones_TRA.tsv"
-read_external_bulk = function(path) {
-  df_orig = fread(path)
-  cols = .get_necessary_cols_bulk()
-  .check_cols(df_orig, cols) ## errors if it doesn't have the needed columns
-  df = df_orig %>%
-    mutate(v = gsub("\\*.*", "", allVHitsWithScore),
-           j = gsub("\\*.*", "", allJHitsWithScore)) %>%
-    select(targetSequences, readCount, v, j, aaSeqCDR3, readFraction, everything())
-  return(list(df = df, df_raw = df_orig))
-}
+#' Read and process single-cell paired-chain TCR-seq data
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' This function reads and processes paired TCR-sequencing data from a non-TIRTLseq assay.
+#' Currently 10X and Parse Biosciences data are supported.
+#'
+#' @details
+#' Supported data types:
+#' - \code{"10X"} - "filtered_contig_annotations.csv" or "all_contig_annotations.csv" outputs from Cell Ranger
+#' (https://www.10xgenomics.com/support/software/cell-ranger/7.2/analysis/outputs/cr-5p-outputs-overview-vdj)
+#' - \code{"ParseBio"} - "tcr_annotation_airr.tsv" output from Trailmaker
+#'
+#' @param path the path to the data file
+#' @param format the format of the data, either \code{"10X"} or \code{"ParseBio"} or \code{"auto"}. If \code{"auto"} (default), the function will try to decipher which technology the data file was created by.
+#' @param id_cols a vector of column names to be used to define a clone (e.g. \code{c("va","vb","ja","jb","alpha_nuc", "beta_nuc", "cdr3a", "cdr3b")}). This can be produced automatically using the \code{\link{make_tcr_schema}()} function.
+#' @param multi If \code{FALSE} (default), select only the best two alpha chains for each beta chain
+#' when processing the data and creating a data frame with paired TCRs. If \code{TRUE}, keep all alphas.
+#' @param separate_rows If \code{TRUE}, when there are multiple alpha chains
+#' paired with one beta chain, put each pair in a separate row in the output data frame. If
+#' \code{FALSE}, add second alpha chain in extra columns on the same row.
+#' @param productive_only If \code{TRUE}, keep only "productive" chains
+#' @param verbose If \code{TRUE}, print messages.
+#'
+#' @return A list containing the following slots:
+#' - df_pairs_complete - (data frame) paired receptors - one row for each receptor
+#' (excluding those missing an alpha or beta chain)
+#' - df_pairs - (data frame) with paired receptors - one row for each receptor
+#' (including those missing an alpha or beta chain)
+#' - df_pairs_long - (data frame) with paired receptors - one row for each cell
+#' (including those missing an alpha or beta chain)
+#' - df_pairs_long_complete - (data frame) with paired receptors - one row for each cell
+#' (excluding those missing an alpha or beta chain)
+#' - df_raw - (data frame) un-edited input data
+#' - chain_df - (data frame) summary of total number of each chain in input data
+#' - barcode_df - (data frame) summary of number of chains found in each cell
+#' - id_cols - (character vector) columns used as IDs to uniquely define receptor pairs
+#' - n_cells_total -(integer) total number of cells
+#' - n_cells_complete - (integer) number of cells with both chains
+#'
+#' @family data_processing
 
-## multi -- if FALSE, only take one beta and best two alpha, else take all pairs
-## separate_rows -- if TRUE, report each pair on a separate row, instead of extra columns for second alpha
 read_external_paired = function(
     path,
-    format = c("auto","10x", "ParseBio"),
+    format = c("auto","10X", "ParseBio"),
     id_cols = make_tcr_schema(features = c("v", "j", "cdr3_aa", "cdr3_nt"), second_alpha = FALSE),
     multi = FALSE,
     separate_rows = TRUE,
@@ -189,7 +213,10 @@ read_external_paired = function(
              n_cells_complete = n_cells_complete,  ## (integer) number of cells with both chains
              chain_df = chain_df,                  ## (data frame) summary of total number of each chain in input data
              barcode_df = df_summ_barcodes,        ## (data frame) summary of number of chains found in each cell
-             id_cols = id_cols)                    ## (character vector) columns used as IDs to uniquely define receptor pairs
+             id_cols = id_cols, ## (character vector) columns used as IDs to uniquely define receptor pairs
+             n_cells_total = n_cells_total,        ## (integer) total number of cells
+             n_cells_complete = n_cells_complete  ## (integer) number of cells with both chains
+             )
 
   return(out)
 }
@@ -200,15 +227,15 @@ read_external_paired = function(
     return("ParseBio")
   }
   if("chain" %in% colnames(df)) {
-    if(verbose) message("Reading as '10x'...")
-    return("10x")
+    if(verbose) message("Reading as '10X'...")
+    return("10X")
   }
-  if(verbose) message("Format could not be identified, trying to read as '10x'...")
-  return("10x")
+  if(verbose) message("Format could not be identified, trying to read as '10X'...")
+  return("10X")
 }
 
 #' list columns needed in each format
-.get_necessary_cols_paired = function(format = c("10x", "ParseBio")) {
+.get_necessary_cols_paired = function(format = c("10X", "ParseBio")) {
   format = format[1]
   if(format == "ParseBio") {
     ## note: this is for tcr_annotation_airr.tsv
@@ -219,10 +246,10 @@ read_external_paired = function(
                   "d_cigar", "j_cigar", "v_identity", "j_identity", "cell_barcode",
                   "complete_vdj", "read_count", "transcript_count") ## for reference
     necessary_cols =c("cell_barcode", "locus", "productive", "v_call", "j_call", "cdr3", "cdr3_aa", "read_count", "transcript_count")
-  } else if(format == "10x") {
+  } else if(format == "10X") {
     ## note: this is for filtered_contig_annotations.csv or all_contig_annotations.csv
     ## "filtered" contig annotations are all of those that are TRUE for "is_cell", "high confidence", "full_length", and "productive"
-    ## other 10x/CellRanger output files not included yet:
+    ## other 10X/CellRanger output files not included yet:
     full_cols = c("barcode", "is_cell", "contig_id", "high_confidence", "length",
                   "chain", "v_gene", "d_gene", "j_gene", "c_gene", "full_length",
                   "productive", "fwr1", "fwr1_nt", "cdr1", "cdr1_nt", "fwr2", "fwr2_nt",
@@ -231,7 +258,7 @@ read_external_paired = function(
                   "exact_subclonotype_id") ## for reference
     necessary_cols = c("barcode", "chain", "productive", "v_gene", "j_gene", "cdr3_nt", "cdr3", "reads", "umis")
   } else {
-    stop("'format' is not recognized: must be either '10x' or 'ParseBio'")
+    stop("'format' is not recognized: must be either '10X' or 'ParseBio'")
   }
   return(necessary_cols)
 }

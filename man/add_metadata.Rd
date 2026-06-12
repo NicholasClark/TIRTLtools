@@ -24,8 +24,8 @@ This function adds a metadata data frame, \code{obj$meta}, to the input TIRTLseq
 the sample names. This can be useful when the metadata was not specified when the initial object was loaded.
 }
 \seealso{
-Other data_wrangling: 
-\code{\link{filter_dataset}()},
-\code{\link{reorder_samples}()}
+Other data_wrangling:
+\code{\link[=filter_dataset]{filter_dataset()}},
+\code{\link[=reorder_samples]{reorder_samples()}}
 }
 \concept{data_wrangling}

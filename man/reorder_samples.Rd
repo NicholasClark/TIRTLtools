@@ -39,8 +39,8 @@ print(sjtrc$meta)
 
 }
 \seealso{
-Other data_wrangling: 
-\code{\link{add_metadata}()},
-\code{\link{filter_dataset}()}
+Other data_wrangling:
+\code{\link[=add_metadata]{add_metadata()}},
+\code{\link[=filter_dataset]{filter_dataset()}}
 }
 \concept{data_wrangling}

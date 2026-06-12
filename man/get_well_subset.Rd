@@ -25,11 +25,11 @@ get_well_subset(1:16, 13:24) ## right half of plate
 
 }
 \seealso{
-Other well: 
-\code{\link{choose_pair_manual}()},
-\code{\link{get_wells_from_edges}()},
-\code{\link{load_well_counts_binary}()},
-\code{\link{plot_tshell}()},
-\code{\link{write_well_data_to_binary}()}
+Other well:
+\code{\link[=choose_pair_manual]{choose_pair_manual()}},
+\code{\link[=get_wells_from_edges]{get_wells_from_edges()}},
+\code{\link[=load_well_counts_binary]{load_well_counts_binary()}},
+\code{\link[=plot_tshell]{plot_tshell()}},
+\code{\link[=write_well_data_to_binary]{write_well_data_to_binary()}}
 }
 \concept{well}

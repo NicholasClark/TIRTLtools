@@ -59,9 +59,9 @@ plot_clonotype_indices(data, chain = "beta")
 \seealso{
 \code{\link{diversity}()}, \code{\link{plot_diversity}()}
 
-Other diversity: 
-\code{\link{calculate_diversity}()},
-\code{\link{get_all_div_metrics}()},
-\code{\link{plot_diversity}()}
+Other diversity:
+\code{\link[=calculate_diversity]{calculate_diversity()}},
+\code{\link[=get_all_div_metrics]{get_all_div_metrics()}},
+\code{\link[=plot_diversity]{plot_diversity()}}
 }
 \concept{diversity}

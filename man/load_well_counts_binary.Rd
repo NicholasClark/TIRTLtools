@@ -40,11 +40,11 @@ along with metadata data frames for each clone.
 Data loaded this way can be used as input to the \code{\link{plot_tshell}()} function.
 }
 \seealso{
-Other well: 
-\code{\link{choose_pair_manual}()},
-\code{\link{get_well_subset}()},
-\code{\link{get_wells_from_edges}()},
-\code{\link{plot_tshell}()},
-\code{\link{write_well_data_to_binary}()}
+Other well:
+\code{\link[=choose_pair_manual]{choose_pair_manual()}},
+\code{\link[=get_well_subset]{get_well_subset()}},
+\code{\link[=get_wells_from_edges]{get_wells_from_edges()}},
+\code{\link[=plot_tshell]{plot_tshell()}},
+\code{\link[=write_well_data_to_binary]{write_well_data_to_binary()}}
 }
 \concept{well}

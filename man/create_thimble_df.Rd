@@ -74,7 +74,7 @@ This function creates a "thimble" data frame for use with the Stitchr Python pac
 The resulting data frame can be written to a .tsv with \code{\link{write_stitchr_tsv}()}.
 }
 \seealso{
-Other stitchr: 
-\code{\link{write_stitchr_tsv}()}
+Other stitchr:
+\code{\link[=write_stitchr_tsv]{write_stitchr_tsv()}}
 }
 \concept{stitchr}

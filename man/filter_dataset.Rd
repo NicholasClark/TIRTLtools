@@ -43,8 +43,8 @@ p5 = filter_dataset(sjtrc, c("marker==cd4", "timepoint==tp2")) ### by multiple s
 
 }
 \seealso{
-Other data_wrangling: 
-\code{\link{add_metadata}()},
-\code{\link{reorder_samples}()}
+Other data_wrangling:
+\code{\link[=add_metadata]{add_metadata()}},
+\code{\link[=reorder_samples]{reorder_samples()}}
 }
 \concept{data_wrangling}

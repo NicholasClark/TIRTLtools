@@ -23,17 +23,20 @@ This is needed for pre-processing for \code{\link{TCRdist}()} and is part of \co
 which is automatically run during \code{\link{TCRdist}()}.
 }
 \seealso{
-Other data_processing: 
-\code{\link{TIRTL_process}()},
-\code{\link{add_single_chain_data}()},
-\code{\link{clean_pairs}()},
-\code{\link{filter_duplicate_tcrs}()},
-\code{\link{filter_mait}()},
-\code{\link{filter_nonfunctional_TCRs}()},
-\code{\link{filter_short_cdr3s}()},
-\code{\link{identify_non_functional_seqs}()},
-\code{\link{identify_paired}()},
-\code{\link{prep_for_tcrdist}()},
-\code{\link{remove_duplicates}()}
+Other data_processing:
+\code{\link[=TIRTL_process]{TIRTL_process()}},
+\code{\link[=add_single_chain_data]{add_single_chain_data()}},
+\code{\link[=clean_pairs]{clean_pairs()}},
+\code{\link[=filter_duplicate_tcrs]{filter_duplicate_tcrs()}},
+\code{\link[=filter_mait]{filter_mait()}},
+\code{\link[=filter_nonfunctional_TCRs]{filter_nonfunctional_TCRs()}},
+\code{\link[=filter_short_cdr3s]{filter_short_cdr3s()}},
+\code{\link[=identify_non_functional_seqs]{identify_non_functional_seqs()}},
+\code{\link[=identify_paired]{identify_paired()}},
+\code{\link[=make_tcr_schema]{make_tcr_schema()}},
+\code{\link[=prep_for_tcrdist]{prep_for_tcrdist()}},
+\code{\link[=read_external_bulk]{read_external_bulk()}},
+\code{\link[=read_external_paired]{read_external_paired()}},
+\code{\link[=remove_duplicates]{remove_duplicates()}}
 }
 \concept{data_processing}

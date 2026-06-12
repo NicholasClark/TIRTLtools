@@ -50,9 +50,9 @@ a heatmap.
 \seealso{
 \code{\link{cluster_tcrs}()}, \code{\link{TCRdist}()}
 
-Other tcr_similarity: 
-\code{\link{TCRdist}()},
-\code{\link{TCRdist_cpp}()},
-\code{\link{cluster_tcrs}()}
+Other tcr_similarity:
+\code{\link[=TCRdist]{TCRdist()}},
+\code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
+\code{\link[=cluster_tcrs]{cluster_tcrs()}}
 }
 \concept{tcr_similarity}

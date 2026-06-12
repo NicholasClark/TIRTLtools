@@ -118,13 +118,13 @@ run_pairing_longitudinal = function(
   mlista<-lapply(mlist_all, function(x) {
     list_tmp = geta(x)
     names_full = names(list_tmp)
-    names(list_tmp) = .get_well_from_name(names(list_tmp), well_pos)
+    names(list_tmp) = .get_well_from_filename(names(list_tmp), well_pos)
     list_tmp = list_tmp[sort(names(list_tmp))]
     })
   mlistb<-lapply(mlist_all, function(x) {
     list_tmp = getb(x)
     names_full = names(list_tmp)
-    names(list_tmp) = .get_well_from_name(names(list_tmp), well_pos)
+    names(list_tmp) = .get_well_from_filename(names(list_tmp), well_pos)
     list_tmp = list_tmp[sort(names(list_tmp))]
   })
 

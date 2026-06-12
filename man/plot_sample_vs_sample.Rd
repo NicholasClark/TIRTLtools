@@ -83,7 +83,7 @@ plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "bet
 
 }
 \seealso{
-Other longitudinal: 
-\code{\link{plot_clone_size_across_samples}()}
+Other longitudinal:
+\code{\link[=plot_clone_size_across_samples]{plot_clone_size_across_samples()}}
 }
 \concept{longitudinal}

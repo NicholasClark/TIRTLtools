@@ -6,6 +6,8 @@
 \alias{TIRTLtools-package}
 \title{TIRTLtools: Analysis Tools for TIRTLseq Data}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 A suite of tools for analyzing paired T-cell receptor (TCR) datasets created using the TIRTL-seq assay. Contains an efficient GPU implementation of TCRdist (Dash et al., Nature 2017).
 }
 \seealso{
@@ -20,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Nicholas Clark \email{nicholas.clark00@gmail.com}
   \item Mikhail Pogorelyy \email{mpogorel@fredhutch.org}
 }
 

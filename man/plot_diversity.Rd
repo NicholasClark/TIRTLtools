@@ -80,9 +80,9 @@ plot_diversity(div, metric = "d50")
 \seealso{
 \code{\link{diversity}()}, \code{\link{get_all_div_metrics}()}
 
-Other diversity: 
-\code{\link{calculate_diversity}()},
-\code{\link{get_all_div_metrics}()},
-\code{\link{plot_clonotype_indices}()}
+Other diversity:
+\code{\link[=calculate_diversity]{calculate_diversity()}},
+\code{\link[=get_all_div_metrics]{get_all_div_metrics()}},
+\code{\link[=plot_clonotype_indices]{plot_clonotype_indices()}}
 }
 \concept{diversity}
