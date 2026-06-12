@@ -25,7 +25,7 @@ rename_columns <- function(df, format = c("10X", "ParseBio"), rename_df = get_na
 
 get_names_df_single_chain = function() {
   rename_df <- tribble(
-    ~name,      ~name_10x,   ~name_ParseBio,
+    ~name,      ~name_10X,   ~name_ParseBio,
     "barcode",  "barcode",   "cell_barcode",
     "chain",    "chain",     "locus",
     "cdr3_aa",  "cdr3",      "cdr3_aa",
