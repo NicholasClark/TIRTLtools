@@ -126,429 +126,741 @@ run_pairing(folder_path = tp1, folder_out = save_folder, prefix = "exp3_tp1_cd8"
           well_pos = 3, wellset1 = cd8_wells)
 ```
 
-    ## [1] "start"
-    ## [1] "2026-03-11 21:44:57 CDT"
     ## [1] "Folder already exists: ~/git/TIRTLtools/extra/exp3_cd8"
-    ## [1] "384 TCRalpha well files loaded"
-    ## [1] "384 TCRalpha well files loaded"
-    ## [1] "2026-03-11 21:45:27 CDT"
-    ## [1] "Clone threshold for QC:"
-    ## [1] 3210
-    ## [1] "Alpha wells passing QC:"
-    ## 
-    ## FALSE  TRUE 
-    ##   193   191 
-    ## [1] "Beta wells passing QC:"
-    ## 
-    ## FALSE  TRUE 
-    ##   193   191 
-    ## [1] "Tabulating TCRalpha pseudobulk counts"
-    ## [1] "2026-03-11 21:45:27 CDT"
-    ## [1] "Tabulating TCRbeta pseudobulk counts"
-    ## [1] "2026-03-11 21:45:49 CDT"
-    ## [1] "Pseudobulk done."
-    ## [1] "2026-03-11 21:46:09 CDT"
-    ## [1] "Merging alpha clonesets..."
-    ## [1] "Done! Unique alpha clones and wells after filtering:"
-    ## [1] 937875    191
-    ## [1] "2026-03-11 21:46:11 CDT"
-    ## [1] "Unique alpha clones and wells in more than: 2 wells"
-    ## [1] 36679   191
-    ## [1] "Done! beta clones and wells after filtering:"
-    ## [1] 928777    191
-    ## [1] "2026-03-11 21:46:11 CDT"
-    ## [1] "Unique beta clones and wells in more than: 2 wells"
-    ## [1] 36080   191
-    ## [1] "2026-03-11 21:46:11 CDT"
-    ## [1] "Pre-computing look-up table:"
+
+    ## Reading 384 files from ~/Downloads/zenodo/exp3_clones//TCR_clones_ID02
+
+    ## 25 of 384 files loaded
+
+    ## 50 of 384 files loaded
+
+    ## 75 of 384 files loaded
+
+    ## 100 of 384 files loaded
+
+    ## 125 of 384 files loaded
+
+    ## 150 of 384 files loaded
+
+    ## 175 of 384 files loaded
+
+    ## 200 of 384 files loaded
+
+    ## 225 of 384 files loaded
+
+    ## 250 of 384 files loaded
+
+    ## 275 of 384 files loaded
+
+    ## 300 of 384 files loaded
+
+    ## 325 of 384 files loaded
+
+    ## 350 of 384 files loaded
+
+    ## 375 of 384 files loaded
+
+    ## 384 of 384 files loaded
+
+    ## 192 TCRalpha well files loaded
+
+    ## 192 TCRbeta well files loaded
+
+    ## Total number of TCRalpha reads: 6.86e+07
+
+    ## Total number of TCRbeta reads: 9.83e+07
+
+    ## Total number of unique TCRalpha chains: 937880
+
+    ## Total number of unique TCRbeta chains: 928782
+
+    ## 1 out of 192 wells removed by QC: P3
+
+    ## Clone threshold for QC: 3217
+
+    ## Alpha wells passing QC: 191
+
+    ## Beta wells passing QC: 191
+
+    ## Alpha wells failing QC: 1
+
+    ## Beta wells failing QC: 1
+
+    ## Tabulating TCRalpha pseudobulk counts
+
+    ## Writing TCRalpha pseudobulk file... exp3_tp1_cd8_pseudobulk_TRA.tsv
+
+    ## Tabulating TCRbeta pseudobulk counts
+
+    ## Writing TCRbeta pseudobulk file... exp3_tp1_cd8_pseudobulk_TRB.tsv
+
+    ## Pseudobulk done
+
+    ## Merging alpha clonesets...
+
+    ## Done! Unique alpha clones after filtering: 937875
+
+    ## Unique alpha clones in more than 2 wells: 36679
+
+    ## Done! Unique beta clones after filtering: 928777
+
+    ## Unique beta clones and wells in more than 2 wells: 36080
+
+    ## Pre-computing look-up table:
+
     ##   |                                                                              |                                                                      |   0%  |                                                                              |                                                                      |   1%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  23%  |                                                                              |================                                                      |  24%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |=======================                                               |  34%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |=================================                                     |  48%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |=================================================                     |  71%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  76%  |                                                                              |======================================================                |  77%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  80%  |                                                                              |========================================================              |  81%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================|  99%  |                                                                              |======================================================================| 100%
-    ## [1] "2026-03-11 21:46:14 CDT"
-    ## [1] "Filtering results, adding amino acid and V segment information"
-    ## [1] "Scoring unique pairs..."
-    ## [1] "2026-03-11 21:46:44 CDT"
-    ## [1] "All is done! Number of paired clones:"
+
+    ## Running pairing algorithms...
+
+    ## Checking for available GPU...
     ## 
-    ## madhype  tshell 
-    ##   13379    7311
+    ## Apple Silicon GPU detected:
+    ## Apple Silicon GPU (M1/M2/M3)
+    ## Checking for GPU-related Python modules...
+    ## 
+    ## 'mlx' is installed (for Apple Silicon GPUs).
+    ## Loading mlx
+    ## total number of chunks 73
+    ## start time for MAD-HYPE: 2026-06-15 13:26:33
+    ## Progress: 3500 (10%)
+    ## Progress: 7000 (20%)
+    ## Progress: 14500 (40%)
+    ## Progress: 18000 (50%)
+    ## Progress: 22000 (60%)
+    ## Progress: 25500 (70%)
+    ## Progress: 33000 (90%)
+    ## Progress: 36500 (100%)
+    ## end time for MAD-HYPE: 2026-06-15 13:26:37
+    ## Number of pairs: 13379
+    ## total number of chunks 73
+    ## start processing time for T-Shell: 2026-06-15 13:26:37
+    ## Progress: 3500 (10%)
+    ## Progress: 7000 (20%)
+    ## Progress: 14500 (40%)
+    ## Progress: 18000 (50%)
+    ## Progress: 22000 (60%)
+    ## Progress: 25500 (70%)
+    ## Progress: 33000 (90%)
+    ## Progress: 36500 (100%)
+    ## end time for T-Shell: 2026-06-15 13:26:40
+
+    ## Pairing is finished.
+
+    ## [1] "Filtering results, adding amino acid and V segment information..."
+    ## [1] "Scoring unique pairs..."
+
+    ## Writing TCRalpha/beta pairs... exp3_tp1_cd8_TIRTLoutput.tsv
+
+    ## All pairing is finished!
+
+    ## Number of clones paired by MAD-HYPE algorithm: 13379
+
+    ## Number of clones paired by T-SHELL algorithm: 7304
+
+    ## Total number of unique TCRalpha/beta pairs: 14270
+
+    ## 79.748 sec elapsed
 
     ## Key: <wi, wj, wij>
-    ##           wi    wj   wij                                     alpha_nuc
-    ##        <num> <num> <num>                                        <char>
-    ##     1:     0     0     3             TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT
-    ##     2:     0     0     3             TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT
-    ##     3:     0     0     3    TGTGCAATGAGAAATCGTAGTTCCGGGTATGCACTCAACTTC
-    ##     4:     0     0     3       TGTGCTCTGAGCCATACTGGAGGCTTCAAAACTATCTTT
-    ##     5:     0     0     3    TGTGCTCTAATCCGCAATTCAGGAAACACACCTCTTGTCTTT
-    ##    ---                                                                
-    ## 20686:    92     0    38                   TGTGGGGGTTACCAGAAAGTTACCTTT
-    ## 20687:    94     0    42 TGTGCTCTTGGGGAAAGGATGGACAGCTGGGGGAAATTGCAGTTT
-    ## 20688:    97     0    56       TGTGCTCTAGAACCTGGTGGCTACAATAAGCTGATTTTT
-    ## 20689:    98     0    49    TGTGCAATGAGTGCATCAGGAGGAAGCTACATACCTACATTT
-    ## 20690:   101     0    53          TGTGCTCTTTACAGCAGTGCTTCCAAGATAATCTTT
-    ##                                                    beta_nuc    wa    wb
-    ##                                                      <char> <int> <int>
-    ##     1:           TGCAGTGCTACATCTCGGAGAGAGCCCTACGAGCAGTACTTC     3     3
-    ##     2:        TGCGCCAGCAGCCCCGTCTGACGAATTGGAAACACCATATATTTT     3     3
-    ##     3:           TGTGCCAGCAGTGAGACAGGGCTCTCCTACGAGCAGTACTTC     3     3
-    ##     4:              TGTGCCAGCAGCCATGATGGCTCCTACGAGCAGTACTTC     3     3
-    ##     5:     TGTGCCAGCAGCTCCGGCGAAAGAAGGTCCTACAATGAGCAGTTCTTC     3     3
-    ##    ---                                                                 
-    ## 20686:       TGTGCCAGTAGTATCAACGGTTACTCCCCCGGGGAGCTGTTTTTTT   130    38
-    ## 20687: TGTGCCAGCAGTTACACGTCCGTGGGGCGCAGCGGTGAAAAACTGTTTTTTT   136    42
-    ## 20688:         TGTGCCATCAGTGACGATGCCACCCCCAAGAGACCCAGTACTTC   153    56
-    ## 20689:           TGTGCAAGTCGCCTAGGACTAGCGGGAGAGACCCAGTACTTC   147    49
-    ## 20690:  TGCGCCAGCAGCTTGGTTCCCTCGGACAGGGCCAATCAGCCCCAGCACTTT   154    53
-    ##                                        alpha_nuc_seq
-    ##                                               <char>
-    ##     1:             TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT
-    ##     2:             TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT
-    ##     3:    TGTGCAATGAGAAATCGTAGTTCCGGGTATGCACTCAACTTC
-    ##     4:       TGTGCTCTGAGCCATACTGGAGGCTTCAAAACTATCTTT
-    ##     5:    TGTGCTCTAATCCGCAATTCAGGAAACACACCTCTTGTCTTT
-    ##    ---                                              
-    ## 20686:                   TGTGGGGGTTACCAGAAAGTTACCTTT
-    ## 20687: TGTGCTCTTGGGGAAAGGATGGACAGCTGGGGGAAATTGCAGTTT
-    ## 20688:       TGTGCTCTAGAACCTGGTGGCTACAATAAGCTGATTTTT
-    ## 20689:    TGTGCAATGAGTGCATCAGGAGGAAGCTACATACCTACATTT
-    ## 20690:          TGTGCTCTTTACAGCAGTGCTTCCAAGATAATCTTT
-    ##                                                beta_nuc_seq
-    ##                                                      <char>
-    ##     1:           TGCAGTGCTACATCTCGGAGAGAGCCCTACGAGCAGTACTTC
-    ##     2:        TGCGCCAGCAGCCCCGTCTGACGAATTGGAAACACCATATATTTT
-    ##     3:           TGTGCCAGCAGTGAGACAGGGCTCTCCTACGAGCAGTACTTC
-    ##     4:              TGTGCCAGCAGCCATGATGGCTCCTACGAGCAGTACTTC
-    ##     5:     TGTGCCAGCAGCTCCGGCGAAAGAAGGTCCTACAATGAGCAGTTCTTC
-    ##    ---                                                     
-    ## 20686:       TGTGCCAGTAGTATCAACGGTTACTCCCCCGGGGAGCTGTTTTTTT
-    ## 20687: TGTGCCAGCAGTTACACGTCCGTGGGGCGCAGCGGTGAAAAACTGTTTTTTT
-    ## 20688:         TGTGCCATCAGTGACGATGCCACCCCCAAGAGACCCAGTACTTC
-    ## 20689:           TGTGCAAGTCGCCTAGGACTAGCGGGAGAGACCCAGTACTTC
-    ## 20690:  TGCGCCAGCAGCTTGGTTCCCTCGGACAGGGCCAATCAGCCCCAGCACTTT
-    ##                                                                                                alpha_beta
-    ##                                                                                                    <char>
-    ##     1:                       TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT_TGCAGTGCTACATCTCGGAGAGAGCCCTACGAGCAGTACTTC
-    ##     2:                    TGTGTGAGAGCCGGAGGCTTCAAAACTATCTTT_TGCGCCAGCAGCCCCGTCTGACGAATTGGAAACACCATATATTTT
-    ##     3:              TGTGCAATGAGAAATCGTAGTTCCGGGTATGCACTCAACTTC_TGTGCCAGCAGTGAGACAGGGCTCTCCTACGAGCAGTACTTC
-    ##     4:                    TGTGCTCTGAGCCATACTGGAGGCTTCAAAACTATCTTT_TGTGCCAGCAGCCATGATGGCTCCTACGAGCAGTACTTC
-    ##     5:        TGTGCTCTAATCCGCAATTCAGGAAACACACCTCTTGTCTTT_TGTGCCAGCAGCTCCGGCGAAAGAAGGTCCTACAATGAGCAGTTCTTC
-    ##    ---                                                                                                   
-    ## 20686:                         TGTGGGGGTTACCAGAAAGTTACCTTT_TGTGCCAGTAGTATCAACGGTTACTCCCCCGGGGAGCTGTTTTTTT
-    ## 20687: TGTGCTCTTGGGGAAAGGATGGACAGCTGGGGGAAATTGCAGTTT_TGTGCCAGCAGTTACACGTCCGTGGGGCGCAGCGGTGAAAAACTGTTTTTTT
-    ## 20688:               TGTGCTCTAGAACCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCATCAGTGACGATGCCACCCCCAAGAGACCCAGTACTTC
-    ## 20689:              TGTGCAATGAGTGCATCAGGAGGAAGCTACATACCTACATTT_TGTGCAAGTCGCCTAGGACTAGCGGGAGAGACCCAGTACTTC
-    ## 20690:           TGTGCTCTTTACAGCAGTGCTTCCAAGATAATCTTT_TGCGCCAGCAGCTTGGTTCCCTCGGACAGGGCCAATCAGCCCCAGCACTTT
-    ##         method     r    ts  pval pval_adj loss_a_frac loss_b_frac     score
-    ##         <char> <num> <num> <num>    <num>       <num>       <num>     <num>
-    ##     1: madhype    NA    NA    NA       NA           0   0.0000000 0.6184880
-    ##     2: madhype    NA    NA    NA       NA           0   0.0000000 0.6184880
-    ##     3: madhype    NA    NA    NA       NA           0   0.0000000 0.6184880
-    ##     4: madhype    NA    NA    NA       NA           0   0.0000000 0.6184880
-    ##     5: madhype    NA    NA    NA       NA           0   0.0000000 0.6184880
-    ##    ---                                                                     
-    ## 20686: madhype    NA    NA    NA       NA           0   0.7076923 1.8528944
-    ## 20687: madhype    NA    NA    NA       NA           0   0.6911765 1.7626683
-    ## 20688: madhype    NA    NA    NA       NA           0   0.6339869 1.1176341
-    ## 20689: madhype    NA    NA    NA       NA           0   0.6666667 1.1736806
-    ## 20690: madhype    NA    NA    NA       NA           0   0.6558442 0.5082625
-    ##                  cdr3a         va     ja              cdr3b       vb      jb
-    ##                 <char>     <char> <char>             <char>   <char>  <char>
-    ##     1:     CVRAGGFKTIF   TRAV12-1  TRAJ9     CSATSRREPYEQYF TRBV20-1 TRBJ2-7
-    ##     2:     CVRAGGFKTIF   TRAV12-1  TRAJ9    CASSPV*RIGNTIYF  TRBV5-1 TRBJ1-3
-    ##     3:  CAMRNRSSGYALNF TRAV14/DV4 TRAJ41     CASSETGLSYEQYF TRBV25-1 TRBJ2-7
-    ##     4:   CALSHTGGFKTIF    TRAV9-2  TRAJ9      CASSHDGSYEQYF  TRBV3-1 TRBJ2-7
-    ##     5:  CALIRNSGNTPLVF     TRAV16 TRAJ29   CASSSGERRSYNEQFF  TRBV5-4 TRBJ2-1
+    ##           wi    wj   wij                                           alpha_nuc
+    ##        <num> <num> <num>                                              <char>
+    ##     1:     0     3    85          TGTGCAATGAGTTTTAACTTTGGAAATGAGAAATTAACCTTT
+    ##     2:     1     0    56             TGTGCTGGACATACCGGCACTGCCAGTAAACTCACCTTT
+    ##     3:     1     0    56 TGTGCAGGAGCGGAGGATGCTGGTGGTACTAGCTATGGAAAGCTGACATTT
+    ##     4:     0     4    68             TGTGCCGTGGACGTGTACACCGGTAACCAGTTCTATTTT
+    ##     5:     0     4    68          TGCGGCACAGAAAGCGGAGGTAGCAACTATAAACTGACATTT
     ##    ---                                                                      
-    ## 20686:       CGGYQKVTF   TRAV12-3 TRAJ13   CASSINGY_PPGSCFF   TRBV19 TRBJ2-2
-    ## 20687: CALGERMDSWGKLQF      TRDV1 TRAJ24 CASSYTSVG_AAVKNCFF  TRBV6-6 TRBJ1-4
-    ## 20688:   CALEPGGYNKLIF      TRAV6  TRAJ4    CAISDDA_PQETQYF TRBV10-3 TRBJ2-5
-    ## 20689:  CAMSASGGSYIPTF TRAV14/DV4  TRAJ6     CASRLGLAGETQYF TRBV12-2 TRBJ2-5
-    ## 20690:    CALYSSASKIIF      TRAV6  TRAJ3  CASSLVPSDRANQPQHF  TRBV5-1 TRBJ1-5
+    ## 20679:    40     0    86                TGTGCTCTGAGTGAGACCGGTAACCAGTTCTATTTT
+    ## 20680:     0     1   190         TGTGCAGAGTTGAAGATCTTATAACACCGACAAGCTCATCTTT
+    ## 20681:     0     0   191            TGTGCCGTGAAACAATAACCAGGGAGGAAAGCTTATCTTC
+    ## 20682:     0    24   165           TGTGCAGGAGTTGGGGAGGAAGCCAAGGAAATCTCATCTTT
+    ## 20683:     0     5   186        TGTGCTCTGAGTGACAAATAGGCTTTGGGAATGTGCTGCATTGC
+    ##                                                      beta_nuc    wa    wb
+    ##                                                        <char> <int> <int>
+    ##     1:             TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC    85    88
+    ##     2:          TGCGCCAGCAGCCGAGTCAGAAATCCCGACTACGAGCAGTACTTC    57    56
+    ##     3:          TGCGCCAGCAGCCGAGTCAGAAATCCCGACTACGAGCAGTACTTC    57    56
+    ##     4:                TGCGCCAGCAGCTTTGACAAGACCTATGGCTACACCTTC    68    72
+    ##     5:                TGCGCCAGCAGCTTTGACAAGACCTATGGCTACACCTTC    68    72
+    ##    ---                                                                   
+    ## 20679:                 TGTGCCAGCAGCCAGGGATCTGGCGGAGACAGTTCTTC   126    86
+    ## 20680:                TGTGCCTGGAGTAAGGGTGAGGCCAACGTCCTGACTTTC   190   191
+    ## 20681:             TGTGCCAGCAGCACAGGACTGCCAAGAGATACGCAGTATTTT   191   191
+    ## 20682:                TGCAGTGCTAGGGGGGACAGCTCCTACGAGCAGTACTTC   165   189
+    ## 20683: TGTGCCAGCAGCTTTCAGGGCGGGGGAACGGTGGGCACAGATACGCAGTATTTT   186   191
+    ##                                              alpha_nuc_seq
+    ##                                                     <char>
+    ##     1:          TGTGCAATGAGTTTTAACTTTGGAAATGAGAAATTAACCTTT
+    ##     2:             TGTGCTGGACATACCGGCACTGCCAGTAAACTCACCTTT
+    ##     3: TGTGCAGGAGCGGAGGATGCTGGTGGTACTAGCTATGGAAAGCTGACATTT
+    ##     4:             TGTGCCGTGGACGTGTACACCGGTAACCAGTTCTATTTT
+    ##     5:          TGCGGCACAGAAAGCGGAGGTAGCAACTATAAACTGACATTT
+    ##    ---                                                    
+    ## 20679:                TGTGCTCTGAGTGAGACCGGTAACCAGTTCTATTTT
+    ## 20680:         TGTGCAGAGTTGAAGATCTTATAACACCGACAAGCTCATCTTT
+    ## 20681:            TGTGCCGTGAAACAATAACCAGGGAGGAAAGCTTATCTTC
+    ## 20682:           TGTGCAGGAGTTGGGGAGGAAGCCAAGGAAATCTCATCTTT
+    ## 20683:        TGTGCTCTGAGTGACAAATAGGCTTTGGGAATGTGCTGCATTGC
+    ##                                                  beta_nuc_seq
+    ##                                                        <char>
+    ##     1:             TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC
+    ##     2:          TGCGCCAGCAGCCGAGTCAGAAATCCCGACTACGAGCAGTACTTC
+    ##     3:          TGCGCCAGCAGCCGAGTCAGAAATCCCGACTACGAGCAGTACTTC
+    ##     4:                TGCGCCAGCAGCTTTGACAAGACCTATGGCTACACCTTC
+    ##     5:                TGCGCCAGCAGCTTTGACAAGACCTATGGCTACACCTTC
+    ##    ---                                                       
+    ## 20679:                 TGTGCCAGCAGCCAGGGATCTGGCGGAGACAGTTCTTC
+    ## 20680:                TGTGCCTGGAGTAAGGGTGAGGCCAACGTCCTGACTTTC
+    ## 20681:             TGTGCCAGCAGCACAGGACTGCCAAGAGATACGCAGTATTTT
+    ## 20682:                TGCAGTGCTAGGGGGGACAGCTCCTACGAGCAGTACTTC
+    ## 20683: TGTGCCAGCAGCTTTCAGGGCGGGGGAACGGTGGGCACAGATACGCAGTATTTT
+    ##                                                                                                 alpha_beta
+    ##                                                                                                     <char>
+    ##     1:               TGTGCAATGAGTTTTAACTTTGGAAATGAGAAATTAACCTTT_TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC
+    ##     2:               TGTGCTGGACATACCGGCACTGCCAGTAAACTCACCTTT_TGCGCCAGCAGCCGAGTCAGAAATCCCGACTACGAGCAGTACTTC
+    ##     3:   TGTGCAGGAGCGGAGGATGCTGGTGGTACTAGCTATGGAAAGCTGACATTT_TGCGCCAGCAGCCGAGTCAGAAATCCCGACTACGAGCAGTACTTC
+    ##     4:                     TGTGCCGTGGACGTGTACACCGGTAACCAGTTCTATTTT_TGCGCCAGCAGCTTTGACAAGACCTATGGCTACACCTTC
+    ##     5:                  TGCGGCACAGAAAGCGGAGGTAGCAACTATAAACTGACATTT_TGCGCCAGCAGCTTTGACAAGACCTATGGCTACACCTTC
+    ##    ---                                                                                                    
+    ## 20679:                         TGTGCTCTGAGTGAGACCGGTAACCAGTTCTATTTT_TGTGCCAGCAGCCAGGGATCTGGCGGAGACAGTTCTTC
+    ## 20680:                 TGTGCAGAGTTGAAGATCTTATAACACCGACAAGCTCATCTTT_TGTGCCTGGAGTAAGGGTGAGGCCAACGTCCTGACTTTC
+    ## 20681:                 TGTGCCGTGAAACAATAACCAGGGAGGAAAGCTTATCTTC_TGTGCCAGCAGCACAGGACTGCCAAGAGATACGCAGTATTTT
+    ## 20682:                   TGTGCAGGAGTTGGGGAGGAAGCCAAGGAAATCTCATCTTT_TGCAGTGCTAGGGGGGACAGCTCCTACGAGCAGTACTTC
+    ## 20683: TGTGCTCTGAGTGACAAATAGGCTTTGGGAATGTGCTGCATTGC_TGTGCCAGCAGCTTTCAGGGCGGGGGAACGGTGGGCACAGATACGCAGTATTTT
+    ##         method         r       ts         pval     pval_adj loss_a_frac
+    ##         <char>     <num>    <num>        <num>        <num>       <num>
+    ##     1: madhype        NA       NA           NA           NA 0.034090909
+    ##     2: madhype        NA       NA           NA           NA 0.000000000
+    ##     3: madhype        NA       NA           NA           NA 0.000000000
+    ##     4: madhype        NA       NA           NA           NA 0.055555556
+    ##     5: madhype        NA       NA           NA           NA 0.055555556
+    ##    ---                                                                 
+    ## 20679:  tshell 0.5611333 9.319887 3.088615e-17 8.477475e-11 0.000000000
+    ## 20680:  tshell 0.5594879 9.280079 3.993057e-17 2.274191e-11 0.005235602
+    ## 20681:  tshell 0.5515199 9.089538 1.357749e-16 9.696026e-13 0.000000000
+    ## 20682:  tshell 0.5426992 8.882772 5.069335e-16 1.223313e-11 0.126984127
+    ## 20683:  tshell 0.5270523 8.526113 4.781799e-15 3.515918e-11 0.026178010
+    ##        loss_b_frac     score             cdr3a         va     ja
+    ##              <num>     <num>            <char>     <char> <char>
+    ##     1:  0.00000000 45.705465    CAMSFNFGNEKLTF TRAV14/DV4 TRAJ48
+    ##     2:  0.01754386 42.204274     CAGHTGTASKLTF     TRAV21 TRAJ44
+    ##     3:  0.01754386 42.204274 CAGAEDAGGTSYGKLTF     TRAV27 TRAJ52
+    ##     4:  0.00000000 41.731629     CAVDVYTGNQFYF     TRAV39 TRAJ49
+    ##     5:  0.00000000 41.731629    CGTESGGSNYKLTF     TRAV30 TRAJ53
+    ##    ---                                                          
+    ## 20679:  0.31746032 17.460590      CALSETGNQFYF     TRAV19 TRAJ49
+    ## 20680:  0.00000000      -Inf   CAELKIL_NTDKLIF      TRAV5 TRAJ34
+    ## 20681:  0.00000000 -4.560842    CAVKQ*P_GGKLIF   TRAV12-2 TRAJ23
+    ## 20682:  0.00000000 -3.815652    CAGVGEE_QGNLIF     TRAV27 TRAJ42
+    ## 20683:  0.00000000      -Inf   CALSDK*_FGNVLHC     TRAV19 TRAJ35
+    ##                     cdr3b       vb      jb is_functional
+    ##                    <char>   <char>  <char>        <lgcl>
+    ##     1:     CASSLSSLEGGYTF   TRBV27 TRBJ1-2          TRUE
+    ##     2:    CASSRVRNPDYEQYF  TRBV4-1 TRBJ2-7          TRUE
+    ##     3:    CASSRVRNPDYEQYF  TRBV4-1 TRBJ2-7          TRUE
+    ##     4:      CASSFDKTYGYTF  TRBV5-1 TRBJ1-2          TRUE
+    ##     5:      CASSFDKTYGYTF  TRBV5-1 TRBJ1-2          TRUE
+    ##    ---                                                  
+    ## 20679:      CASSQG_WRRQFF  TRBV4-2 TRBJ2-1         FALSE
+    ## 20680:      CAWSKGEANVLTF   TRBV30 TRBJ2-6         FALSE
+    ## 20681:     CASSTGLPRDTQYF  TRBV5-8 TRBJ2-3         FALSE
+    ## 20682:      CSARGDSSYEQYF TRBV20-1 TRBJ2-7         FALSE
+    ## 20683: CASSFQGGGTVGTDTQYF  TRBV7-9 TRBJ2-3         FALSE
 
 ``` r
 run_pairing(folder_path = tp2, folder_out = save_folder, prefix = "exp3_tp2_cd8", well_filter_thres = 0.5,
             well_pos = 3, wellset1 = cd8_wells)
 ```
 
-    ## [1] "start"
-    ## [1] "2026-03-11 21:46:44 CDT"
     ## [1] "Folder already exists: ~/git/TIRTLtools/extra/exp3_cd8"
-    ## [1] "384 TCRalpha well files loaded"
-    ## [1] "384 TCRalpha well files loaded"
-    ## [1] "2026-03-11 21:47:05 CDT"
-    ## [1] "Clone threshold for QC:"
-    ## [1] 3844
-    ## [1] "Alpha wells passing QC:"
-    ## 
-    ## FALSE  TRUE 
-    ##   193   191 
-    ## [1] "Beta wells passing QC:"
-    ## 
-    ## FALSE  TRUE 
-    ##   193   191 
-    ## [1] "Tabulating TCRalpha pseudobulk counts"
-    ## [1] "2026-03-11 21:47:05 CDT"
-    ## [1] "Tabulating TCRbeta pseudobulk counts"
-    ## [1] "2026-03-11 21:47:29 CDT"
-    ## [1] "Pseudobulk done."
-    ## [1] "2026-03-11 21:47:50 CDT"
-    ## [1] "Merging alpha clonesets..."
-    ## [1] "Done! Unique alpha clones and wells after filtering:"
-    ## [1] 980522    191
-    ## [1] "2026-03-11 21:47:51 CDT"
-    ## [1] "Unique alpha clones and wells in more than: 2 wells"
-    ## [1] 58954   191
-    ## [1] "Done! beta clones and wells after filtering:"
-    ## [1] 895688    191
-    ## [1] "2026-03-11 21:47:52 CDT"
-    ## [1] "Unique beta clones and wells in more than: 2 wells"
-    ## [1] 56637   191
-    ## [1] "2026-03-11 21:47:52 CDT"
-    ## [1] "Pre-computing look-up table:"
+
+    ## Reading 384 files from ~/Downloads/zenodo/exp3_clones//TCR_clones_ID03
+
+    ## 25 of 384 files loaded
+
+    ## 50 of 384 files loaded
+
+    ## 75 of 384 files loaded
+
+    ## 100 of 384 files loaded
+
+    ## 125 of 384 files loaded
+
+    ## 150 of 384 files loaded
+
+    ## 175 of 384 files loaded
+
+    ## 200 of 384 files loaded
+
+    ## 225 of 384 files loaded
+
+    ## 250 of 384 files loaded
+
+    ## 275 of 384 files loaded
+
+    ## 300 of 384 files loaded
+
+    ## 325 of 384 files loaded
+
+    ## 350 of 384 files loaded
+
+    ## 375 of 384 files loaded
+
+    ## 384 of 384 files loaded
+
+    ## 192 TCRalpha well files loaded
+
+    ## 192 TCRbeta well files loaded
+
+    ## Total number of TCRalpha reads: 6.86e+07
+
+    ## Total number of TCRbeta reads: 8e+07
+
+    ## Total number of unique TCRalpha chains: 982918
+
+    ## Total number of unique TCRbeta chains: 897704
+
+    ## 1 out of 192 wells removed by QC: E3
+
+    ## Clone threshold for QC: 3936
+
+    ## Alpha wells passing QC: 191
+
+    ## Beta wells passing QC: 191
+
+    ## Alpha wells failing QC: 1
+
+    ## Beta wells failing QC: 1
+
+    ## Tabulating TCRalpha pseudobulk counts
+
+    ## Writing TCRalpha pseudobulk file... exp3_tp2_cd8_pseudobulk_TRA.tsv
+
+    ## Tabulating TCRbeta pseudobulk counts
+
+    ## Writing TCRbeta pseudobulk file... exp3_tp2_cd8_pseudobulk_TRB.tsv
+
+    ## Pseudobulk done
+
+    ## Merging alpha clonesets...
+
+    ## Done! Unique alpha clones after filtering: 980522
+
+    ## Unique alpha clones in more than 2 wells: 58954
+
+    ## Done! Unique beta clones after filtering: 895688
+
+    ## Unique beta clones and wells in more than 2 wells: 56637
+
+    ## Pre-computing look-up table:
+
     ##   |                                                                              |                                                                      |   0%  |                                                                              |                                                                      |   1%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  23%  |                                                                              |================                                                      |  24%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |=======================                                               |  34%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |=================================                                     |  48%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |=================================================                     |  71%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  76%  |                                                                              |======================================================                |  77%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  80%  |                                                                              |========================================================              |  81%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================|  99%  |                                                                              |======================================================================| 100%
-    ## [1] "2026-03-11 21:47:55 CDT"
-    ## [1] "Filtering results, adding amino acid and V segment information"
+
+    ## Running pairing algorithms...
+
+    ## total number of chunks 117
+    ## start time for MAD-HYPE: 2026-06-15 13:27:44
+    ## Progress: 5500 (10%)
+    ## Progress: 11500 (20%)
+    ## Progress: 17500 (30%)
+    ## Progress: 23500 (40%)
+    ## Progress: 29000 (50%)
+    ## Progress: 29500 (50%)
+    ## Progress: 35000 (60%)
+    ## Progress: 41000 (70%)
+    ## Progress: 47000 (80%)
+    ## Progress: 53000 (90%)
+    ## Progress: 58500 (100%)
+    ## end time for MAD-HYPE: 2026-06-15 13:27:51
+    ## Number of pairs: 16369
+    ## total number of chunks 117
+    ## start processing time for T-Shell: 2026-06-15 13:27:51
+    ## Progress: 5500 (10%)
+    ## Progress: 11500 (20%)
+    ## Progress: 17500 (30%)
+    ## Progress: 23500 (40%)
+    ## Progress: 29000 (50%)
+    ## Progress: 29500 (50%)
+    ## Progress: 35000 (60%)
+    ## Progress: 41000 (70%)
+    ## Progress: 47000 (80%)
+    ## Progress: 53000 (90%)
+    ## Progress: 58500 (100%)
+    ## end time for T-Shell: 2026-06-15 13:27:59
+
+    ## Pairing is finished.
+
+    ## [1] "Filtering results, adding amino acid and V segment information..."
     ## [1] "Scoring unique pairs..."
-    ## [1] "2026-03-11 21:48:38 CDT"
-    ## [1] "All is done! Number of paired clones:"
-    ## 
-    ## madhype  tshell 
-    ##   16369    9891
+
+    ## Writing TCRalpha/beta pairs... exp3_tp2_cd8_TIRTLoutput.tsv
+
+    ## All pairing is finished!
+
+    ## Number of clones paired by MAD-HYPE algorithm: 16369
+
+    ## Number of clones paired by T-SHELL algorithm: 9888
+
+    ## Total number of unique TCRalpha/beta pairs: 17890
+
+    ## 82.613 sec elapsed
 
     ## Key: <wi, wj, wij>
-    ##           wi    wj   wij                                           alpha_nuc
-    ##        <num> <num> <num>                                              <char>
-    ##     1:     0     0     3       TGTGCTACGGACGCGGAAACCGGCACTGCCAGTAAACTCACCTTT
-    ##     2:     0     0     3          TGTGCTGTCTTCCTCAAAGCTGCAGGCAACAAGCTAACTTTT
-    ##     3:     0     0     3             TGTGCTCTCCAGGGGAATAACAATGCCAGACTCATGTTT
-    ##     4:     0     0     3          TGTGCTCTCCTCCTTGTTTCAGATGGCCAGAAGCTGCTCTTT
-    ##     5:     0     0     3          TGTGCTGTGAGTCAGAAGAACAGAGATGACAAGATCATCTTT
-    ##    ---                                                                      
-    ## 26256:    95     0    36                TGCATCCTGAGAGAAGGGGGGAGTGACATGCGCTTT
-    ## 26257:    97     0    31       TGTGCCGTCCTCTGGGGGGTTTCAGGAAACACACCTCTTGTCTTT
-    ## 26258:    97     0    51                TGTGCAGAGAGGGGTGGAGGCTTCAAAACTATCTTT
-    ## 26259:    97     0    53 TGTGTTGTGAGTGGCTTTATACTCACGGGAGGAGGAAACAAACTCACCTTT
-    ## 26260:    98     0    46       TGTGCTCTGAGTGAGGCGAATTCAGATGGCCAGAAGCTGCTCTTT
-    ##                                                        beta_nuc    wa    wb
-    ##                                                          <char> <int> <int>
-    ##     1:         TGTGCCAGCAGCGTAGCTCTGTCAGGGGGCTTCTATGGCTACACCTTC     3     3
-    ##     2:           TGTGCCAGCAGCTTAGACGTCAGGGGCAGACACTGAAGCTTTCTTT     3     3
-    ##     3:      TGCGCCAGCAGCTTGGCCGGAGTTCACAGGACCACAGATACGCAGTATTTT     3     3
-    ##     4:      TGCGCCAGCAGCTTGGCCGGAGTTCACAGGACCACAGATACGCAGTATTTT     3     3
-    ##     5:                  TGCAGCGTCCGACTAGCGGGAGAAACCGAGCAGTACTTC     3     3
-    ##    ---                                                                     
-    ## 26256:            TGTGCCAGCAGCTTATGGGGGGGGGGGGACACTGAAGCTTTCTTT   131    36
-    ## 26257:       TGTGCCAGCAGTCCCCTCCCATGGGGGATGACACAGATACGCAGTATTTT   128    31
-    ## 26258:            TGCGCCAGCAGCTTGCGGGACCAGCCCTACAACGAGCAGTTCTTC   148    51
-    ## 26259: TGTGCCAGCAGCCAAGAAGGACTAGCGGGGGGGCCTACACCGGGGAGCTGTTTTTT   150    53
-    ## 26260:                 TGTGCCAGCAGTTTTTTGGGAGAACAATGAGCAGTTCTTC   144    46
-    ##                                              alpha_nuc_seq
+    ##           wi    wj   wij                                              alpha_nuc
+    ##        <num> <num> <num>                                                 <char>
+    ##     1:     2     2    62                TGTGCTGTGAGCGGCTACAGCTGGGGGAAATTGCAGTTT
+    ##     2:     2     4    60             TGTGCAATGAGTTTTAACTTTGGAAATGAGAAATTAACCTTT
+    ##     3:     3     8    65 TGTGCAATGAGAGAGGGCTCCTTTAGTGGAGGTAGCAACTATAAACTGACATTT
+    ##     4:     4     2    45                TGTGCTTTCAGGCAGGGCGGATCTGAAAAGCTGGTCTTT
+    ##     5:     5     2    47             TGTGCAGAGAGCGACATAGGCTTTGGGAATGTGCTGCATTGC
+    ##    ---                                                                         
+    ## 26253:    29     0   162                   TTCATCCGGATAGGCTTTGGGAATGTGCTGCATTGC
+    ## 26254:     0    11   180                  TGTGCAGAGAGTATGCCGTGCTTCCAAGATAATCTTT
+    ## 26255:     0     4   187               TGTGCCGTGAGACACAGGAGGAAGCTACATACCTACATTT
+    ## 26256:    14     0   177       TGTGCAGCAAAGGGGGTTTATGGTGGTGCTACAAACAAGCTCATCTTT
+    ## 26257:     0    28   149         TGTGTGGTGAACCCGACGGATAGGCTTTGGGAATGTGCTGCATTGC
+    ##                                                   beta_nuc    wa    wb
+    ##                                                     <char> <int> <int>
+    ##     1:          TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC    64    64
+    ##     2:          TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC    62    64
+    ##     3:       TGTGCCAGCAGTTTTTTGGCTAGCGGACAGTACGAGCAGTACTTC    68    73
+    ##     4: TGTGCCAGCAGCGTAGAGGGGCTAGCGGGAAGCACAGATACGCAGTATTTT    49    47
+    ##     5:       TGTGCCAGCAGCTTATACAGGGGAGATGGGAATGAGCAGTTCTTC    52    49
+    ##    ---                                                                
+    ## 26253:           TGTGCCAGCAGTCCCCAGGGGGGCTCTATGGCTACACCTTC   191   162
+    ## 26254:          TGCGCCAGCAGCCAAGATCGGAGCGGGGATGAGCAGTTCTTC   180   191
+    ## 26255:          TGCGCCAGCAGCCAAGATTTTAGCACCTACGAGCAGTACTTC   187   191
+    ## 26256:               TGCGCCGGCCCAGCCCGGGAACTATGGCTACACCTTC   191   177
+    ## 26257:    TGTGCCAGCAGCTCCTTAGCGGGAGGGCCATACAATGAGCAGTTCTTC   149   177
+    ##                                                 alpha_nuc_seq
+    ##                                                        <char>
+    ##     1:                TGTGCTGTGAGCGGCTACAGCTGGGGGAAATTGCAGTTT
+    ##     2:             TGTGCAATGAGTTTTAACTTTGGAAATGAGAAATTAACCTTT
+    ##     3: TGTGCAATGAGAGAGGGCTCCTTTAGTGGAGGTAGCAACTATAAACTGACATTT
+    ##     4:                TGTGCTTTCAGGCAGGGCGGATCTGAAAAGCTGGTCTTT
+    ##     5:             TGTGCAGAGAGCGACATAGGCTTTGGGAATGTGCTGCATTGC
+    ##    ---                                                       
+    ## 26253:                   TTCATCCGGATAGGCTTTGGGAATGTGCTGCATTGC
+    ## 26254:                  TGTGCAGAGAGTATGCCGTGCTTCCAAGATAATCTTT
+    ## 26255:               TGTGCCGTGAGACACAGGAGGAAGCTACATACCTACATTT
+    ## 26256:       TGTGCAGCAAAGGGGGTTTATGGTGGTGCTACAAACAAGCTCATCTTT
+    ## 26257:         TGTGTGGTGAACCCGACGGATAGGCTTTGGGAATGTGCTGCATTGC
+    ##                                               beta_nuc_seq
     ##                                                     <char>
-    ##     1:       TGTGCTACGGACGCGGAAACCGGCACTGCCAGTAAACTCACCTTT
-    ##     2:          TGTGCTGTCTTCCTCAAAGCTGCAGGCAACAAGCTAACTTTT
-    ##     3:             TGTGCTCTCCAGGGGAATAACAATGCCAGACTCATGTTT
-    ##     4:          TGTGCTCTCCTCCTTGTTTCAGATGGCCAGAAGCTGCTCTTT
-    ##     5:          TGTGCTGTGAGTCAGAAGAACAGAGATGACAAGATCATCTTT
+    ##     1:          TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC
+    ##     2:          TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC
+    ##     3:       TGTGCCAGCAGTTTTTTGGCTAGCGGACAGTACGAGCAGTACTTC
+    ##     4: TGTGCCAGCAGCGTAGAGGGGCTAGCGGGAAGCACAGATACGCAGTATTTT
+    ##     5:       TGTGCCAGCAGCTTATACAGGGGAGATGGGAATGAGCAGTTCTTC
     ##    ---                                                    
-    ## 26256:                TGCATCCTGAGAGAAGGGGGGAGTGACATGCGCTTT
-    ## 26257:       TGTGCCGTCCTCTGGGGGGTTTCAGGAAACACACCTCTTGTCTTT
-    ## 26258:                TGTGCAGAGAGGGGTGGAGGCTTCAAAACTATCTTT
-    ## 26259: TGTGTTGTGAGTGGCTTTATACTCACGGGAGGAGGAAACAAACTCACCTTT
-    ## 26260:       TGTGCTCTGAGTGAGGCGAATTCAGATGGCCAGAAGCTGCTCTTT
-    ##                                                    beta_nuc_seq
-    ##                                                          <char>
-    ##     1:         TGTGCCAGCAGCGTAGCTCTGTCAGGGGGCTTCTATGGCTACACCTTC
-    ##     2:           TGTGCCAGCAGCTTAGACGTCAGGGGCAGACACTGAAGCTTTCTTT
-    ##     3:      TGCGCCAGCAGCTTGGCCGGAGTTCACAGGACCACAGATACGCAGTATTTT
-    ##     4:      TGCGCCAGCAGCTTGGCCGGAGTTCACAGGACCACAGATACGCAGTATTTT
-    ##     5:                  TGCAGCGTCCGACTAGCGGGAGAAACCGAGCAGTACTTC
-    ##    ---                                                         
-    ## 26256:            TGTGCCAGCAGCTTATGGGGGGGGGGGGACACTGAAGCTTTCTTT
-    ## 26257:       TGTGCCAGCAGTCCCCTCCCATGGGGGATGACACAGATACGCAGTATTTT
-    ## 26258:            TGCGCCAGCAGCTTGCGGGACCAGCCCTACAACGAGCAGTTCTTC
-    ## 26259: TGTGCCAGCAGCCAAGAAGGACTAGCGGGGGGGCCTACACCGGGGAGCTGTTTTTT
-    ## 26260:                 TGTGCCAGCAGTTTTTTGGGAGAACAATGAGCAGTTCTTC
-    ##                                                                                                          alpha_beta
-    ##                                                                                                              <char>
-    ##     1:               TGTGCTACGGACGCGGAAACCGGCACTGCCAGTAAACTCACCTTT_TGTGCCAGCAGCGTAGCTCTGTCAGGGGGCTTCTATGGCTACACCTTC
-    ##     2:                    TGTGCTGTCTTCCTCAAAGCTGCAGGCAACAAGCTAACTTTT_TGTGCCAGCAGCTTAGACGTCAGGGGCAGACACTGAAGCTTTCTTT
-    ##     3:                  TGTGCTCTCCAGGGGAATAACAATGCCAGACTCATGTTT_TGCGCCAGCAGCTTGGCCGGAGTTCACAGGACCACAGATACGCAGTATTTT
-    ##     4:               TGTGCTCTCCTCCTTGTTTCAGATGGCCAGAAGCTGCTCTTT_TGCGCCAGCAGCTTGGCCGGAGTTCACAGGACCACAGATACGCAGTATTTT
-    ##     5:                           TGTGCTGTGAGTCAGAAGAACAGAGATGACAAGATCATCTTT_TGCAGCGTCCGACTAGCGGGAGAAACCGAGCAGTACTTC
-    ##    ---                                                                                                             
-    ## 26256:                           TGCATCCTGAGAGAAGGGGGGAGTGACATGCGCTTT_TGTGCCAGCAGCTTATGGGGGGGGGGGGACACTGAAGCTTTCTTT
-    ## 26257:             TGTGCCGTCCTCTGGGGGGTTTCAGGAAACACACCTCTTGTCTTT_TGTGCCAGCAGTCCCCTCCCATGGGGGATGACACAGATACGCAGTATTTT
-    ## 26258:                           TGTGCAGAGAGGGGTGGAGGCTTCAAAACTATCTTT_TGCGCCAGCAGCTTGCGGGACCAGCCCTACAACGAGCAGTTCTTC
-    ## 26259: TGTGTTGTGAGTGGCTTTATACTCACGGGAGGAGGAAACAAACTCACCTTT_TGTGCCAGCAGCCAAGAAGGACTAGCGGGGGGGCCTACACCGGGGAGCTGTTTTTT
-    ## 26260:                       TGTGCTCTGAGTGAGGCGAATTCAGATGGCCAGAAGCTGCTCTTT_TGTGCCAGCAGTTTTTTGGGAGAACAATGAGCAGTTCTTC
-    ##         method     r    ts  pval pval_adj loss_a_frac loss_b_frac    score
-    ##         <char> <num> <num> <num>    <num>       <num>       <num>    <num>
-    ##     1: madhype    NA    NA    NA       NA           0   0.0000000 0.417523
-    ##     2: madhype    NA    NA    NA       NA           0   0.0000000 0.417523
-    ##     3: madhype    NA    NA    NA       NA           0   0.0000000 0.417523
-    ##     4: madhype    NA    NA    NA       NA           0   0.0000000 0.417523
-    ##     5: madhype    NA    NA    NA       NA           0   0.0000000 0.417523
-    ##    ---                                                                    
-    ## 26256: madhype    NA    NA    NA       NA           0   0.7251908 1.073628
-    ## 26257: madhype    NA    NA    NA       NA           0   0.7578125 0.388667
-    ## 26258: madhype    NA    NA    NA       NA           0   0.6554054 1.113315
-    ## 26259: madhype    NA    NA    NA       NA           0   0.6466667 1.052812
-    ## 26260: madhype    NA    NA    NA       NA           0   0.6805556 0.990934
-    ##                    cdr3a       va     ja               cdr3b       vb      jb
-    ##                   <char>   <char> <char>              <char>   <char>  <char>
-    ##     1:   CATDAETGTASKLTF   TRAV17 TRAJ44    CASSVALSGGFYGYTF    TRBV9 TRBJ1-2
-    ##     2:    CAVFLKAAGNKLTF    TRAV3 TRAJ17    CASSLDVR_ADTEAFF TRBV11-2 TRBJ1-1
-    ##     3:     CALQGNNNARLMF   TRAV21 TRAJ31   CASSLAGVHRTTDTQYF  TRBV5-1 TRBJ2-3
-    ##     4:    CALLLVSDGQKLLF    TRAV6 TRAJ16   CASSLAGVHRTTDTQYF  TRBV5-1 TRBJ2-3
-    ##     5:    CAVSQKNRDDKIIF  TRAV8-6 TRAJ30       CSVRLAGETEQYF TRBV29-1 TRBJ2-7
-    ##    ---                                                                       
-    ## 26256:      CILREGGSDMRF TRAV26-2 TRAJ43     CASSLWGGGDTEAFF  TRBV7-2 TRBJ1-1
-    ## 26257:   CAVLWGVSGNTPLVF TRAV12-2 TRAJ29   CASSPLPW_DDTDTQYF TRBV12-3 TRBJ2-3
-    ## 26258:      CAERGGGFKTIF    TRAV5  TRAJ9     CASSLRDQPYNEQFF  TRBV5-1 TRBJ2-1
-    ## 26259: CVVSGFILTGGGNKLTF  TRAV8-2 TRAJ10 CASSQEGLA_GAYTGELFF  TRBV3-1 TRBJ2-2
-    ## 26260:   CALSEANSDGQKLLF   TRAV19 TRAJ16      CASSFLG_NNEQFF   TRBV28 TRBJ2-1
+    ## 26253:           TGTGCCAGCAGTCCCCAGGGGGGCTCTATGGCTACACCTTC
+    ## 26254:          TGCGCCAGCAGCCAAGATCGGAGCGGGGATGAGCAGTTCTTC
+    ## 26255:          TGCGCCAGCAGCCAAGATTTTAGCACCTACGAGCAGTACTTC
+    ## 26256:               TGCGCCGGCCCAGCCCGGGAACTATGGCTACACCTTC
+    ## 26257:    TGTGCCAGCAGCTCCTTAGCGGGAGGGCCATACAATGAGCAGTTCTTC
+    ##                                                                                                  alpha_beta
+    ##                                                                                                      <char>
+    ##     1:                   TGTGCTGTGAGCGGCTACAGCTGGGGGAAATTGCAGTTT_TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC
+    ##     2:                TGTGCAATGAGTTTTAACTTTGGAAATGAGAAATTAACCTTT_TGTGCCAGCAGTTTATCGTCCCTCGAGGGGGGCTACACCTTC
+    ##     3: TGTGCAATGAGAGAGGGCTCCTTTAGTGGAGGTAGCAACTATAAACTGACATTT_TGTGCCAGCAGTTTTTTGGCTAGCGGACAGTACGAGCAGTACTTC
+    ##     4:          TGTGCTTTCAGGCAGGGCGGATCTGAAAAGCTGGTCTTT_TGTGCCAGCAGCGTAGAGGGGCTAGCGGGAAGCACAGATACGCAGTATTTT
+    ##     5:             TGTGCAGAGAGCGACATAGGCTTTGGGAATGTGCTGCATTGC_TGTGCCAGCAGCTTATACAGGGGAGATGGGAATGAGCAGTTCTTC
+    ##    ---                                                                                                     
+    ## 26253:                       TTCATCCGGATAGGCTTTGGGAATGTGCTGCATTGC_TGTGCCAGCAGTCCCCAGGGGGGCTCTATGGCTACACCTTC
+    ## 26254:                     TGTGCAGAGAGTATGCCGTGCTTCCAAGATAATCTTT_TGCGCCAGCAGCCAAGATCGGAGCGGGGATGAGCAGTTCTTC
+    ## 26255:                  TGTGCCGTGAGACACAGGAGGAAGCTACATACCTACATTT_TGCGCCAGCAGCCAAGATTTTAGCACCTACGAGCAGTACTTC
+    ## 26256:               TGTGCAGCAAAGGGGGTTTATGGTGGTGCTACAAACAAGCTCATCTTT_TGCGCCGGCCCAGCCCGGGAACTATGGCTACACCTTC
+    ## 26257:      TGTGTGGTGAACCCGACGGATAGGCTTTGGGAATGTGCTGCATTGC_TGTGCCAGCAGCTCCTTAGCGGGAGGGCCATACAATGAGCAGTTCTTC
+    ##         method         r       ts         pval     pval_adj loss_a_frac
+    ##         <char>     <num>    <num>        <num>        <num>       <num>
+    ##     1: madhype        NA       NA           NA           NA  0.03030303
+    ##     2: madhype        NA       NA           NA           NA  0.06060606
+    ##     3: madhype        NA       NA           NA           NA  0.10526316
+    ##     4: madhype        NA       NA           NA           NA  0.03921569
+    ##     5: madhype        NA       NA           NA           NA  0.03703704
+    ##    ---                                                                 
+    ## 26253:  tshell 0.5613904 9.326121 2.966752e-17 1.884952e-12  0.00000000
+    ## 26254:  tshell 0.5612804 9.323453 3.018323e-17 5.166822e-11  0.05759162
+    ## 26255:  tshell 0.5577309 9.237746 5.244842e-17 2.004687e-11  0.02094241
+    ## 26256:  tshell 0.5471441 8.986430 2.622689e-16 1.625094e-11  0.00000000
+    ## 26257:  tshell 0.5467765 8.977818 2.770591e-16 9.384688e-11  0.15819209
+    ##        loss_b_frac     score              cdr3a         va     ja
+    ##              <num>     <num>             <char>     <char> <char>
+    ##     1:  0.03030303 39.297789      CAVSGYSWGKLQF     TRAV21 TRAJ24
+    ##     2:  0.03030303 36.151053     CAMSFNFGNEKLTF TRAV14/DV4 TRAJ48
+    ##     3:  0.03947368 31.946182 CAMREGSFSGGSNYKLTF TRAV14/DV4 TRAJ53
+    ##     4:  0.07843137 30.538566      CAFRQGGSEKLVF   TRAV38-1 TRAJ57
+    ##     5:  0.09259259 30.399101     CAESDIGFGNVLHC   TRAV13-2 TRAJ35
+    ##    ---                                                           
+    ## 26253:  0.15183246      -Inf       FIRIGFGNVLHC    TRAV8-3 TRAJ35
+    ## 26254:  0.00000000      -Inf      CAESMP_ASKIIF      TRAV5  TRAJ3
+    ## 26255:  0.00000000      -Inf     CAVRHRR_SYIPTF    TRAV8-1  TRAJ6
+    ## 26256:  0.07329843      -Inf   CAAKGVYGGATNKLIF   TRAV13-1 TRAJ32
+    ## 26257:  0.00000000  4.507136   CVVNPTDR_FGNVLHC   TRAV12-1 TRAJ35
+    ##                    cdr3b      vb      jb is_functional
+    ##                   <char>  <char>  <char>        <lgcl>
+    ##     1:    CASSLSSLEGGYTF  TRBV27 TRBJ1-2          TRUE
+    ##     2:    CASSLSSLEGGYTF  TRBV27 TRBJ1-2          TRUE
+    ##     3:   CASSFLASGQYEQYF  TRBV27 TRBJ2-7          TRUE
+    ##     4: CASSVEGLAGSTDTQYF   TRBV9 TRBJ2-3          TRUE
+    ##     5:   CASSLYRGDGNEQFF TRBV7-9 TRBJ2-1          TRUE
+    ##    ---                                                
+    ## 26253:    CASSPQG_LYGYTF  TRBV27 TRBJ1-2         FALSE
+    ## 26254:    CASSQDRSGDEQFF TRBV4-1 TRBJ2-1         FALSE
+    ## 26255:    CASSQDFSTYEQYF TRBV4-1 TRBJ2-7         FALSE
+    ## 26256:     CAGPAR_NYGYTF TRBV5-1 TRBJ1-2         FALSE
+    ## 26257:  CASSSLAGGPYNEQFF TRBV5-5 TRBJ2-1         FALSE
 
 ``` r
 run_pairing(folder_path = tp3, folder_out = save_folder, prefix = "exp3_tp3_cd8", well_filter_thres = 0.5,
             well_pos = 3, wellset1 = cd8_wells)
 ```
 
-    ## [1] "start"
-    ## [1] "2026-03-11 21:48:38 CDT"
     ## [1] "Folder already exists: ~/git/TIRTLtools/extra/exp3_cd8"
-    ## [1] "384 TCRalpha well files loaded"
-    ## [1] "384 TCRalpha well files loaded"
-    ## [1] "2026-03-11 21:48:58 CDT"
-    ## [1] "Clone threshold for QC:"
-    ## [1] 3036
-    ## [1] "Alpha wells passing QC:"
-    ## 
-    ## FALSE  TRUE 
-    ##   192   192 
-    ## [1] "Beta wells passing QC:"
-    ## 
-    ## FALSE  TRUE 
-    ##   192   192 
-    ## [1] "Tabulating TCRalpha pseudobulk counts"
-    ## [1] "2026-03-11 21:48:58 CDT"
-    ## [1] "Tabulating TCRbeta pseudobulk counts"
-    ## [1] "2026-03-11 21:49:18 CDT"
-    ## [1] "Pseudobulk done."
-    ## [1] "2026-03-11 21:49:37 CDT"
-    ## [1] "Merging alpha clonesets..."
-    ## [1] "Done! Unique alpha clones and wells after filtering:"
-    ## [1] 850578    192
-    ## [1] "2026-03-11 21:49:37 CDT"
-    ## [1] "Unique alpha clones and wells in more than: 2 wells"
-    ## [1] 37721   192
-    ## [1] "Done! beta clones and wells after filtering:"
-    ## [1] 830552    192
-    ## [1] "2026-03-11 21:49:38 CDT"
-    ## [1] "Unique beta clones and wells in more than: 2 wells"
-    ## [1] 38382   192
-    ## [1] "2026-03-11 21:49:38 CDT"
-    ## [1] "Pre-computing look-up table:"
+
+    ## Reading 384 files from ~/Downloads/zenodo/exp3_clones//TCR_clones_ID04
+
+    ## 25 of 384 files loaded
+
+    ## 50 of 384 files loaded
+
+    ## 75 of 384 files loaded
+
+    ## 100 of 384 files loaded
+
+    ## 125 of 384 files loaded
+
+    ## 150 of 384 files loaded
+
+    ## 175 of 384 files loaded
+
+    ## 200 of 384 files loaded
+
+    ## 225 of 384 files loaded
+
+    ## 250 of 384 files loaded
+
+    ## 275 of 384 files loaded
+
+    ## 300 of 384 files loaded
+
+    ## 325 of 384 files loaded
+
+    ## 350 of 384 files loaded
+
+    ## 375 of 384 files loaded
+
+    ## 384 of 384 files loaded
+
+    ## 192 TCRalpha well files loaded
+
+    ## 192 TCRbeta well files loaded
+
+    ## Total number of TCRalpha reads: 5.9e+07
+
+    ## Total number of TCRbeta reads: 8.3e+07
+
+    ## Total number of unique TCRalpha chains: 850578
+
+    ## Total number of unique TCRbeta chains: 830552
+
+    ## 0 out of 192 wells removed by QC
+
+    ## Clone threshold for QC: 3048
+
+    ## Alpha wells passing QC: 192
+
+    ## Beta wells passing QC: 192
+
+    ## Alpha wells failing QC: 0
+
+    ## Beta wells failing QC: 0
+
+    ## Tabulating TCRalpha pseudobulk counts
+
+    ## Writing TCRalpha pseudobulk file... exp3_tp3_cd8_pseudobulk_TRA.tsv
+
+    ## Tabulating TCRbeta pseudobulk counts
+
+    ## Writing TCRbeta pseudobulk file... exp3_tp3_cd8_pseudobulk_TRB.tsv
+
+    ## Pseudobulk done
+
+    ## Merging alpha clonesets...
+
+    ## Done! Unique alpha clones after filtering: 850578
+
+    ## Unique alpha clones in more than 2 wells: 37721
+
+    ## Done! Unique beta clones after filtering: 830552
+
+    ## Unique beta clones and wells in more than 2 wells: 38382
+
+    ## Pre-computing look-up table:
+
     ##   |                                                                              |                                                                      |   0%  |                                                                              |                                                                      |   1%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |=========                                                             |  14%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  22%  |                                                                              |================                                                      |  23%  |                                                                              |=================                                                     |  24%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  40%  |                                                                              |============================                                          |  41%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |===================================                                   |  51%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |============================================                          |  64%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  77%  |                                                                              |======================================================                |  78%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |=============================================================         |  88%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================|  99%  |                                                                              |======================================================================| 100%
-    ## [1] "2026-03-11 21:49:41 CDT"
-    ## [1] "Filtering results, adding amino acid and V segment information"
+
+    ## Running pairing algorithms...
+
+    ## total number of chunks 75
+    ## start time for MAD-HYPE: 2026-06-15 13:29:01
+    ## Progress: 3500 (10%)
+    ## Progress: 11000 (30%)
+    ## Progress: 15000 (40%)
+    ## Progress: 18500 (50%)
+    ## Progress: 22500 (60%)
+    ## Progress: 30000 (80%)
+    ## Progress: 34000 (90%)
+    ## Progress: 37500 (100%)
+    ## end time for MAD-HYPE: 2026-06-15 13:29:04
+    ## Number of pairs: 13076
+    ## total number of chunks 75
+    ## start processing time for T-Shell: 2026-06-15 13:29:04
+    ## Progress: 3500 (10%)
+    ## Progress: 11000 (30%)
+    ## Progress: 15000 (40%)
+    ## Progress: 18500 (50%)
+    ## Progress: 22500 (60%)
+    ## Progress: 30000 (80%)
+    ## Progress: 34000 (90%)
+    ## Progress: 37500 (100%)
+    ## end time for T-Shell: 2026-06-15 13:29:08
+
+    ## Pairing is finished.
+
+    ## [1] "Filtering results, adding amino acid and V segment information..."
     ## [1] "Scoring unique pairs..."
-    ## [1] "2026-03-11 21:50:09 CDT"
-    ## [1] "All is done! Number of paired clones:"
-    ## 
-    ## madhype  tshell 
-    ##   13076    7474
+
+    ## Writing TCRalpha/beta pairs... exp3_tp3_cd8_TIRTLoutput.tsv
+
+    ## All pairing is finished!
+
+    ## Number of clones paired by MAD-HYPE algorithm: 13076
+
+    ## Number of clones paired by T-SHELL algorithm: 7471
+
+    ## Total number of unique TCRalpha/beta pairs: 13995
+
+    ## 65.972 sec elapsed
 
     ## Key: <wi, wj, wij>
-    ##           wi    wj   wij                                     alpha_nuc
-    ##        <num> <num> <num>                                        <char>
-    ##     1:     0     0     3    TGTGCCGTGGGCCTTACCGGCACTGCCAGTAAACTCACCTTT
-    ##     2:     0     0     3                            TTCGACAGACTCATGTTT
-    ##     3:     0     0     3          TGTGCTGTGACCAATGGGGCAGGCAAATCAACCTTT
-    ##     4:     0     0     3          TGTGCTGTGACCAATGGGGCAGGCAAATCAACCTTT
-    ##     5:     0     0     3                TGTGCCGCTGTTAACAATGACATGCGCTTT
-    ##    ---                                                                
-    ## 20546:    94     0    37 TGTGCCGTGGAGGGGGAGTCTGGTGGCTACAATAAGCTGATTTTT
-    ## 20547:    96     0    50          TGTGCCCCCATGGATAGCAACTATCAGTTAATCTGG
-    ## 20548:    97     0    36 TGCGCTGTGAGAGATAGGGACACCAATGCAGGCAAATCAACCTTT
-    ## 20549:   101     0    36             TGTGCAGACGGCCCCCAAGGAAATCTCATCTTT
-    ## 20550:   103     0    46    TGCGGCACAGAGAGTGGAGGTAGCAACTATAAACTGACATTT
-    ##                                                beta_nuc    wa    wb
-    ##                                                  <char> <int> <int>
-    ##     1:             TGTGCCAGCAGGGGAAACAATCAGCCCCAGCATTTT     3     3
-    ##     2:       TGTGCCAGCAGTGCCGCACCAGCAAACACTGAAGCTTTCTTT     3     3
-    ##     3: TGCGCCAGCAGCCAAGGGGGGGGGGGGGACCAAGAGACCCAGTACTTC     3     3
-    ##     4:  TGCGCCAGCAGCCAAGGGGGGGGGGGGACCAAGAGACCCAGTACTTC     3     3
-    ##     5:             TGTGCCAGCAGTGAAAACTCCTACGAGCAGTACTTC     3     3
-    ##    ---                                                             
-    ## 20546:   TGTGCCAGCAGCGCCCACGGGGAAGGGAACGAAAAACTGTTTTTTT   131    37
-    ## 20547:      TGCAGTGCTAAATTAGCGGGCGACACCGGGGAGCTGTTTTTTT   146    50
-    ## 20548:      TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC   133    36
-    ## 20549:      TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC   137    36
-    ## 20550:          TGTGCCAGCAGCTGGGACAAAACCTACGAGCAGTACTTC   149    46
-    ##                                        alpha_nuc_seq
-    ##                                               <char>
-    ##     1:    TGTGCCGTGGGCCTTACCGGCACTGCCAGTAAACTCACCTTT
-    ##     2:                            TTCGACAGACTCATGTTT
-    ##     3:          TGTGCTGTGACCAATGGGGCAGGCAAATCAACCTTT
-    ##     4:          TGTGCTGTGACCAATGGGGCAGGCAAATCAACCTTT
-    ##     5:                TGTGCCGCTGTTAACAATGACATGCGCTTT
-    ##    ---                                              
-    ## 20546: TGTGCCGTGGAGGGGGAGTCTGGTGGCTACAATAAGCTGATTTTT
-    ## 20547:          TGTGCCCCCATGGATAGCAACTATCAGTTAATCTGG
-    ## 20548: TGCGCTGTGAGAGATAGGGACACCAATGCAGGCAAATCAACCTTT
-    ## 20549:             TGTGCAGACGGCCCCCAAGGAAATCTCATCTTT
-    ## 20550:    TGCGGCACAGAGAGTGGAGGTAGCAACTATAAACTGACATTT
-    ##                                            beta_nuc_seq
-    ##                                                  <char>
-    ##     1:             TGTGCCAGCAGGGGAAACAATCAGCCCCAGCATTTT
-    ##     2:       TGTGCCAGCAGTGCCGCACCAGCAAACACTGAAGCTTTCTTT
-    ##     3: TGCGCCAGCAGCCAAGGGGGGGGGGGGGACCAAGAGACCCAGTACTTC
-    ##     4:  TGCGCCAGCAGCCAAGGGGGGGGGGGGACCAAGAGACCCAGTACTTC
-    ##     5:             TGTGCCAGCAGTGAAAACTCCTACGAGCAGTACTTC
-    ##    ---                                                 
-    ## 20546:   TGTGCCAGCAGCGCCCACGGGGAAGGGAACGAAAAACTGTTTTTTT
-    ## 20547:      TGCAGTGCTAAATTAGCGGGCGACACCGGGGAGCTGTTTTTTT
-    ## 20548:      TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC
-    ## 20549:      TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC
-    ## 20550:          TGTGCCAGCAGCTGGGACAAAACCTACGAGCAGTACTTC
-    ##                                                                                          alpha_beta
-    ##                                                                                              <char>
-    ##     1:              TGTGCCGTGGGCCTTACCGGCACTGCCAGTAAACTCACCTTT_TGTGCCAGCAGGGGAAACAATCAGCCCCAGCATTTT
-    ##     2:                                TTCGACAGACTCATGTTT_TGTGCCAGCAGTGCCGCACCAGCAAACACTGAAGCTTTCTTT
-    ##     3:        TGTGCTGTGACCAATGGGGCAGGCAAATCAACCTTT_TGCGCCAGCAGCCAAGGGGGGGGGGGGGACCAAGAGACCCAGTACTTC
-    ##     4:         TGTGCTGTGACCAATGGGGCAGGCAAATCAACCTTT_TGCGCCAGCAGCCAAGGGGGGGGGGGGACCAAGAGACCCAGTACTTC
-    ##     5:                          TGTGCCGCTGTTAACAATGACATGCGCTTT_TGTGCCAGCAGTGAAAACTCCTACGAGCAGTACTTC
-    ##    ---                                                                                             
-    ## 20546: TGTGCCGTGGAGGGGGAGTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCAGCGCCCACGGGGAAGGGAACGAAAAACTGTTTTTTT
-    ## 20547:             TGTGCCCCCATGGATAGCAACTATCAGTTAATCTGG_TGCAGTGCTAAATTAGCGGGCGACACCGGGGAGCTGTTTTTTT
-    ## 20548:    TGCGCTGTGAGAGATAGGGACACCAATGCAGGCAAATCAACCTTT_TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC
-    ## 20549:                TGTGCAGACGGCCCCCAAGGAAATCTCATCTTT_TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC
-    ## 20550:           TGCGGCACAGAGAGTGGAGGTAGCAACTATAAACTGACATTT_TGTGCCAGCAGCTGGGACAAAACCTACGAGCAGTACTTC
-    ##         method     r    ts  pval pval_adj loss_a_frac loss_b_frac     score
-    ##         <char> <num> <num> <num>    <num>       <num>       <num>     <num>
-    ##     1: madhype    NA    NA    NA       NA           0   0.0000000 0.6057843
-    ##     2: madhype    NA    NA    NA       NA           0   0.0000000 0.6057843
-    ##     3: madhype    NA    NA    NA       NA           0   0.0000000 0.6057843
-    ##     4: madhype    NA    NA    NA       NA           0   0.0000000 0.6057843
-    ##     5: madhype    NA    NA    NA       NA           0   0.0000000 0.6057843
-    ##    ---                                                                     
-    ## 20546: madhype    NA    NA    NA       NA           0   0.7175573 1.5618088
-    ## 20547: madhype    NA    NA    NA       NA           0   0.6575342 1.6288014
-    ## 20548: madhype    NA    NA    NA       NA           0   0.7293233 1.0688280
-    ## 20549: madhype    NA    NA    NA       NA           0   0.7372263 0.5297975
-    ## 20550: madhype    NA    NA    NA       NA           0   0.6912752 0.4727439
-    ##                  cdr3a       va     ja            cdr3b       vb      jb
-    ##                 <char>   <char> <char>           <char>   <char>  <char>
-    ##     1:  CAVGLTGTASKLTF   TRAV39 TRAJ44     CASRGNNQPQHF   TRBV27 TRBJ1-5
-    ##     2:          FDRLMF  TRAV1-1 TRAJ31   CASSAAPANTEAFF  TRBV6-4 TRBJ1-1
-    ##     3:    CAVTNGAGKSTF  TRAV8-4 TRAJ27 CASSQGGGGDQETQYF  TRBV4-1 TRBJ2-5
-    ##     4:    CAVTNGAGKSTF  TRAV8-4 TRAJ27 CASSQGGG_DQETQYF  TRBV4-1 TRBJ2-5
-    ##     5:      CAAVNNDMRF TRAV12-2 TRAJ43     CASSENSYEQYF  TRBV6-1 TRBJ2-7
-    ##    ---                                                                  
-    ## 20546: CAVEGESGGYNKLIF TRAV12-2  TRAJ4 CASSAHGE_GTKNCFF    TRBV9 TRBJ1-4
-    ## 20547:    CAPMDSNYQLIW  TRAV1-2 TRAJ33  CSAKLAG_TPGSCFF TRBV20-1 TRBJ2-2
-    ## 20548: CAVRDRDTNAGKSTF  TRAV1-1 TRAJ27  CASSFCG_AGYEQYF   TRBV28 TRBJ2-7
-    ## 20549:     CADGPQGNLIF TRAV13-2 TRAJ42  CASSFCG_AGYEQYF   TRBV28 TRBJ2-7
-    ## 20550:  CGTESGGSNYKLTF   TRAV30 TRAJ53    CASSWDKTYEQYF  TRBV5-1 TRBJ2-7
+    ##           wi    wj   wij
+    ##        <num> <num> <num>
+    ##     1:     0     0    55
+    ##     2:     0     0    55
+    ##     3:     1     4    70
+    ##     4:     0     0    44
+    ##     5:     3     5    76
+    ##    ---                  
+    ## 20543:    11     7   165
+    ## 20544:     0    40   149
+    ## 20545:    27     2   133
+    ## 20546:     0     0   192
+    ## 20547:     0     0   192
+    ##                                                        alpha_nuc
+    ##                                                           <char>
+    ##     1:             TGTGCTGTGCAGGCCGAGGAAGCTGCAGGCAACAAGCTAACTTTT
+    ##     2:             TGTGCTGTGCAGGCCGAGGAAGCTGCAGGCAACAAGCTAACTTTT
+    ##     3:                            TGTGTGGTGAACAAAAACAAATTTTACTTT
+    ##     4:                   TGTGCTTATTCAGGTGACAGCTGGGGGAAATTGCAGTTT
+    ##     5:                TGTGCTGTCCCTAATGCTGGCAACAACCGTAAGCTGATTTGG
+    ##    ---                                                          
+    ## 20543:                                      TGTGCTGTGCTCTAACCTTT
+    ## 20544: TGTGCTTATAGGAGCGCGTGAGGTGCTGGTGGTACTAGCTATGGAAAGCTGACATTT
+    ## 20545:                       TGCCTCGTGGGTGAAAGGCCGACAAGCTCATCTTT
+    ## 20546:                      TGTGCGCAAGCCAGGCCCAGCAACATGCTCACCTTT
+    ## 20547:                      TGTGCCGGGCTTTCAGATGGCCAGAAGCTGCTCTTT
+    ##                                                      beta_nuc    wa    wb
+    ##                                                        <char> <int> <int>
+    ##     1:                TGTGCCAGCAGTGGTCATAGCGGCACTGAAGCTTTCTTT    55    55
+    ##     2:          TGTGCCAGCAGTGAAATTGGCCGGCTCACCTCGGAAGCTTTCTTT    55    55
+    ##     3:          TGTGCCAGTACCCGGAGGGGAGAAAACACAGATACGCAGTATTTT    71    74
+    ##     4:             TGTGCCAGCAGTTCCTCCCTCGGGATGGGGGAGCAGTACTTC    44    44
+    ##     5:             TGTGCCAGCAGTTTATCCAGGACAGGCTATGGCTACACCTTC    79    81
+    ##    ---                                                                   
+    ## 20543:         TGCAGTGCTCAACTAGCGGCTTTTTTTCGGGGATACGCAGTATTTT   176   172
+    ## 20544: TGTGCCAGCAGTTTACTTTATCGGCAAGGACCCGTTGATGAAAAACTGTTTTTT   149   189
+    ## 20545:      TGCGCCAGCAGCTTGGAATCGACAGGGGTGGTCCTACGAGCAGTACTTC   160   135
+    ## 20546:                TGTGCCAGCAGCTCGGACTAGTAGGGTGAGCAGTTCTTC   192   192
+    ## 20547:                TGTGCCAGCAGCTCGGACTAGTAGGGTGAGCAGTTCTTC   192   192
+    ##                                                    alpha_nuc_seq
+    ##                                                           <char>
+    ##     1:             TGTGCTGTGCAGGCCGAGGAAGCTGCAGGCAACAAGCTAACTTTT
+    ##     2:             TGTGCTGTGCAGGCCGAGGAAGCTGCAGGCAACAAGCTAACTTTT
+    ##     3:                            TGTGTGGTGAACAAAAACAAATTTTACTTT
+    ##     4:                   TGTGCTTATTCAGGTGACAGCTGGGGGAAATTGCAGTTT
+    ##     5:                TGTGCTGTCCCTAATGCTGGCAACAACCGTAAGCTGATTTGG
+    ##    ---                                                          
+    ## 20543:                                      TGTGCTGTGCTCTAACCTTT
+    ## 20544: TGTGCTTATAGGAGCGCGTGAGGTGCTGGTGGTACTAGCTATGGAAAGCTGACATTT
+    ## 20545:                       TGCCTCGTGGGTGAAAGGCCGACAAGCTCATCTTT
+    ## 20546:                      TGTGCGCAAGCCAGGCCCAGCAACATGCTCACCTTT
+    ## 20547:                      TGTGCCGGGCTTTCAGATGGCCAGAAGCTGCTCTTT
+    ##                                                  beta_nuc_seq
+    ##                                                        <char>
+    ##     1:                TGTGCCAGCAGTGGTCATAGCGGCACTGAAGCTTTCTTT
+    ##     2:          TGTGCCAGCAGTGAAATTGGCCGGCTCACCTCGGAAGCTTTCTTT
+    ##     3:          TGTGCCAGTACCCGGAGGGGAGAAAACACAGATACGCAGTATTTT
+    ##     4:             TGTGCCAGCAGTTCCTCCCTCGGGATGGGGGAGCAGTACTTC
+    ##     5:             TGTGCCAGCAGTTTATCCAGGACAGGCTATGGCTACACCTTC
+    ##    ---                                                       
+    ## 20543:         TGCAGTGCTCAACTAGCGGCTTTTTTTCGGGGATACGCAGTATTTT
+    ## 20544: TGTGCCAGCAGTTTACTTTATCGGCAAGGACCCGTTGATGAAAAACTGTTTTTT
+    ## 20545:      TGCGCCAGCAGCTTGGAATCGACAGGGGTGGTCCTACGAGCAGTACTTC
+    ## 20546:                TGTGCCAGCAGCTCGGACTAGTAGGGTGAGCAGTTCTTC
+    ## 20547:                TGTGCCAGCAGCTCGGACTAGTAGGGTGAGCAGTTCTTC
+    ##                                                                                                              alpha_beta
+    ##                                                                                                                  <char>
+    ##     1:                            TGTGCTGTGCAGGCCGAGGAAGCTGCAGGCAACAAGCTAACTTTT_TGTGCCAGCAGTGGTCATAGCGGCACTGAAGCTTTCTTT
+    ##     2:                      TGTGCTGTGCAGGCCGAGGAAGCTGCAGGCAACAAGCTAACTTTT_TGTGCCAGCAGTGAAATTGGCCGGCTCACCTCGGAAGCTTTCTTT
+    ##     3:                                     TGTGTGGTGAACAAAAACAAATTTTACTTT_TGTGCCAGTACCCGGAGGGGAGAAAACACAGATACGCAGTATTTT
+    ##     4:                               TGTGCTTATTCAGGTGACAGCTGGGGGAAATTGCAGTTT_TGTGCCAGCAGTTCCTCCCTCGGGATGGGGGAGCAGTACTTC
+    ##     5:                            TGTGCTGTCCCTAATGCTGGCAACAACCGTAAGCTGATTTGG_TGTGCCAGCAGTTTATCCAGGACAGGCTATGGCTACACCTTC
+    ##    ---                                                                                                                 
+    ## 20543:                                              TGTGCTGTGCTCTAACCTTT_TGCAGTGCTCAACTAGCGGCTTTTTTTCGGGGATACGCAGTATTTT
+    ## 20544: TGTGCTTATAGGAGCGCGTGAGGTGCTGGTGGTACTAGCTATGGAAAGCTGACATTT_TGTGCCAGCAGTTTACTTTATCGGCAAGGACCCGTTGATGAAAAACTGTTTTTT
+    ## 20545:                            TGCCTCGTGGGTGAAAGGCCGACAAGCTCATCTTT_TGCGCCAGCAGCTTGGAATCGACAGGGGTGGTCCTACGAGCAGTACTTC
+    ## 20546:                                     TGTGCGCAAGCCAGGCCCAGCAACATGCTCACCTTT_TGTGCCAGCAGCTCGGACTAGTAGGGTGAGCAGTTCTTC
+    ## 20547:                                     TGTGCCGGGCTTTCAGATGGCCAGAAGCTGCTCTTT_TGTGCCAGCAGCTCGGACTAGTAGGGTGAGCAGTTCTTC
+    ##         method         r       ts         pval     pval_adj loss_a_frac
+    ##         <char>     <num>    <num>        <num>        <num>       <num>
+    ##     1: madhype        NA       NA           NA           NA  0.00000000
+    ##     2: madhype        NA       NA           NA           NA  0.00000000
+    ##     3: madhype        NA       NA           NA           NA  0.05333333
+    ##     4: madhype        NA       NA           NA           NA  0.00000000
+    ##     5: madhype        NA       NA           NA           NA  0.05952381
+    ##    ---                                                                 
+    ## 20543:  tshell 0.5720433 9.613323 4.437530e-18 2.227029e-12  0.03825137
+    ## 20544:  tshell 0.5649058 9.436634 1.403156e-17 4.335102e-11  0.21164021
+    ## 20545:  tshell 0.5606716 9.333293 2.741951e-17 8.941224e-12  0.01234568
+    ## 20546:  tshell 0.5603970 9.326630 2.862739e-17 1.232782e-12  0.00000000
+    ## 20547:  tshell 0.5348014 8.724169 1.345636e-15 1.186768e-11  0.00000000
+    ##        loss_b_frac      score               cdr3a           va     ja
+    ##              <num>      <num>              <char>       <char> <char>
+    ##     1:  0.00000000 43.6537045     CAVQAEEAAGNKLTF       TRAV20 TRAJ17
+    ##     2:  0.00000000 43.6537045     CAVQAEEAAGNKLTF       TRAV20 TRAJ17
+    ##     3:  0.01333333 40.5646109          CVVNKNKFYF     TRAV12-1 TRAJ21
+    ##     4:  0.00000000 38.5965050       CAYSGDSWGKLQF TRAV38-2/DV8 TRAJ24
+    ##     5:  0.03571429 37.4468241      CAVPNAGNNRKLIW       TRAV22 TRAJ38
+    ##    ---                                                               
+    ## 20543:  0.06010929  0.5351472             CAV_LTF       TRAV22 TRAJ48
+    ## 20544:  0.00000000 -3.5629470 CAYRSA*GAGGTSYGKLTF TRAV38-2/DV8 TRAJ52
+    ## 20545:  0.16666667 11.0799292        CLVGER_DKLIF        TRAV4 TRAJ34
+    ## 20546:  0.00000000 -4.5803554        CAQARPSNMLTF     TRAV13-2 TRAJ39
+    ## 20547:  0.00000000 -4.5803554        CAGLSDGQKLLF     TRAV12-2 TRAJ16
+    ##                     cdr3b       vb      jb is_functional
+    ##                    <char>   <char>  <char>        <lgcl>
+    ##     1:      CASSGHSGTEAFF  TRBV5-4 TRBJ1-1          TRUE
+    ##     2:    CASSEIGRLTSEAFF TRBV25-1 TRBJ1-1          TRUE
+    ##     3:    CASTRRGENTDTQYF   TRBV19 TRBJ2-3          TRUE
+    ##     4:     CASSSSLGMGEQYF   TRBV28 TRBJ2-7          TRUE
+    ##     5:     CASSLSRTGYGYTF   TRBV27 TRBJ1-2          TRUE
+    ##    ---                                                  
+    ## 20543:   CSAQLAAF_FGDTQYF TRBV20-1 TRBJ2-3         FALSE
+    ## 20544: CASSLLYRQGPVDEKLFF TRBV12-3 TRBJ1-4         FALSE
+    ## 20545:  CASSLEST_GWSYEQYF  TRBV5-1 TRBJ2-7         FALSE
+    ## 20546:      CASSSD**GEQFF TRBV12-3 TRBJ2-1         FALSE
+    ## 20547:      CASSSD**GEQFF TRBV12-3 TRBJ2-1         FALSE
 
 ### Load paired TCR data
 
@@ -600,16 +912,6 @@ data = load_tirtlseq(save_folder, sep = "_", verbose = FALSE,
                      meta_columns = c("experiment", "timepoint", "marker"))
 ```
 
-    ## Loading files from: ~/git/TIRTLtools/extra/exp3_cd8...
-
-    ## Found 3 beta chain pseudo-bulk files.
-
-    ## Found 3 paired chain files.
-
-    ## Loaded 9 files from 3 samples.
-
-    ## 3.7 seconds
-
 ### Plot changes in TCR repertoire over time
 
 After loading the data, we can use the
@@ -630,6 +932,12 @@ gg1 = plot_sample_vs_sample(
   sem_cutoff = 2.5,
   smooth_sem = "none"
   )
+```
+
+    ## Warning in geom_point(data = dt[dt$sign != "stable", ], aes((avg.x + pseudo1),
+    ## : Ignoring unknown aesthetics: text
+
+``` r
 gg2 = plot_sample_vs_sample(
   data$data$exp3_tp2_cd8, data$data$exp3_tp3_cd8, 
   labelx = "Frequency at acute", labely = "Frequency at conv",
@@ -637,6 +945,12 @@ gg2 = plot_sample_vs_sample(
   sem_cutoff = 2.5,
   smooth_sem = "none"
   )
+```
+
+    ## Warning in geom_point(data = dt[dt$sign != "stable", ], aes((avg.x + pseudo1),
+    ## : Ignoring unknown aesthetics: text
+
+``` r
 gg1 ## baseline vs. acute (top left of Fig. 3B)
 ```
 
@@ -679,9 +993,20 @@ labels for whether the clone is expanded, contracted, or stable.
 ``` r
 baseline_to_acute_df = plot_sample_vs_sample(data$data$exp3_tp1_cd8, data$data$exp3_tp2_cd8, 
                                              return_data = TRUE, smooth_sem = "none")
+```
+
+    ## Warning in geom_point(data = dt[dt$sign != "stable", ], aes((avg.x + pseudo1),
+    ## : Ignoring unknown aesthetics: text
+
+``` r
 acute_to_conv_df = plot_sample_vs_sample(data$data$exp3_tp2_cd8, data$data$exp3_tp3_cd8, 
                                          return_data = TRUE, smooth_sem = "none")
+```
 
+    ## Warning in geom_point(data = dt[dt$sign != "stable", ], aes((avg.x + pseudo1),
+    ## : Ignoring unknown aesthetics: text
+
+``` r
 baseline_to_acute_df
 ```
 

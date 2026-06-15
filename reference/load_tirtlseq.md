@@ -15,6 +15,9 @@ load_tirtlseq(
   sep = "_",
   meta_columns = NULL,
   samples = NULL,
+  clean = FALSE,
+  remove_nonfunctional = FALSE,
+  process = TRUE,
   pseudobulk_columns = "auto",
   paired_columns = "auto",
   n_threads = data.table::getDTthreads(),
@@ -52,6 +55,22 @@ load_tirtlseq(
   (optional) specific sample ids (the part of the filename before
   "\_pseudobulk" or "\_TIRTLoutput") to load. Default is NULL (loads all
   samples in the directory).
+
+- clean:
+
+  (optional) a TRUE/FALSE value, whether or not to "clean" the paired
+  data by removing excess pairs for individual alpha and beta chains
+  (default is FALSE).
+
+- remove_nonfunctional:
+
+  whether to remove non-functional TCR chains (default is FALSE)
+
+- process:
+
+  whether to process the raw data, adding columns for alpha and beta
+  readcounts to the paired data frame, adding columns to the pseudobulk
+  data to identify which chains are paired, etc.
 
 - pseudobulk_columns:
 
@@ -133,10 +152,11 @@ folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
   package = "TIRTLtools")
 ts_data = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_")
-#> Loading files from: /Users/nclark52/git/TIRTLtools_github_only/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
+#> Loading files from: /Users/nclark2/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...
 #> Found 6 alpha chain pseudo-bulk files.
 #> Found 6 beta chain pseudo-bulk files.
 #> Found 6 paired chain files.
+#> Loading files for 6 samples...
 #> -- Loading files for sample: cd4_tp1_v2...
 #> ---- Loading file -- Pseudobulk (alpha chain) -- cd4_tp1_v2_pseudobulk_TRA.tsv...
 #> ---- Loading file -- Pseudobulk (beta chain)  -- cd4_tp1_v2_pseudobulk_TRB.tsv...
@@ -162,5 +182,5 @@ ts_data = load_tirtlseq(folder,
 #> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp3_v2_pseudobulk_TRB.tsv...
 #> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp3_v2_TIRTLoutput.tsv...
 #> Loaded 18 files from 6 samples.
-#> 13.4 seconds
+#> 57 secs
 ```

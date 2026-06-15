@@ -4,36 +4,13 @@
 
 ## News
 
-Dec. 8th 2025
-
-- *Nature Methods* highlights TIRTL-seq in an *Immunology News & Views*
-  article:  
-  [**TIRTL-seq: heroes with
-  T-SHELL**](https://doi.org/10.1038/s41592-025-02984-w).
-
 Nov. 24th 2025
 
-- The TIRTL-seq assay paper has been published in *Nature Methods*:  
+- The TIRTLseq assay paper has been published in Nature Methods:  
   [**TIRTL-seq: deep, quantitative and affordable paired TCR repertoire
   sequencing**](http://doi.org/10.1038/s41592-025-02907-9).
 
-## Installation
-
-Run the following code in R or Rstudio to install TIRTLtools:
-
-    if (!requireNamespace("remotes", quietly = TRUE)) {
-      install.packages("remotes") ## Run if you do not have the 'remotes' package installed
-    }
-    remotes::install_github("NicholasClark/TIRTLtools") ## install via the GitHub Repo
-
-Load the package in R with:
-
-    library(TIRTLtools)
-
 ## Documentation and usage instructions
-
-For more information, see our website:
-<https://nicholasclark.github.io/TIRTLtools/>
 
 - [Installation
   instructions](https://nicholasclark.github.io/TIRTLtools/articles/TIRTLtools.html)
@@ -58,7 +35,7 @@ NVIDIA and Apple Silicon GPUs. In testing, we were able to calculate
 pairwise TCRdist for a repertoire of ~1 million TCRs in a few hours
 using a MacBook Pro (16-core GPU, M4 Pro).
 
-## The TIRTL-seq assay
+## The TIRTLseq assay
 
 The T-cell receptor (TCR), which allows for adaptive immune response, is
 made up of two separate protein chains, TCR-alpha and TCR-beta. Bulk
@@ -84,76 +61,37 @@ algorithms based on chain co-occurrence and correlation of chain
 frequency are used to identify alpha/beta chain pairs that derive from
 the same T-cell clone.
 
-We developed a **new algorithm (T-SHELL)** allows for **effective
-pairing of the most abundant clones**, which had frustrated previous
-algorithms. Along with paired TCR information, single-chain read
-frequency can be used to identify expanded clones in one sample as well
-as to track clone expansions and contractions longitudinally across
-samples.
-
-## TIRTL-seq assay protocols
-
-See *protocols.io* for the 384-well and 96-well TIRTL-seq protocols.
-
-- 384-well TIRTL-seq protocol:
-  <https://www.protocols.io/view/tirtl-seq-384-well-eq2lyx37wgx9/>
-- 96-well TIRTL-seq protocol:
-  <https://www.protocols.io/view/tirtl-seq-96-well-kqdg3k6xpv25/>
-
-## Bug reports
-
-For any bug reports or new feature requests, please create a GitHub
-Issue:
-
-- <https://github.com/NicholasClark/TIRTLtools/issues>
+A simple **new algorithm (T-SHELL)** allows for **effective pairing of
+the most abundant clones**, which had frustrated previous algorithms.
+Along with paired TCR information, single-chain read frequency can be
+used to identify expanded clones in one sample as well as to track clone
+expansions and contractions longitudinally across samples.
 
 ## References
 
-For details on our pairing pipeline, see the [**TIRTL-seq paper
-(Pogorelyy and Kirk et al., *Nature Methods*
-2025)**](http://doi.org/10.1038/s41592-025-02907-9) and our [github
+For details on our pairing pipeline, see the [TIRTLseq paper (Pogorelyy
+and Kirk et al., Nature Methods
+2025)](http://doi.org/10.1038/s41592-025-02907-9) and our [github
 repository](https://github.com/pogorely/TIRTL).
-
-For a summary of the TIRTL-seq method and its importance, see the
-*Immunology News & Views* article in *Nature Methods* highlighting
-TIRTL-seq: [**TIRTL-seq: heroes with
-T-SHELL**](https://doi.org/10.1038/s41592-025-02984-w).
 
 For details on the MAD-HYPE algorithm, see [Holec and Berleant et al.,
 2019](https://academic.oup.com/bioinformatics/article/35/8/1318/5095649).
 
 For details on MiXCR, see their [website](https://mixcr.com/) and
-publications in [*Nature Methods*
-(2015)](https://www.nature.com/articles/nmeth.3364) and [*Nature
-Biotechnology* (2017)](https://www.nature.com/articles/nbt.3979).
+publications in [Nature Methods
+(2015)](https://www.nature.com/articles/nmeth.3364) and [Nature
+Biotechnology (2017)](https://www.nature.com/articles/nbt.3979).
 
-For details on TCRdist, see [Dash et al., *Nature*
+For details on TCRdist, see [Dash et al., Nature
 2017](https://doi.org/10.1038/nature22383)
-
-## Citing TIRTL-seq
-
-Please cite the TIRTL-seq paper:
-
-- Pogorelyy, M.V., Kirk, A.M., Adhikari, S. *et al.* TIRTL-seq: deep,
-  quantitative and affordable paired TCR repertoire sequencing. *Nat
-  Methods* 23, 56–64 (2026).
-  <https://doi.org/10.1038/s41592-025-02907-9>
-
-If using the 384-well or 96-well TIRTL-seq protocol, please cite the
-*protocols.io* protocols:
-
-- Mikhail Pogorelyy, Allison Kirk, Samir Adhikari, Balaji Sundararaman,
-  Paul Thomas 2025. TIRTL-seq 384-well. *protocols.io*
-  <https://dx.doi.org/10.17504/protocols.io.eq2lyx37wgx9/>
-
-- Mikhail Pogorelyy, Allison Kirk, Samir Adhikari, Balaji Sundararaman,
-  Paul Thomas 2025. TIRTL-seq 96-well. *protocols.io*
-  <https://dx.doi.org/10.17504/protocols.io.kqdg3k6xpv25/>
 
 # Package index
 
 ## TCR-alpha/beta pairing
 
+- [`get_tshell_settings()`](https://nicholasclark.github.io/TIRTLtools/reference/get_tshell_settings.md)
+  **\[experimental\]** : Get p-value and well threshold settings for
+  T-SHELL
 - [`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
   **\[experimental\]** : Find TCRalpha/beta pairs from individual well
   read counts
@@ -174,15 +112,15 @@ If using the 384-well or 96-well TIRTL-seq protocol, please cite the
 
 ## Data processing and cleaning
 
-- [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.md)
-  **\[experimental\]** : Run data processing functions on a
-  TIRTLseqDataSet object
 - [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md)
   **\[experimental\]** : Add single-chain read counts/fractions to the
   paired TCR data
 - [`clean_pairs()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.md)
   **\[experimental\]** : Remove excess pairs for individual single
   chains
+- [`combine_bulk_and_paired_data()`](https://nicholasclark.github.io/TIRTLtools/reference/combine_bulk_and_paired_data.md)
+  **\[experimental\]** : Combine bulk single-chain TCR data with paired
+  TCR data
 - [`filter_duplicate_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_duplicate_tcrs.md)
   **\[experimental\]** : Remove duplicate TCRs from a data frame
 - [`filter_mait()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_mait.md)
@@ -200,8 +138,19 @@ If using the 384-well or 96-well TIRTL-seq protocol, please cite the
   sequences
 - [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md)
   **\[experimental\]** : Identify which single chains were paired
+- [`make_tcr_schema()`](https://nicholasclark.github.io/TIRTLtools/reference/make_tcr_schema.md)
+  **\[experimental\]** : Make a "schema" for defining a T-Cell Receptor
 - [`prep_for_tcrdist()`](https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.md)
   **\[experimental\]** : Prepare paired TCRs for TCRdist calculation
+- [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
+  [`process_TIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
+  **\[experimental\]** : Run data processing functions on a
+  TIRTLseqDataSet object
+- [`read_external_bulk()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_bulk.md)
+  **\[experimental\]** : Read and process bulk single-chain TCR-seq data
+- [`read_external_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_paired.md)
+  **\[experimental\]** : Read and process single-cell paired-chain
+  TCR-seq data
 - [`remove_duplicates()`](https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.md)
   **\[experimental\]** : Removes duplicate paired TCRs
 
@@ -282,7 +231,7 @@ If using the 384-well or 96-well TIRTL-seq protocol, please cite the
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads
@@ -319,12 +268,21 @@ If using the 384-well or 96-well TIRTL-seq protocol, please cite the
   **\[experimental\]** : Convert individual well .tsv files to faster
   loading binary format
 
+## Single-cell TIRTLseq data
+
+- [`plot_scTIRTLseq_plate()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_scTIRTLseq_plate.md)
+  **\[experimental\]** : Plot a plate of single-cell TIRTL-seq data
+- [`process_scTIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_scTIRTLseq.md)
+  **\[experimental\]** : Process single-cell TIRTL-seq data
+
 ## Data
 
 - [`params`](https://nicholasclark.github.io/TIRTLtools/reference/params.md)
   : Table of permissible amino acids and V-segments for TCRdist
 - [`submat`](https://nicholasclark.github.io/TIRTLtools/reference/submat.md)
   : Substitution penalty matrix for TCRdist amino acids and V-segments
+- [`vdj_db`](https://nicholasclark.github.io/TIRTLtools/reference/vdj_db.md)
+  : Table of known TCRs from VDJ-db
 
 ## Other
 

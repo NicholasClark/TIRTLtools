@@ -3,21 +3,11 @@
 load_tirtlseq() loads paired-TCR and pseudo-bulk data from TIRTLseq experiments
 from a given directory. It can also automatically assemble metadata from filenames."><meta property="og:description" content="
 load_tirtlseq() loads paired-TCR and pseudo-bulk data from TIRTLseq experiments
-from a given directory. It can also automatically assemble metadata from filenames."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body><p>
-
-
-
-
-
-
-
-
-
-  pkgdown/extra.css
+from a given directory. It can also automatically assemble metadata from filenames."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body>pkgdown/extra.css
 
   
 
-  </p>
+  
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -25,7 +15,7 @@ from a given directory. It can also automatically assemble metadata from filenam
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,6 +71,9 @@ from a given directory. It can also automatically assemble metadata from filenam
 <span>  sep <span class="op">=</span> <span class="st">"_"</span>,</span>
 <span>  meta_columns <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  clean <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  remove_nonfunctional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  process <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  pseudobulk_columns <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  paired_columns <span class="op">=</span> <span class="st">"auto"</span>,</span>
 <span>  n_threads <span class="op">=</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/openmp-utils.html" class="external-link">getDTthreads</a></span><span class="op">(</span><span class="op">)</span>,</span>
@@ -113,6 +106,20 @@ for example <code>c("marker", "timepoint", "donor")</code> for files named somet
 
 <dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
 <dd><p>(optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).</p></dd>
+
+
+<dt id="arg-clean">clean<a class="anchor" aria-label="anchor" href="#arg-clean"></a></dt>
+<dd><p>(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
+excess pairs for individual alpha and beta chains (default is FALSE).</p></dd>
+
+
+<dt id="arg-remove-nonfunctional">remove_nonfunctional<a class="anchor" aria-label="anchor" href="#arg-remove-nonfunctional"></a></dt>
+<dd><p>whether to remove non-functional TCR chains (default is FALSE)</p></dd>
+
+
+<dt id="arg-process">process<a class="anchor" aria-label="anchor" href="#arg-process"></a></dt>
+<dd><p>whether to process the raw data, adding columns for alpha and beta readcounts to the
+paired data frame, adding columns to the pseudobulk data to identify which chains are paired, etc.</p></dd>
 
 
 <dt id="arg-pseudobulk-columns">pseudobulk_columns<a class="anchor" aria-label="anchor" href="#arg-pseudobulk-columns"></a></dt>
@@ -189,10 +196,11 @@ then the metadata table will look like something like this:</p><div class="sourc
 <span class="r-in"><span>  package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu">load_tirtlseq</span><span class="op">(</span><span class="va">folder</span>,</span></span>
 <span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark52/git/TIRTLtools_github_only/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark2/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 alpha chain pseudo-bulk files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 beta chain pseudo-bulk files.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 paired chain files.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files for 6 samples...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd4_tp1_v2...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd4_tp1_v2_pseudobulk_TRA.tsv...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd4_tp1_v2_pseudobulk_TRB.tsv...</span>
@@ -218,7 +226,7 @@ then the metadata table will look like something like this:</p><div class="sourc
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp3_v2_pseudobulk_TRB.tsv...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp3_v2_TIRTLoutput.tsv...</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 18 files from 6 samples.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 13.4 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 57 secs</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

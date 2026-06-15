@@ -2,6 +2,9 @@
 
 ## TCR-alpha/beta pairing
 
+- [`get_tshell_settings()`](https://nicholasclark.github.io/TIRTLtools/reference/get_tshell_settings.md)
+  **\[experimental\]** : Get p-value and well threshold settings for
+  T-SHELL
 - [`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
   **\[experimental\]** : Find TCRalpha/beta pairs from individual well
   read counts
@@ -22,15 +25,15 @@
 
 ## Data processing and cleaning
 
-- [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.md)
-  **\[experimental\]** : Run data processing functions on a
-  TIRTLseqDataSet object
 - [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md)
   **\[experimental\]** : Add single-chain read counts/fractions to the
   paired TCR data
 - [`clean_pairs()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.md)
   **\[experimental\]** : Remove excess pairs for individual single
   chains
+- [`combine_bulk_and_paired_data()`](https://nicholasclark.github.io/TIRTLtools/reference/combine_bulk_and_paired_data.md)
+  **\[experimental\]** : Combine bulk single-chain TCR data with paired
+  TCR data
 - [`filter_duplicate_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_duplicate_tcrs.md)
   **\[experimental\]** : Remove duplicate TCRs from a data frame
 - [`filter_mait()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_mait.md)
@@ -48,8 +51,19 @@
   sequences
 - [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md)
   **\[experimental\]** : Identify which single chains were paired
+- [`make_tcr_schema()`](https://nicholasclark.github.io/TIRTLtools/reference/make_tcr_schema.md)
+  **\[experimental\]** : Make a "schema" for defining a T-Cell Receptor
 - [`prep_for_tcrdist()`](https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.md)
   **\[experimental\]** : Prepare paired TCRs for TCRdist calculation
+- [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
+  [`process_TIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
+  **\[experimental\]** : Run data processing functions on a
+  TIRTLseqDataSet object
+- [`read_external_bulk()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_bulk.md)
+  **\[experimental\]** : Read and process bulk single-chain TCR-seq data
+- [`read_external_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_paired.md)
+  **\[experimental\]** : Read and process single-cell paired-chain
+  TCR-seq data
 - [`remove_duplicates()`](https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.md)
   **\[experimental\]** : Removes duplicate paired TCRs
 
@@ -130,7 +144,7 @@
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads
@@ -167,11 +181,20 @@
   **\[experimental\]** : Convert individual well .tsv files to faster
   loading binary format
 
+## Single-cell TIRTLseq data
+
+- [`plot_scTIRTLseq_plate()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_scTIRTLseq_plate.md)
+  **\[experimental\]** : Plot a plate of single-cell TIRTL-seq data
+- [`process_scTIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_scTIRTLseq.md)
+  **\[experimental\]** : Process single-cell TIRTL-seq data
+
 ## Data
 
 - [`params`](https://nicholasclark.github.io/TIRTLtools/reference/params.md)
   : Table of permissible amino acids and V-segments for TCRdist
 - [`submat`](https://nicholasclark.github.io/TIRTLtools/reference/submat.md)
   : Substitution penalty matrix for TCRdist amino acids and V-segments
+- [`vdj_db`](https://nicholasclark.github.io/TIRTLtools/reference/vdj_db.md)
+  : Table of known TCRs from VDJ-db
 
 ## Other

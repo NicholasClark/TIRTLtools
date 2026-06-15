@@ -3,21 +3,11 @@
 This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
 originating from the same clone."><meta property="og:description" content="
 This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
-originating from the same clone."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body><p>
-
-
-
-
-
-
-
-
-
-  pkgdown/extra.css
+originating from the same clone."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body>pkgdown/extra.css
 
   
 
-  </p>
+  
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -25,7 +15,7 @@ originating from the same clone."><meta property="og:image" content="https://nic
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,16 +73,18 @@ originating from the same clone.</p>
 <span>  min_reads <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  min_wells <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  well_pos <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  wellset1 <span class="op">=</span> <span class="fu"><a href="get_well_subset.html">get_well_subset</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">16</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">)</span>,</span>
+<span>  tshell_settings <span class="op">=</span> <span class="fu"><a href="get_tshell_settings.html">get_tshell_settings</a></span><span class="op">(</span>format <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>,</span>
+<span>  wellset <span class="op">=</span> <span class="fu"><a href="get_well_subset.html">get_well_subset</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">16</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">)</span>,</span>
+<span>  wellset1 <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  compute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  backend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"cpu"</span>, <span class="st">"cupy"</span>, <span class="st">"mlx"</span><span class="op">)</span>,</span>
-<span>  pval_thres_tshell <span class="op">=</span> <span class="fl">1e-10</span>,</span>
-<span>  wij_thres_tshell <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  pval_thres_tshell <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  wij_thres_tshell <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  write_extra_files <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  filter_before_top3 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  fork <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  shared <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fork <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  shared <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  chunk_size <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  exclude_nonfunctional <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  select_best_madhype <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -135,7 +127,13 @@ The default value is 0.5</p></dd>
 named "<lab><em><project></project></em>&lt;well_id&gt;_TCRalpha.tsv" would use well_pos=3. (default is 3)</lab></p></dd>
 
 
-<dt id="arg-wellset-">wellset1<a class="anchor" aria-label="anchor" href="#arg-wellset-"></a></dt>
+<dt id="arg-tshell-settings">tshell_settings<a class="anchor" aria-label="anchor" href="#arg-tshell-settings"></a></dt>
+<dd><p>a named list with pairing settings for T-SHELL: <code>pval_thres_tshell</code> and <code>wij_thres_tshell</code>. You may pass your own list or call <code><a href="get_tshell_settings.html">get_tshell_settings()</a></code> with setting "auto", "384_well", or "96_well". By default, "auto" is selected and "384_well" settings will be used if there are &gt;= 150 wells passing QC, otherwise "96_well" settings will be used.</p><ul><li><p><code>pval_thres_tshell</code> is the adjusted p-value threshold for T-SHELL significance (default 1e-10 for 384-well plate, 1e-3 for 96-well plate)</p></li>
+<li><p><code>wij_thres_tshell</code> is the threshold for the number of wells containing both chains for T-SHELL significance (default &gt;2 wells for 384-well plate, &gt;3 wells for 96-well plate)</p></li>
+</ul></dd>
+
+
+<dt id="arg-wellset">wellset<a class="anchor" aria-label="anchor" href="#arg-wellset"></a></dt>
 <dd><p>a vector of wells to use for the pairing</p></dd>
 
 
@@ -145,14 +143,6 @@ named "<lab><em><project></project></em>&lt;well_id&gt;_TCRalpha.tsv" would use 
 
 <dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
 <dd><p>the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.</p></dd>
-
-
-<dt id="arg-pval-thres-tshell">pval_thres_tshell<a class="anchor" aria-label="anchor" href="#arg-pval-thres-tshell"></a></dt>
-<dd><p>the adjusted p-value threshold for T-SHELL significance (default 1e-10)</p></dd>
-
-
-<dt id="arg-wij-thres-tshell">wij_thres_tshell<a class="anchor" aria-label="anchor" href="#arg-wij-thres-tshell"></a></dt>
-<dd><p>the threshold for the number of wells containing both chains for T-SHELL significance (default &gt;2 wells)</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -205,6 +195,11 @@ counts (well x chain) for TCR-alpha and beta to "<prefix>_alpha_mat.rds" and "<p
 Metadata for the chains in these matrices are written to "<prefix>_alpha_meta.parquet" and
 "<prefix>_beta_meta.parquet" and metadata for the wells is written to "<prefix>_well_meta.parquet".</prefix></prefix></prefix></prefix></prefix></p>
 <p>These files can be loaded using the <code><a href="load_well_counts_binary.html">load_well_counts_binary()</a></code> function.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other pairing:
+<code><a href="get_tshell_settings.html">get_tshell_settings()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

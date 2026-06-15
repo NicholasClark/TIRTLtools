@@ -13,6 +13,7 @@ plot_paired_vs_rank(
   y_axis = c("n_not_paired", "n_paired"),
   chain = c("both", "beta", "alpha"),
   n_max = 100,
+  by_method = TRUE,
   color_scheme = NULL
 )
 ```

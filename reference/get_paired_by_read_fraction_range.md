@@ -14,7 +14,8 @@ for
 get_paired_by_read_fraction_range(
   data,
   chain = c("beta", "alpha"),
-  cutoffs = 10^(-6:-1)
+  cutoffs = 10^(-6:-1),
+  by_method = TRUE
 )
 ```
 
@@ -31,6 +32,10 @@ get_paired_by_read_fraction_range(
 - cutoffs:
 
   a vector of cutoffs for the read fraction ranges
+
+- by_method:
+
+  (optional) whether to get stats for each pairing method
 
 ## Value
 

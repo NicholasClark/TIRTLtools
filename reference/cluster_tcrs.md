@@ -125,6 +125,6 @@ result = cluster_tcrs(df)
 #> Removed 15 TCRs with short CDR3 segments (0.022%) from a total of 69,171 TCRs.
 #> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,156 TCRs.
 #> Filtered data frame contains 56,019 TCRs (80%) of original 69,623 TCRs.
-#> Out of 56019 valid TCRs, 5721 clusters detected and 37992 singleton TCRs.
-#> 130 clusters of size >= 10, 14 clusters of size >= 50, 5 clusters of size >=100.
+#> Out of 56019 valid TCRs, 5723 clusters detected and 37995 singleton TCRs.
+#> 132 clusters of size >= 10, 13 clusters of size >= 50, 5 clusters of size >=100.
 ```

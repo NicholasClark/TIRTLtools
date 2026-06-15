@@ -9,7 +9,7 @@ function.
 ## Usage
 
 ``` r
-get_pair_stats(data, verbose = TRUE)
+get_pair_stats(data, verbose = TRUE, by_method = TRUE)
 ```
 
 ## Arguments
@@ -22,6 +22,10 @@ get_pair_stats(data, verbose = TRUE)
 
   (optional) whether to print progress of the function (default is
   TRUE).
+
+- by_method:
+
+  (optional) whether to get stats for each pairing method
 
 ## Value
 
@@ -65,7 +69,7 @@ get_pair_stats(ts_data)
 #> Calculating pairing stats for sample 6
 #> # A tibble: 66 × 8
 #>    category         Freq chain  sample_id  marker timepoint version label       
-#>    <fct>           <int> <chr>  <chr>      <chr>  <chr>     <chr>   <chr>       
+#>    <fct>           <int> <chr>  <fct>      <chr>  <chr>     <chr>   <chr>       
 #>  1 MAD-HYPE only   25327 paired cd4_tp1_v2 cd4    tp1       v2      marker: cd4…
 #>  2 T-SHELL only     2498 paired cd4_tp1_v2 cd4    tp1       v2      marker: cd4…
 #>  3 both            20003 paired cd4_tp1_v2 cd4    tp1       v2      marker: cd4…

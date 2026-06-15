@@ -33,52 +33,6 @@ dir(folder)
 sjtrc = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
 ```
 
-## Process the data
-
-When we initially load the data, the data frames lack some information
-that is needed for plotting functions.
-
-The
-[`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.md)
-function runs 3 other package functions to add this information to the
-data frames:
-
-- [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md) -
-  adds single-chain read counts/fractions to the paired TCR data frames
-- [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md) -
-  adds a column to pseudobulk data indicating which single-chains were
-  paired
-- [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md) -
-  adds columns to paired data frames indicating whether CDR3A/B amino
-  acid sequences are functional (not containing stop codons or
-  frameshifts)
-
-If `clean = TRUE` is specified, the
-[`clean_pairs()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.md)
-function is also run before the preceding functions. This function
-removes excess pairs for alpha and beta chains. Biologically, we expect
-that each alpha is paired with at most one beta and that each beta is
-paired with at most two alphas in a clone. Here we use `clean = FALSE`
-to show how the data looks as-is.
-
-``` r
-sjtrc = TIRTL_process(sjtrc, clean = FALSE) 
-```
-
-    ## Adding single-chain data to paired dataframe for sample 1
-    ## Adding single-chain data to paired dataframe for sample 2
-    ## Adding single-chain data to paired dataframe for sample 3
-    ## Adding single-chain data to paired dataframe for sample 4
-    ## Adding single-chain data to paired dataframe for sample 5
-    ## Adding single-chain data to paired dataframe for sample 6
-    ## 
-    ## Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample 1
-    ## Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample 2
-    ## Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample 3
-    ## Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample 4
-    ## Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample 5
-    ## Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample 6
-
 ## Longitudinal plots for individual TCRs or groups of TCRs
 
 For CD8-selected T-cells, we get the nucleotide sequences for the 5 most
@@ -95,7 +49,7 @@ top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% hea
 plot_clone_size_across_samples(sjtrc, clones = c(top_clones1, top_clones2), chain = "beta")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-4-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-3-1.png)
 
 We can also plot the proportion of reads occupied by the 10 most
 frequent clones, or the top 100, or 1000, etc for each sample.
@@ -107,7 +61,7 @@ than their CD4 counterparts.
 plot_clonotype_indices(sjtrc, chain = "beta")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-5-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-4-1.png)
 
 A good robust measure of repertoire diversity is the number of clones
 needed to make up half of the total reads (d50).
@@ -134,7 +88,7 @@ div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
 plot_diversity(div, metric = "d50")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-6-1.png) The package
+![](plot_examples_files/figure-html/unnamed-chunk-5-1.png) The package
 offers a large number of other diversity metrics, including Simpson,
 inverse Simpson, Shannon, richness, etc.
 
@@ -157,7 +111,7 @@ sample.
 plot_n_reads(sjtrc)
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-8-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-7-1.png)
 
 We can also check how many alpha and beta chains were paired for each
 sample and by which algorithm.
@@ -166,7 +120,7 @@ sample and by which algorithm.
 plot_paired(sjtrc)
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-9-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-8-1.png)
 
 For quality control purposes, for the chains that are paired, we can
 plot how many partners each was assigned.
@@ -181,7 +135,7 @@ sequencing/PCR errors of the true partner.
 plot_num_partners(sjtrc)
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-10-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-9-1.png)
 
 We can also check the percentage of chains that are paired within each
 read fraction range. We would expect good pairing for highly frequent
@@ -197,7 +151,7 @@ range (light green, \[1e-06,1e-05\]) are paired.
 plot_paired_by_read_fraction_range(sjtrc, chain = "beta")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-11-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-10-1.png)
 
 We might expect that our algorithms (at least T-SHELL) are able to pair
 the majority of the most frequent clones. We can check how often our
@@ -216,7 +170,7 @@ wells.
 plot_paired_vs_rank(sjtrc, sample = 4)
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-12-1.png) Another way
+![](plot_examples_files/figure-html/unnamed-chunk-11-1.png) Another way
 to visualize the pairing of the top clones is to plot their rank from
 left to right with their read fraction on the y-axis, with points
 colored by the pairing status. Here, the unpaired clones are shown by
@@ -229,7 +183,7 @@ that are more frequent than one in a thousand (10^-3).
 plot_read_fraction_vs_pair_status(sjtrc, sample = 4)
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-13-1.png) We might
+![](plot_examples_files/figure-html/unnamed-chunk-12-1.png) We might
 also expect that the most frequent alpha clones are paired to the most
 frequent beta clones and vice versa.
 
@@ -245,7 +199,7 @@ top 100 beta clones, which makes sense.
 plot_pairs_with_eachother(sjtrc, sample = 4)
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-14-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-13-1.png)
 
 We can also plot the rank versus read fraction for all clones and
 compare the shapes of these curves among samples.
@@ -258,7 +212,7 @@ from CD8 samples have a frequency of over 1%.
 plot_ranks(sjtrc, chain = "beta")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-15-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-14-1.png)
 
 As another quality control check, we can plot how many of the top clones
 from each sample are shared in other samples.
@@ -271,7 +225,7 @@ between them, which is expected.
 plot_sample_overlap(sjtrc, chain = "beta")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-16-1.png)
+![](plot_examples_files/figure-html/unnamed-chunk-15-1.png)
 
 We may also want to find whether clones are expanding or contracting
 in-between timepoints. Here, the CD8 clones that are expanding from
@@ -282,4 +236,7 @@ shown in green.
 plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
 ```
 
-![](plot_examples_files/figure-html/unnamed-chunk-17-1.png)
+    ## Warning in geom_point(data = dt[dt$sign != "stable", ], aes((avg.x + pseudo1),
+    ## : Ignoring unknown aesthetics: text
+
+![](plot_examples_files/figure-html/unnamed-chunk-16-1.png)

@@ -1,4 +1,4 @@
-pandoc: '3.2'
+pandoc: 3.6.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -8,7 +8,7 @@ articles:
   summarizing_diversity: summarizing_diversity.html
   TCRdist: TCRdist.html
   TIRTLtools: TIRTLtools.html
-last_built: 2026-03-12T02:06Z
+last_built: 2026-06-15T20:04Z
 urls:
   reference: https://nicholasclark.github.io/TIRTLtools/reference
   article: https://nicholasclark.github.io/TIRTLtools/articles

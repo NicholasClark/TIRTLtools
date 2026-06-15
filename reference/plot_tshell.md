@@ -83,27 +83,27 @@ A list of output with the following elements:
 
 - data (list)
 
-- df_top_n - a data frame with results for the top N potential partner
-  chains
+  - df_top_n - a data frame with results for the top N potential partner
+    chains
 
-- df_all - a data frame with results for all potential partners passing
-  the `loss_frac_cutoff`
+  - df_all - a data frame with results for all potential partners
+    passing the `loss_frac_cutoff`
 
-- input_meta - a one-row data frame with the metadata for the input
-  chain
+  - input_meta - a one-row data frame with the metadata for the input
+    chain
 
 - plots (list)
 
-- scatter - a scatter plot of read fractions for the input chain vs. the
-  top N potential partner chains
+  - scatter - a scatter plot of read fractions for the input chain vs.
+    the top N potential partner chains
 
-- r_vs_p - a point plot of correlation (r) vs. -log10(raw p-value)
+  - r_vs_p - a point plot of correlation (r) vs. -log10(raw p-value)
 
-- r_vs_p_adj - a point plot of correlation (r) vs. -log10(FDR adjusted
-  p-value)
+  - r_vs_p_adj - a point plot of correlation (r) vs. -log10(FDR adjusted
+    p-value)
 
-- rank_vs_p_adj - a Manhattan plot of chain rank vs. -log10(FDR adjusted
-  p-value)
+  - rank_vs_p_adj - a Manhattan plot of chain rank vs. -log10(FDR
+    adjusted p-value)
 
 - call - a list with all arguments given to the function
 

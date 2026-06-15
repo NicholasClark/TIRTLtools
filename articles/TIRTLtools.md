@@ -21,6 +21,8 @@ Run the following line from the terminal to download the git repository.
 Load the package from your local folder in R
 
 ``` r
-# install.packages("pkgload") ## Run if you need to install the 'pkgload' package
+if (!requireNamespace("pkgload", quietly = TRUE)) {
+  install.packages("pkgload") ## Run if you need to install the 'pkgload' package
+}
 pkgload::load_all("./TIRTLtools") ### location of cloned repo on your machine
 ```

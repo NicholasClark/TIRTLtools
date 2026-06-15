@@ -16,4 +16,6 @@ Useful links:
 
 Authors:
 
+- Nicholas Clark <nicholas.clark00@gmail.com>
+
 - Mikhail Pogorelyy <mpogorel@fredhutch.org>

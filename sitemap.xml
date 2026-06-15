@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/404.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/FH_hpc_instructions.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/LICENSE-text.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/LICENSE.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/articles/TCRdist.html</loc></url>
@@ -13,7 +14,6 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/index.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.html</loc></url>
-<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TIRTL_process.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/TIRTLtools-package.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/add_metadata.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.html</loc></url>
@@ -21,6 +21,7 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/choose_pair_manual.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/combine_bulk_and_paired_data.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/create_thimble_df.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/filter_dataset.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/filter_duplicate_tcrs.html</loc></url>
@@ -32,6 +33,7 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/get_all_tcrs.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/get_pair_stats.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/get_paired_by_read_fraction_range.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/get_tshell_settings.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/get_well_subset.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/get_wells_from_edges.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.html</loc></url>
@@ -39,6 +41,7 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/index.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/load_well_counts_binary.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/make_tcr_schema.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/params.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/pipe.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.html</loc></url>
@@ -55,13 +58,19 @@
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_read_fraction_vs_pair_status.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_overlap.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_vs_sample.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_scTIRTLseq_plate.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/plot_tshell.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/process_scTIRTLseq.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/read_external_bulk.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/read_external_paired.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/reorder_samples.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/submat.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/summarize_data.html</loc></url>
+<url><loc>https://nicholasclark.github.io/TIRTLtools/reference/vdj_db.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/write_stitchr_tsv.html</loc></url>
 <url><loc>https://nicholasclark.github.io/TIRTLtools/reference/write_well_data_to_binary.html</loc></url>
 </urlset>

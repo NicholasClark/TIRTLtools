@@ -3,21 +3,11 @@
 This function tabulates the number of TCR pairs called for each sample by the MAD-HYPE
 algorithm, the T-SHELL algorithm, or both. It is used in the plot_paired() function."><meta property="og:description" content="
 This function tabulates the number of TCR pairs called for each sample by the MAD-HYPE
-algorithm, the T-SHELL algorithm, or both. It is used in the plot_paired() function."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body><p>
-
-
-
-
-
-
-
-
-
-  pkgdown/extra.css
+algorithm, the T-SHELL algorithm, or both. It is used in the plot_paired() function."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body>pkgdown/extra.css
 
   
 
-  </p>
+  
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -25,7 +15,7 @@ algorithm, the T-SHELL algorithm, or both. It is used in the plot_paired() funct
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +65,7 @@ algorithm, the T-SHELL algorithm, or both. It is used in the <code><a href="plot
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_pair_stats</span><span class="op">(</span><span class="va">data</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_pair_stats</span><span class="op">(</span><span class="va">data</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, by_method <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,6 +78,10 @@ algorithm, the T-SHELL algorithm, or both. It is used in the <code><a href="plot
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>(optional) whether to print progress of the function (default is TRUE).</p></dd>
+
+
+<dt id="arg-by-method">by_method<a class="anchor" aria-label="anchor" href="#arg-by-method"></a></dt>
+<dd><p>(optional) whether to get stats for each pairing method</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -130,7 +124,7 @@ By default, it counts the number of pairs overall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calculating pairing stats for sample 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 66 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    category         Freq chain  sample_id  marker timepoint version label       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> MAD-HYPE only   <span style="text-decoration: underline;">25</span>327 paired cd4_tp1_v2 cd4    tp1       v2      marker: cd4…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> T-SHELL only     <span style="text-decoration: underline;">2</span>498 paired cd4_tp1_v2 cd4    tp1       v2      marker: cd4…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> both            <span style="text-decoration: underline;">20</span>003 paired cd4_tp1_v2 cd4    tp1       v2      marker: cd4…</span>

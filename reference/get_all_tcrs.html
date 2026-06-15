@@ -3,21 +3,11 @@
 The get_all_tcrs() function aggregates the TCRs from all samples of a dataset
 and puts them into one table."><meta property="og:description" content="
 The get_all_tcrs() function aggregates the TCRs from all samples of a dataset
-and puts them into one table."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body><p>
-
-
-
-
-
-
-
-
-
-  pkgdown/extra.css
+and puts them into one table."><meta property="og:image" content="https://nicholasclark.github.io/TIRTLtools/logo.svg"></head><body>pkgdown/extra.css
 
   
 
-  </p>
+  
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -25,7 +15,7 @@ and puts them into one table."><meta property="og:image" content="https://nichol
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.16</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,84 +123,176 @@ function will only return one of these pairs of TCRs.</p>
 <span class="r-in"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_all_tcrs</span><span class="op">(</span><span class="va">ts_data</span>, chain <span class="op">=</span> <span class="st">"paired"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            wi    wj   wij                                        alpha_nuc</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;int&gt; &lt;int&gt; &lt;int&gt;                                           &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1:     0     0     3          TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2:     0     0     3       TGTGCTCTTCAAACTTCTGGTGGCTACAATAAGCTGATTTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3:     0     0     3             TGTGCTCCCCGGTACACCGGTAACCAGTTCTATTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4:     0     0     3 TGTGCAATGAGAGAGGTCGCTTCTGGTGGCTACAATAAGCTGATTTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5:     0     0     3             TGTGCTGCCAGCGGGGGCTTTCAGAAACTTGTATTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:    94     0    37    TGTGCCGTGGAGGGGGAGTCTGGTGGCTACAATAAGCTGATTTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:    96     0    50             TGTGCCCCCATGGATAGCAACTATCAGTTAATCTGG</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:    97     0    36    TGCGCTGTGAGAGATAGGGACACCAATGCAGGCAAATCAACCTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:   101     0    36                TGTGCAGACGGCCCCCAAGGAAATCTCATCTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:   103     0    46       TGCGGCACAGAGAGTGGAGGTAGCAACTATAAACTGACATTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 beta_nuc    wa    wb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   &lt;char&gt; &lt;int&gt; &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1:          TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT     3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                TGTGCCAGCAGCTATCAGGGCCAGCAGTTCTTC     3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3:       TGTGCCATCAGTCGGGGACAGGGGGCAGGTGAGCAGTTCTTC     3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4: TGTGCCAGCTCGACAGGGGGACAGCGACCTAATGAAAAACTGTTTTTT     3     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5:    TGCGCCAGCAGCCCAACAGGGGGGCAGGACTATGGCTACACCTTC     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Key: &lt;beta_nuc&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          method         va     ja            cdr3a               cdr3b       vb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt;     &lt;char&gt; &lt;char&gt;           &lt;char&gt;              &lt;char&gt;   &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:  tshell     TRAV21 TRAJ39      CAVNAGNMLTF        CSGTANTGELFF TRBV29-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2: madhype TRAV23/DV6 TRAJ40     CAAQSGTYKYIF         CSALAKNIQYF TRBV29-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3: madhype    TRAV9-2 TRAJ10 CALSDWGTGGGNKLTF        CSAGTSVETQYF TRBV29-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4: madhype    TRAV8-6 TRAJ23   CAVTHIT_GGKLIF        CSAGTSVETQYF TRBV29-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5: madhype     TRAV34 TRAJ54     CGPLQGAQKLVF       CASRVDGYNEQFF  TRBV5-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667: madhype     TRAV19 TRAJ58    CALSEASGSRLTF     CSAQLAA_FGDTQYF TRBV20-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668: madhype    TRAV8-6 TRAJ48  CAVTPLDFRNEKLTF   CASSIFPG_RDPRGAVF  TRBV5-1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669: madhype   TRAV13-2 TRAJ26      CAENHGQNFVF    CASSATSR_PTLEQYF  TRBV7-3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670: madhype      TRAV6 TRAJ37    CALDTSNTGKLIF      CASSPDR_HRELFF  TRBV6-4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:  tshell TRAV14/DV4 TRAJ24   CAMRESAYWGKLQF CASSLPI*REASGANVLTF   TRBV27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              jb alpha_rank beta_rank alpha_readFraction beta_readFraction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt;      &lt;int&gt;     &lt;int&gt;              &lt;num&gt;             &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1: TRBJ2-2          8         1       3.812515e-04      1.379590e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2: TRBJ2-4        214         2       1.026169e-04      8.040853e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3: TRBJ2-5         94         3       1.406358e-04      5.757980e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4: TRBJ2-5       2294         3       2.747121e-05      5.757980e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5: TRBJ2-1         34         4       2.205174e-04      5.147174e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667: TRBJ2-3       8434    492846       7.748581e-06      3.614594e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668: TRBJ2-2     322671    493012       2.034638e-07      3.614594e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669: TRBJ2-7     182443    493305       9.494979e-07      3.614594e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670: TRBJ2-2     206907    497592       7.629894e-07      3.614594e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671: TRBJ2-6     176039    497698       1.000364e-06      3.614594e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         alpha_readCount beta_readCount is_functional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;int&gt;          &lt;int&gt;        &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:           29061         145569          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:            7822          84844          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:           10720          60756          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:            2094          60756         FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:           16809          54311          TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:             457              3         FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:              12              3         FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:              56              3         FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:              45              3         FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:              59              3         FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                alpha_nuc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                   &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                TGTGCTGTGAACGCAGGCAACATGCTCACCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:             TGTGCAGCTCAATCAGGAACCTACAAATACATCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3: TGTGCTCTGAGTGATTGGGGGACGGGAGGAGGAAACAAACTCACCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:        TGTGCTGTGACCCATATAACCAGGGAGGAAAGCTTATCTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:             TGTGGACCTCTTCAGGGAGCCCAGAAGCTGGTATTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:          TGTGCTCTGAGTGAGGCCAGTGGCTCTAGGTTGACCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:    TGTGCTGTGACTCCCCTCGACTTTAGAAATGAGAAATTAACCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:                TGTGCAGAGAACCATGGTCAGAATTTTGTCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:          TGTGCTCTAGACACAAGCAACACAGGCAAACTAATCTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:       TGTGCAATGAGAGAGTCCGCTTACTGGGGGAAATTGCAGTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                          beta_nuc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                            &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                      TGCAGCGGGACAGCGAACACCGGGGAGCTGTTTTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                         TGCAGCGCATTAGCCAAAAACATTCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                      TGCAGCGCCGGGACTAGCGTGGAGACCCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:                      TGCAGCGCCGGGACTAGCGTGGAGACCCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                   TGCGCCAGCAGAGTCGATGGCTACAATGAGCAGTTCTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:              TGCAGTGCTCAGCTAGCGGCTTTTTCGGGGATACGCAGTATTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:         TGCGCCAGCAGCATCTTTCCGGGACAGAGATCCCCGGGGAGCTGTTTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:           TGCGCCAGCAGCGCTACGTCCAGACACCTACTTTAGAGCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                 TGTGCCAGCAGTCCCGACAGGGACACCGGGAGCTGTTTTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671: TGTGCCAGCAGTCTACCAATCTAGCGGGAGGCATCTGGGGCCAACGTCCTGACTTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                   alpha_beta</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                       &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                               TGTGCTGTGAACGCAGGCAACATGCTCACCTTT_TGCAGCGGGACAGCGAACACCGGGGAGCTGTTTTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                               TGTGCAGCTCAATCAGGAACCTACAAATACATCTTT_TGCAGCGCATTAGCCAAAAACATTCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                TGTGCTCTGAGTGATTGGGGGACGGGAGGAGGAAACAAACTCACCTTT_TGCAGCGCCGGGACTAGCGTGGAGACCCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:                       TGTGCTGTGACCCATATAACCAGGGAGGAAAGCTTATCTTC_TGCAGCGCCGGGACTAGCGTGGAGACCCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                         TGTGGACCTCTTCAGGGAGCCCAGAAGCTGGTATTT_TGCGCCAGCAGAGTCGATGGCTACAATGAGCAGTTCTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:                 TGTGCTCTGAGTGAGGCCAGTGGCTCTAGGTTGACCTTT_TGCAGTGCTCAGCTAGCGGCTTTTTCGGGGATACGCAGTATTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:      TGTGCTGTGACTCCCCTCGACTTTAGAAATGAGAAATTAACCTTT_TGCGCCAGCAGCATCTTTCCGGGACAGAGATCCCCGGGGAGCTGTTTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:                    TGTGCAGAGAACCATGGTCAGAATTTTGTCTTT_TGCGCCAGCAGCGCTACGTCCAGACACCTACTTTAGAGCAGTACTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                    TGTGCTCTAGACACAAGCAACACAGGCAAACTAATCTTT_TGTGCCAGCAGTCCCGACAGGGACACCGGGAGCTGTTTTTT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671: TGTGCAATGAGAGAGTCCGCTTACTGGGGGAAATTGCAGTTT_TGTGCCAGCAGTCTACCAATCTAGCGGGAGGCATCTGGGGCCAACGTCCTGACTTTC</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            wi    wj   wij    wa    wb       score         r       ts</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;       &lt;num&gt;     &lt;num&gt;    &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:     0    24   166   166   190 -5.46801297 0.9433375 39.08193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:     1    58   110   111   168  2.22849497        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:     1    65    76    77   141  6.17941220        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:     3    73    68    71   141  2.22543597        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:     4    16   151   155   167  7.40350947        NA       NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:   TGTGCCAGCAGCGCCCACGGGGAAGGGAACGAAAAACTGTTTTTTT   131    37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:      TGCAGTGCTAAATTAGCGGGCGACACCGGGGAGCTGTTTTTTT   146    50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:      TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC   133    36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:      TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC   137    36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:          TGTGCCAGCAGCTGGGACAAAACCTACGAGCAGTACTTC   149    46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                alpha_beta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                    &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                   TGTGCCGTGAACGGAGGTAACGACTACAAGCTCAGCTTT_TGTGCCAGCTCACCAGAGCAGGGTCTGGCCCAGCATTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                      TGTGCTCTTCAAACTTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCAGCTATCAGGGCCAGCAGTTCTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                   TGTGCTCCCCGGTACACCGGTAACCAGTTCTATTTT_TGTGCCATCAGTCGGGGACAGGGGGCAGGTGAGCAGTTCTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4: TGTGCAATGAGAGAGGTCGCTTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCTCGACAGGGGGACAGCGACCTAATGAAAAACTGTTTTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                TGTGCTGCCAGCGGGGGCTTTCAGAAACTTGTATTT_TGCGCCAGCAGCCCAACAGGGGGGCAGGACTATGGCTACACCTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:      TGTGCCGTGGAGGGGGAGTCTGGTGGCTACAATAAGCTGATTTTT_TGTGCCAGCAGCGCCCACGGGGAAGGGAACGAAAAACTGTTTTTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:                  TGTGCCCCCATGGATAGCAACTATCAGTTAATCTGG_TGCAGTGCTAAATTAGCGGGCGACACCGGGGAGCTGTTTTTTT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:         TGCGCTGTGAGAGATAGGGACACCAATGCAGGCAAATCAACCTTT_TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                     TGTGCAGACGGCCCCCAAGGAAATCTCATCTTT_TGTGCCAGCAGTTTTTGCGGGGGCGGGCTACGAGCAGTACTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:                TGCGGCACAGAGAGTGGAGGTAGCAACTATAAACTGACATTT_TGTGCCAGCAGCTGGGACAAAACCTACGAGCAGTACTTC</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          method     r    ts  pval pval_adj loss_a_frac loss_b_frac     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;char&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1: madhype    NA    NA    NA       NA           0   0.0000000 0.2011610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2: madhype    NA    NA    NA       NA           0   0.0000000 0.2011610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3: madhype    NA    NA    NA       NA           0   0.0000000 0.2011610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4: madhype    NA    NA    NA       NA           0   0.0000000 0.2011610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5: madhype    NA    NA    NA       NA           0   0.0000000 0.2011610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165667: madhype    NA    NA    NA       NA           0   0.7175573 1.5618088</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165668: madhype    NA    NA    NA       NA           0   0.6575342 1.6288014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165669: madhype    NA    NA    NA       NA           0   0.7293233 1.0688280</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165670: madhype    NA    NA    NA       NA           0   0.7372263 0.5297975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165671: madhype    NA    NA    NA       NA           0   0.6912752 0.4727439</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                    cdr3a         va     ja            cdr3b       vb      jb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;char&gt;     &lt;char&gt; &lt;char&gt;           &lt;char&gt;   &lt;char&gt;  &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1:    CAVNGGNDYKLSF   TRAV12-2 TRAJ20    CASSPEQGLAQHF   TRBV18 TRBJ1-5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2:   CALQTSGGYNKLIF    TRAV9-2  TRAJ4      CASSYQGQQFF  TRBV7-6 TRBJ2-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3:     CAPRYTGNQFYF     TRAV41 TRAJ49   CAISRGQGAGEQFF TRBV10-3 TRBJ2-1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4: CAMREVASGGYNKLIF TRAV14/DV4  TRAJ4 CASSTGGQRPNEKLFF  TRBV6-1 TRBJ1-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5:     CAASGGFQKLVF      TRAV2  TRAJ8  CASSPTGGQDYGYTF  TRBV5-1 TRBJ1-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:  CAVEGESGGYNKLIF   TRAV12-2  TRAJ4 CASSAHGE_GTKNCFF    TRBV9 TRBJ1-4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:     CAPMDSNYQLIW    TRAV1-2 TRAJ33  CSAKLAG_TPGSCFF TRBV20-1 TRBJ2-2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:  CAVRDRDTNAGKSTF    TRAV1-1 TRAJ27  CASSFCG_AGYEQYF   TRBV28 TRBJ2-7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:      CADGPQGNLIF   TRAV13-2 TRAJ42  CASSFCG_AGYEQYF   TRBV28 TRBJ2-7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:   CGTESGGSNYKLTF     TRAV30 TRAJ53    CASSWDKTYEQYF  TRBV5-1 TRBJ2-7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          sample_id marker timepoint version</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;char&gt; &lt;char&gt;    &lt;char&gt;  &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1: cd4_tp1_v2    cd4       tp1      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2: cd4_tp1_v2    cd4       tp1      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3: cd4_tp1_v2    cd4       tp1      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4: cd4_tp1_v2    cd4       tp1      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5: cd4_tp1_v2    cd4       tp1      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165667: cd8_tp3_v2    cd8       tp3      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165668: cd8_tp3_v2    cd8       tp3      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165669: cd8_tp3_v2    cd8       tp3      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165670: cd8_tp3_v2    cd8       tp3      v2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165671: cd8_tp3_v2    cd8       tp3      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:     0     0     3     3     3  0.60578435        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:     0     0     3     3     3  0.60578435        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:     0     0     3     3     3  0.60578435        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:     0     0     3     3     3  0.60578435        NA       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:     1     0     3     4     3  0.06720111 0.9371988 37.03713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 pval     pval_adj loss_a_frac loss_b_frac alpha_readCount_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;num&gt;        &lt;num&gt;       &lt;num&gt;       &lt;num&gt;               &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1: 1.747597e-92 6.346881e-84  0.12631579 0.000000000                 467</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:           NA           NA  0.34319527 0.005917160                 318</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:           NA           NA  0.45774648 0.007042254                 399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:           NA           NA  0.50694444 0.020833333                 172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:           NA           NA  0.09356725 0.023391813                 380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:           NA           NA  0.00000000 0.000000000                 214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:           NA           NA  0.00000000 0.000000000                   6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:           NA           NA  0.00000000 0.000000000                  39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:           NA           NA  0.00000000 0.000000000                  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671: 7.557454e-89 1.735806e-53  0.00000000 0.250000000                  21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         alpha_readCount_median    alpha_sem alpha_max_wells beta_readCount_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          &lt;num&gt;        &lt;num&gt;           &lt;int&gt;              &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                  167.5 2.012317e-05             191               2501</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                   55.0 1.011121e-05             191               2483</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                  117.0 1.598201e-05             191               2334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:                   24.0 3.776374e-06             191               2334</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                   78.0 1.505977e-05             191               1270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:                  135.0 3.696180e-06             192                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:                    5.0 1.059311e-07             192                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:                   10.0 9.904153e-07             192                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                   11.0 5.662021e-07             192                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:                   13.0 5.283245e-07             192                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         beta_readCount_median     beta_sem beta_max_wells alpha_has_stop_codon</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         &lt;num&gt;        &lt;num&gt;          &lt;int&gt;               &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                 739.5 7.132553e-05            191                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                 391.5 6.976097e-05            191                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                 150.0 6.087061e-05            191                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:                 150.0 6.087061e-05            191                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                 278.0 3.137988e-05            191                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:                   1.0 1.727190e-08            192                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:                   1.0 1.698039e-08            192                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:                   1.0 2.308962e-08            192                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                   1.0 2.047129e-08            192                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:                   1.0 2.384106e-08            192                FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         alpha_has_frameshift beta_has_stop_codon beta_has_frameshift</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       &lt;lgcl&gt;              &lt;lgcl&gt;              &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                FALSE               FALSE               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                FALSE               FALSE               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                FALSE               FALSE               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:                 TRUE               FALSE               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                FALSE               FALSE               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:                FALSE               FALSE                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:                FALSE               FALSE                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:                FALSE               FALSE                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                FALSE               FALSE                TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:                FALSE                TRUE               FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         alpha_is_functional beta_is_functional     alpha_id     beta_id</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      &lt;lgcl&gt;             &lt;lgcl&gt;       &lt;char&gt;      &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:                TRUE               TRUE      alpha_8      beta_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:                TRUE               TRUE    alpha_214      beta_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:                TRUE               TRUE     alpha_94      beta_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:               FALSE               TRUE   alpha_2294      beta_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:                TRUE               TRUE     alpha_34      beta_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:                TRUE              FALSE   alpha_8434 beta_492846</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:                TRUE              FALSE alpha_322671 beta_493012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:                TRUE              FALSE alpha_182443 beta_493305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:                TRUE              FALSE alpha_206907 beta_497592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:                TRUE              FALSE alpha_176039 beta_497698</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         receptor_rank     receptor_id  sample_id marker timepoint version</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;int&gt;          &lt;char&gt;     &lt;char&gt; &lt;char&gt;    &lt;char&gt;  &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1:             1      receptor_1 cd4_tp1_v2    cd4       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2:             2      receptor_2 cd4_tp1_v2    cd4       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3:             3      receptor_3 cd4_tp1_v2    cd4       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4:             3      receptor_3 cd4_tp1_v2    cd4       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5:             4      receptor_4 cd4_tp1_v2    cd4       tp1      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165667:        492846 receptor_492846 cd8_tp3_v2    cd8       tp3      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165668:        493012 receptor_493012 cd8_tp3_v2    cd8       tp3      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165669:        493305 receptor_493305 cd8_tp3_v2    cd8       tp3      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165670:        497592 receptor_497592 cd8_tp3_v2    cd8       tp3      v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165671:        497698 receptor_497698 cd8_tp3_v2    cd8       tp3      v2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                              label</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                             &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      1: marker: cd4 | timepoint: tp1 | version: v2</span>

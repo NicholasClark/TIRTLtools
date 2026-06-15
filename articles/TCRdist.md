@@ -128,19 +128,7 @@ Responses Associated with COVID-19 (SJTRC).
 ``` r
 folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
 data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", chain = "paired", verbose = FALSE)
-```
 
-    ## Loading files from: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/TIRTLtools/extdata/SJTRC_TIRTL_seq_longitudinal...
-
-    ## Found 6 beta chain pseudo-bulk files.
-
-    ## Found 6 paired chain files.
-
-    ## Loaded 6 files from 6 samples.
-
-    ## 0.8 seconds
-
-``` r
 data$meta %>%
   mutate(label = paste(substr(label, 0, 20), "...", sep = "")) %>%
   paged_table()
@@ -197,9 +185,38 @@ result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 
     ## Removed 0 TCRs with non-functional CDR3 amino acid sequences (0%) from a total of 102,515 TCRs.
 
-    ## [1] "converting to data.table"
-
     ## Filtered data frame contains 102,515 TCRs (100%) of original 102,515 TCRs.
+
+    ## Checking for available GPU...
+    ## 
+    ## Apple Silicon GPU detected:
+    ## Apple Silicon GPU (M1/M2/M3)
+    ## Checking for GPU-related Python modules...
+    ## 
+    ## 'mlx' is installed (for Apple Silicon GPUs).
+    ## Loading mlx
+    ## Number of chunks: 5253
+    ## 10% done
+    ## Time taken so far: 2.212686 seconds
+    ## 20% done
+    ## Time taken so far: 4.361812 seconds
+    ## 30% done
+    ## Time taken so far: 6.517786 seconds
+    ## 40% done
+    ## Time taken so far: 8.692389 seconds
+    ## 50% done
+    ## Time taken so far: 10.830549 seconds
+    ## 60% done
+    ## Time taken so far: 12.971768 seconds
+    ## 70% done
+    ## Time taken so far: 15.100641 seconds
+    ## 80% done
+    ## Time taken so far: 17.238724 seconds
+    ## 90% done
+    ## Time taken so far: 19.415030 seconds
+    ## 100% done
+    ## Time taken so far: 21.597793 seconds
+    ## Total time taken: 21.880054 seconds
 
 ### Inspect the output
 

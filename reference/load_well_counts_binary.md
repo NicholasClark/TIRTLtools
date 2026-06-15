@@ -5,6 +5,8 @@
 This function loads well-level data written to binary files (.parquet
 and .rds) by the
 [`write_well_data_to_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/write_well_data_to_binary.md)
+function or the
+[`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
 function. The data contains sparse matrices (well x clone) of read
 counts for TCRalpha and TCRbeta along with metadata data frames for each
 clone.

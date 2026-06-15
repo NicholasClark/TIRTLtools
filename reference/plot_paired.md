@@ -11,6 +11,7 @@ plot_paired(
   data,
   chain = c("paired", "alpha", "beta"),
   samples = NULL,
+  by_method = TRUE,
   color_scheme = NULL
 )
 ```
@@ -29,6 +30,10 @@ plot_paired(
 - samples:
 
   (optional) the samples to include in the plot (default is all)
+
+- by_method:
+
+  (optional) whether to bars by method (T-SHELL vs. MAD-HYPE)
 
 - color_scheme:
 
