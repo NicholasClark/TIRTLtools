@@ -10,6 +10,9 @@ load_tirtlseq(
   sep = "_",
   meta_columns = NULL,
   samples = NULL,
+  clean = FALSE,
+  remove_nonfunctional = FALSE,
+  process = TRUE,
   pseudobulk_columns = "auto",
   paired_columns = "auto",
   n_threads = data.table::getDTthreads(),
@@ -29,6 +32,14 @@ load_tirtlseq(
 for example \code{c("marker", "timepoint", "donor")} for files named something like "cd8_timepoint2_donor1 ... .tsv".}
 
 \item{samples}{(optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).}
+
+\item{clean}{(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
+excess pairs for individual alpha and beta chains (default is FALSE).}
+
+\item{remove_nonfunctional}{whether to remove non-functional TCR chains (default is FALSE)}
+
+\item{process}{whether to process the raw data, adding columns for alpha and beta readcounts to the
+paired data frame, adding columns to the pseudobulk data to identify which chains are paired, etc.}
 
 \item{pseudobulk_columns}{(optional) the columns of the pseudobulk .tsv(.gz) to read. Either
 a list of columns or one of "auto", "all", or "minimal". "auto" (default) loads all columns except for

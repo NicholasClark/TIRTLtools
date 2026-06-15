@@ -4,12 +4,14 @@
 \alias{get_pair_stats}
 \title{Count the number of pairs called by each algorithm}
 \usage{
-get_pair_stats(data, verbose = TRUE)
+get_pair_stats(data, verbose = TRUE, by_method = TRUE)
 }
 \arguments{
 \item{data}{a TIRTLseqDataSet object}
 
 \item{verbose}{(optional) whether to print progress of the function (default is TRUE).}
+
+\item{by_method}{(optional) whether to get stats for each pairing method}
 }
 \value{
 A data frame with the number of pairs called by each algorithm for each sample.
@@ -31,18 +33,18 @@ get_pair_stats(ts_data)
 
 }
 \seealso{
-Other qc: 
-\code{\link{get_all_tcrs}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{plot_n_reads}()},
-\code{\link{plot_num_partners}()},
-\code{\link{plot_paired}()},
-\code{\link{plot_paired_by_read_fraction_range}()},
-\code{\link{plot_paired_vs_rank}()},
-\code{\link{plot_pairs_with_eachother}()},
-\code{\link{plot_ranks}()},
-\code{\link{plot_read_fraction_vs_pair_status}()},
-\code{\link{plot_sample_overlap}()},
-\code{\link{summarize_data}()}
+Other qc:
+\code{\link[=get_all_tcrs]{get_all_tcrs()}},
+\code{\link[=get_paired_by_read_fraction_range]{get_paired_by_read_fraction_range()}},
+\code{\link[=plot_n_reads]{plot_n_reads()}},
+\code{\link[=plot_num_partners]{plot_num_partners()}},
+\code{\link[=plot_paired]{plot_paired()}},
+\code{\link[=plot_paired_by_read_fraction_range]{plot_paired_by_read_fraction_range()}},
+\code{\link[=plot_paired_vs_rank]{plot_paired_vs_rank()}},
+\code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
+\code{\link[=plot_ranks]{plot_ranks()}},
+\code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
+\code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}

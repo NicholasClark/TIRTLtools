@@ -12,6 +12,7 @@
 #' @param data a TIRTLseqDataSet object
 #' @param chain the TCR chain to use for read fraction (default is "beta")
 #' @param cutoffs a vector of cutoffs for the read fraction ranges
+#' @param by_method (optional) whether to get stats for each pairing method
 #'
 #' @returns a data frame with the number and fraction of chains paired for each
 #' read fraction range for each sample.
@@ -25,11 +26,11 @@
 #' get_paired_by_read_fraction_range(ts_data, chain = "beta")
 #'
 #'
-get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1)) {
+get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1),by_method=TRUE) {
   chain = chain[1]
   df = lapply(1:length(data$data), function(i) {
     x = data$data[[i]]
-    df_tmp = .get_paired_by_read_fraction_range_single(x, chain = chain, cutoffs = cutoffs) %>%
+    df_tmp = .get_paired_by_read_fraction_range_single(x, chain = chain, cutoffs = cutoffs, by_method=by_method) %>%
       mutate(sample_id = names(data$data)[i])
     return(df_tmp)
   }) %>% bind_rows()
@@ -38,10 +39,10 @@ get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cu
 }
 
 ### data is for one sample, a list of three data frames: alpha, beta, and paired
-.get_paired_by_read_fraction_range_single = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1)) {
+.get_paired_by_read_fraction_range_single = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1),by_method=TRUE) {
   chain = chain[1]
   if(!"is_paired" %in% colnames(data$beta)) {
-    data = .annotate_paired_single(data)
+    data = .annotate_paired_single(data, by_method=by_method)
   }
   df = data[[chain]]
 
@@ -57,15 +58,24 @@ get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cu
     right = FALSE#,               # so intervals are [a, b)
     #labels = paste0("[", c(0, head(cutoffs, -1)), ", ", cutoffs, ")")
   )
-  df_summ = df %>% group_by(range) %>% summarize(
-    n_paired_sum = sum(is_paired),
-    n_paired_sum_tshell = sum(is_paired_tshell),
-    n_paired_sum_madhype = sum(is_paired_madhype),
-    n_total = length(n_paired)
-  ) %>% mutate(
-    fraction_paired = n_paired_sum/n_total,
-    fraction_paired_tshell = n_paired_sum_tshell/n_total,
-    fraction_paired_madhype = n_paired_sum_madhype/n_total
-  )
+  if("is_paired_tshell" %in% colnames(df)) {
+    df_summ = df %>% group_by(range) %>% summarize(
+      n_paired_sum = sum(is_paired),
+      n_paired_sum_tshell = sum(is_paired_tshell),
+      n_paired_sum_madhype = sum(is_paired_madhype),
+      n_total = length(n_paired)
+    ) %>% mutate(
+      fraction_paired = n_paired_sum/n_total,
+      fraction_paired_tshell = n_paired_sum_tshell/n_total,
+      fraction_paired_madhype = n_paired_sum_madhype/n_total
+    )
+  } else {
+    df_summ = df %>% group_by(range) %>% summarize(
+      n_paired_sum = sum(is_paired),
+      n_total = length(n_paired)
+    ) %>% mutate(
+      fraction_paired = n_paired_sum/n_total
+    )
+  }
   return(df_summ)
 }

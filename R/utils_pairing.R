@@ -117,10 +117,11 @@ madhyper_surface<-function(n_wells,cells=1000,alpha=2,prior=1){
   new_cube
 }
 
-concordance<-function(tirtlseq1,tirtlseq2)
-{
+concordance<-function(tirtlseq1,tirtlseq2) {
   table(tirtlseq1[beta_nuc%in%tirtlseq2$beta_nuc,alpha_beta,]%in%tirtlseq2$alpha_beta)
 }
+
+
 
 write_for_gpu<-function(mlista,mlistb,n_cells=3000,alpha=2,min_reads=0,min_wells=2,prefix="")#writes out bigmas,bigmbs and mdh files.
 {
@@ -369,49 +370,6 @@ run_single_point_analysis_sub_gpu<-function(folder_path,prefix="tmp",well_filter
   return(result)
 }
 
-get_clonotypes_10x<-function(TCRs){ #this makes neat table from filtered contig annotations.
-  ctg<-data.table(V1=unique(TCRs$barcode))
-  ctg$cdr3b<-NA
-  ctg$cdr3b_nt<-NA
-  ctg$vb<-NA
-  ctg$jb<-NA
-  ctg$cdr3a<-NA
-  ctg$cdr3a_nt<-NA
-  ctg$va<-NA
-  ctg$ja<-NA
-  ctg$cdr3a2<-NA
-  ctg$cdr3a2_nt<-NA
-  ctg$va2<-NA
-  ctg$ja2<-NA
-  for (i in 1:nrow(ctg)){
-    if (i%%1000==0) print(i)
-    ctg$cdr3b[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRB",,][1,,]$cdr3
-    ctg$cdr3b_nt[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRB",,][1,,]$cdr3_nt
-    ctg$vb[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRB",,][1,,]$v_gene
-    ctg$jb[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRB",,][1,,]$j_gene
-    ctg$cdr3a[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][1,,]$cdr3
-    ctg$cdr3a_nt[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][1,,]$cdr3_nt
-    ctg$va[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][1,,]$v_gene
-    ctg$ja[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][1,,]$j_gene
-    ctg$cdr3a2[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][2,,]$cdr3
-    ctg$cdr3a2_nt[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][2,,]$cdr3_nt
-    ctg$va2[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][2,,]$v_gene
-    ctg$ja2[i]<-TCRs[barcode==ctg$V1[i],,][order(-umis)][chain=="TRA",,][2,,]$j_gene
-  }
-  ctg[,n_cells:=.N,.(cdr3b_nt,cdr3a_nt)]#N cells/clone
-  ctg
-}
-
-
-process_10x<-function(path){
-  dt_10x<-fread(path)
-  dt_10x_clean<-get_clonotypes_10x(dt_10x)
-  dt_10x_complete<-dt_10x_clean[order(-n_cells),][!duplicated(paste0(cdr3b_nt,"_",cdr3a_nt)),][!is.na(cdr3b_nt)&!is.na(cdr3a_nt),]
-  dt_10x_complete[,alpha_beta:=paste0(cdr3a_nt,"_",cdr3b_nt),]
-  dt_10x_complete[,beta_nuc:=cdr3b_nt,]
-  dt_10x_complete[,alpha_nuc:=cdr3a_nt,]
-  list(complete=dt_10x_complete,clean=dt_10x_clean,raw=dt_10x)
-}
 
 
 #test<-run_single_point_analysis_sub_gpu("preprint_data_combined/MVP093_PAIRSEQ/plate1/",well_pos = 4,wellset1 = get_well_subset(1:16,19:24))
@@ -506,3 +464,82 @@ get_input_mat<-function(mat,mat2) #matrix form: gets two matrices outputs wi, wj
   cbind(wi,wj,wij)
 }
 
+.combineTCR<-function(dt){
+  dt[, v := tstrsplit(allVHitsWithScore, "*", fixed = TRUE, fill = "")[[1]]]
+  dt[, j := tstrsplit(allJHitsWithScore, "*", fixed = TRUE, fill = "")[[1]]]
+  setkey(dt, targetSequences)
+  nmax=length(unique(dt$file))
+  #print(nmax)
+  out <- dt[,
+            .(
+              readCount = sum(readCount),
+              v = v[which.max(tabulate(match(v, v)))],
+              j = j[which.max(tabulate(match(j, j)))],
+              aaSeqCDR3 = aaSeqCDR3[which.max(tabulate(match(aaSeqCDR3, aaSeqCDR3)))],
+              n_wells=.N,
+              readCount_max=max(readCount),
+              readCount_median=median(readCount),
+              avg=sum(readFraction)/nmax,
+              sem=sd(c(readFraction,rep(0,times=nmax-.N)))/sqrt(nmax)
+            ),
+            by = targetSequences #or by EACHI?
+  ]
+  out[, readFraction := readCount / sum(readCount)]
+  out  #get most popular V and J and aaSeqCDR3 for each target
+}
+
+
+
+## other utils ---------
+.get_functional = function(df) {
+  check1 = !grepl("\\*", df$aaSeqCDR3)
+  check2 = !grepl("_", df$aaSeqCDR3)
+  df[check1 & check2,]
+}
+
+.filter_pairs = function(df, filter_madhype = TRUE, filter_tshell = TRUE) {
+  df = df %>%
+    mutate(is_functional = (!grepl("\\*", cdr3a)) & (!grepl("_", cdr3a)) & (!grepl("\\*", cdr3b)) & (!grepl("_", cdr3b)) )
+
+  ### make final pairs data frame after sorting initial pairs by score (or p-value for t-shell)
+  # input: df is a data frame with pairs, sorted by p-value (t-shell) or score (mad-hype)
+  # with the most significant/high-scoring pairs at the top
+  .build_pairs_df = function(df) {
+    ## initialize an empty dataframe for final pairs
+    pairs = df[c(),]
+    ## iterate through all initial pairs, starting with most significant
+    for(i in 1:nrow(df)) {
+      ## for each initial pair:
+      ## count how many times the alpha and beta chain appears in the final pairs data frame
+      alpha_tmp = df$alpha_nuc[i] ## current alpha
+      beta_tmp = df$beta_nuc[i] ## current beta
+      n_beta_paired = sum(pairs$beta_nuc %in% beta_tmp) ## current beta count in final pairs data frame
+      n_alpha_paired = sum(pairs$alpha_nuc %in% alpha_tmp) ## current alpha count in final pairs data frame
+      ## if alpha is not in final pairs and beta is in final pairs at most once, add pair to final pairs!
+      if(n_beta_paired <= 1 && n_alpha_paired == 0) {
+        tmp = df[i,]
+        pairs = bind_rows(pairs, tmp)
+      } ## else discard row
+    }
+    pairs = pairs %>% select(-is_functional) ## remove "is_functional" column
+    return(pairs)
+  }
+  # sort initial pairs data frames by score (madhype) and p-value (t-shell)
+  # with most significant chains at the top. sort all functional chains higher than all non-functional.
+  df_mdh = df %>% filter(method == "madhype") %>%
+    arrange(desc(is_functional), desc(score))
+  df_tshell = df %>% filter(method == "tshell") %>%
+    arrange(desc(is_functional), pval)
+  if(filter_madhype) {
+    pairs_mdh = .build_pairs_df(df_mdh)
+  } else {
+    pairs_mdh = df_mdh
+  }
+  if(filter_tshell) {
+    pairs_tshell = .build_pairs_df(df_tshell)
+  } else {
+    pairs_tshell = df_tshell
+  }
+  pairs_both = bind_rows(pairs_mdh, pairs_tshell)
+  return(pairs_both)
+}

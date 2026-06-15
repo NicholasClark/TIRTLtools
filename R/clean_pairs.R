@@ -41,6 +41,8 @@ clean_pairs = function(
     prefer_functional = TRUE,
     verbose = TRUE) {
   version = "fast"
+  .check_has_paired_data(data)
+  .check_has_single_chain_data(data)
   if(is.null(data$is_annotated)) {
     data = add_single_chain_data(data, verbose = verbose)
   }
@@ -70,7 +72,7 @@ clean_pairs = function(
 # input is one data frame of paired TCRs
 # output is a "cleaned" data frame where each alpha chain has its matches pruned to
 # at most one beta chain and each beta chain has its matches pruned to at most two alpha chains.
-.clean_pairs_single = function(df, n_max_alpha = 2, n_max_beta = 1, prefer_functional = TRUE, version = "fast") {
+.clean_pairs_single = function(df, n_max_alpha = 2, n_max_beta = 1, prefer_functional = TRUE, version = "fast", verbose = TRUE) {
   #df_orig = df
   cols = colnames(df)
   df = df %>% remove_duplicates() %>% .identify_non_functional_seqs_single()

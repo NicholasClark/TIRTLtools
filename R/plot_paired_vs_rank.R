@@ -34,11 +34,12 @@ plot_paired_vs_rank = function(
     y_axis = c("n_not_paired", "n_paired"),
     chain = c("both", "beta", "alpha"),
     n_max = 100,
+    by_method=TRUE,
     color_scheme = NULL
     ) {
   chain = chain[1]
   y_axis = y_axis[1]
-  if(!"is_paired" %in% colnames(data$data[[1]]$beta)) data = identify_paired(data, verbose = FALSE)
+  if(!"is_paired" %in% colnames(data$data[[1]]$beta)) data = identify_paired(data, verbose = FALSE, by_method = by_method)
   if(is.numeric(sample)) sample = names(data$data)[[sample]]
   data = data$data[[sample]]
 
@@ -66,6 +67,11 @@ plot_paired_vs_rank = function(
 
 .make_df_pair_vs_rank = function(df, n_max = 1000, return_melted = TRUE, value = c("n_not_paired", "n_paired")) {
   value = value[1]
+  has_method = "is_paired_tshell" %in% colnames(df)
+  if(!has_method) { ## add dummy columns
+    df$is_paired_tshell = F
+    df$is_paired_madhype = F
+  }
   if(value == "n_not_paired") { ### make dataframe of number of chains NOT PAIRED
     df = df %>%
       arrange(desc(readFraction)) %>%
@@ -77,6 +83,7 @@ plot_paired_vs_rank = function(
       )
     df_sub = df[1:n_max,]
     cols_keep = c("targetSequences", "readFraction", "rank", "n_not_paired_both", "n_not_paired_madhype", "n_not_paired_tshell")
+    if(!has_method) cols_keep = c("targetSequences", "readFraction", "rank", "n_not_paired_both")
     df_melt = df_sub[,cols_keep, with = FALSE] %>%
       reshape2::melt(id.vars = c("targetSequences", "readFraction", "rank"),
                      value.name = "n_not_paired", variable.name = "method")
@@ -91,6 +98,7 @@ plot_paired_vs_rank = function(
       )
     df_sub = df[1:n_max,]
     cols_keep = c("targetSequences", "readFraction", "rank", "n_paired_both", "n_paired_madhype", "n_paired_tshell")
+    if(!has_method) cols_keep = c("targetSequences", "readFraction", "rank", "n_paired_both")
     df_melt = df_sub[,cols_keep, with = FALSE] %>%
       reshape2::melt(id.vars = c("targetSequences", "readFraction", "rank"),
                      value.name = "n_paired", variable.name = "method")

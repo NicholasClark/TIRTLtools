@@ -225,3 +225,29 @@ calc_fisher_pval_df = function(df, n) {
     return(tmp$p.value)
   })
 }
+
+.order_columns = function(df, cols, keep_extra = TRUE, verbose = TRUE) {
+  checkmate::assert_data_frame(df)
+  checkmate::assert_character(cols)
+  checkmate::assert_logical(keep_extra)
+  checkmate::assert_logical(verbose)
+
+  cols_found = cols[cols %in% colnames(df)]
+  cols_missing = cols[!cols %in% colnames(df)]
+  extra_cols = colnames(df)[!colnames(df) %in% cols_found]
+  if(verbose && length(cols_missing) >= 1L) {
+    msg = paste("df does not contain columns:", paste(cols_missing, collapse = ", "))
+    warning(msg)
+  }
+  if(keep_extra) {
+    new_cols = c(cols_found, extra_cols)
+  } else {
+    new_cols = cols_found
+  }
+  if(is.data.table(df)) {
+    df_out = df[, ..new_cols]
+  } else {
+    df_out = df[,new_cols, drop=FALSE]
+  }
+  return(df_out)
+}

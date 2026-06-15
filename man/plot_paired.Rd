@@ -8,6 +8,7 @@ plot_paired(
   data,
   chain = c("paired", "alpha", "beta"),
   samples = NULL,
+  by_method = TRUE,
   color_scheme = NULL
 )
 }
@@ -17,6 +18,8 @@ plot_paired(
 \item{chain}{the TCR chain to plot (default is "paired")}
 
 \item{samples}{(optional) the samples to include in the plot (default is all)}
+
+\item{by_method}{(optional) whether to bars by method (T-SHELL vs. MAD-HYPE)}
 
 \item{color_scheme}{(optional) the color scheme for the plot}
 }
@@ -38,18 +41,18 @@ plot_paired(ts_data)
 
 }
 \seealso{
-Other qc: 
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{plot_n_reads}()},
-\code{\link{plot_num_partners}()},
-\code{\link{plot_paired_by_read_fraction_range}()},
-\code{\link{plot_paired_vs_rank}()},
-\code{\link{plot_pairs_with_eachother}()},
-\code{\link{plot_ranks}()},
-\code{\link{plot_read_fraction_vs_pair_status}()},
-\code{\link{plot_sample_overlap}()},
-\code{\link{summarize_data}()}
+Other qc:
+\code{\link[=get_all_tcrs]{get_all_tcrs()}},
+\code{\link[=get_pair_stats]{get_pair_stats()}},
+\code{\link[=get_paired_by_read_fraction_range]{get_paired_by_read_fraction_range()}},
+\code{\link[=plot_n_reads]{plot_n_reads()}},
+\code{\link[=plot_num_partners]{plot_num_partners()}},
+\code{\link[=plot_paired_by_read_fraction_range]{plot_paired_by_read_fraction_range()}},
+\code{\link[=plot_paired_vs_rank]{plot_paired_vs_rank()}},
+\code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
+\code{\link[=plot_ranks]{plot_ranks()}},
+\code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
+\code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}

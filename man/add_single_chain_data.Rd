@@ -25,6 +25,7 @@ of a dataset.
 Other data_processing:
 \code{\link[=TIRTL_process]{TIRTL_process()}},
 \code{\link[=clean_pairs]{clean_pairs()}},
+\code{\link[=combine_bulk_and_paired_data]{combine_bulk_and_paired_data()}},
 \code{\link[=filter_duplicate_tcrs]{filter_duplicate_tcrs()}},
 \code{\link[=filter_mait]{filter_mait()}},
 \code{\link[=filter_nonfunctional_TCRs]{filter_nonfunctional_TCRs()}},

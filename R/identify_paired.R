@@ -9,6 +9,7 @@
 #'
 #' @param data a TIRTLseq dataset created by \code{\link{load_tirtlseq}()}
 #' @param verbose (optional) whether to print progress of the function (default is TRUE).
+#' @param by_method (optional) whether to get stats for each pairing method
 #'
 #' @return
 #' A dataset similar to that created by \code{\link{load_tirtlseq}()}, but
@@ -28,42 +29,20 @@
 #' # paired = load_tirtlseq("path_to/your_directory", sep = "_", meta_columns = c("cell_type", "timepoint"))
 #' # paired = identify_paired(paired)
 #'
-identify_paired = function(data, verbose = TRUE) {
+identify_paired = function(data, verbose = TRUE, by_method=TRUE) {
   data$data = lapply(1:length(data$data), function(i) {
     if(verbose) {
       msg = paste("Annotating data with pairing status by MAD-HYPE and T-SHELL algorithms for sample", i) %>% .prepend_newline()
       cat(msg)
     }
     x=data$data[[i]]
-    .annotate_paired_single(x)
+    .annotate_paired_single(x, by_method=by_method)
     }) %>% set_names(names(data$data))
   return(data)
 }
 
-## input is data for one sample/experiment
-.get_pair_stats_single = function(data) {
-  if(!"is_paired" %in% colnames(data$beta)) {
-    data = .annotate_paired_single(data)
-  }
-  paired_df = data$paired_alt$paired_status %>% table() %>%
-    as.data.frame.table() %>% as_tibble() %>%
-    set_colnames(c("category", "Freq")) %>%
-    mutate(chain = "paired")
-  alpha_df = data$alpha$paired_status %>% table() %>%
-    as.data.frame.table() %>% as_tibble() %>%
-    set_colnames(c("category", "Freq")) %>%
-    mutate(chain = "alpha")
-  beta_df = data$beta$paired_status %>% table() %>%
-    as.data.frame.table() %>% as_tibble() %>%
-    set_colnames(c("category", "Freq"))  %>%
-    mutate(chain = "beta")
-  all_df = bind_rows(list(paired_df, alpha_df, beta_df))
-  return(all_df)
-}
-
-
-.annotate_paired_single = function(data) {
-  ll = .identify_paired_single(data)
+.annotate_paired_single = function(data, by_method=TRUE) {
+  ll = .identify_paired_single(data, by_method=by_method)
   data$alpha = ll$alpha
   data$beta = ll$beta
   data$paired_alt = ll$paired_alt ## paired data frame w/ no duplicates
@@ -72,12 +51,33 @@ identify_paired = function(data, verbose = TRUE) {
 
 # for input of a single sample/experiment, returns alpha, beta, and
 # paired (with no duplicates) data frames with methods (madhype and tshell) annotated
-.identify_paired_single = function(data) {
+.identify_paired_single = function(data, by_method=TRUE) {
   if(.is.DataFrame(data$alpha)) data$alpha = as.data.table(data$alpha)
   if(.is.DataFrame(data$beta)) data$beta = as.data.table(data$beta)
   if(.is.DataFrame(data$paired)) data$paired = as.data.table(data$paired)
 
-  paired_tmp = data$paired %>% remove_duplicates()
+  paired_tmp = data$paired %>% remove_duplicates() %>% as.data.table()
+
+  counts_alpha = paired_tmp[, .N, by = alpha_nuc] %>%
+    dplyr::rename(n_paired = N, targetSequences = alpha_nuc)
+  counts_beta = paired_tmp[, .N, by = beta_nuc] %>%
+    dplyr::rename(n_paired = N, targetSequences = beta_nuc)
+
+  if(!by_method) {
+    tmp_alpha = data$alpha %>%
+      left_join(counts_alpha, by = "targetSequences") %>%
+      mutate(n_paired = ifelse(is.na(n_paired), 0, n_paired)) %>%
+      mutate(is_paired = n_paired != 0) %>%
+      mutate(paired_status = ifelse(is_paired, "paired", "un-paired"))
+    tmp_beta = data$beta %>%
+      left_join(counts_beta, by = "targetSequences") %>%
+      mutate(n_paired = ifelse(is.na(n_paired), 0, n_paired)) %>%
+      mutate(is_paired = n_paired != 0) %>%
+      mutate(paired_status = ifelse(is_paired, "paired", "un-paired"))
+    paired_tmp$paired_status = "paired"
+    return(list(alpha = tmp_alpha, beta = tmp_beta, paired_alt = paired_tmp))
+  }
+
   paired_tmp_madhype = data$paired %>% filter(method == "madhype")
   paired_tmp_tshell = data$paired %>% filter(method == "tshell")
 
@@ -91,11 +91,6 @@ identify_paired = function(data, verbose = TRUE) {
     dplyr::rename(n_paired_tshell = N, targetSequences = alpha_nuc)
   counts_beta_tshell = paired_tmp_tshell[, .N, by = beta_nuc] %>%
     dplyr::rename(n_paired_tshell = N, targetSequences = beta_nuc)
-
-  counts_alpha = paired_tmp[, .N, by = alpha_nuc] %>%
-    dplyr::rename(n_paired = N, targetSequences = alpha_nuc)
-  counts_beta = paired_tmp[, .N, by = beta_nuc] %>%
-    dplyr::rename(n_paired = N, targetSequences = beta_nuc)
 
   tmp_alpha = data$alpha %>%
     left_join(counts_alpha_madhype, by = "targetSequences") %>%

@@ -52,11 +52,13 @@ add_single_chain_data = function(data, verbose = TRUE) {
 }
 
 
-
-.add_single_chain_data_simple = function(data) {
+## input is a list with "paired", "alpha", and "beta" slots
+## output is a paired data frame
+.add_single_chain_data_simple = function(data, verbose=TRUE) {
+  sc_cols = c("targetSequences", "readCount", "readCount_max", "readCount_median", "sem", "readFraction", "max_wells", "rank", "id")
   dt_pair = data$paired
-  dtA = data$alpha
-  dtB = data$beta
+  dtA = data$alpha %>% .order_columns(cols = sc_cols, keep_extra = FALSE, verbose = verbose)
+  dtB = data$beta %>% .order_columns(cols = sc_cols, keep_extra = FALSE, verbose = verbose)
   colnames(dtA) = paste("alpha_", colnames(dtA), sep = "")
   colnames(dtB) = paste("beta_", colnames(dtB), sep = "")
   colnames(dtA)[1] = "alpha_nuc"

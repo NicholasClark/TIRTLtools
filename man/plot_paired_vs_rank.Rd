@@ -10,6 +10,7 @@ plot_paired_vs_rank(
   y_axis = c("n_not_paired", "n_paired"),
   chain = c("both", "beta", "alpha"),
   n_max = 100,
+  by_method = TRUE,
   color_scheme = NULL
 )
 }
@@ -45,18 +46,18 @@ plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_paired", chain = "both", n_
 
 }
 \seealso{
-Other qc: 
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{get_paired_by_read_fraction_range}()},
-\code{\link{plot_n_reads}()},
-\code{\link{plot_num_partners}()},
-\code{\link{plot_paired}()},
-\code{\link{plot_paired_by_read_fraction_range}()},
-\code{\link{plot_pairs_with_eachother}()},
-\code{\link{plot_ranks}()},
-\code{\link{plot_read_fraction_vs_pair_status}()},
-\code{\link{plot_sample_overlap}()},
-\code{\link{summarize_data}()}
+Other qc:
+\code{\link[=get_all_tcrs]{get_all_tcrs()}},
+\code{\link[=get_pair_stats]{get_pair_stats()}},
+\code{\link[=get_paired_by_read_fraction_range]{get_paired_by_read_fraction_range()}},
+\code{\link[=plot_n_reads]{plot_n_reads()}},
+\code{\link[=plot_num_partners]{plot_num_partners()}},
+\code{\link[=plot_paired]{plot_paired()}},
+\code{\link[=plot_paired_by_read_fraction_range]{plot_paired_by_read_fraction_range()}},
+\code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
+\code{\link[=plot_ranks]{plot_ranks()}},
+\code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
+\code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}

@@ -1,7 +1,7 @@
 Package: TIRTLtools
 Type: Package
 Title: Analysis Tools for TIRTLseq Data
-Version: 0.1.25
+Version: 0.2
 Authors@R: c(
     person(
       "Nicholas", "Clark",
@@ -23,7 +23,6 @@ Imports:
     BiocManager,
     checkmate,
     data.table,
-    digest,
     dplyr,
     dtplyr,
     ggh4x,

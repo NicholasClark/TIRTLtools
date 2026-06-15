@@ -234,7 +234,7 @@ read_external_paired = function(
   return("10X")
 }
 
-#' list columns needed in each format
+
 .get_necessary_cols_paired = function(format = c("10X", "ParseBio")) {
   format = format[1]
   if(format == "ParseBio") {
@@ -263,7 +263,7 @@ read_external_paired = function(
   return(necessary_cols)
 }
 
-#' list columns needed in each format
+
 .get_necessary_cols_bulk = function() {
   full_cols = c("cloneId", "readCount", "readFraction", "uniqueMoleculeCount",
     "uniqueMoleculeFraction", "targetSequences", "targetQualities",

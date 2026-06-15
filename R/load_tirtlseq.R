@@ -31,6 +31,11 @@
 #' @param meta_columns (optional) a vector of names identifying the metadata contained in the filenames,
 #' for example \code{c("marker", "timepoint", "donor")} for files named something like "cd8_timepoint2_donor1 ... .tsv".
 #' @param samples (optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).
+#' @param clean (optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
+#' excess pairs for individual alpha and beta chains (default is FALSE).
+#' @param remove_nonfunctional whether to remove non-functional TCR chains (default is FALSE)
+#' @param process whether to process the raw data, adding columns for alpha and beta readcounts to the
+#' paired data frame, adding columns to the pseudobulk data to identify which chains are paired, etc.
 #' @param pseudobulk_columns (optional) the columns of the pseudobulk .tsv(.gz) to read. Either
 #' a list of columns or one of "auto", "all", or "minimal". "auto" (default) loads all columns except for
 #' some redundant ones. "all" loads all columns. "minimal" loads a small number of the most important columns.
@@ -75,6 +80,9 @@ load_tirtlseq = function(
     sep = "_",
     meta_columns = NULL,
     samples = NULL,
+    clean = FALSE,
+    remove_nonfunctional = FALSE,
+    process = TRUE,
     pseudobulk_columns = "auto",
     paired_columns = "auto",
     n_threads = data.table::getDTthreads(),
@@ -82,6 +90,7 @@ load_tirtlseq = function(
     verbose = TRUE,
     stringsAsFactors = FALSE,
     n_max = Inf) {
+  args <- as.list(environment())
   #tictoc::tic()
   start = Sys.time()
   chain = chain[1]
@@ -143,6 +152,8 @@ load_tirtlseq = function(
     if(!is.null(samples)) {
       files_pre = samples
     }
+    msg = paste("Loading files for", length(files_pre), "samples...")
+    if(verbose) message(msg)
 
     file_counter = 0
     ### loop over each experiment to load files
@@ -171,7 +182,7 @@ load_tirtlseq = function(
 
         if(chain_tmp %in% c("alpha", "beta")) columns = pseudobulk_columns
         if(chain_tmp %in% "paired") columns = paired_columns
-        if(chain %in% c("alpha", "beta", "paired") && chain != chain_tmp) return(list())
+        if(chain %in% c("alpha", "beta", "paired") && chain != chain_tmp) return(tibble())
         if(file.exists(file_long)) {
           if(verbose) {
             msg = paste("---- Loading file -- ", desc, " -- ", ff, "...", sep = "")
@@ -186,9 +197,12 @@ load_tirtlseq = function(
         } else {
           msg = paste("------ File not found -- ", desc, " -- ", ff, sep = "")
           message(msg)
-          return(list())
+          return(tibble())
         }
       }) %>% setNames(obj_names)
+      if( nrow(obj$alpha) == 0 || nrow(obj$beta) == 0 ) return(obj) ## no processing
+      obj = obj %>% .process_TIRTLseq_single(clean = clean, remove_nonfunctional = remove_nonfunctional)
+      class(obj) = c("TIRTLseqData", "pairedTCRData")
       return(obj)
       }) %>% setNames(files_pre)
     ### make metadata table
@@ -230,7 +244,11 @@ load_tirtlseq = function(
   duration = end-start
   #n_secs = as.vector(time) %>% round(2)
   if(verbose) message(paste(round(duration[[1]], 2), units(duration)))
-  out = list(data = data_final, meta = meta_final)
+  info = list(data_version = "v1",
+              processing_version = "v1",
+              package_version = packageVersion("TIRTLtools"),
+              call = args)
+  out = list(data = data_final, meta = meta_final, info = info)
   class(out) = "TIRTLseqDataSet"
   return(out)
 }

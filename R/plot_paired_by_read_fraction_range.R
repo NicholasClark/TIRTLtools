@@ -34,7 +34,7 @@ plot_paired_by_read_fraction_range = function(
     color_scheme = NULL
     ) {
   chain = chain[1]
-  if(.is.list.only(data)) data = get_paired_by_read_fraction_range(data, chain, cutoffs)
+  if(.is.list.only(data)) data = get_paired_by_read_fraction_range(data, chain, cutoffs, by_method=FALSE)
   #gg_df = get_paired_by_read_fraction_range(data)
   #gg_df = left_join(gg_df, data$meta)
   df = data

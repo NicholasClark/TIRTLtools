@@ -7,7 +7,8 @@
 get_paired_by_read_fraction_range(
   data,
   chain = c("beta", "alpha"),
-  cutoffs = 10^(-6:-1)
+  cutoffs = 10^(-6:-1),
+  by_method = TRUE
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ get_paired_by_read_fraction_range(
 \item{chain}{the TCR chain to use for read fraction (default is "beta")}
 
 \item{cutoffs}{a vector of cutoffs for the read fraction ranges}
+
+\item{by_method}{(optional) whether to get stats for each pairing method}
 }
 \value{
 a data frame with the number and fraction of chains paired for each
@@ -38,18 +41,18 @@ get_paired_by_read_fraction_range(ts_data, chain = "beta")
 
 }
 \seealso{
-Other qc: 
-\code{\link{get_all_tcrs}()},
-\code{\link{get_pair_stats}()},
-\code{\link{plot_n_reads}()},
-\code{\link{plot_num_partners}()},
-\code{\link{plot_paired}()},
-\code{\link{plot_paired_by_read_fraction_range}()},
-\code{\link{plot_paired_vs_rank}()},
-\code{\link{plot_pairs_with_eachother}()},
-\code{\link{plot_ranks}()},
-\code{\link{plot_read_fraction_vs_pair_status}()},
-\code{\link{plot_sample_overlap}()},
-\code{\link{summarize_data}()}
+Other qc:
+\code{\link[=get_all_tcrs]{get_all_tcrs()}},
+\code{\link[=get_pair_stats]{get_pair_stats()}},
+\code{\link[=plot_n_reads]{plot_n_reads()}},
+\code{\link[=plot_num_partners]{plot_num_partners()}},
+\code{\link[=plot_paired]{plot_paired()}},
+\code{\link[=plot_paired_by_read_fraction_range]{plot_paired_by_read_fraction_range()}},
+\code{\link[=plot_paired_vs_rank]{plot_paired_vs_rank()}},
+\code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
+\code{\link[=plot_ranks]{plot_ranks()}},
+\code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
+\code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}

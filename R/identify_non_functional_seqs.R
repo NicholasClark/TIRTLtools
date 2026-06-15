@@ -32,14 +32,20 @@
 #'
 
 identify_non_functional_seqs = function(data) {
-  data_out = lapply(data$data, function(x) {
-    lapply(x, .identify_non_functional_seqs_single)
-  })
-  data$data = data_out
-  return(data)
+  is_list = .is.list.only(data)
+  if(is_list) {
+    data_out = lapply(data$data, function(x) {
+      lapply(x, .identify_non_functional_seqs_single)
+    })
+    data$data = data_out
+    return(data)
+  } else {
+    return(.identify_non_functional_seqs_single(data))
+  }
 }
 
-.identify_non_functional_seqs_single = function(df) {
+.identify_non_functional_seqs_single = function(df, remove = FALSE) {
+  if(isTRUE(is.null(df))) return(df)
   if(.is.DataFrame(df)) df = as.data.table(df)
   #if("is_functional" %in% colnames(df)) return(df) ## this causes errors
   if("cdr3a" %in% colnames(df) && "cdr3b" %in% colnames(df)) {
@@ -64,6 +70,9 @@ identify_non_functional_seqs = function(data) {
         has_frameshift = grepl("_", aaSeqCDR3), # frame shift
       ) %>%
       mutate(is_functional = !(has_stop_codon | has_frameshift))
+  }
+  if(remove) {
+    df_out = df_out %>% filter(is_functional)
   }
   if(!"data.table" %in% class(df_out)) {
     #print("converting to data.table")

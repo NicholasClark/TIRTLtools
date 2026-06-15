@@ -8,6 +8,7 @@
 #' @param data a TIRTLseqDataSet object or a data frame created using \code{\link{get_pair_stats}()}
 #' @param chain the TCR chain to plot (default is "paired")
 #' @param samples (optional) the samples to include in the plot (default is all)
+#' @param by_method (optional) whether to bars by method (T-SHELL vs. MAD-HYPE)
 #' @param color_scheme (optional) the color scheme for the plot
 #' @family qc
 #'
@@ -25,8 +26,9 @@ plot_paired = function(
     data,
     chain = c("paired", "alpha", "beta"),
     samples = NULL,
+    by_method = TRUE,
     color_scheme = NULL) {
-  if(.is.list.only(data)) data = get_pair_stats(data, verbose = FALSE)
+  if(.is.list.only(data)) data = get_pair_stats(data, by_method = by_method, verbose = FALSE)
   chain1 = chain[1]
   data$log10Freq = log10(data$Freq)
   data_sub = data %>% filter(chain == chain1)

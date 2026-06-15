@@ -18,6 +18,7 @@ importFrom(data.table, merge.data.table, setkey, getDTthreads, fread, is.data.ta
 
 import(reticulate)
 import(Matrix)
+import(checkmate)
 
 
 export("%>%")
