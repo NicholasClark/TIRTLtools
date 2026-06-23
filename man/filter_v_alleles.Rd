@@ -24,16 +24,12 @@ which is automatically run during \code{\link{TCRdist}()}.
 }
 \seealso{
 Other data_processing:
-\code{\link[=TIRTL_process]{TIRTL_process()}},
-\code{\link[=add_single_chain_data]{add_single_chain_data()}},
 \code{\link[=clean_pairs]{clean_pairs()}},
 \code{\link[=combine_bulk_and_paired_data]{combine_bulk_and_paired_data()}},
 \code{\link[=filter_duplicate_tcrs]{filter_duplicate_tcrs()}},
 \code{\link[=filter_mait]{filter_mait()}},
 \code{\link[=filter_nonfunctional_TCRs]{filter_nonfunctional_TCRs()}},
 \code{\link[=filter_short_cdr3s]{filter_short_cdr3s()}},
-\code{\link[=identify_non_functional_seqs]{identify_non_functional_seqs()}},
-\code{\link[=identify_paired]{identify_paired()}},
 \code{\link[=make_tcr_schema]{make_tcr_schema()}},
 \code{\link[=prep_for_tcrdist]{prep_for_tcrdist()}},
 \code{\link[=read_external_bulk]{read_external_bulk()}},

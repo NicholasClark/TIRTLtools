@@ -43,9 +43,9 @@ clean_pairs = function(
   version = "fast"
   .check_has_paired_data(data)
   .check_has_single_chain_data(data)
-  if(is.null(data$is_annotated)) {
-    data = add_single_chain_data(data, verbose = verbose)
-  }
+  # if(is.null(data$is_annotated)) {
+  #   data = add_single_chain_data(data, verbose = verbose)
+  # }
   data_tmp = lapply(1:length(data$data), function(i) {
     x = data$data[[i]]
     if(verbose) {

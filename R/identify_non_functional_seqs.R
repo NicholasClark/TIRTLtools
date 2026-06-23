@@ -1,7 +1,10 @@
 #' Identify TCRs that contain non-functional CDR3 sequences
 #'
 #' @description
-#' `r lifecycle::badge('experimental')`
+#' `r lifecycle::badge('deprecated')`
+#'
+#' This function has been deprecated because its functionality has been added to the load_tirtlseq() function
+#'
 #' \code{identify_non_functional_seqs()} identifies CDR3 nucleotide sequences in
 #' the data that contain either stop codons (*) or frame shifts (_) that
 #' would indicate a non-functional protein product.
@@ -21,7 +24,7 @@
 #' each kind of coding error. Other columns identify if the alpha chain or beta chain has
 #' a stop codon or frameshift, and if it is functional.
 #'
-#' @family data_processing
+#' @family deprecated
 #'
 #' @seealso \code{\link{TCRdist}()}, \code{\link{plot_num_partners}()}
 #'
@@ -32,51 +35,19 @@
 #'
 
 identify_non_functional_seqs = function(data) {
-  is_list = .is.list.only(data)
-  if(is_list) {
-    data_out = lapply(data$data, function(x) {
-      lapply(x, .identify_non_functional_seqs_single)
-    })
-    data$data = data_out
-    return(data)
-  } else {
-    return(.identify_non_functional_seqs_single(data))
-  }
+  lifecycle::deprecate_warn(when = "0.2.1", what="identify_non_functional_seqs()",
+                            details = "This function has been deprecated because its functionality has been added to the load_tirtlseq() function"
+  )
+  return(data)
+  # is_list = .is.list.only(data)
+  # if(is_list) {
+  #   data_out = lapply(data$data, function(x) {
+  #     lapply(x, .identify_non_functional_seqs_single)
+  #   })
+  #   data$data = data_out
+  #   return(data)
+  # } else {
+  #   return(.identify_non_functional_seqs_single(data))
+  # }
 }
 
-.identify_non_functional_seqs_single = function(df, remove = FALSE) {
-  if(isTRUE(is.null(df))) return(df)
-  if(.is.DataFrame(df)) df = as.data.table(df)
-  #if("is_functional" %in% colnames(df)) return(df) ## this causes errors
-  if("cdr3a" %in% colnames(df) && "cdr3b" %in% colnames(df)) {
-    ### for paired data
-    df_out = df %>%
-      mutate(
-        alpha_has_stop_codon = grepl("\\*", cdr3a), # stop codon
-        alpha_has_frameshift = grepl("_", cdr3a), # frame shift
-        beta_has_stop_codon = grepl("\\*", cdr3b),
-        beta_has_frameshift = grepl("_", cdr3b),
-      ) %>%
-      mutate(
-        alpha_is_functional = !(alpha_has_stop_codon | alpha_has_frameshift),
-        beta_is_functional = !(beta_has_stop_codon | beta_has_frameshift)
-      ) %>%
-      mutate(is_functional = alpha_is_functional & beta_is_functional)
-  } else {
-    ### for pseudobulk data
-    df_out = df %>%
-      mutate(
-        has_stop_codon = grepl("\\*", aaSeqCDR3), # stop codon
-        has_frameshift = grepl("_", aaSeqCDR3), # frame shift
-      ) %>%
-      mutate(is_functional = !(has_stop_codon | has_frameshift))
-  }
-  if(remove) {
-    df_out = df_out %>% filter(is_functional)
-  }
-  if(!"data.table" %in% class(df_out)) {
-    #print("converting to data.table")
-    df_out = as.data.table(df_out)
-  }
-  return(df_out)
-}

@@ -108,4 +108,8 @@ ts_data = load_tirtlseq(folder,
   meta_columns = c("marker", "timepoint", "version"), sep = "_")
 
 }
+\seealso{
+Other data_loading:
+\code{\link[=load_example_data]{load_example_data()}}
+}
 \concept{data_loading}

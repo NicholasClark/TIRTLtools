@@ -16,27 +16,17 @@ A TIRTLseq dataset object where the paired data frames for each sample have
 added columns for read counts and proportions from the single-chain pseudobulk data.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+This function has been deprecated because its functionality has been added to the load_tirtlseq() function
+
 The \code{add_single_chain_data()} function adds read counts and proportions
 from the single-chain pseudobulk data to the paired data frame for each sample
 of a dataset.
 }
 \seealso{
-Other data_processing:
-\code{\link[=TIRTL_process]{TIRTL_process()}},
-\code{\link[=clean_pairs]{clean_pairs()}},
-\code{\link[=combine_bulk_and_paired_data]{combine_bulk_and_paired_data()}},
-\code{\link[=filter_duplicate_tcrs]{filter_duplicate_tcrs()}},
-\code{\link[=filter_mait]{filter_mait()}},
-\code{\link[=filter_nonfunctional_TCRs]{filter_nonfunctional_TCRs()}},
-\code{\link[=filter_short_cdr3s]{filter_short_cdr3s()}},
-\code{\link[=filter_v_alleles]{filter_v_alleles()}},
+Other deprecated:
 \code{\link[=identify_non_functional_seqs]{identify_non_functional_seqs()}},
 \code{\link[=identify_paired]{identify_paired()}},
-\code{\link[=make_tcr_schema]{make_tcr_schema()}},
-\code{\link[=prep_for_tcrdist]{prep_for_tcrdist()}},
-\code{\link[=read_external_bulk]{read_external_bulk()}},
-\code{\link[=read_external_paired]{read_external_paired()}},
-\code{\link[=remove_duplicates]{remove_duplicates()}}
+\code{\link[=process_TIRTLseq]{process_TIRTLseq()}}
 }
-\concept{data_processing}
+\concept{deprecated}
