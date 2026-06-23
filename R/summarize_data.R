@@ -12,10 +12,9 @@
 #' @family qc
 #'
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' summarize_data(ts_data)
+#' summarize_data(SJTRC_longitudinal)
 #'
 summarize_data = function(data) {
   if("SimpleList" %in% class(data)) {

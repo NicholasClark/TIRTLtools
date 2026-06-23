@@ -31,10 +31,9 @@ a ggplot object with the rank plot
 \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
 
-plot_ranks(ts_data, chain = "beta")
+plot_ranks(SJTRC_longitudinal, chain = "beta")
 
 
 }

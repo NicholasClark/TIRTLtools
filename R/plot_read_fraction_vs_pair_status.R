@@ -21,12 +21,11 @@
 #' @family qc
 #'
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100)
+#' plot_read_fraction_vs_pair_status(SJTRC_longitudinal, sample = 1, n_max = 100)
 #'
-#' plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100,
+#' plot_read_fraction_vs_pair_status(SJTRC_longitudinal, sample = 1, n_max = 100,
 #' show_num_partners = TRUE)
 #'
 plot_read_fraction_vs_pair_status = function(

@@ -19,10 +19,9 @@
 #' @returns A data frame with the number of pairs called by each algorithm for each sample.
 #'
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' get_pair_stats(ts_data)
+#' get_pair_stats(SJTRC_longitudinal)
 #'
 get_pair_stats = function(data, verbose = TRUE, by_method = TRUE) {
   pair_stats = lapply(1:length(data$data), function(i) {

@@ -16,16 +16,12 @@
 #' @family data_wrangling
 #'
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-#'   package = "TIRTLtools")
-#' sjtrc = load_tirtlseq(folder,
-#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
-#'   chain = "paired", verbose = FALSE)
-#' print(sjtrc$meta)
-#' new_order = names(sjtrc$data) %>% rev()
+#' load_example_data(dataset = "SJTRC_longitudinal")
+#' print(SJTRC_longitudinal$meta)
+#' new_order = names(SJTRC_longitudinal$data) %>% rev()
 #' print(new_order)
-#' sjtrc = reorder_samples(sjtrc, new_order)
-#' print(sjtrc$meta)
+#' SJTRC_longitudinal = reorder_samples(SJTRC_longitudinal, new_order)
+#' print(SJTRC_longitudinal$meta)
 #'
 reorder_samples = function(data, samples) {
   if(length(samples) != length(data$data)) stop("'samples' must be the same length as the number of samples in 'data'.")

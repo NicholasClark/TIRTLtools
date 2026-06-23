@@ -72,11 +72,7 @@ The function labels each TCR as up-regulated, down-regulated, or stable, based o
 log2 fold-change cutoff supplied (default 1.5).
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+sjtrc = load_example_data(dataset = "SJTRC_longitudinal")
 
 plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
 

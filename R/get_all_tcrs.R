@@ -23,10 +23,9 @@
 #'
 #' @export
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' get_all_tcrs(ts_data, chain = "paired")
+#' get_all_tcrs(SJTRC_longitudinal, chain = "paired")
 #'
 #'
 

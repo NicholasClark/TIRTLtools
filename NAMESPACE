@@ -30,10 +30,13 @@ useDynLib(TIRTLtools, .registration = TRUE)
 S3method(print,TIRTLseqDataSet)
 S3method(summary,TIRTLseqDataSet)
 
+## data_loading
+export(load_tirtlseq) # full docs
+export(load_example_data)
+
 ## data_wrangling
 export(add_metadata) # docs 99% done, could use an example
 export(filter_dataset) # full docs
-export(load_tirtlseq) # full docs
 export(reorder_samples) # full docs
 export(read_external_bulk)
 export(read_external_paired)

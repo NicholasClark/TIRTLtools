@@ -28,12 +28,11 @@
 #'
 #' @export
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' plot_sample_overlap(ts_data, chain = "beta")
-#' plot_sample_overlap(ts_data, chain = "alpha")
-#' plot_sample_overlap(ts_data, chain = "paired")
+#' plot_sample_overlap(SJTRC_longitudinal, chain = "beta")
+#' plot_sample_overlap(SJTRC_longitudinal, chain = "alpha")
+#' plot_sample_overlap(SJTRC_longitudinal, chain = "paired")
 #'
 
 plot_sample_overlap = function(

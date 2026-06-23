@@ -20,10 +20,9 @@
 #' @family qc
 #'
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-#' ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' get_paired_by_read_fraction_range(ts_data, chain = "beta")
+#' get_paired_by_read_fraction_range(SJTRC_longitudinal, chain = "beta")
 #'
 #'
 get_paired_by_read_fraction_range = function(data, chain = c("beta","alpha"), cutoffs = 10^(-6:-1),by_method=TRUE) {

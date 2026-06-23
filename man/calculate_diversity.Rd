@@ -101,13 +101,9 @@ In general, as q increases, less weight is given to rarer species.
 (https://en.wikipedia.org/wiki/Diversity_index#Effective_number_of_species_or_Hill_numbers)
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
 
-div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+div = calculate_diversity(SJTRC_longitudinal, chain = "beta", metrics = "d50")
 plot_diversity(div, metric = "d50")
 
 

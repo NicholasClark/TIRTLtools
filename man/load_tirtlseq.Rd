@@ -102,10 +102,16 @@ then the metadata table will look like something like this:
 }
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-ts_data = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_")
+load_example_data(dataset = "SJTRC_minimal")
+print(SJTRC_minimal)
+summary(SJTRC_minimal)
+SJTRC_minimal$meta ## metadata table
+names(SJTRC_minimal$data) ## samples
+SJTRC_minimal$data$cd8_tp1_v2$alpha ## alpha chain pseudobulk
+SJTRC_minimal$data$cd8_tp1_v2$beta ## beta chain pseudobulk
+SJTRC_minimal$data$cd8_tp1_v2$paired ## all pairs (rows duplicated if called by both pairing algorithms)
+SJTRC_minimal$data$cd8_tp1_v2$paired_alt ## all pairs (each row unique)
+SJTRC_minimal$info ## information
 
 }
 \seealso{

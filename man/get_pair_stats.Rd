@@ -26,10 +26,9 @@ The function can count the number of alpha chains paired, or beta chains, or the
 By default, it counts the number of pairs overall.
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
 
-get_pair_stats(ts_data)
+get_pair_stats(SJTRC_longitudinal)
 
 }
 \seealso{

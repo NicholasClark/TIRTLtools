@@ -33,12 +33,11 @@ and beta (right) chains with lines between alpha and beta chains indicating a
 pair and a cross indicating an unpaired single-chain.
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
 
-plot_pairs_with_eachother(ts_data, sample = 1, n_max = 100)
+plot_pairs_with_eachother(SJTRC_longitudinal, sample = 1, n_max = 100)
 
-plot_pairs_with_eachother(ts_data, sample = 1, n_max = 100, show_num_partners = TRUE)
+plot_pairs_with_eachother(SJTRC_longitudinal, sample = 1, n_max = 100, show_num_partners = TRUE)
 
 
 }

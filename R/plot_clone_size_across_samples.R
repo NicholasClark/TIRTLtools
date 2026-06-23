@@ -27,22 +27,12 @@
 #'
 #' @family longitudinal
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-#'   package = "TIRTLtools")
-#' sjtrc = load_tirtlseq(folder,
-#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
-#'   verbose = FALSE)
+#' load_example_data(dataset = "SJTRC_longitudinal")
 #'
-#' top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>%
-#'   dplyr::arrange(desc(readFraction)) %>%
-#'   head(5) %>%
-#'   magrittr::extract2("targetSequences") %>% as.character()
-#' top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>%
-#'   dplyr::arrange(desc(readFraction)) %>%
-#'   head(5) %>%
-#'   magrittr::extract2("targetSequences") %>% as.character()
+#' top_clones1 = head(SJTRC_longitudinal$data$cd8_tp1_v2$beta$targetSequences)
+#' top_clones2 = head(SJTRC_longitudinal$data$cd8_tp2_v2$beta$targetSequences)
 #'
-#' plot_clone_size_across_samples(sjtrc,
+#' plot_clone_size_across_samples(SJTRC_longitudinal,
 #'   clones = c(top_clones1, top_clones2), chain = "beta")
 #'
 #'

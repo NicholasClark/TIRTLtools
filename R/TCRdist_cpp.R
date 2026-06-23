@@ -24,12 +24,8 @@
 #' @family tcr_similarity
 #'
 #' @examples
-#' folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
-#'   package = "TIRTLtools")
-#' sjtrc = load_tirtlseq(folder,
-#'   meta_columns = c("marker", "timepoint", "version"), sep = "_",
-#'   chain = "paired", verbose = FALSE)
-#' df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+#' load_example_data(dataset = "SJTRC_minimal")
+#' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 #'
 #' result = TCRdist_cpp(df)
 #'

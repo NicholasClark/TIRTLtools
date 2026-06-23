@@ -37,10 +37,9 @@ that were paired within different frequency ranges
 (default is \verb{[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]}) for each sample.
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
 
-plot_paired_by_read_fraction_range(ts_data, chain = "beta")
+plot_paired_by_read_fraction_range(SJTRC_longitudinal, chain = "beta")
 
 }
 \seealso{

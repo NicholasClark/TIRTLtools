@@ -26,16 +26,12 @@ A TIRTLseqDataSet object with re-ordered samples.
 This function changes the order of the samples in a TIRTLseqDataSet object to the order that the user specifies.
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  chain = "paired", verbose = FALSE)
-print(sjtrc$meta)
-new_order = names(sjtrc$data) \%>\% rev()
+load_example_data(dataset = "SJTRC_longitudinal")
+print(SJTRC_longitudinal$meta)
+new_order = names(SJTRC_longitudinal$data) \%>\% rev()
 print(new_order)
-sjtrc = reorder_samples(sjtrc, new_order)
-print(sjtrc$meta)
+SJTRC_longitudinal = reorder_samples(SJTRC_longitudinal, new_order)
+print(SJTRC_longitudinal$meta)
 
 }
 \seealso{

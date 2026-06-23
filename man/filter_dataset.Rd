@@ -31,15 +31,11 @@ samples whose \code{cell_type} is \code{cd4} and whose \code{timepoint} is \code
 the sample metadata.
 }
 \examples{
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  chain = "paired", verbose = FALSE)
-p2 = filter_dataset(sjtrc, 1:3) ### by indices
-p3 = filter_dataset(sjtrc, c("cd8_tp1_v2", "cd8_tp2_v2", "cd8_tp3_v2")) ### by sample names
-p4 = filter_dataset(sjtrc, "marker==cd4") ### by sample metadata condition
-p5 = filter_dataset(sjtrc, c("marker==cd4", "timepoint==tp2")) ### by multiple sample metadata conditions
+load_example_data(dataset = "SJTRC_longitudinal")
+p2 = filter_dataset(SJTRC_longitudinal, 1:3) ### by indices
+p3 = filter_dataset(SJTRC_longitudinal, c("cd8_tp1_v2", "cd8_tp2_v2", "cd8_tp3_v2")) ### by sample names
+p4 = filter_dataset(SJTRC_longitudinal, "marker==cd4") ### by sample metadata condition
+p5 = filter_dataset(SJTRC_longitudinal, c("marker==cd4", "timepoint==tp2")) ### by multiple sample metadata conditions
 
 }
 \seealso{
