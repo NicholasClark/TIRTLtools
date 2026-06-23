@@ -107,10 +107,10 @@ print(SJTRC_minimal)
 summary(SJTRC_minimal)
 SJTRC_minimal$meta ## metadata table
 names(SJTRC_minimal$data) ## samples
-SJTRC_minimal$data$cd8_tp1_v2$alpha ## alpha chain pseudobulk
-SJTRC_minimal$data$cd8_tp1_v2$beta ## beta chain pseudobulk
-SJTRC_minimal$data$cd8_tp1_v2$paired ## all pairs (rows duplicated if called by both pairing algorithms)
-SJTRC_minimal$data$cd8_tp1_v2$paired_alt ## all pairs (each row unique)
+SJTRC_minimal$data$cd8_tp1_v2$alpha \%>\% dplyr::as_tibble() ## alpha chain pseudobulk
+SJTRC_minimal$data$cd8_tp1_v2$beta \%>\% dplyr::as_tibble() ## beta chain pseudobulk
+SJTRC_minimal$data$cd8_tp1_v2$paired \%>\% dplyr::as_tibble() ## all pairs (rows duplicated if called by both pairing algorithms)
+SJTRC_minimal$data$cd8_tp1_v2$paired_alt \%>\% dplyr::as_tibble() ## all pairs (each row unique)
 SJTRC_minimal$info ## information
 
 }

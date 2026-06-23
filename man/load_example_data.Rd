@@ -35,8 +35,11 @@ CD8+ isolated T-cells for timepoints 1 and 2.
 }
 \examples{
 load_example_data("SJTRC_minimal")
+print(SJTRC_minimal)
+summary(SJTRC_minimal)
 load_example_data("SJTRC_longitudinal")
-
+print(SJTRC_longitudinal)
+summary(SJTRC_longitudinal)
 
 }
 \seealso{
