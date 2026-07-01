@@ -36,7 +36,7 @@
 load_example_data = function(dataset = c("SJTRC_minimal", "SJTRC_longitudinal"), verbose = TRUE) {
   dataset = dataset[1]
   assert_choice(dataset, choices = c("SJTRC_minimal", "SJTRC_longitudinal"))
-  if (interactive()) verbose = FALSE
+  if (!interactive()) verbose = FALSE
 
   if(dataset == "SJTRC_minimal") {
     if (exists("SJTRC_minimal", envir = .GlobalEnv, inherits = FALSE)) {

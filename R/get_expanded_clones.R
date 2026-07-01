@@ -1,3 +1,76 @@
+#' Find expanded or contracted clones
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#' This function returns clones that expand or contract between two samples, based
+#' on their single-chain pseudo-bulk frequencies (beta chain frequency is default).
+#' It returns data frames containing the most expanded/contracted clones along with their
+#' direction and log-fold-change. It returns both a single-chain data frame (α or β, default is β)
+#' and a data frame containing all αβ TCR pairs corresponding to these chains.
+#'
+#' To call expanded and contracted clonotypes from TIRTL-seq data, we calculated mean frequency and
+#' standard error of the mean (SEM) for each TCRβ chain over all wells. We call clones significantly
+#' expanded or contracted between time points if there is a log2 fold-change log2FC > 3 between average 
+#' frequencies and the difference between average frequencies exceeds 5 SEM intervals. This matches the
+#' analysis in Pogorelyy & Kirk et al. (2025).
+#' 
+#' Note: For each TCR, we actually calculate two SEMs, one for each timepoint/sample.
+#' To calculate 5 SEM intervals, we multiply each SEM by 2.5 and sum them. The \code{sem_cutoff}
+#' argument controls this value, which is why the default is 2.5.
+#'
+#' @param data1 a sample from a TIRTLseqDataSet object (e.g. \code{<object>$data$<sample_tp1>}) - used for before frequencies
+#' @param data2 a sample from a TIRTLseqDataSet object (e.g. \code{<object>$data$<sample_tp2>}) - used for after frequencies
+#' @param chain which chain to plot, alpha or beta (default is beta)
+#' @param filter_pairs whether to keep only two alpha chains per unique beta chain. (default is FALSE, keep all pairs)
+#' @param remove_nonfunctional whether to remove pairs with non-functional chains --
+#' e.g. that have stop codons or frameshifts. (default is FALSE, keep all pairs)
+#' @param log2fc_cutoff the log2 fold-change cutoff to call a TCR expanded or contracted (default 1.5)
+#' @param sem_cutoff the standard-error of the mean (SEM) to use as a cutoff in calling
+#' clones expanded or contracted (default is 2.5)
+#' @param pseudo1 the pseudocount to add to read frequency of the first sample (default is `10^-6`).
+#' @param pseudo2 the pseudocount to add to read frequency of the second sample (default is `10^-6`).
+#' @param smooth_sem if "window", then SEM values for clones will be smoothed by comparing to
+#' other clones within a window of similar frequencies. Otherwise, no smoothing. (default is "window")
+#' @param window_size the number of similar clones to include within a window.
+#' @param end_window_size the number of clones to include in a window at the ends (most and least frequent)
+#'
+#' @returns
+#' A list with two slots (`expanded` and `contracted`). Each slot is a list with two dataframes (`paired` and `single_chain`)
+#' \preformatted{
+#' (list)
+#' └───expanded (list)
+#'     └───paired (dataframe of all expanded αβ TCR pairs)
+#'     └───single_chain (dataframe of all expanded single-chains)
+#' └───contracted (list)
+#'     └───paired (dataframe of all contracted αβ TCR pairs)
+#'     └───single_chain (dataframe of all contracted single-chains)
+#' }
+#' 
+#' @references
+#' Pogorelyy, M, Kirk, A, Adhikari, S et al. (2025).
+#' "TIRTL-seq: deep, quantitative and affordable paired TCR repertoire sequencing."
+#' *Nature Methods*,
+#' 23, 56–64. \doi{10.1038/s41592-025-02907-9}
+#'
+#' @family longitudinal
+#' @export
+#' @examples
+#'
+#' load_example_data() ## loads minimal SJTRC dataset into "SJTRC_minimal" object
+#' clones = get_expanded_clones(
+#'   data1 = SJTRC_minimal$data$cd8_tp1_v2,
+#'   data2 = SJTRC_minimal$data$cd8_tp2_v2,
+#'   chain = "beta",
+#'   remove_nonfunctional = FALSE,
+#'   filter_pairs = FALSE)
+#' ## expanded clones
+#' clones$expanded$paired ## paired data frame
+#' clones$expanded$single_chain ## single_chain
+#' ## contracted clones
+#' clones$contracted$paired ## paired data frame
+#' clones$contracted$single_chain ## single_chain
+#' 
+
 ## testing
 # load_example_data()
 # data1 = SJTRC_minimal$data$cd8_tp1_v2

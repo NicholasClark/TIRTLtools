@@ -22,6 +22,12 @@ the "384_well" settings will be used. Otherwise the "96_well" settings will be u
 This function returns a list with p-value and well threshold settings for
 384-well or 96-well T-SHELL.
 }
+\examples{
+get_tshell_settings("96_well")
+get_tshell_settings("384_well")
+
+
+}
 \seealso{
 Other pairing:
 \code{\link[=run_pairing]{run_pairing()}}

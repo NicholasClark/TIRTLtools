@@ -30,7 +30,7 @@ plot_sample_vs_sample(
 
 \item{chain}{which chain to plot, alpha or beta (default is beta)}
 
-\item{log2fc_cutoff}{the log2 fold-change cutoff to call a TCR up- or down-regulated (default 1.5)}
+\item{log2fc_cutoff}{the log2 fold-change cutoff to call a TCR up- or down-regulated (default 3)}
 
 \item{sem_cutoff}{the standard-error of the mean (SEM) to use as a cutoff in calling
 clones expanded or contracted (default is 2.5)}
@@ -72,14 +72,15 @@ The function labels each TCR as up-regulated, down-regulated, or stable, based o
 log2 fold-change cutoff supplied (default 1.5).
 }
 \examples{
-sjtrc = load_example_data(dataset = "SJTRC_longitudinal")
+load_example_data(dataset = "SJTRC_minimal")
 
-plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
+plot_sample_vs_sample(SJTRC_minimal$data$cd8_tp1_v2, SJTRC_minimal$data$cd8_tp2_v2, chain = "beta")
 
 
 }
 \seealso{
 Other longitudinal:
+\code{\link[=get_expanded_clones]{get_expanded_clones()}},
 \code{\link[=plot_clone_size_across_samples]{plot_clone_size_across_samples()}}
 }
 \concept{longitudinal}

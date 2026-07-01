@@ -69,6 +69,7 @@ plot_clone_size_across_samples(SJTRC_longitudinal,
 }
 \seealso{
 Other longitudinal:
+\code{\link[=get_expanded_clones]{get_expanded_clones()}},
 \code{\link[=plot_sample_vs_sample]{plot_sample_vs_sample()}}
 }
 \concept{longitudinal}

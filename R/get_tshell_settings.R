@@ -18,6 +18,11 @@
 #' @family pairing
 #' @export
 #'
+#' @examples
+#' get_tshell_settings("96_well")
+#' get_tshell_settings("384_well")
+#'
+#'
 
 get_tshell_settings = function(format = c("auto", "384_well", "96_well")) {
   format = format[1]
