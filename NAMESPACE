@@ -42,6 +42,9 @@ export(read_external_bulk)
 export(read_external_paired)
 export(make_tcr_schema)
 
+## data analysis
+export(get_expanded_clones)
+
 ## qc and data summary
 export(get_pair_stats) ## full docs
 export(plot_paired) ## full docs
@@ -63,17 +66,19 @@ export(run_pairing) # docs 90% done - needs details, examples
 export(get_tshell_settings)
 
 ## data_processing
-#export(process_TIRTLseq) ## docs 99% done, could use an example
-export(TIRTL_process) ## deprecated, use process_TIRTLseq
-export(add_single_chain_data) ## docs 99% done, could use an example
+export(process_TIRTLseq) ## deprecated
+export(TIRTL_process) ## deprecated
+export(add_single_chain_data) ## deprecated
+export(identify_non_functional_seqs) ## deprecated
+export(identify_paired) ## deprecated
+
 export(clean_pairs) ## docs 99% done, could use an example
 #export(filter_duplicate_tcrs) ## hide this for internal use, create df w/ unique pairs upon loading
 export(filter_mait) ## docs 99% done, could use an example
 export(filter_nonfunctional_TCRs) ## docs 99% done, could use an example
 export(filter_short_cdr3s) ## docs 99% done, could use an example
 # export(filter_v_alleles) ## hide for internal use, not needed for package users
-export(identify_non_functional_seqs) ## docs 99% done, could use an example
-export(identify_paired) ## docs 99% done, could use an example
+
 export(prep_for_tcrdist) ## docs 99% done, could use an example
 export(remove_duplicates) ## docs 99% done, could use an example -- maybe hide, does the user need this?
 

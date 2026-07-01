@@ -13,11 +13,14 @@
 # window_size = 30
 # end_window_size = 5
 
+# load_example_data()
+# test = get_expanded_clones(SJTRC_minimal$data$cd8_tp1_v2, SJTRC_minimal$data$cd8_tp2_v2, remove_nonfunctional = F, filter_pairs = F)
+
 get_expanded_clones = function( data1,
                                 data2,
                                 chain = c("beta", "alpha"),
-                                filter_pairs = TRUE,
-                                remove_nonfunctional = FALSE,
+                                filter_pairs = FALSE,
+                                remove_nonfunctional = TRUE,
                                 log2fc_cutoff = 3,
                                 sem_cutoff = 2.5,
                                 pseudo1 = 1e-6,
@@ -25,9 +28,10 @@ get_expanded_clones = function( data1,
                                 smooth_sem = c("window", "none"),
                                 window_size = 30,
                                 end_window_size = 5) {
-  checkmate::assert_choice(chain, choices = c("alpha", "beta"))
   chain = chain[1]
   smooth_sem = smooth_sem[1]
+  checkmate::assert_choice(chain, choices = c("alpha", "beta"))
+  
   other_chain = ifelse(chain == "alpha", "beta", "alpha")
 
   df_all = .make_sample_vs_sample_df(data1 = data1, data2 = data2, chain = chain, smooth_sem = smooth_sem,
@@ -125,7 +129,8 @@ get_expanded_clones = function( data1,
       is_functional, alpha_is_functional, beta_is_functional, pairs_from) %>%
     mutate(across(starts_with("readCount") | starts_with("max_wells") | 
       starts_with("n_wells") | starts_with("rank"), as.integer)) %>%
-    arrange(desc(abs(log2FC)))
+    arrange(desc(abs(log2FC))) %>%
+    as_tibble()
   
   ## single-chain output
   signif_sc = df_select %>% 
@@ -134,7 +139,8 @@ get_expanded_clones = function( data1,
     mutate(is_paired = !!sym(cdr3_nt_col) %in% signif_paired_all[[cdr3_nt_col]]) %>%
     #filter(!(!!sym(cdr3_nt_col) %in% signif_paired_all[[cdr3_nt_col]])) %>% ## filter out paired single-chains
     select(sign, log2FC, is_paired, everything()) %>%
-    arrange(desc(abs(log2FC)))
+    arrange(desc(abs(log2FC))) %>%
+    as_tibble()
   if(remove_nonfunctional) {
     signif_paired_all = signif_paired_all %>% filter(is_functional)
     signif_sc = signif_sc %>%
