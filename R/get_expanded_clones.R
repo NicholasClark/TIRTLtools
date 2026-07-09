@@ -2,11 +2,16 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function returns clones that expand or contract between two samples, based
 #' on their single-chain pseudo-bulk frequencies (beta chain frequency is default).
 #' It returns data frames containing the most expanded/contracted clones along with their
 #' direction and log-fold-change. It returns both a single-chain data frame (α or β, default is β)
 #' and a data frame containing all αβ TCR pairs corresponding to these chains.
+#' 
+#' @details
+#' If you would like a scatterplot of this data, you may call \code{\link{plot_sample_vs_sample}()}
+#' with the same arguments for \code{log2fc_cutoff} and \code{sem_cutoff}.
 #'
 #' To call expanded and contracted clonotypes from TIRTL-seq data, we calculated mean frequency and
 #' standard error of the mean (SEM) for each TCRβ chain over all wells. We call clones significantly

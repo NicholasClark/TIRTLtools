@@ -251,3 +251,104 @@ calc_fisher_pval_df = function(df, n) {
   }
   return(df_out)
 }
+
+.confirm <- function(prompt, default = TRUE) {
+  if (!interactive()) {
+    return(default)
+  }
+  return(isTRUE(utils::askYesNo(prompt)))
+}
+
+pb_asset_size <- function(file, repo, tag = "latest") {
+  info <- piggyback::pb_list(repo = repo, tag = tag)
+  row <- info[info$file_name == file, ]
+  if (nrow(row) == 0) {
+    return(NA_real_)
+  }
+  row$size[1]  # bytes
+}
+
+format_size <- function(bytes) {
+  if (is.na(bytes)) return("unknown size")
+  units <- c("B", "KB", "MB", "GB")
+  i <- 1
+  while (bytes >= 1024 && i < length(units)) {
+    bytes <- bytes / 1024
+    i <- i + 1
+  }
+  sprintf("%.1f %s", bytes, units[i])
+}
+
+load_qs2 = function(dataset) {
+  tic()
+  cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
+  file_short = glue("{dataset}.qs2")
+  file = file.path(cache_root, "data-v1", file_short)
+  if(!file.exists(file)) {
+    dl = download_data(file_short)
+    if(!dl) return(invisible(NULL))
+  }
+  msg = glue("Loading file: {file_short}...")
+  message(msg)
+  ts_data = qs2::qs_read(file)
+  toc()
+  return(ts_data)
+}
+
+get_data_dir = function(dataset, tag = "data-v1") {
+  cache_path = tools::R_user_dir("TIRTLtools", which = "cache")
+  path = file.path(cache_path, tag, dataset)
+  if(dir.exists(path)) {
+    return(path)
+  } else {
+    stop(glue("Directory doesn't exist: {path}"))
+  }
+}
+
+# load_sjtrc_minimal = function(type = c(".qs2",".rds", ".tsv")) {
+#   type = type[1]
+#   if(type == ".tsv") {
+#     folder = system.file("extdata/SJTRC_TIRTLseq_minimal", package = "TIRTLtools")
+#     ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
+#   } else if(type == ".rds") {
+#     cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
+#     file = file.path(cache_root, "data-v1", "SJTRC_minimal.rds")
+#     if(!file.exists(file)) download_sjtrc_data("SJTRC_minimal.rds")
+#     ts_data = readRDS(file.path(cache_root, "data-v1", "SJTRC_minimal.rds"))
+#   } else {
+#     tic()
+#     cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
+#     file = file.path(cache_root, "data-v1", "SJTRC_minimal.qs2")
+#     if(!file.exists(file)) download_sjtrc_data("SJTRC_minimal.qs2")
+#     file_short = basename(file)
+#     msg = glue::glue("Loading file: {file_short}...")
+#     message(msg)
+#     ts_data = qs2::qs_read(file.path(cache_root, "data-v1", "SJTRC_minimal.qs2"))
+#     toc()
+#   }
+#   return(ts_data)
+# }
+
+# load_sjtrc_longitudinal = function(type = c(".rds", ".tsv")) {
+#   type = type[1]
+#   if(type == ".tsv") {
+#     folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
+#     ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+#   } else if(type == ".rds") {
+#     cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
+#     file = file.path(cache_root, "data-v1", "SJTRC_longitudinal.rds")
+#     if(!file.exists(file)) download_sjtrc_data("SJTRC_longitudinal.rds")
+#     ts_data = readRDS(file)
+#   } else {
+#     tic()
+#     cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
+#     file = file.path(cache_root, "data-v1", "SJTRC_longitudinal.qs2")
+#     if(!file.exists(file)) download_sjtrc_data("SJTRC_longitudinal.qs2")
+#     file_short = basename(file)
+#     msg = glue::glue("Loading file: {file_short}...")
+#     message(msg)
+#     ts_data = qs2::qs_read(file)
+#     toc()
+#   }
+#   return(ts_data)
+# }

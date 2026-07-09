@@ -24,6 +24,8 @@ import(checkmate)
 export("%>%")
 importFrom(Rcpp, sourceCpp)
 importFrom(RcppParallel, RcppParallelLibs)
+importFrom(tictoc, tic, toc)
+importFrom(glue, glue)
 useDynLib(TIRTLtools, .registration = TRUE)
 
 ## S3 methods

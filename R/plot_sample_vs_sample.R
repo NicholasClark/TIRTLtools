@@ -2,10 +2,25 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' \code{plot_sample_vs_sample()} returns a scatterplot of read frequencies of TCRs between two samples.
 #'
-#' The function labels each TCR as up-regulated, down-regulated, or stable, based on the
-#' log2 fold-change cutoff supplied (default 1.5).
+#' This function returns a scatterplot of read frequencies of TCRs between two samples.
+#' It labels clones that expand (orange) or contract (green) based
+#' on their single-chain pseudo-bulk frequencies (beta chain frequency is default).
+#' 
+#' @details
+#' You may call \code{\link{get_expanded_clones}()} with the same arguments for 
+#' \code{log2fc_cutoff} and \code{sem_cutoff} in order to get data frames with 
+#' expanded and contracted clones (both single-chain and corresponding αβ TCR pairs).
+#'
+#' To call expanded and contracted clonotypes from TIRTL-seq data, we calculated mean frequency and
+#' standard error of the mean (SEM) for each TCRβ chain over all wells. We call clones significantly
+#' expanded or contracted between time points if there is a log2 fold-change log2FC > 3 between average 
+#' frequencies and the difference between average frequencies exceeds 5 SEM intervals. This matches the
+#' analysis in Pogorelyy & Kirk et al. (2025).
+#' 
+#' Note: For each TCR, we actually calculate two SEMs, one for each timepoint/sample.
+#' To calculate 5 SEM intervals, we multiply each SEM by 2.5 and sum them. The \code{sem_cutoff}
+#' argument controls this value, which is why the default is 2.5.
 #'
 #' @param data1 a list of three data frames (alpha, beta, and paired) for one sample
 #' @param data2 a list of three data frames (alpha, beta, and paired) for one sample
@@ -31,7 +46,13 @@
 #' TCR is up-regulated, down-regulated, or neither, given the log2 fold-change cutoff.
 #'
 #' If `return_data` is TRUE, the data frame used to make the plot is returned instead of the plot.
-#'
+#' 
+#' @references
+#' Pogorelyy, M, Kirk, A, Adhikari, S et al. (2025).
+#' "TIRTL-seq: deep, quantitative and affordable paired TCR repertoire sequencing."
+#' *Nature Methods*,
+#' 23, 56–64. \doi{10.1038/s41592-025-02907-9}
+#' 
 #' @family longitudinal
 #' @export
 #' @examples
@@ -205,7 +226,7 @@ plot_sample_vs_sample = function(data1,
       gg = gg + geom_point(data = dt2, aes((avg.x+pseudo1), (avg.y+pseudo2), text=metadata), color = highlight_color)
     }
   }
-  if(interactive) gg = ggplotly(gg, tooltip = "text")
+  if(interactive) gg = plotly::ggplotly(gg, tooltip = "text")
   return(gg)
 }
 

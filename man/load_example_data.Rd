@@ -15,15 +15,20 @@ load_example_data(
 \item{verbose}{whether to print messages to the user (default TRUE)}
 }
 \value{
-The function returns NULL invisibly, but adds a
+The function returns NULL invisibly, but loads a dataset and assigns it to either
+\code{SJTRC_minimal} or \code{SJTRC_longitudinal} in the global environment.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This is a helper function to load example TIRTL-seq data.
-The function currently loads one of two available TIRTL-seq datasets. It saves the data
-to the global environment in an object with the same name as the dataset.
-For example, if \code{dataset} is "SJTRC_minimal", it will load the data to an object
-named "SJTRC_minimal" in the global environment. If the dataset is already loaded, it will not be re-loaded.
+This is a helper function to load example TIRTL-seq data. The function will also
+download the data if needed from \link{https://github.com/NicholasClark/TIRTLtools/releases/tag/data-v1}
+and save it in the package's R cache directory.
+
+The function currently loads one of two available TIRTL-seq datasets,
+either "SJTRC_minimal" or "SJTRC_longitudinal". The data is loaded
+to the global environment and assigned with the same name as the dataset.
+For example, if \code{dataset} is "SJTRC_minimal", the data will be set to \code{SJTRC_minimal}
+in the global environment. If the dataset is already loaded, it will not be re-loaded.
 }
 \details{
 The \code{SJTRC_longitudinal} dataset contains 6 samples of TIRTL-seq data from the

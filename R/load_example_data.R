@@ -2,11 +2,15 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' This is a helper function to load example TIRTL-seq data.
-#' The function currently loads one of two available TIRTL-seq datasets. It saves the data
-#' to the global environment in an object with the same name as the dataset.
-#' For example, if \code{dataset} is "SJTRC_minimal", it will load the data to an object
-#' named "SJTRC_minimal" in the global environment. If the dataset is already loaded, it will not be re-loaded.
+#' This is a helper function to load example TIRTL-seq data. The function will also
+#' download the data if needed from \link{https://github.com/NicholasClark/TIRTLtools/releases/tag/data-v1}
+#' and save it in the package's R cache directory.
+#' 
+#' The function currently loads one of two available TIRTL-seq datasets, 
+#' either "SJTRC_minimal" or "SJTRC_longitudinal". The data is loaded
+#' to the global environment and assigned with the same name as the dataset.
+#' For example, if \code{dataset} is "SJTRC_minimal", the data will be set to `SJTRC_minimal`
+#' in the global environment. If the dataset is already loaded, it will not be re-loaded.
 #'
 #' @details
 #' The \code{SJTRC_longitudinal} dataset contains 6 samples of TIRTL-seq data from the
@@ -20,7 +24,8 @@
 #' @param verbose whether to print messages to the user (default TRUE)
 #'
 #' @return
-#' The function returns NULL invisibly, but adds a
+#' The function returns NULL invisibly, but loads a dataset and assigns it to either 
+#' `SJTRC_minimal` or `SJTRC_longitudinal` in the global environment.
 #'
 #' @family data_loading
 #'
@@ -36,39 +41,14 @@
 load_example_data = function(dataset = c("SJTRC_minimal", "SJTRC_longitudinal"), verbose = TRUE) {
   dataset = dataset[1]
   assert_choice(dataset, choices = c("SJTRC_minimal", "SJTRC_longitudinal"))
+  assert_logical(verbose)
   if (!interactive()) verbose = FALSE
 
-  if(dataset == "SJTRC_minimal") {
-    if (exists("SJTRC_minimal", envir = .GlobalEnv, inherits = FALSE)) {
-      if(verbose) message("Example data already loaded into object: 'SJTRC_minimal'")
-      return(invisible(NULL))
-    }
-    ts_data = load_sjtrc_minimal()
-    assign("SJTRC_minimal", ts_data, envir = .GlobalEnv)
-
-    if(verbose) message("Example data loaded into object: 'SJTRC_minimal'")
-  } else if(dataset == "SJTRC_longitudinal") {
-    if (exists("SJTRC_longitudinal", envir = .GlobalEnv, inherits = FALSE)) {
-      if(verbose) message("Example data already loaded into object: 'SJTRC_longitudinal'")
-      return(invisible(NULL))
-    }
-    ts_data = load_sjtrc_longitudinal()
-    assign("SJTRC_longitudinal", ts_data, envir = .GlobalEnv)
-    if(verbose) message("Example data loaded into object: 'SJTRC_longitudinal'")
+  if (exists(dataset, envir = .GlobalEnv, inherits = FALSE)) {
+    if(verbose) message(glue("Example data already loaded into object: '{dataset}'"))
+    return(invisible(NULL))
   }
+  ts_data = load_qs2(dataset)
+  if(!is.null(ts_data)) assign(dataset, ts_data, envir = .GlobalEnv)
   return(invisible(NULL))
-}
-
-load_sjtrc_minimal = function() {
-  folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
-                       package = "TIRTLtools")
-  ts_data = load_tirtlseq(folder,
-                          meta_columns = c("marker", "timepoint", "version"), sep = "_")
-  return(ts_data)
-}
-
-load_sjtrc_longitudinal = function() {
-  folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-  ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
-  return(ts_data)
 }
