@@ -33,6 +33,7 @@
 #' the best pairs for each clone (default is FALSE)
 #' @param select_best_tshell whether to use a secondary algorithm on the pairs from the T-SHELL algorithm to select
 #' the best pairs for each clone (default is FALSE)
+#' @param gzip_output whether to compress (gzip) output files (default is FALSE)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -78,7 +79,8 @@ run_pairing = function(
     chunk_size = 500,
     exclude_nonfunctional = FALSE,
     select_best_madhype = FALSE,
-    select_best_tshell = FALSE
+    select_best_tshell = FALSE,
+    gzip_output = FALSE
 ){
   tictoc::tic()
 
@@ -312,6 +314,7 @@ run_pairing = function(
   combd_a = combd_a[order(-readCount),]
 
   file_tra = paste0(prefix,"_pseudobulk_TRA.tsv")
+  if(gzip_output) file_tra = paste0(file_tra, ".gz")
   msg = paste("Writing TCRalpha pseudobulk file...", file_tra)
   if(verbose) message(msg)
   fwrite(combd_a,file.path(folder_out, file_tra),sep="\t")
@@ -320,6 +323,7 @@ run_pairing = function(
   combd_b$max_wells<-sum(qc$b)
   combd_b = combd_b[order(-readCount),]
   file_trb = paste0(prefix,"_pseudobulk_TRB.tsv")
+  if(gzip_output) file_trb = paste0(file_trb, ".gz")
   msg = paste("Writing TCRbeta pseudobulk file...", file_trb)
   if(verbose) message(msg)
   fwrite(combd_b,file.path(folder_out, file_trb),sep="\t")
@@ -461,6 +465,7 @@ run_pairing = function(
 
   file_paired = paste0(prefix,"_TIRTLoutput.tsv")
   if(verbose) message(paste("Writing TCRalpha/beta pairs...", file_paired))
+  if(gzip_output) file_paired = paste0(file_paired, ".gz")
   fwrite(result, file.path(folder_out, file_paired),sep="\t")
   if(verbose) {
     message("All pairing is finished!")

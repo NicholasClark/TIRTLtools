@@ -33,6 +33,7 @@
 #' the best pairs for each clone (default is FALSE)
 #' @param select_best_tshell whether to use a secondary algorithm on the pairs from the T-SHELL algorithm to select
 #' the best pairs for each clone (default is FALSE)
+#' @param gzip_output whether to compress (gzip) output files (default is FALSE)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -67,7 +68,8 @@ run_pairing_multiplate = function(
     chunk_size = 500,
     exclude_nonfunctional = FALSE,
     select_best_madhype = FALSE,
-    select_best_tshell = FALSE
+    select_best_tshell = FALSE,
+    gzip_output = FALSE
 ){
 
   if(!is.list(wellsets)) stop("Input 'wellsets' needs to be a list where each item is a vector of wells for a plate.")
@@ -174,14 +176,18 @@ run_pairing_multiplate = function(
   }
   combd_a<-.combineTCR(rbindlist(mlista,idcol="file"))
   combd_a$max_wells<-sum(qc$a)
-  fwrite(combd_a[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv")),sep="\t")
+  file_tra = file.path(folder_out, paste0(prefix,"_pseudobulk_TRA.tsv"))
+  if(gzip_output) file_tra = paste0(file_tra, ".gz")
+  fwrite(combd_a[order(-readCount),], file_tra,sep="\t")
   if(verbose) {
     print("Tabulating TCRbeta pseudobulk counts")
     print(Sys.time())
   }
   combd_b<-.combineTCR(rbindlist(mlistb,idcol="file"))
   combd_b$max_wells<-sum(qc$b)
-  fwrite(combd_b[order(-readCount),],file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv")),sep="\t")
+  file_trb = file.path(folder_out, paste0(prefix,"_pseudobulk_TRB.tsv"))
+  if(gzip_output) file_trb = paste0(file_trb, ".gz")
+  fwrite(combd_b[order(-readCount),], file_trb,sep="\t")
   if(verbose) print("Pseudobulk done.")
 
   if(verbose) {
@@ -365,6 +371,8 @@ run_pairing_multiplate = function(
     print("All is done! Number of paired clones:")
     print(table(result$method))
   }
-  fwrite(result, file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv")),sep="\t")
+  file_paired = file.path(folder_out, paste0(prefix,"_TIRTLoutput.tsv"))
+  if(gzip_output) file_paired = paste0(file_paired, ".gz")
+  fwrite(result, file_paired,sep="\t")
   return(result)
 }
