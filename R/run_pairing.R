@@ -470,6 +470,6 @@ run_pairing = function(
     result = NULL
   }
   tictoc::toc()
-  if(is.null(result)) return(invisible(NULL))
+  if(identical(result, NULL)) return(invisible(NULL))
   return(result)
 }
