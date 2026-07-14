@@ -32,6 +32,13 @@
 #' the best pairs for each clone (default is FALSE)
 #' @param gzip_output whether to compress (gzip) output files (default is FALSE)
 #' @param pseudobulk_only only output pseudobulk with no pairing (default is FALSE)
+#' @param run_qc whether to run the quality control pipeline on the samples, dropping wells with a number of unique alpha or beta clones below a certain threshold.
+#' @param clone_threshold_chain the chain to use to determine the clone threshold for QC.
+#' If "alpha", clone counts for TCRalpha will be used to determine a threshold for both
+#' alpha and beta chains. If "beta", TCRbeta clone counts will be used to determine
+#' the threshold for both chains. If "independent", then TCRalpha clones will be used
+#' to determine a QC threshold for alpha and TCRbeta clones will be used to determine
+#' a separate QC threshold for beta clones. ("alpha" is default)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -79,9 +86,13 @@ run_pairing = function(
     select_best_madhype = FALSE,
     select_best_tshell = FALSE,
     gzip_output = FALSE,
-    pseudobulk_only = FALSE
+    pseudobulk_only = FALSE,
+    run_qc = TRUE,
+    clone_threshold_chain = c("alpha", "beta", "independent")
 ){
   tictoc::tic()
+  clone_threshold_chain = clone_threshold_chain[1]
+  backend = backend[1]
 
   if (lifecycle::is_present(wellset1)) {
     lifecycle::deprecate_warn(
@@ -99,8 +110,6 @@ run_pairing = function(
 
   #ensure_python_env()
   py_require( packages = get_py_deps() )
-
-  backend = backend[1]
 
   .create_folder(folder_out)
 
@@ -142,19 +151,6 @@ run_pairing = function(
     bind_rows(tibble(well = wells_missing)) %>%
     mutate(well_row = substr(well, 0, 1), well_column = substr(well,2,3) %>% as.integer()) %>%
     arrange(well_row, well_column)
-  # missing_wells_final = wellset[!wellset %in% df_meta$well]
-  # if(length(missing_wells_final) > 0) {
-  #   msg = paste(length(missing_wells_final), "wells excluded for missing .tsv files:", paste0(missing_wells_final, collapse = ", "))
-  #   if(verbose) message(msg)
-  # }
-
-  # files = list.files(path = folder_path,full.names = F)
-  # files_no_dot = gsub(".","_",files,fixed=T)
-  # file_wells = strsplit(files_no_dot, "_") %>% sapply(., function(x) x[[well_pos]])
-  # files_bool = file_wells %in% wellset
-  # msg = paste("Reading", sum(files_bool), "files from", folder_path)
-  # if(verbose) message(msg)
-  # files_load = file.path(folder_path, files[files_bool])
 
   if(verbose) message(paste("Loading clone files (TCRalpha) for", n_files_alpha, "wells...", collapse=" "))
   n_files_loaded_alpha = 0
@@ -183,22 +179,12 @@ run_pairing = function(
     return(tmp)
   }) %>% set_names(df_meta$well)
 
-  # mlist<-lapply(1:length(files_load),function(i){
-  #   if(verbose) if(i %% 25 == 0 | i == length(files_load)) message(paste(i, "of", length(files_load), "files loaded"))
-  #   fread(files_load[i])
-  # })
-  # names(mlist) = files_no_dot[files_bool]
+  if(exclude_nonfunctional) {
+    message("Excluding chains with stop codons or frameshifts...")
+    mlista = lapply(mlista, .get_functional)
+    mlistb = lapply(mlistb, .get_functional)
+  }
 
-  # mlista<-geta(mlist)
-  # mlistb<-getb(mlist)
-  # if(verbose) {
-  #   n_filesA = length(mlista)
-  #   n_filesB = length(mlistb)
-  #   msgA = paste(n_filesA, "TCRalpha well files loaded")
-  #   msgB = paste(n_filesB, "TCRbeta well files loaded")
-  #   message(msgA)
-  #   message(msgB)
-  # }
   tmpa = bind_rows(mlista)
   tmpb = bind_rows(mlistb)
   n_counts_char_alpha = sum(tmpa$readCount) %>% scales::scientific()
@@ -214,49 +200,49 @@ run_pairing = function(
   if(verbose) message(msg1)
   if(verbose) message(msg2)
 
+  stats_a = tibble(
+    a_names=df_meta$file_alpha,
+    well = df_meta$well,
+    a_sum_counts=sapply(mlista,function(x) { if(nrow(x) > 0) { return(x[,sum(readCount),]) } else { return(0) } }),
+    a_rows=sapply(mlista,nrow)
+  )
+  stats_b = tibble(
+    b_names=df_meta$file_beta,
+    well = df_meta$well,
+    b_sum_counts=sapply(mlistb,function(x) { if(nrow(x) > 0) { return(x[,sum(readCount),]) } else { return(0) } }),
+    b_rows=sapply(mlistb,nrow)
+    )
+
   alpha_nrow = sapply(mlista,nrow)
   beta_nrow = sapply(mlistb,nrow)
   clone_thres_alpha = round(well_filter_thres * mean(alpha_nrow[alpha_nrow != 0]))
   clone_thres_beta = round(well_filter_thres * mean(beta_nrow[beta_nrow != 0]))
+  if(clone_threshold_chain == "alpha") {
+    clone_thres_beta = clone_thres_alpha ## use alpha threshold for both
+  }
+  if(clone_threshold_chain == "beta") {
+    clone_thres_alpha = clone_thres_beta ## use beta threshold for both
+  }
+  #if(clone_threshold_chain == "independent")  ## do nothing
 
-  qc = get_good_wells_new(mlista,mlistb,
-                         thres_alpha = clone_thres_alpha,
-                         thres_beta = clone_thres_beta,
-                         pos=well_pos,
-                         wellset=wellset,
-                         verbose = verbose)
-
-  if(write_extra_files) {
-    stats_a = tibble(
-      a_names=df_meta$file_alpha,
-      well = df_meta$well,
-      a_sum_counts=sapply(mlista,function(x) { if(nrow(x) > 0) { return(x[,sum(readCount),]) } else { return(0) } }),
-      a_rows=sapply(mlista,nrow),
-      qc_pass_a=qc$a
-    )
-    stats_b = tibble(
-      b_names=df_meta$file_beta,
-      well = df_meta$well,
-      b_sum_counts=sapply(mlistb,function(x) { if(nrow(x) > 0) { return(x[,sum(readCount),]) } else { return(0) } }),
-      b_rows=sapply(mlistb,nrow),
-      qc_pass_b=qc$b
-    )
-    plate_stats = full_join(stats_a, stats_b, by="well")
-    # plate_stats = data.table::data.table(
-    #   a_names=names(mlista),b_names=names(mlistb),
-    #   a_sum_counts=sapply(mlista,function(x)x[,sum(readCount),]),
-    #   b_sum_counts=sapply(mlistb,function(x)x[,sum(readCount),]),
-    #   a_rows=sapply(mlista,nrow),
-    #   b_rows=sapply(mlistb,nrow),
-    #   qc_pass_a=qc$a,qc_pass_b=qc$b)
-    fwrite(plate_stats,file.path(folder_out, paste0(prefix,"_plate_stats.tsv")),sep="\t")
+  if(run_qc) {
+    qc = get_good_wells_new(mlista,mlistb,
+                            thres_alpha = clone_thres_alpha,
+                            thres_beta = clone_thres_beta,
+                            pos=well_pos,
+                            wellset=wellset,
+                            verbose = verbose)
+    stat_a$qc_pass_a = qc$a
+    stat_b$qc_pass_b = qc$b
+    mlista<-mlista[qc$a]#downsize to qc
+    mlistb<-mlistb[qc$b]#downsize to qc
   }
 
-  # names(mlista) = df_meta$well
-  # names(mlistb) = df_meta$well
-  #result<-do_analysis_madhyper_r_optim_both(mlista[qc$a],mlistb[qc$b],n_cells = clone_thres)
-  mlista<-mlista[qc$a]#downsize to qc
-  mlistb<-mlistb[qc$b]#downsize to qc
+  ## write plate statistics
+  if(write_extra_files) {
+    plate_stats = full_join(stats_a, stats_b, by="well")
+    fwrite(plate_stats,file.path(folder_out, paste0(prefix,"_plate_stats.tsv")),sep="\t")
+  }
 
   n_wells_pass = length(mlista)
   has_tshell_settings = sum(c("pval_thres_tshell", "wij_thres_tshell") %in% names(tshell_settings)) == 2
@@ -275,33 +261,10 @@ run_pairing = function(
     }
   }
 
-  ## reorder wells
-  # all_wells = get_well_subset(1:16,1:24)
-  # sub_wells = all_wells[all_wells %in% qc$well_ids]
-  # mlista = mlista[sub_wells]
-  # mlistb = mlistb[sub_wells]
-
-  if(exclude_nonfunctional) {
-    message("Excluding chains with stop codons or frameshifts...")
-    mlista = lapply(mlista, .get_functional)
-    mlistb = lapply(mlistb, .get_functional)
-
-    # tmpa2 = bind_rows(mlista)
-    # tmpb2 = bind_rows(mlista)
-    #
-    # n_unique_alpha2 = length(unique(tmpa2$targetSequences))
-    # n_unique_beta2 = length(unique(tmpb2$targetSequences))
-    #
-    # msg1 = paste(n_unique_alpha-n_unique_alpha2, "non-functional TCRalpha chains excluded")
-    # msg2 = paste(n_unique_beta-n_unique_beta2, "non-functional TCRbeta chains excluded")
-    # if(verbose) message(msg1)
-    # if(verbose) message(msg2)
-
-  }
-
   if(verbose) message("Tabulating TCRalpha pseudobulk counts")
   combd_a<-.combineTCR(rbindlist(mlista,idcol="file"))
-  combd_a$max_wells<-sum(qc$a)
+  #combd_a$max_wells<-sum(qc$a)
+  combd_a$max_wells<-length(mlista)
   combd_a = combd_a[order(-readCount),]
 
   file_tra = paste0(prefix,"_pseudobulk_TRA.tsv")
@@ -311,7 +274,8 @@ run_pairing = function(
   fwrite(combd_a,file.path(folder_out, file_tra),sep="\t")
   if(verbose) message("Tabulating TCRbeta pseudobulk counts")
   combd_b<-.combineTCR(rbindlist(mlistb,idcol="file"))
-  combd_b$max_wells<-sum(qc$b)
+  #combd_b$max_wells<-sum(qc$b)
+  combd_b$max_wells<-length(mlistb)
   combd_b = combd_b[order(-readCount),]
   file_trb = paste0(prefix,"_pseudobulk_TRB.tsv")
   if(gzip_output) file_trb = paste0(file_trb, ".gz")
