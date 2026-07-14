@@ -20,13 +20,10 @@
 #' - `pval_thres_tshell` is the adjusted p-value threshold for T-SHELL significance (default 1e-10 for 384-well plate, 1e-3 for 96-well plate)
 #' - `wij_thres_tshell` is the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells for 384-well plate, >3 wells for 96-well plate)
 #' @param wellset a vector of wells to use for the pairing
-#' @param compute whether or not to run the pairing algorithms after tabulating and writing pseudobulk data (default TRUE)
 #' @param backend the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.
 #' @param verbose whether to print out messages (default TRUE)
 #' @param write_extra_files whether to write un-necessary intermediate files (default FALSE)
 #' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
-#' @param fork whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)
-#' @param shared whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)
 #' @param chunk_size batch size for calculations in pairing scripts
 #' @param exclude_nonfunctional whether to exclude non-functional chains before pairing (default is FALSE)
 #' @param select_best_madhype whether to use a secondary algorithm on the pairs from the MAD-HYPE algorithm to select
@@ -34,6 +31,7 @@
 #' @param select_best_tshell whether to use a secondary algorithm on the pairs from the T-SHELL algorithm to select
 #' the best pairs for each clone (default is FALSE)
 #' @param gzip_output whether to compress (gzip) output files (default is FALSE)
+#' @param pseudobulk_only only output pseudobulk with no pairing (default is FALSE)
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -67,7 +65,7 @@ run_pairing = function(
     tshell_settings = get_tshell_settings(format = "auto"),
     wellset = get_well_subset(1:16,1:24),
     wellset1 = lifecycle::deprecated(),
-    compute=TRUE,
+    compute = lifecycle::deprecated(),
     backend = c("auto", "cpu", "cupy", "mlx"),
     pval_thres_tshell = lifecycle::deprecated(),
     wij_thres_tshell= lifecycle::deprecated(),
@@ -80,7 +78,8 @@ run_pairing = function(
     exclude_nonfunctional = FALSE,
     select_best_madhype = FALSE,
     select_best_tshell = FALSE,
-    gzip_output = FALSE
+    gzip_output = FALSE,
+    pseudobulk_only = FALSE
 ){
   tictoc::tic()
 
@@ -216,25 +215,17 @@ run_pairing = function(
   if(verbose) message(msg2)
 
   alpha_nrow = sapply(mlista,nrow)
-  clone_thres = round(well_filter_thres * mean(alpha_nrow[alpha_nrow != 0]))
-  #rm(mlist)
+  beta_nrow = sapply(mlistb,nrow)
+  clone_thres_alpha = round(well_filter_thres * mean(alpha_nrow[alpha_nrow != 0]))
+  clone_thres_beta = round(well_filter_thres * mean(beta_nrow[beta_nrow != 0]))
 
-  qc<-get_good_wells_new(mlista,mlistb,clone_thres,pos=well_pos,wellset=wellset)
-  if(verbose) {
-    msg1 = paste("Clone threshold for QC:", clone_thres)
-    message(msg1)
-    msg2 = paste("Alpha wells passing QC:", sum(qc$a))
-    message(msg2)
-    msg4 = paste("Beta wells passing QC:", sum(qc$b))
-    message(msg4)
-    msg3 = paste("Alpha wells failing QC:", sum(!qc$a))
-    message(msg3)
-    msg5 = paste("Beta wells failing QC:", sum(!qc$b))
-    message(msg5)
-  }
+  qc = get_good_wells_new(mlista,mlistb,
+                         thres_alpha = clone_thres_alpha,
+                         thres_beta = clone_thres_beta,
+                         pos=well_pos,
+                         wellset=wellset,
+                         verbose = verbose)
 
-  #wells_a = sapply(strsplit(names(mlista), "_"), function(x) x[[well_pos]])
-  #wells_b = sapply(strsplit(names(mlistb), "_"), function(x) x[[well_pos]])
   if(write_extra_files) {
     stats_a = tibble(
       a_names=df_meta$file_alpha,
@@ -370,109 +361,115 @@ run_pairing = function(
     # write.table(summary(bigmbs), file.path(folder_out, paste0(prefix,"_bigmbs_sparse_coo.tsv")), sep = "\t", row.names = FALSE)
   }
   n_wells=ncol(bigmas)
-  if(verbose) message("Pre-computing look-up table:")
-  mdh<-madhyper_surface(n_wells = ncol(bigmas),cells = clone_thres,alpha=2,prior = 1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5)
-  if(write_extra_files) write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
 
-  if(compute==T) {
-    message("Running pairing algorithms...")
-    # reticulate stuff =======================
-    py_path = system.file("python/pairing/", package = "TIRTLtools")
-    pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
+  if(!pseudobulk_only) {
+    if(verbose) message("Pre-computing look-up table:")
+    mdh<-madhyper_surface(n_wells = ncol(bigmas),cells = clone_thres_alpha,alpha=2,prior = 1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5)
+    if(write_extra_files) write_dat(mdh,fname = file.path(folder_out, paste0(prefix,"_mdh.tsv")))
 
-    bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
-    bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
-    mdh_py = r_to_py(mdh)
+    #if(compute==T) {
+      message("Running pairing algorithms...")
+      # reticulate stuff =======================
+      py_path = system.file("python/pairing/", package = "TIRTLtools")
+      pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
 
-    pair_res = pairing$pairing(
-      prefix = prefix, folder_out = folder_out, bigmas = bigmas_py, bigmbs = bigmbs_py,
-      mdh = mdh_py, backend = backend, filter_before_top3 = filter_before_top3, chunk_size = chunk_size,
-      write_files = write_extra_files
-      ) ## returns a list with two data frames: "mdh" (mad-hype) and "corr" (T-shell)
-  }
-  message("Pairing is finished.")
-  ### fix for when r_to_py doesn't convert data frames
-  if(reticulate::is_py_object(pair_res[[1]])) pair_res = .fix_py_to_r_df_list(pair_res)
+      bigmas_py = np_array(as.matrix(bigmas), dtype = "float32")
+      bigmbs_py = np_array(as.matrix(bigmbs), dtype = "float32")
+      mdh_py = r_to_py(mdh)
 
-  print("Filtering results, adding amino acid and V segment information...")
+      pair_res = pairing$pairing(
+        prefix = prefix, folder_out = folder_out, bigmas = bigmas_py, bigmbs = bigmbs_py,
+        mdh = mdh_py, backend = backend, filter_before_top3 = filter_before_top3, chunk_size = chunk_size,
+        write_files = write_extra_files
+        ) ## returns a list with two data frames: "mdh" (mad-hype) and "corr" (T-shell)
+    #}
+    message("Pairing is finished.")
+    ### fix for when r_to_py doesn't convert data frames
+    if(reticulate::is_py_object(pair_res[[1]])) pair_res = .fix_py_to_r_df_list(pair_res)
 
-  n_wells = ncol(bigmas)
+    print("Filtering results, adding amino acid and V segment information...")
 
-  gpu_res = pair_res$mdh %>%
-    mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
-           beta_nuc_seq = rownames(bigmbs)[beta_nuc]
-    ) %>%
-    mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq) %>%
-    mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
-    mutate(method = "madhype") %>%
-    as.data.table()
-  ## T-shell results -- top 3 betas for each alpha
-  gpu_res_corr = pair_res$corr %>%
-    mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
-           beta_nuc_seq = rownames(bigmbs)[beta_nuc]) %>%
-    mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq) %>%
-    mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
-    mutate(ts = r*sqrt((n_wells - 2) / (1 - r^2))) %>%
-    mutate(pval = 2*pt(-abs(ts), n_wells - 2)) %>%
-    as.data.table()
+    n_wells = ncol(bigmas)
 
-  gpu_res_corr[,pval_adj:=pval/sort(pval)[3],alpha_nuc]
-  gpu_res_corr[,method:="tshell",]
+    gpu_res = pair_res$mdh %>%
+      mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
+             beta_nuc_seq = rownames(bigmbs)[beta_nuc]
+      ) %>%
+      mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq) %>%
+      mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
+      mutate(method = "madhype") %>%
+      as.data.table()
+    ## T-shell results -- top 3 betas for each alpha
+    gpu_res_corr = pair_res$corr %>%
+      mutate(alpha_nuc_seq = rownames(bigmas)[alpha_nuc],
+             beta_nuc_seq = rownames(bigmbs)[beta_nuc]) %>%
+      mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq) %>%
+      mutate(alpha_beta = paste0(alpha_nuc_seq,"_",beta_nuc_seq)) %>%
+      mutate(ts = r*sqrt((n_wells - 2) / (1 - r^2))) %>%
+      mutate(pval = 2*pt(-abs(ts), n_wells - 2)) %>%
+      as.data.table()
 
-  # res_gpu$ts=res_gpu$r*sqrt((n_wells - 2) / (1 - res_gpu$r^2))
-  # res_gpu$pval=2 * pt(-abs(res_gpu$ts), n_wells - 2)
-  # res_gpu[,pval_adj:=pval/sort(pval)[3],alpha_nuc]
-  # res_gpu[,method:="tshell",]
+    gpu_res_corr[,pval_adj:=pval/sort(pval)[3],alpha_nuc]
+    gpu_res_corr[,method:="tshell",]
 
-  # I also want to compute
-  result<-rbind(gpu_res,gpu_res_corr,fill=T)
-  #probably this we don't want. what is it???
-  #result<-as.data.table(result[!duplicated(result[,1:2]),])
+    # res_gpu$ts=res_gpu$r*sqrt((n_wells - 2) / (1 - res_gpu$r^2))
+    # res_gpu$pval=2 * pt(-abs(res_gpu$ts), n_wells - 2)
+    # res_gpu[,pval_adj:=pval/sort(pval)[3],alpha_nuc]
+    # res_gpu[,method:="tshell",]
 
-  result[,loss_a_frac:=(wb-wij)/(wij+(wb-wij)+(wa-wij)),]
-  result[,loss_b_frac:=(wa-wij)/(wij+(wb-wij)+(wa-wij)),]
-  result[,wi:=wa-wij,]
-  result[,wj:=wb-wij,]
+    # I also want to compute
+    result<-rbind(gpu_res,gpu_res_corr,fill=T)
+    #probably this we don't want. what is it???
+    #result<-as.data.table(result[!duplicated(result[,1:2]),])
 
-  #groom the output.
+    result[,loss_a_frac:=(wb-wij)/(wij+(wb-wij)+(wa-wij)),]
+    result[,loss_b_frac:=(wa-wij)/(wij+(wb-wij)+(wa-wij)),]
+    result[,wi:=wa-wij,]
+    result[,wj:=wb-wij,]
 
-  unique_combinations <- unique(result[, .(wi, wj, wij)])
-  print("Scoring unique pairs...")
-  for (i in 1:nrow(unique_combinations)){
-    #if(i%%1000==0)print(i)
-    unique_combinations$score[i]<-log10(estimate_pair_prob(wi = unique_combinations[i,]$wi,wj = unique_combinations[i,]$wj,w_ij = unique_combinations[i,]$wij,n_wells,cpw = clone_thres,alpha = 2,prior=1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5))
-  }
+    #groom the output.
 
-  #result<-result[order(-method),][!duplicated(alpha_beta),]
-  #result<-merge(result, unique_combinations, by = c("wi", "wj", "wij"), all.x = TRUE)[method=="madhype"|(`method`=="tshell"&`wij`>get("wij_thres_tshell")&`pval_adj`<get("pval_thres_tshell")&(`loss_a_frac`+`loss_b_frac`)<0.5),]#there was no filter here before, check if it works!!!
-  merged <- merge(result, unique_combinations, by = c("wi", "wj", "wij"), all.x = TRUE)
-  result <- merged[method=="madhype"|(`method`=="tshell"&`wij`>tshell_settings$wij_thres_tshell&`pval_adj`<tshell_settings$pval_thres_tshell&(`loss_a_frac`+`loss_b_frac`)<0.5),]
+    unique_combinations <- unique(result[, .(wi, wj, wij)])
+    print("Scoring unique pairs...")
+    for (i in 1:nrow(unique_combinations)){
+      #if(i%%1000==0)print(i)
+      unique_combinations$score[i]<-log10(estimate_pair_prob(wi = unique_combinations[i,]$wi,wj = unique_combinations[i,]$wj,w_ij = unique_combinations[i,]$wij,n_wells,cpw = clone_thres,alpha = 2,prior=1/(as.numeric(nrow(bigmas))*(as.numeric(nrow(bigmbs))))**0.5))
+    }
 
-  #result<-result[(((loss_a_frac+loss_b_frac)<0.5)&(wij>3))|(score>0.1),]
+    #result<-result[order(-method),][!duplicated(alpha_beta),]
+    #result<-merge(result, unique_combinations, by = c("wi", "wj", "wij"), all.x = TRUE)[method=="madhype"|(`method`=="tshell"&`wij`>get("wij_thres_tshell")&`pval_adj`<get("pval_thres_tshell")&(`loss_a_frac`+`loss_b_frac`)<0.5),]#there was no filter here before, check if it works!!!
+    merged <- merge(result, unique_combinations, by = c("wi", "wj", "wij"), all.x = TRUE)
+    result <- merged[method=="madhype"|(`method`=="tshell"&`wij`>tshell_settings$wij_thres_tshell&`pval_adj`<tshell_settings$pval_thres_tshell&(`loss_a_frac`+`loss_b_frac`)<0.5),]
 
-  tp_a<-add_VJ_aa(result$alpha_nuc,rbindlist(mlista))
-  result$cdr3a=tp_a$cdr3aa
-  result$va=tp_a$v
-  result$ja=tp_a$j
+    #result<-result[(((loss_a_frac+loss_b_frac)<0.5)&(wij>3))|(score>0.1),]
 
-  tp_b<-add_VJ_aa(result$beta_nuc,rbindlist(mlistb))
-  result$cdr3b=tp_b$cdr3aa
-  result$vb=tp_b$v
-  result$jb=tp_b$j
+    tp_a<-add_VJ_aa(result$alpha_nuc,rbindlist(mlista))
+    result$cdr3a=tp_a$cdr3aa
+    result$va=tp_a$v
+    result$ja=tp_a$j
 
-  ### (optional) secondary algorithm to select best MAD-HYPE/T-SHELL clones
-  result = .filter_pairs(result, filter_madhype = select_best_madhype, filter_tshell = select_best_tshell)
+    tp_b<-add_VJ_aa(result$beta_nuc,rbindlist(mlistb))
+    result$cdr3b=tp_b$cdr3aa
+    result$vb=tp_b$v
+    result$jb=tp_b$j
 
-  file_paired = paste0(prefix,"_TIRTLoutput.tsv")
-  if(verbose) message(paste("Writing TCRalpha/beta pairs...", file_paired))
-  if(gzip_output) file_paired = paste0(file_paired, ".gz")
-  fwrite(result, file.path(folder_out, file_paired),sep="\t")
-  if(verbose) {
-    message("All pairing is finished!")
-    message(paste("Number of clones paired by MAD-HYPE algorithm:", sum(result$method == "madhype")))
-    message(paste("Number of clones paired by T-SHELL algorithm:", sum(result$method == "tshell")))
-    message(paste("Total number of unique TCRalpha/beta pairs:", length(unique(result$alpha_beta))))
+    ### (optional) secondary algorithm to select best MAD-HYPE/T-SHELL clones
+    result = .filter_pairs(result, filter_madhype = select_best_madhype, filter_tshell = select_best_tshell)
+
+    file_paired = paste0(prefix,"_TIRTLoutput.tsv")
+    if(verbose) message(paste("Writing TCRalpha/beta pairs...", file_paired))
+    if(gzip_output) file_paired = paste0(file_paired, ".gz")
+    fwrite(result, file.path(folder_out, file_paired),sep="\t")
+    if(verbose) {
+      message("All pairing is finished!")
+      message(paste("Number of clones paired by MAD-HYPE algorithm:", sum(result$method == "madhype")))
+      message(paste("Number of clones paired by T-SHELL algorithm:", sum(result$method == "tshell")))
+      message(paste("Total number of unique TCRalpha/beta pairs:", length(unique(result$alpha_beta))))
+    }
+  } else {
+    result = NULL
   }
   tictoc::toc()
+  if(is.null(result)) return(invisible(NULL))
   return(result)
 }
