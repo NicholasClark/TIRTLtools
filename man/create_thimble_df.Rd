@@ -69,6 +69,8 @@ A data frame with TCRs properly formatted for use with Stitchr.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 This function creates a "thimble" data frame for use with the Stitchr Python package
 (https://jamieheather.github.io/stitchr/) to stitch together TCR nucleotide coding sequences.
 The resulting data frame can be written to a .tsv with \code{\link{write_stitchr_tsv}()}.

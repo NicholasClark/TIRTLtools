@@ -23,6 +23,7 @@ a list with two objects (or three if tcr2 is not null):
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This is an alternative to the GPU version of TCRdist that is still very fast for
 large datasets (tens of thousands of TCRs). It is written in C++ and will
 run in parallel across available CPU cores.

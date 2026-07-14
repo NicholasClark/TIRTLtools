@@ -18,6 +18,8 @@ this function returns NULL and writes a .tsv to the specified folder.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+}
+\details{
 This function takes a data frame created by \code{\link{create_thimble_df}()}
 and writes it to a .tsv file for use with Stitchr (https://jamieheather.github.io/stitchr/).
 }

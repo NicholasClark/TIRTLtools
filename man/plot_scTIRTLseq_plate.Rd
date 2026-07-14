@@ -16,6 +16,7 @@ A ggplot object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function plots which wells in a plate are missing an alpha and/or beta chain
 for single-cell TIRTL-seq data.
 }

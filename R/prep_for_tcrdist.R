@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function prepares a paired TCR data frame for running TCRdist,
 #' adding alleles to V-segments (i.e. "*01") if they are missing and removing
 #' TCRs with unrecognized V-segments or non-functional CDR3 sequences.

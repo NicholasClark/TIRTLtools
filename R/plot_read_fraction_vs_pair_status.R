@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function creates two point plots (alpha left, beta right) of the `n_max` most frequent
 #' single-chains found in a sample.
 #'

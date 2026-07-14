@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This is an alternative to the GPU version of TCRdist that is still very fast for
 #' large datasets (tens of thousands of TCRs). It is written in C++ and will
 #' run in parallel across available CPU cores.

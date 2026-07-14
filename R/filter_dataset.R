@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' The \code{filter_dataset()} function is used to select a subset of samples from
 #' a loaded TIRTLseq dataset and create a new dataset object.
 #'

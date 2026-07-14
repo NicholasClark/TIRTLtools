@@ -42,6 +42,7 @@ If \code{return_data} is TRUE, the data frame used to create the plot is returne
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{plot_num_partners()} creates bar plots for alpha and beta chains showing how many
 partners they are paired with by the MAD-HYPE and/or T-shell algorithms.
 }

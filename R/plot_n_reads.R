@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function plots the total number of alpha and/or beta reads (default is both)
 #' for each sample.
 #'

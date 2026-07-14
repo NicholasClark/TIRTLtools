@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' \code{calculate_diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
 #' Shannon and Simpson indices) calculated from supplied data.
 #'

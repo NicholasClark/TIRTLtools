@@ -19,6 +19,7 @@ but with only the selected samples.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The \code{filter_dataset()} function is used to select a subset of samples from
 a loaded TIRTLseq dataset and create a new dataset object.
 }

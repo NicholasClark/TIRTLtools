@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function removes TCR pairs where the CDR3-alpha or beta segment does not make a
 #' functional protein, i.e. amino acid sequence contains a stop codon (*) or a frameshift (_).
 #'

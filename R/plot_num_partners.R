@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' \code{plot_num_partners()} creates bar plots for alpha and beta chains showing how many
 #' partners they are paired with by the MAD-HYPE and/or T-shell algorithms.
 #'

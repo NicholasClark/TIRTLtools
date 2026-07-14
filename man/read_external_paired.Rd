@@ -54,6 +54,7 @@ A list containing the following slots:
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function reads and processes paired TCR-sequencing data from a non-TIRTLseq assay.
 Currently 10X and Parse Biosciences data are supported.
 }

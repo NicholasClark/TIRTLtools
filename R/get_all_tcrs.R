@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' The \code{get_all_tcrs()} function aggregates the TCRs from all samples of a dataset
 #' and puts them into one table.
 #'

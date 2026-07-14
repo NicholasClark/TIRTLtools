@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function creates a summary table with the number of reads and unique alpha/beta chains observed
 #' for each sample.
 #'

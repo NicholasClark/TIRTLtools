@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function creates a line plot of clone read fraction for the specified clones
 #' across multiple samples. The function can color the lines by groups of clones.
 #' If `sum_readFraction` is TRUE, the read fraction for each group will be summed

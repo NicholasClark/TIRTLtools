@@ -16,6 +16,7 @@ A vector of well names covering the specified rows and columns (e.g. "A1", "A2",
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function returns a vector of well names from the specified rows and columns.
 }
 \examples{

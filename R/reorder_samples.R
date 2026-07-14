@@ -1,6 +1,7 @@
 #' Re-order samples in a TIRTLseqDataSet object
 #'
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function changes the order of the samples in a TIRTLseqDataSet object to the order that the user specifies.
 #'
 #' @param data a TIRTLseqDataSet object

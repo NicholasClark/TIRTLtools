@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' The \code{plot_diversity()} plots the requested clonal diversity metric
 #'
 #' This function can plot a variety of clonal diversity metrics for a dataset (richness,

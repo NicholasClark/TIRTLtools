@@ -3,6 +3,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function filters the paired TCR data, keeping at most one beta-chain partner for each
 #' individual alpha-chain and at most two alpha-chain partners for each individual beta-chain.
 #'

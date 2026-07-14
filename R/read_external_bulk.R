@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function reads and processes bulk single-chain TCR-sequencing data from a non-TIRTLseq assay.
 #' Currently, only MiXCR format is supported.
 #'

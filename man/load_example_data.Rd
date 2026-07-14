@@ -20,6 +20,7 @@ The function returns NULL invisibly, but loads a dataset and assigns it to eithe
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This is a helper function to load example TIRTL-seq data. The function will also
 download the data if needed from \link{https://github.com/NicholasClark/TIRTLtools/releases/tag/data-v1}
 and save it in the package's R cache directory.

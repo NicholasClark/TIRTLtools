@@ -19,6 +19,7 @@ the "384_well" settings will be used. Otherwise the "96_well" settings will be u
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function returns a list with p-value and well threshold settings for
 384-well or 96-well T-SHELL.
 }

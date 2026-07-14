@@ -14,6 +14,7 @@ a data frame with the number of reads and unique chains observed for each sample
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function creates a summary table with the number of reads and unique alpha/beta chains observed
 for each sample.
 }

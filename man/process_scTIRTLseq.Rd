@@ -25,6 +25,7 @@ A data frame with one TCR pair selected per well.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function reads a directory of MiXCR output files from single-cell TIRTL-seq
 and outputs a data frame with a single TCR for each well.
 }

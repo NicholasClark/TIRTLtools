@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' By default, paired TCRs are listed in one row in the paired chain data
 #' for each pairing algorithm they were called by (either T-SHELL or MAD-HYPE). This means
 #' some TCRs are present in two rows, once for each algorithm. This

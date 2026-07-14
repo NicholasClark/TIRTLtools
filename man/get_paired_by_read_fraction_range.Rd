@@ -26,6 +26,7 @@ read fraction range for each sample.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function returns the number and fraction of single-chains (alpha or beta, default is beta)
 that were paired within different frequency ranges
 (default is \verb{[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]}) for each sample.

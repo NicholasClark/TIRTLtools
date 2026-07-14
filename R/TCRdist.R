@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' An efficient, batched version of TCRdist that is compatible with both NVIDIA and Apple Silicon GPUs.
 #'
 #' @details

@@ -18,6 +18,7 @@ A data frame with the number of pairs called by each algorithm for each sample.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function tabulates the number of TCR pairs called for each sample by the MAD-HYPE
 algorithm, the T-SHELL algorithm, or both. It is used in the \code{\link{plot_paired}()} function.
 }

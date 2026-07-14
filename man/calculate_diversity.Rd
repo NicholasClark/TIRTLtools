@@ -47,6 +47,7 @@ They return a data frame with many rows if supplied with a vector of orders (e.g
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{calculate_diversity()} returns a number of clonal diversity measures (e.g. Hill numbers,
 Shannon and Simpson indices) calculated from supplied data.
 }

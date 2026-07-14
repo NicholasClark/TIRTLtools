@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function returns the number and fraction of single-chains (alpha or beta, default is beta)
 #' that were paired within different frequency ranges
 #' (default is ```[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]```) for each sample.

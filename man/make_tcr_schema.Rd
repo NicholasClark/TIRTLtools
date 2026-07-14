@@ -20,6 +20,7 @@ A vector containing
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This is a convenience function that simply returns a vector of column names
 that are used by \code{\link{read_external_paired}()} to define a unique
 T-Cell receptor.

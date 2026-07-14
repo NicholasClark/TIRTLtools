@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function returns a vector of well names in a rectangle containing the top
 #' left well and the bottom right well.
 #'

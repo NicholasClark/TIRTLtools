@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function plots the number of TCRs paired by each algorithm. It can also plot the number
 #' of single-chains (alpha or beta) paired by the algorithms.
 #'

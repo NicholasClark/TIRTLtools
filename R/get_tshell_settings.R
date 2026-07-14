@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function returns a list with p-value and well threshold settings for
 #' 384-well or 96-well T-SHELL.
 #'

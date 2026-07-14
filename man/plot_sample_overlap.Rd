@@ -49,6 +49,7 @@ If \code{return_data} is TRUE, a matrix of overlap values will be returned inste
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function returns a heatmap showing the overlap among the most frequent
 \code{n_seq} TCRs (default is n_seq=200) among pairs of samples in a dataset.
 }

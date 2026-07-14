@@ -26,6 +26,7 @@ return_type = "rows_and_columns", returns a list with two vectors
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function returns a vector of well names in a rectangle containing the top
 left well and the bottom right well.
 }

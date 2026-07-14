@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function tabulates the number of TCR pairs called for each sample by the MAD-HYPE
 #' algorithm, the T-SHELL algorithm, or both. It is used in the \code{\link{plot_paired}()} function.
 #'

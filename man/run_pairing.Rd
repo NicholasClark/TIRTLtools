@@ -15,7 +15,7 @@ run_pairing(
   tshell_settings = get_tshell_settings(format = "auto"),
   wellset = get_well_subset(1:16, 1:24),
   wellset1 = lifecycle::deprecated(),
-  compute = TRUE,
+  compute = lifecycle::deprecated(),
   backend = c("auto", "cpu", "cupy", "mlx"),
   pval_thres_tshell = lifecycle::deprecated(),
   wij_thres_tshell = lifecycle::deprecated(),
@@ -27,7 +27,11 @@ run_pairing(
   chunk_size = 500,
   exclude_nonfunctional = FALSE,
   select_best_madhype = FALSE,
-  select_best_tshell = FALSE
+  select_best_tshell = FALSE,
+  gzip_output = FALSE,
+  pseudobulk_only = FALSE,
+  run_qc = TRUE,
+  clone_threshold_chain = c("alpha", "beta", "independent")
 )
 }
 \arguments{
@@ -56,8 +60,6 @@ named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha
 
 \item{wellset}{a vector of wells to use for the pairing}
 
-\item{compute}{whether or not to run the pairing algorithms after tabulating and writing pseudobulk data (default TRUE)}
-
 \item{backend}{the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.}
 
 \item{verbose}{whether to print out messages (default TRUE)}
@@ -65,10 +67,6 @@ named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha
 \item{write_extra_files}{whether to write un-necessary intermediate files (default FALSE)}
 
 \item{filter_before_top3}{whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)}
-
-\item{fork}{whether to "fork" the python process for basilisk (default is NULL, which automatically chooses an appropriate option)}
-
-\item{shared}{whether to use a "shared" python process for basilisk (default is NULL, which automatically chooses an appropriate option)}
 
 \item{chunk_size}{batch size for calculations in pairing scripts}
 
@@ -79,6 +77,19 @@ the best pairs for each clone (default is FALSE)}
 
 \item{select_best_tshell}{whether to use a secondary algorithm on the pairs from the T-SHELL algorithm to select
 the best pairs for each clone (default is FALSE)}
+
+\item{gzip_output}{whether to compress (gzip) output files (default is FALSE)}
+
+\item{pseudobulk_only}{only output pseudobulk with no pairing (default is FALSE)}
+
+\item{run_qc}{whether to run the quality control pipeline on the samples, dropping wells with a number of unique alpha or beta clones below a certain threshold.}
+
+\item{clone_threshold_chain}{the chain to use to determine the clone threshold for QC.
+If "alpha", clone counts for TCRalpha will be used to determine a threshold for both
+alpha and beta chains. If "beta", TCRbeta clone counts will be used to determine
+the threshold for both chains. If "independent", then TCRalpha clones will be used
+to determine a QC threshold for alpha and TCRbeta clones will be used to determine
+a separate QC threshold for beta clones. ("alpha" is default)}
 }
 \value{
 A data frame with the TCR-alpha/TCR-beta pairs.
@@ -101,6 +112,7 @@ These files can be loaded using the \code{\link{load_well_counts_binary}()} func
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
 originating from the same clone.
 }

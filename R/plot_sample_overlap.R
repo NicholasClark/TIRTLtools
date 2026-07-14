@@ -3,6 +3,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function returns a heatmap showing the overlap among the most frequent
 #' `n_seq` TCRs (default is n_seq=200) among pairs of samples in a dataset.
 #'

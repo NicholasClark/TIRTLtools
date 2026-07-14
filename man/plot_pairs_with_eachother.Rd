@@ -28,6 +28,7 @@ A ggplot object with the plot
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function creates a point plot of read fraction vs. rank for the N most frequent alpha (left, mirrored)
 and beta (right) chains with lines between alpha and beta chains indicating a
 pair and a cross indicating an unpaired single-chain.

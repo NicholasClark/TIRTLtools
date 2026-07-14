@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
 #' originating from the same clone. This function allows for the case where one sample
 #' is spread across multiple plates.

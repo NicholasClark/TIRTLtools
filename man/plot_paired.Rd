@@ -29,6 +29,7 @@ sample by each algorithm.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function plots the number of TCRs paired by each algorithm. It can also plot the number
 of single-chains (alpha or beta) paired by the algorithms.
 }

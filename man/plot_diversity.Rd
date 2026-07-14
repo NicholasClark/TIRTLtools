@@ -57,6 +57,7 @@ A list with two objects:
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The \code{plot_diversity()} plots the requested clonal diversity metric
 
 This function can plot a variety of clonal diversity metrics for a dataset (richness,

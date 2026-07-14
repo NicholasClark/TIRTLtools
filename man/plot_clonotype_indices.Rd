@@ -41,6 +41,7 @@ If return_data is TRUE, the data frame used to create the plot is returned inste
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{plot_clonotype_indices()} creates a stacked bar chart containing the fraction of
 reads for the top 10 most frequent clonotypes, the 11th to 100th most frequent
 clonotypes, the 101st to 1000th most frequent, and so on, for each sample in the dataset.

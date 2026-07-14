@@ -28,6 +28,7 @@ a ggplot object with the rank plot
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{plot_ranks()} returns a line plot of TCR rank vs. read fraction for a given sample.
 }
 \examples{

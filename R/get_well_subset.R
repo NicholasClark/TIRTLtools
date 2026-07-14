@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function returns a vector of well names from the specified rows and columns.
 #'
 #' @param row_range a vector of row indices, from 1 (A) to 16 (P)

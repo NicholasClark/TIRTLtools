@@ -1,6 +1,7 @@
 #' Write a tab-separated "thimble" text file for use with Stitchr
 #'
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function takes a data frame created by \code{\link{create_thimble_df}()}
 #' and writes it to a .tsv file for use with Stitchr (https://jamieheather.github.io/stitchr/).
 #'

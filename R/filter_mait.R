@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function uses a heuristic to remove TCRs associated with MAIT cells, which
 #' may not be desired for some applications. For example, when creating a network of related TCRs
 #' with TCRdist, these TCRs often form a very highly dense sub-network that inflates output file size.

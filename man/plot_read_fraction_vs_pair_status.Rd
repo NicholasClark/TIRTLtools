@@ -31,6 +31,7 @@ A ggplot object with the point plot
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function creates two point plots (alpha left, beta right) of the \code{n_max} most frequent
 single-chains found in a sample.
 

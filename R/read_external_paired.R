@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function reads and processes paired TCR-sequencing data from a non-TIRTLseq assay.
 #' Currently 10X and Parse Biosciences data are supported.
 #'

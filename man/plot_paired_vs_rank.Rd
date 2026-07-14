@@ -32,6 +32,7 @@ A ggplot object with the plot
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The function creates a stepped line plot of the cumulative number of paired/unpaired alpha
 or beta chains (default is both) among the \code{n_max} most frequent chains.
 }

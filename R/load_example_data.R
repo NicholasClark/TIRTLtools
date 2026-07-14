@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This is a helper function to load example TIRTL-seq data. The function will also
 #' download the data if needed from \link{https://github.com/NicholasClark/TIRTLtools/releases/tag/data-v1}
 #' and save it in the package's R cache directory.

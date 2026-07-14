@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' By default, the TIRTLseq pairing scripts write a "paired" data table that has one row
 #' per pair per pairing algorithm (MAD-HYPE or T-SHELL). Thus, any pairs identified by both methods
 #' will be found in two rows. This function removes those duplicates.

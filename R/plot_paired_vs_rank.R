@@ -4,6 +4,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' The function creates a stepped line plot of the cumulative number of paired/unpaired alpha
 #' or beta chains (default is both) among the `n_max` most frequent chains.
 #'

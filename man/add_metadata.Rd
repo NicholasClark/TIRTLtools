@@ -20,6 +20,7 @@ a TIRTLseqDataSet object with added metadata
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function adds a metadata data frame, \code{obj$meta}, to the input TIRTLseqDataSet object based on
 the sample names. This can be useful when the metadata was not specified when the initial object was loaded.
 }
