@@ -232,8 +232,8 @@ run_pairing = function(
                             pos=well_pos,
                             wellset=wellset,
                             verbose = verbose)
-    stat_a$qc_pass_a = qc$a
-    stat_b$qc_pass_b = qc$b
+    stats_a$qc_pass_a = qc$a
+    stats_b$qc_pass_b = qc$b
     mlista<-mlista[qc$a]#downsize to qc
     mlistb<-mlistb[qc$b]#downsize to qc
   }
