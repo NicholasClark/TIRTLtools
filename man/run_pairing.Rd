@@ -113,8 +113,44 @@ These files can be loaded using the \code{\link{load_well_counts_binary}()} func
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
-originating from the same clone.
+This function runs the MAD-HYPE and T-SHELL algorithms (with efficient
+GPU implementations) on multi-well TCR-seq data, returning TCR alpha/beta chain
+pairs predicted to come from the same clone.
+
+The MAD-HYPE (Multicell Analytical Deconvolution
+for High Yield Paired-chain Evaluation) algorithm uses Bayesian
+inference over well co-occurrence counts to call TCR alpha/beta chain
+pairings from multicell-per-well sequencing data.
+
+The T-SHELL algorithm (TCRαβ Sequence Highly Efficient Linkage
+Learning) is a heuristic for pairing TCR chains from multi-well data,
+based on correlation of read frequency across wells.
+}
+\details{
+The function also performs QC on the wells, dropping wells with unusually small
+numbers of clones, and calculates "pseudobulk" for TCRα and TCRβ, aggregating reads
+over all wells. It writes three tab-separated files (.tsv), one for TCRα pseudobulk,
+one for TCRβ pseudobulk, and one for predicted TCRαβ pairs.
+
+Output may include alpha or beta chains with many predicted partners. To keep only the
+best partners by p-value for each algorithm (allowing up to two alphas for each beta chain),
+you may run with the options \code{select_best_madhype = TRUE} and \code{select_best_tshell == TRUE}.
+Removing nonfunctional chains with \code{exclude_nonfunctional = TRUE} may also help to reduce multi-pairing.
+
+See Pogorelyy & Kirk et al. (2026) for a full description of the T-SHELL algorithm.
+
+See Holec et al. (2019) for a full description of the MAD-HYPE algorithm.
+}
+\references{
+Pogorelyy MV, Kirk AM, Adhikari S, Minervina AA, Sundararaman B, Vegesana K,
+Brice DC, Scott ZB, SJTRC Study Team, Thomas PG (2026). "TIRTL-seq: deep,
+quantitative and affordable paired TCR repertoire sequencing."
+\emph{Nature Methods}, \strong{23}, 56-64.
+\doi{10.1038/s41592-025-02907-9}
+
+Holec PV, Berleant J, Bathe M, Birnbaum ME (2019). "A Bayesian framework
+for high-throughput T cell receptor pairing." \emph{Bioinformatics},
+\strong{35}(8), 1318-1325. \doi{10.1093/bioinformatics/bty801}
 }
 \seealso{
 Other pairing:
