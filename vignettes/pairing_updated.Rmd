@@ -1,0 +1,115 @@
+---
+title: "Pairing of alpha/beta TCR chains"
+output: html_document
+date: "2026-06-29"
+---
+
+## Tutorial overview
+
+This vignette shows how to generate paired TCR and single-chain "pseudo-bulk" data using TIRTL-seq TCR-alpha and TCR-beta read counts from half of a 384-well plate.
+
+## Study details
+
+For this example, we use data from the St. Jude Tracking Study of Immune Responses Associated with COVID-19 (SJTRC), a clinical trial launched in 2020 to study the T-cell receptor repertoires of adults with naturally acquired COVID-19. This was a prospective, longitudinal cohort study involving adult employees (18 years and older) at St. Jude Children’s Research Hospital in Memphis, TN, USA.
+
+Participants underwent weekly PCR screening for SARS-CoV-2 infection while on the St. Jude campus. Blood samples were collected in 8-ml cell preparation tubes, processed within 24 h into cellular and plasma components, aliquoted and then frozen for future analysis.
+
+Here, we use samples from a healthy 33-year-old female donor with naturally acquired mild SARS-CoV-2 infection and no prior history of SARS-CoV-2 infection or vaccination. Samples were collected 143 days before this donor’s first positive SARS-CoV-2 PCR test (`baseline` or `tp1` sample), 6 days after (`acute` or `tp2` sample) and 29 days after (`convalescent` or `tp3` sample).
+
+## Instructions
+
+### Select plate rows and columns
+
+CD4+ and CD8+ T-cells were isolated from peripheral blood mononuclear cells (PBMCs) in each sample. For each timepoint, CD8+ cells were plated on the left half of wells in a 384-well plate and CD4+ cells were plated on the right half.
+
+In this case, we will pair the CD8+ cells from the baseline timepoint (tp1), which were in columns 1 through 12 (the left half of the plate) and rows 1 through 16 (or A through P, all rows) of our 384-well plate.
+
+```{r}
+library(TIRTLtools)
+```
+
+```{r}
+TIRTLtools:::download_data("exp3_tp1_cd8.tar.gz") ## download well-level data
+data_dir = TIRTLtools:::get_data_dir("exp3_tp1_cd8") ## get the directory that data was downloaded and extracted to
+print(data_dir)
+dir(data_dir) |> head()
+write_folder = "~/TIRTLtools_exp3_tp1_cd8" ### change this to the folder you would like to save paired output in (if the folder does not exist it will be created)
+wells = get_well_subset(row_range = 1:16, col_range = 1:12) ## wells on left half of plate
+print(wells)
+```
+
+### Run pairing algorithms
+
+The `run_pairing()` function will run the pairing scripts, which implement the MAD-HYPE and T-SHELL algorithms.
+These algorithms are implemented in Python using GPU-accelerated packages (with numpy as a CPU-only backup) for fast calculation. The package should automatically install a python environment with the necessary packages and detect the GPU type (NVIDIA or Apple Silicon) of your machine, if it has one available.
+
+Each function call may take a few minutes to run.
+
+The main arguments of the function are:
+
+- `folder_path` - the path of the folder with well-level data
+- `folder_out` - 	the path of the folder to write results to (the function will create the folder if it does not exist)
+- `prefix` - a prefix (e.g. the sample name) for the output file names
+- `well_filter_thres` - a threshold on the number of unique clones found in a well, for quality control
+- `well_pos` - the position of the well ID (e.g. "B5") in the file names.
+- `wellset1` - a vector of wells to use for the pairing.
+
+For more information, check the documentation with `?run_pairing`.
+
+The well-level data files in each folder are named something like `MVP113_TIRTLseq_P12_S263.TCRa_ID02.clones_TRA.tsv`, so the well ID (`P12` in this case) is in the third position (separate by underscores) so we use `well_pos=3`. We use the `get_well_subset()` function above to generate the vector of wells for the left side of the plate. With this, we run the `run_pairing()` function, saving the output from CD8+ cells in each plate to the same folder, with a different prefix for each: `<experiment>_<timepoint>_<marker>`.
+
+```{r}
+### This function will attempt to automatically install a Python environment with necessary packages for GPU computation
+run_pairing(folder_path = data_dir, folder_out = write_folder, prefix = "exp3_tp1_cd8", wellset = wells)
+```
+
+### Load paired TCR data
+
+The output from each call to `run_pairing()` is 3 tab-separated text files (.tsv).
+If you would like to compress the output files, you can use the option `gzip_output = TRUE`.
+
+- `<sample-name>_TIRTLoutput.tsv(.gz)`-- Paired TCRs -- a table of computationally paired alpha/beta TCRs
+- `<sample-name>_pseudobulk_TRA.tsv(.gz)` -- Alpha chain "pseudo-bulk" data -- a table of read count summary metrics for alpha-chains across all wells on a plate
+- `<sample-name>_pseudobulk_TRB.tsv(.gz)` -- Beta chain "pseudo-bulk" data -- a table of read count summary metrics for beta-chains across all wells on a plate
+
+The `load_tirtlseq()` function can be used to load all of the data in a directory, whether it is in `.tsv` or compressed `.tsv.gz` form.
+
+This function loads the data into a "list", which is an R data type that can contain any type of unstructured data. Elements of a list can be accessed by their name, e.g. `your_list$meta`, or their index, e.g. `your_list[[2]]`.
+The list contains three slots: `meta`, `data`, and `info`, and has the following structure:
+
+```
+your_data_object (list, with class "TIRTLseqDataSet")
+├───meta (a data frame of sample metadata)
+├───info (a list of processing/pairing information)
+└───data (a list containing paired and pseudobulk data for each sample)
+    └───sample_1 (list)
+     	├───alpha (alpha pseudobulk dataframe)
+     	├───beta (beta pseudobulk dataframe)
+     	└───paired (paired pseudobulk dataframe)
+	...
+    └───sample_n (list)
+     	├───alpha (alpha pseudobulk dataframe)
+     	├───beta (beta pseudobulk dataframe)
+     	└───paired (paired pseudobulk dataframe)
+```
+
+Since we used `<experiment>_<timepoint>_<marker>` for the `prefix` for each set of output files, we add this in the `meta_columns` argument, so that the function creates a data frame of sample metadata with this information.
+
+```{r}
+ts = load_tirtlseq(write_folder, sep = "_", verbose = FALSE,
+                     meta_columns = c("experiment", "timepoint", "marker"))
+ts ## list with class "TIRTLseqDataSet"
+summary(ts)
+```
+
+You can inspect the loaded object and view the data frames with paired TCRs and single-chain pseudobulk for each sample.
+
+```{r}
+ts$meta ## sample metadata (data frame)
+ts$info ## list of data pairing/processing information
+names(ts$data) ## list with data for each sample
+names(ts$data$exp3_tp1_cd8) ## list with data for one sample (exp3_tp1_cd8)
+ts$data$exp3_tp1_cd8$alpha ## TCR-alpha pseudobulk (data frame)
+ts$data$exp3_tp1_cd8$beta ## TCR-beta pseudobulk (data frame)
+ts$data$exp3_tp1_cd8$paired ## paired TCRαβ (data frame)
+```
