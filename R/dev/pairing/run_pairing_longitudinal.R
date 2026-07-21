@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This runs the MAD-HYPE and T-SHELL algorithms to find TCRalpha-beta pairs
 #' originating from the same clone. This function allows for simultaneous pairing of a
 #' sample from the same donor, using TIRTLseq data from multiple timepoints.

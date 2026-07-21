@@ -202,6 +202,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
+#' 
 #' This function install a python environment via the `basilisk` package that is
 #' needed for some functions: \code{\link{TCRdist}()}, \code{\link{cluster_tcrs}()}, and \code{\link{run_pairing}()}.
 #'
