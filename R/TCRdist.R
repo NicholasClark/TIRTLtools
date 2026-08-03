@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' An efficient, batched version of TCRdist that is compatible with both NVIDIA and Apple Silicon GPUs.
 #'
 #' @details
@@ -22,7 +22,7 @@
 #' (default is NULL, which uses TIRTLtools::params)
 #' @param submat (optional) a substitution matrix with mismatch penalties for each
 #' combination of amino acids or va/vb segments (default is NULL, which uses TIRTLtools::submat).
-#' @param tcrdist_cutoff (optional) discard all TCRdist values above this cutoff (default is 90).
+#' @param tcrdist_cutoff (optional) discard all TCRdist values above this cutoff. If not supplied by the user, this will default to 90 for dual-chain TCRdist or 45 for single-chain TCRdist.
 #' @param chunk_size (optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
 #' it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
 #' (in our testing, a chunk_size of 1000 to 5000 provided the fastest runtime and
@@ -79,7 +79,7 @@ TCRdist = function(
     remove_MAIT = FALSE,
     params = NULL,
     submat = NULL,
-    tcrdist_cutoff=90,
+    tcrdist_cutoff = NULL,
     chunk_size=1000,
     print_chunk_size=10,
     print_res = TRUE,
@@ -94,6 +94,19 @@ TCRdist = function(
   #reticulate::py_available(initialize = TRUE)
   py_require( packages = get_py_deps() )
 
+  has_a = ifelse("cdr3a" %in% colnames(tcr1), TRUE, FALSE)
+  has_b = ifelse("cdr3b" %in% colnames(tcr1), TRUE, FALSE)
+  if (missing(tcrdist_cutoff)) {
+    if (has_a && has_b) {
+      tcrdist_cutoff = 90
+      cli::cli_alert_info("Both {.field cdr3a} and {.field cdr3b} found — using {.val tcrdist_cutoff = 90}")
+    } else if (has_a || has_b) {
+      tcrdist_cutoff = 45
+      cli::cli_alert_info("Only one of {.field cdr3a}/{.field cdr3b} found — using {.val tcrdist_cutoff = 45}")
+    } else {
+      cli::cli_abort("Neither {.field cdr3a} nor {.field cdr3b} found in the data frame")
+    }
+  }
   tcr1 = prep_for_tcrdist(tcr1, params = params, remove_MAIT = remove_MAIT)
   if(!is.null(tcr2)) tcr2 = prep_for_tcrdist(tcr2, params = params, remove_MAIT = remove_MAIT)
   chunk_size = as.integer(chunk_size)
@@ -161,6 +174,7 @@ TCRdist = function(
   res = TCRdist_gpu$TCRdist_batch(tcr1 = tcr1_py, tcr2 = tcr2_py, submat = submat_py, params_df = params_py, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_chunk_size = print_chunk_size, print_res = print_res, only_lower_tri = only_lower_tri, return_data = return_data, write_to_tsv = write_to_tsv)
   ### fix for when r_to_py doesn't convert data frames
   if(reticulate::is_py_object(res[[1]])) res = .fix_py_to_r_df_list(res)
+  res = lapply(res, tibble::as_tibble)
   return(res)
 }
 

@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' This function uses a heuristic to remove TCRs associated with MAIT cells, which
 #' may not be desired for some applications. For example, when creating a network of related TCRs
 #' with TCRdist, these TCRs often form a very highly dense sub-network that inflates output file size.
@@ -26,12 +26,14 @@ filter_mait = function(df, verbose = TRUE) {
   va2 = paste(va1, "*01", sep = "") # with alleles
   ja2 = paste(ja1, "*01", sep = "") # with alleles
   n_tcr_orig = nrow(df)
-  df = df %>%
-    filter( !(va %in% c(va1,va2) & ja %in% c(ja1,ja2)) )
-  n_tcr_final = nrow(df)
-  n_mait = n_tcr_orig - n_tcr_final
-  pct_mait = signif(100*(n_mait/n_tcr_orig), 2)
-  msg = paste("Removed ", n_mait %>% .add_commas(), " MAIT TCRs ", "(", pct_mait, "%) from a total of ", n_tcr_orig %>% .add_commas(), " TCRs.", sep = "")
-  if(verbose) message(msg)
+  if("va" %in% colnames(df) && "ja" %in% colnames(df)) {
+    df = df %>%
+      filter( !(va %in% c(va1,va2) & ja %in% c(ja1,ja2)) )
+    n_tcr_final = nrow(df)
+    n_mait = n_tcr_orig - n_tcr_final
+    pct_mait = signif(100*(n_mait/n_tcr_orig), 2)
+    msg = paste("Removed ", n_mait %>% .add_commas(), " MAIT TCRs ", "(", pct_mait, "%) from a total of ", n_tcr_orig %>% .add_commas(), " TCRs.", sep = "")
+    if(verbose) message(msg)
+  }
   return(df)
 }

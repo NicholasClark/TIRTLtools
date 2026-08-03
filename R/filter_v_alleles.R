@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' This function removes TCR pairs with V-segments that are not found in \code{\link{params}}.
 #' This is needed for pre-processing for \code{\link{TCRdist}()} and is part of \code{\link{prep_for_tcrdist}()},
 #' which is automatically run during \code{\link{TCRdist}()}.
@@ -19,18 +19,33 @@ filter_v_alleles = function(df, params=NULL, verbose = TRUE) {
   if(is.null(params)) params = TIRTLtools::params
   df = .check_v_alleles(df, params = params)
   n_tcr_orig = nrow(df)
-  n_not_allowed = sum(!df$va_and_vb_allowed)
+  n_not_allowed = sum(!df$v_allowed)
   pct_not_allowed = signif(100*n_not_allowed/n_tcr_orig,2)
   msg = paste("Removed ", n_not_allowed %>% .add_commas(), " TCRs with unknown V-segments ", "(", pct_not_allowed, "%) from a total of ", n_tcr_orig %>% .add_commas(), " TCRs.", sep = "")
   if(verbose) message(msg)
-  df = df %>% filter(va_and_vb_allowed) %>% select(-va_and_vb_allowed, -va_allowed, -vb_allowed)
+  df = df %>% filter(v_allowed)
+  df$v_allowed = NULL
+  df$va_allowed = NULL
+  df$vb_allowed = NULL
   return(df)
 }
 
 ### check that va and vb are found in the parameters for tcrdist (but don't remove them)
 .check_v_alleles = function(df, params=NULL) {
   if(is.null(params)) params = TIRTLtools::params
-  df = df %>% mutate(va_allowed = va %in% params$feature, vb_allowed = vb %in% params$feature) %>%
-    mutate(va_and_vb_allowed = va_allowed & vb_allowed)
+  use_alpha = ifelse("va" %in% colnames(df), TRUE, FALSE)
+  use_beta = ifelse("vb" %in% colnames(df), TRUE, FALSE)
+  if(use_alpha) {
+    df = df %>% mutate(va_allowed = va %in% params$feature)
+  }
+  if(use_beta) {
+    df = df %>% mutate(vb_allowed = vb %in% params$feature)
+  }
+  if(use_alpha && use_beta) {
+    df = df %>% mutate(v_allowed = va_allowed & vb_allowed)
+  } else {
+    if(use_alpha) df = df %>% mutate(v_allowed = va_allowed)
+    if(use_beta) df = df %>% mutate(v_allowed = vb_allowed)
+  }
   return(df)
 }

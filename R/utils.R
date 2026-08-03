@@ -1,15 +1,25 @@
 
 ### add alleles ("*01") to va and vb if necessary (needed for TCRdist)
 .add_alleles = function(df) {
-  has_allele_va = grepl("\\*", df$va)
-  has_allele_vb = grepl("\\*", df$vb)
-  df$va_orig = df$va
-  df$vb_orig = df$vb
-  df = df %>%
-    mutate(
-      va = ifelse(has_allele_va, va, paste(va, "*01", sep = "")),
-      vb = ifelse(has_allele_vb, vb, paste(vb, "*01", sep = ""))
-    )
+  use_alpha = ifelse("va" %in% colnames(df), TRUE, FALSE)
+  use_beta = ifelse("vb" %in% colnames(df), TRUE, FALSE)
+  if(use_alpha) {
+    has_allele_va = grepl("\\*", df$va)
+    df$va_orig = df$va
+    df = df %>%
+      mutate(
+        va = ifelse(has_allele_va, va, paste(va, "*01", sep = ""))
+      )
+  }
+  if(use_beta) {
+    has_allele_vb = grepl("\\*", df$vb)
+    df$vb_orig = df$vb
+    df = df %>%
+      mutate(
+        vb = ifelse(has_allele_vb, vb, paste(vb, "*01", sep = ""))
+        )
+  }
+
   return(df)
 }
 

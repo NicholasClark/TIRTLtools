@@ -33,21 +33,39 @@ def pad_center(seq, target_length):
        second_half = seq[seq_length // 2:]
        return first_half + ['_'] * total_padding + second_half
 
+
+#' process_TCRs function
+#' 
+#' tcr: a pandas dataframe with columns 'va', 'cdr3a', 'vb', 'cdr3b'
+#' params_vec: a dictionary where the key is an amino acid or V-segment and the
+#' value is an integer encoding.
+#' n_max: the number of rows of the tcr dataframe to process-- all of them by default.
 def process_TCRs(tcr, params_vec, n_max=np.inf):
     n_max = min(n_max, tcr.shape[0])
-    cdr3amat = np.array([pad_center(list(seq), 29) for seq in tcr['cdr3a'][:n_max] ])
-    cdr3amatint = np.vectorize(params_vec.get)(cdr3amat)
-    cdr3bmat = np.array([pad_center(list(seq), 29) for seq in tcr['cdr3b'][:n_max] ])
-    cdr3bmatint = np.vectorize(params_vec.get)(cdr3bmat)
-    
-    cols_to_use = slice(3, -2) #truncate CDR3s
-    
-    encoded = np.column_stack([
-        np.vectorize(params_vec.get)(tcr['va'][:n_max]),
-        cdr3amatint[:,cols_to_use],
-        np.vectorize(params_vec.get)(tcr['vb'][:n_max]),
-        cdr3bmatint[:,cols_to_use]
-    ])
+
+    use_alpha = 'cdr3a' in tcr.columns and 'va' in tcr.columns
+    if not use_alpha:
+        print("cdr3a and/or va not found in input dataframe columns - alpha chain (cdr3a, va) will not be used")
+
+    use_beta = 'cdr3b' in tcr.columns and 'vb' in tcr.columns
+    if not use_beta:
+        print("Warning: cdr3b and/or vb not found in input dataframe columns - beta chain (cdr3b, vb) will not be used")
+
+    cols_to_use = slice(3, -2) # ignore first 3 and last 2 amino acids of cdr3s
+
+    mats = []
+    if use_alpha:
+        cdr3amat = np.array([pad_center(list(seq), 29) for seq in tcr['cdr3a'][:n_max] ])
+        cdr3amatint = np.vectorize(params_vec.get)(cdr3amat)
+        mats.append(cdr3amatint[:,cols_to_use])
+        mats.append(np.vectorize(params_vec.get)(tcr['va'][:n_max]))
+    if use_beta:
+        cdr3bmat = np.array([pad_center(list(seq), 29) for seq in tcr['cdr3b'][:n_max] ]) ## matrix of padded cdr3 sequences (29 amino acids long)
+        cdr3bmatint = np.vectorize(params_vec.get)(cdr3bmat)
+        mats.append(cdr3bmatint[:,cols_to_use])
+        mats.append(np.vectorize(params_vec.get)(tcr['vb'][:n_max]))
+
+    encoded = np.column_stack(mats)
     tcrs=mx.array(encoded).astype(mx.uint8)
     return(tcrs)
 

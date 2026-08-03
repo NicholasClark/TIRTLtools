@@ -10,7 +10,7 @@ TCRdist(
   remove_MAIT = FALSE,
   params = NULL,
   submat = NULL,
-  tcrdist_cutoff = 90,
+  tcrdist_cutoff = NULL,
   chunk_size = 1000,
   print_chunk_size = 10,
   print_res = TRUE,
@@ -37,7 +37,7 @@ for every pair of TCRs in tcr1.}
 \item{submat}{(optional) a substitution matrix with mismatch penalties for each
 combination of amino acids or va/vb segments (default is NULL, which uses TIRTLtools::submat).}
 
-\item{tcrdist_cutoff}{(optional) discard all TCRdist values above this cutoff (default is 90).}
+\item{tcrdist_cutoff}{(optional) discard all TCRdist values above this cutoff. If not supplied by the user, this will default to 90 for dual-chain TCRdist or 45 for single-chain TCRdist.}
 
 \item{chunk_size}{(optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
 it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory

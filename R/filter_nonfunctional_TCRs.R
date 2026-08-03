@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' This function removes TCR pairs where the CDR3-alpha or beta segment does not make a
 #' functional protein, i.e. amino acid sequence contains a stop codon (*) or a frameshift (_).
 #'
@@ -61,7 +61,8 @@ filter_nonfunctional_TCRs = function(data, verbose = TRUE) {
   } else {
     print("using dplyr version for testing")
     df = df %>% filter(is_functional) %>%
-      select(-alpha_has_stop_codon, -alpha_has_frameshift, -beta_has_stop_codon, -beta_has_frameshift,
+      select(-alpha_has_stop_codon, -alpha_has_frameshift,
+             -beta_has_stop_codon, -beta_has_frameshift,
              -alpha_is_functional, -beta_is_functional)
   }
   return(df)

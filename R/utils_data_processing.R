@@ -230,23 +230,37 @@
   if(isTRUE(is.null(df))) return(df)
   if(.is.DataFrame(df)) df = as.data.table(df)
   #if("is_functional" %in% colnames(df)) return(df) ## this causes errors
-  if("cdr3a" %in% colnames(df) && "cdr3b" %in% colnames(df)) {
-    ### for paired data
-    df_out = df %>%
+  use_alpha = ifelse("cdr3a" %in% colnames(df), TRUE, FALSE)
+  use_beta = ifelse("cdr3b" %in% colnames(df), TRUE, FALSE)
+  if(use_alpha) {
+    df = df %>%
       mutate(
         alpha_has_stop_codon = grepl("\\*", cdr3a), # stop codon
-        alpha_has_frameshift = grepl("_", cdr3a), # frame shift
-        beta_has_stop_codon = grepl("\\*", cdr3b),
-        beta_has_frameshift = grepl("_", cdr3b),
+        alpha_has_frameshift = grepl("_", cdr3a) # frame shift
       ) %>%
       mutate(
-        alpha_is_functional = !(alpha_has_stop_codon | alpha_has_frameshift),
-        beta_is_functional = !(beta_has_stop_codon | beta_has_frameshift)
+        alpha_is_functional = !(alpha_has_stop_codon | alpha_has_frameshift)
+        )
+  }
+  if(use_beta) {
+    df = df %>%
+      mutate(
+        beta_has_stop_codon = grepl("\\*", cdr3b),
+        beta_has_frameshift = grepl("_", cdr3b)
       ) %>%
+      mutate(
+        beta_is_functional = !(beta_has_stop_codon | beta_has_frameshift)
+      )
+  }
+  if(use_alpha && use_beta) {
+    df = df %>%
       mutate(is_functional = alpha_is_functional & beta_is_functional)
+  } else if(use_alpha || use_beta) {
+    if(use_alpha) df = df %>% mutate(is_functional = alpha_is_functional)
+    if(use_beta) df = df %>% mutate(is_functional = beta_is_functional)
   } else {
     ### for pseudobulk data
-    df_out = df %>%
+    df = df %>%
       mutate(
         has_stop_codon = grepl("\\*", aaSeqCDR3), # stop codon
         has_frameshift = grepl("_", aaSeqCDR3), # frame shift
@@ -254,11 +268,11 @@
       mutate(is_functional = !(has_stop_codon | has_frameshift))
   }
   if(remove) {
-    df_out = df_out %>% filter(is_functional)
+    df = df %>% filter(is_functional)
   }
-  if(!"data.table" %in% class(df_out)) {
+  if(!"data.table" %in% class(df)) {
     #print("converting to data.table")
-    df_out = as.data.table(df_out)
+    df = as.data.table(df)
   }
-  return(df_out)
+  return(df)
 }
