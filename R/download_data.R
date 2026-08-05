@@ -1,33 +1,52 @@
-download_data = function(dataset = c("SJTRC_minimal.qs2", "SJTRC_longitudinal.qs2", "exp3_tp1_cd8.tar.gz")) {
+download_data = function(dataset = c("SJTRC_minimal.qs2", "SJTRC_longitudinal.qs2", "exp3_tp1_cd8.tar.gz"), force = FALSE, verbose = TRUE) {
   dataset = dataset[1]
   cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
   assert_choice(dataset, choices = c("SJTRC_minimal.qs2", "SJTRC_longitudinal.qs2", "exp3_tp1_cd8.tar.gz"))
-  
+
   tag = "data-v1"
   repo = "NicholasClark/TIRTLtools"
   asset = dataset
-  size_df = piggyback:::pb_list(repo = repo, tag = tag) %>% 
-    filter(file_name == dataset)
-  file_size = scales::label_bytes()(ifelse(nrow(size_df) >= 1, size_df$size[1], NA))
-  download_confirm = .confirm(glue("Download {dataset} ({file_size})?"))
-  if(!download_confirm) {
+  download_url = glue::glue("https://github.com/{repo}/releases/download/{tag}/{asset}")
+
+  tag_dir = file.path(cache_root, tag)
+  file_path = file.path(tag_dir, asset)
+  file_exists_already = file.exists(file_path)
+  if(file_exists_already && !force) {
+    cli::cli_alert_info("Download skipped.\nFile {asset} already exists in {tag_dir}.\nUse 'force = TRUE' to force download and overwrite existing file.")
+    return(invisible(TRUE))
+  }
+
+  h = curl::new_handle(nobody = TRUE)  # nobody = TRUE means "don't download the body"
+  res = curl::curl_fetch_memory(download_url, handle = h)
+  headers = curl::parse_headers_list(res$headers)
+  size_bytes = as.numeric(headers[["content-length"]])
+  size_mb = size_bytes / (1024^2)
+  size_mb_char = sprintf("%.2f MB", size_mb)
+  cli::cli_alert_info(sprintf("File size: %.2f MB\n", size_mb))
+  # size_df = piggyback:::pb_list(repo = repo, tag = tag) %>%
+  #   filter(file_name == dataset)
+
+  # file_size = scales::label_bytes()(ifelse(nrow(size_df) >= 1, size_df$size[1], NA))
+  download_confirm = .confirm(glue("Download {dataset} ({size_mb_char})?"))
+  if(download_confirm) {
+    dir.create(tag_dir, recursive = TRUE, showWarnings = FALSE)
+    curl::curl_download(download_url, destfile = file_path, quiet = FALSE)
+    # piggyback::pb_download(
+    #   file = asset,
+    #   repo = repo,
+    #   tag = tag,
+    #   dest = tag_dir,
+    #   overwrite = TRUE
+    # )
+    msg = paste("Dataset downloaded to:", "\n", file_path)
+    cli::cli_alert_success(msg)
+    #message(msg)
+    if(grepl("\\.tar\\.gz$", file_path)) extract_data(file_path)
+    return(invisible(TRUE))
+  } else {
     message("Download cancelled.")
     return(invisible(FALSE))
   }
-  tag_dir <- file.path(cache_root, tag)
-  dir.create(tag_dir, recursive = TRUE, showWarnings = FALSE)
-  file_path <- file.path(tag_dir, asset)
-  piggyback::pb_download(
-    file = asset,
-    repo = repo,
-    tag = tag,
-    dest = tag_dir,
-    overwrite = TRUE
-  )
-  msg = paste("Dataset downloaded to:", "\n", file_path)
-  message(msg)
-  if(grepl("\\.tar\\.gz$", file_path)) extract_data(file_path)
-  return(invisible(TRUE))
 }
 
 ## note: to work correctly, "{dataset}.tar.gz" needs to extract to "parent_dir/{dataset}/" directory
@@ -74,7 +93,7 @@ clean_cache = function() {
 #     archive_path <- file.path(tag_dir, asset)
 #     #if(file.exists(archive_path)) unlink(archive_path) ## cleaning up if needed
 #     #if(file.exists(final_path)) unlink(final_path, recursive = TRUE) ## cleaning up if needed
-#     size_df = piggyback:::pb_list(repo = repo, tag = tag) %>% 
+#     size_df = piggyback:::pb_list(repo = repo, tag = tag) %>%
 #       filter(file_name == asset)
 #     file_size = scales::label_bytes()(ifelse(nrow(size_df) >= 1, size_df$size[1], NA))
 #     .confirm(glue("Download {asset} ({file_size})?"))
