@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' The \code{cluster_tcrs()} function aggregates all of the paired TCRs found in the data,
 #' calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 #' and clusters the results using the Leiden algorithm.
@@ -19,8 +19,9 @@
 #' will be assigned to the "*01" allele.
 #'
 #' @param data a list of TIRTLseq TCR data for samples created with \code{\link{load_tirtlseq}()}
-#' @param tcrdist_cutoff the \code{\link{TCRdist}()} function will only record TCRdist values
-#' less than or equal to the cutoff. Default is 90. Note: Higher cutoffs will return more
+#' @param tcrdist_cutoff discard all TCRdist values above this cutoff. If not
+#' supplied by the user, this will default to 90 for dual-chain TCRdist or 45
+#' for single-chain TCRdist. Note: Higher cutoffs will return more
 #' data, at most NxN where N is the number of unique TCRs.
 #' @param resolution the "resolution" parameter for the Leiden algorithm. A lower
 #' value will produce larger clusters and a higher value will produce smaller clusters.
@@ -61,7 +62,7 @@
 #'
 cluster_tcrs = function(
     data,
-    tcrdist_cutoff = 90,
+    tcrdist_cutoff = NULL,
     resolution = 0.1,
     with_db = TRUE,
     db = TIRTLtools::vdj_db,
@@ -78,12 +79,38 @@ cluster_tcrs = function(
   } else { ### if a dataframe with TCRs
     df_all_obs = data %>% mutate(source = "observed")
   }
+
+  #### check for alpha and beta chains
+  has_a = ifelse("cdr3a" %in% colnames(df_all_obs), TRUE, FALSE)
+  has_b = ifelse("cdr3b" %in% colnames(df_all_obs), TRUE, FALSE)
+  if (missing(tcrdist_cutoff)) {
+    if (has_a && has_b) {
+      tcrdist_cutoff = 90
+      cli::cli_alert_info("Both {.field cdr3a} and {.field cdr3b} found — using {.val tcrdist_cutoff = 90}")
+    } else if (has_a || has_b) {
+      tcrdist_cutoff = 45
+      cli::cli_alert_info("Only one of {.field cdr3a}/{.field cdr3b} found — using {.val tcrdist_cutoff = 45}")
+    } else {
+      cli::cli_abort("Neither {.field cdr3a} nor {.field cdr3b} found in the data frame")
+    }
+  }
+
   if(with_db && is.data.frame(db)) {
+    if(identical(db, TIRTLtools::vdj_db)) db = db %>% mutate(source = "vdj_db")
+    if(!has_a) {
+      db$cdr3a = NULL
+      db$va = NULL
+    }
+    if(!has_b) {
+      db$cdr3b = NULL
+      db$vb = NULL
+    }
     if("is_functional" %in% colnames(df_all_obs)) db = .identify_non_functional_seqs_single(db)
     df_all = bind_rows(df_all_obs, db)
   } else {
     df_all = df_all_obs
   }
+
 
   if(remove_MAIT) {
     df_all = filter_mait(df_all)
