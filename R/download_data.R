@@ -1,7 +1,16 @@
-download_data = function(dataset = c("SJTRC_minimal.qs2", "SJTRC_longitudinal.qs2", "exp3_tp1_cd8.tar.gz"), force = FALSE, verbose = TRUE) {
+download_data = function(dataset = c("SJTRC_minimal.qs2",
+                                     "SJTRC_longitudinal.qs2",
+                                     "SJTRC_TIRTLseq_minimal.tar.gz",
+                                     "SJTRC_TIRTLseq_longitudinal.tar.gz",
+                                     "exp3_tp1_cd8.tar.gz"),
+                         force = FALSE, verbose = TRUE) {
   dataset = dataset[1]
   cache_root <- tools::R_user_dir("TIRTLtools", which = "cache")
-  assert_choice(dataset, choices = c("SJTRC_minimal.qs2", "SJTRC_longitudinal.qs2", "exp3_tp1_cd8.tar.gz"))
+  assert_choice(dataset, choices = c("SJTRC_minimal.qs2",
+                                     "SJTRC_longitudinal.qs2",
+                                     "SJTRC_TIRTLseq_minimal.tar.gz",
+                                     "SJTRC_TIRTLseq_longitudinal.tar.gz",
+                                     "exp3_tp1_cd8.tar.gz"))
 
   tag = "data-v1"
   repo = "NicholasClark/TIRTLtools"
@@ -12,8 +21,11 @@ download_data = function(dataset = c("SJTRC_minimal.qs2", "SJTRC_longitudinal.qs
   file_path = file.path(tag_dir, asset)
   file_exists_already = file.exists(file_path)
   if(file_exists_already && !force) {
-    cli::cli_alert_info("Download skipped.\nFile {asset} already exists in {tag_dir}.\nUse 'force = TRUE' to force download and overwrite existing file.")
-    return(invisible(TRUE))
+    is_modified = is_file_modified(url = download_url, destfile = file_path)
+    if(!is_modified) {
+      cli::cli_alert_info("Download skipped.\nFile {asset} already exists in {tag_dir}.\nUse 'force = TRUE' to force download and overwrite existing file.")
+      return(invisible(TRUE))
+    }
   }
 
   h = curl::new_handle(nobody = TRUE)  # nobody = TRUE means "don't download the body"

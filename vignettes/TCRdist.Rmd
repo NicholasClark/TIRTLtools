@@ -62,10 +62,10 @@ library(rmarkdown)
 For an example, we load paired TCRs from TIRTLseq experiments using CD4 and CD8-isolated T-cell samples taken from COVID-19-infected patients at three timepoints as part of the St. Jude Tracking Study of Immune Responses Associated with COVID-19 (SJTRC).
 
 ```{r}
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", chain = "paired", verbose = FALSE)
+## This loads a TIRTLseqDataSet object called "SJTRC_longitudinal"
+load_example_data("SJTRC_longitudinal")
 
-data$meta %>%
+SJTRC_longitudinal$meta %>%
   mutate(label = paste(substr(label, 0, 20), "...", sep = "")) %>%
   paged_table()
 ```
@@ -76,7 +76,7 @@ You can optionally remove MAIT TCRs, which share an invariant alpha-chain and th
 After filtering, we have ~100k TCRs.
 
 ```{r}
-all_tcrs = get_all_tcrs(data)
+all_tcrs = get_all_tcrs(SJTRC_longitudinal)
 input_tcrs = all_tcrs %>% prep_for_tcrdist(remove_MAIT = TRUE)
 ### note: You may replace this with a file of your choice - needs to have columns "va", "vb", "cdr3a", and "cdr3b"
 

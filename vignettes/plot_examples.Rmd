@@ -18,9 +18,8 @@ library(dplyr)
 ## Load the SJTRC COVID-19 data
 
 ```{r message=FALSE}
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-dir(folder)
-sjtrc = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
+## This loads a TIRTLseqDataSet object called "SJTRC_longitudinal"
+load_example_data("SJTRC_longitudinal")
 ```
 
 ## Longitudinal plots for individual TCRs or groups of TCRs
@@ -31,10 +30,10 @@ timepoints 1 and 2 and show their frequencies across all samples and timepoints.
 We can see they are highly frequent at CD8 timepoint 3, but not in any of the CD4 samples.
 
 ```{r}
-top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
-top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
+top_clones1 = SJTRC_longitudinal$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
+top_clones2 = SJTRC_longitudinal$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
 
-plot_clone_size_across_samples(sjtrc, clones = c(top_clones1, top_clones2), chain = "beta")
+plot_clone_size_across_samples(SJTRC_longitudinal, clones = c(top_clones1, top_clones2), chain = "beta")
 ```
 
 We can also plot the proportion of reads occupied by the 10 most frequent clones,
@@ -43,7 +42,7 @@ or the top 100, or 1000, etc for each sample.
 Here we can see that the top CD8 clones occupy more of the repertoire than their CD4 counterparts.
 
 ```{r}
-plot_clonotype_indices(sjtrc, chain = "beta")
+plot_clonotype_indices(SJTRC_longitudinal, chain = "beta")
 
 ```
 
@@ -55,7 +54,7 @@ We see that the CD8 repertoire is more clonal than the CD4 and at timepoint 2 it
 
 
 ```{r}
-div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+div = calculate_diversity(SJTRC_longitudinal, chain = "beta", metrics = "d50")
 plot_diversity(div, metric = "d50")
 ```
 The package offers a large number of other diversity metrics, including Simpson, inverse Simpson, Shannon, richness, etc.
@@ -69,13 +68,13 @@ get_all_div_metrics()
 We can also plot the total number of alpha and beta chain reads for each sample.
 
 ```{r}
-plot_n_reads(sjtrc)
+plot_n_reads(SJTRC_longitudinal)
 ```
 
 We can also check how many alpha and beta chains were paired for each sample and by which algorithm.
 
 ```{r}
-plot_paired(sjtrc)
+plot_paired(SJTRC_longitudinal)
 ```
 
 For quality control purposes, for the chains that are paired, we can plot how many partners each was assigned.
@@ -83,7 +82,7 @@ For quality control purposes, for the chains that are paired, we can plot how ma
 We expect alpha chains to have at most one beta chain partner and beta chains to have at most two alpha chain partners. Higher numbers of partners could be indicative of problems with the pairing. Sometimes these extra partners indicate mispairings and sometimes they are sequencing/PCR errors of the true partner.
 
 ```{r}
-plot_num_partners(sjtrc)
+plot_num_partners(SJTRC_longitudinal)
 ```
 
 We can also check the percentage of chains that are paired within each read fraction range. We would expect good pairing for highly frequent chains and worse pairing for rare chains.
@@ -92,7 +91,7 @@ Here we see that beta chains that are more frequent than one in ten-thousand (0.
 For rarer chains, the fraction paired drops off and almost none of the chains in the one-in-one-hundred-thousand to one-in-one-million range (light green, [1e-06,1e-05]) are paired.
 
 ```{r}
-plot_paired_by_read_fraction_range(sjtrc, chain = "beta")
+plot_paired_by_read_fraction_range(SJTRC_longitudinal, chain = "beta")
 ```
 
 We might expect that our algorithms (at least T-SHELL) are able to pair the majority of the most frequent clones.
@@ -104,7 +103,7 @@ but the MAD-HYPE algorithm is only able to pair about half. This is expected sin
 and therefore has a very difficult time pairing clones that are found in all or almost all wells.
 
 ```{r}
-plot_paired_vs_rank(sjtrc, sample = 4)
+plot_paired_vs_rank(SJTRC_longitudinal, sample = 4)
 ```
 Another way to visualize the pairing of the top clones is to plot their rank from left to right with their
 read fraction on the y-axis, with points colored by the pairing status. Here, the unpaired clones are shown by green dots with a cross.
@@ -112,7 +111,7 @@ Clones paired by only the T-SHELL algorithm are shown in yellow. We can see agai
 the MAD-HYPE algorithm has trouble with clones that are more frequent than one in a thousand (10^-3).
 
 ```{r}
-plot_read_fraction_vs_pair_status(sjtrc, sample = 4)
+plot_read_fraction_vs_pair_status(SJTRC_longitudinal, sample = 4)
 ```
 We might also expect that the most frequent alpha clones are paired to the most frequent beta clones and vice versa.
 
@@ -121,7 +120,7 @@ This next plot shows the same information as the last one, but with both alpha a
 We can see that most of the top 100 alpha clones have a partner in the top 100 beta clones, which makes sense.
 
 ```{r}
-plot_pairs_with_eachother(sjtrc, sample = 4)
+plot_pairs_with_eachother(SJTRC_longitudinal, sample = 4)
 ```
 
 We can also plot the rank versus read fraction for all clones and compare the shapes of these curves among samples.
@@ -130,7 +129,7 @@ We can see that the most frequent beta chains from the CD4 samples have a freque
 the most frequent clones from CD8 samples have a frequency of over 1%.
 
 ```{r}
-plot_ranks(sjtrc, chain = "beta")
+plot_ranks(SJTRC_longitudinal, chain = "beta")
 ```
 
 As another quality control check, we can plot how many of the top clones from each sample are shared in other samples.
@@ -138,13 +137,13 @@ As another quality control check, we can plot how many of the top clones from ea
 Here we plot the overlap of the top 200 clones from each sample and see that there is significant sharing within CD4 and CD8 samples, but not between them, which is expected.
 
 ```{r}
-plot_sample_overlap(sjtrc, chain = "beta")
+plot_sample_overlap(SJTRC_longitudinal, chain = "beta")
 ```
 
 We may also want to find whether clones are expanding or contracting in-between timepoints.
 Here, the CD8 clones that are expanding from timepoint 1 to 2 are shown in orange and those that are contracting are shown in green.
 
 ```{r}
-plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
+plot_sample_vs_sample(SJTRC_longitudinal$data$cd8_tp1_v2, SJTRC_longitudinal$data$cd8_tp2_v2, chain = "beta")
 ```
 

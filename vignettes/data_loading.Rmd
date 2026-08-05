@@ -27,8 +27,10 @@ Here, our files are named `(marker)_(timepoint)_(version)_ ... .tsv.gz`, e.g.
 library(TIRTLtools)
 library(dplyr)
 library(rmarkdown)
-folder = system.file("extdata/SJTRC_TIRTLseq_minimal", 
-                     package = "TIRTLtools")
+
+dataset = "SJTRC_TIRTLseq_minimal.tar.gz"
+TIRTLtools:::download_data(dataset)
+folder = file.path(TIRTLtools:::get_cache_dir(), "SJTRC_TIRTLseq_minimal")
 dir(folder)
 ts_data = load_tirtlseq(folder, 
   meta_columns = c("marker", "timepoint", "version"), sep = "_")

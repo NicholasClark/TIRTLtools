@@ -30,7 +30,7 @@ library(TIRTLtools)
 
 ```{r}
 TIRTLtools:::download_data("exp3_tp1_cd8.tar.gz") ## download well-level data
-data_dir = TIRTLtools:::get_data_dir("exp3_tp1_cd8") ## get the directory that data was downloaded and extracted to
+data_dir = file.path(TIRTLtools:::get_cache_dir(),"exp3_tp1_cd8") ## get the directory that data was downloaded and extracted to
 print(data_dir)
 dir(data_dir) |> head()
 write_folder = "~/TIRTLtools_exp3_tp1_cd8" ### change this to the folder you would like to save paired output in (if the folder does not exist it will be created)

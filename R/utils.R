@@ -269,14 +269,38 @@ calc_fisher_pval_df = function(df, n) {
   return(isTRUE(utils::askYesNo(prompt)))
 }
 
-pb_asset_size <- function(file, repo, tag = "latest") {
-  info <- piggyback::pb_list(repo = repo, tag = tag)
-  row <- info[info$file_name == file, ]
-  if (nrow(row) == 0) {
-    return(NA_real_)
+is_file_modified <- function(url, destfile) {
+  # Check if local file exists
+  if (!file.exists(destfile)) {
+    return(FALSE)
   }
-  row$size[1]  # bytes
+
+  # Get headers from remote file
+  h <- curl::curl_fetch_memory(url, handle = curl::new_handle(nobody = TRUE))
+  remote_modified <- h$modified
+
+  # Compare modification times
+  local_modified <- file.info(destfile)$mtime
+
+  # If remote is newer, return FALSE (file has changed)
+  if (!is.na(remote_modified)) {
+    remote_time <- as.POSIXct(remote_modified, format = "%a, %d %b %Y %H:%M:%S", tz = "GMT")
+    if (remote_time > local_modified) {
+      return(TRUE)
+    }
+  }
+
+  return(FALSE)
 }
+
+# pb_asset_size <- function(file, repo, tag = "latest") {
+#   info <- piggyback::pb_list(repo = repo, tag = tag)
+#   row <- info[info$file_name == file, ]
+#   if (nrow(row) == 0) {
+#     return(NA_real_)
+#   }
+#   row$size[1]  # bytes
+# }
 
 format_size <- function(bytes) {
   if (is.na(bytes)) return("unknown size")
@@ -305,9 +329,9 @@ load_qs2 = function(dataset) {
   return(ts_data)
 }
 
-get_data_dir = function(dataset, tag = "data-v1") {
+get_cache_dir = function(tag = "data-v1") {
   cache_path = tools::R_user_dir("TIRTLtools", which = "cache")
-  path = file.path(cache_path, tag, dataset)
+  path = file.path(cache_path, tag)
   if(dir.exists(path)) {
     return(path)
   } else {
