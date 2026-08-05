@@ -29,7 +29,7 @@ sessionInfo()
 ```
 
 ```{r}
-#library(TIRTLtools)
+library(TIRTLtools)
 library(dplyr)
 library(rmarkdown)
 
