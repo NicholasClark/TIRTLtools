@@ -23,6 +23,10 @@ The function can also automatically assemble a metadata table if the files are n
 Here, our files are named `(marker)_(timepoint)_(version)_ ... .tsv.gz`, e.g.
 `cd8_tp1_v2_TIRTLoutput.tsv`.
 
+```{r setup}
+options(timeout = 600)
+```
+
 ```{r}
 cat("Package loaded:", "TIRTLtools" %in% loadedNamespaces(), "\n")
 sessionInfo()
