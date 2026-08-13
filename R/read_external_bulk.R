@@ -17,7 +17,7 @@
 #' - df - a data frame with a few columns modified and renamed
 #' - df_raw - the original data, un-modified
 #'
-#' @family data_processing
+#' @family data_import
 
 read_external_bulk = function(path, format = "MiXCR") {
   df_orig = fread(path)

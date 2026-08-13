@@ -6,7 +6,7 @@
 \usage{
 cluster_tcrs(
   data,
-  tcrdist_cutoff = 90,
+  tcrdist_cutoff = NULL,
   resolution = 0.1,
   with_db = TRUE,
   db = TIRTLtools::vdj_db,
@@ -17,8 +17,9 @@ cluster_tcrs(
 \arguments{
 \item{data}{a list of TIRTLseq TCR data for samples created with \code{\link{load_tirtlseq}()}}
 
-\item{tcrdist_cutoff}{the \code{\link{TCRdist}()} function will only record TCRdist values
-less than or equal to the cutoff. Default is 90. Note: Higher cutoffs will return more
+\item{tcrdist_cutoff}{discard all TCRdist values above this cutoff. If not
+supplied by the user, this will default to 90 for dual-chain TCRdist or 45
+for single-chain TCRdist. Note: Higher cutoffs will return more
 data, at most NxN where N is the number of unique TCRs.}
 
 \item{resolution}{the "resolution" parameter for the Leiden algorithm. A lower

@@ -115,7 +115,9 @@ SJTRC_minimal$info ## information
 
 }
 \seealso{
-Other data_loading:
-\code{\link[=load_example_data]{load_example_data()}}
+Other data_import:
+\code{\link[=load_example_data]{load_example_data()}},
+\code{\link[=read_external_bulk]{read_external_bulk()}},
+\code{\link[=read_external_paired]{read_external_paired()}}
 }
-\concept{data_loading}
+\concept{data_import}

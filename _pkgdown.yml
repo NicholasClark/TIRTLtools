@@ -24,7 +24,7 @@ reference:
   - has_concept("pairing")
 - title: Data loading
   contents:
-  - has_concept("data_loading")
+  - has_concept("data_import")
 - title: Data wrangling
   contents:
   - has_concept("data_wrangling")
@@ -71,7 +71,7 @@ reference:
 
 - title: Other
   contents:
-  - lacks_concept(c("data", "data_processing", "data_loading", "data_wrangling", "deprecated", "diversity", "download", "pairing", "longitudinal", "qc", "tcr_similarity", "single-cell", "stitchr", "well"))
+  - lacks_concept(c("data", "data_processing", "data_import", "data_wrangling", "deprecated", "diversity", "download", "pairing", "longitudinal", "qc", "tcr_similarity", "single-cell", "stitchr", "well"))
 
 
 
@@ -94,7 +94,7 @@ navbar:
     #   - text: "Installation"
     #     href: articles/TIRTLtools.html
     #   - text: "Data loading"
-    #     href: articles/data_loading.html
+    #     href: articles/data_import.html
     #   - text: "Plot examples"
     #     href: articles/plot_examples.html
     #   - text: "Calculating TCRdist"
@@ -111,7 +111,7 @@ articles:
     navbar: "Tutorials"
     contents:
       - "TIRTLtools"
-      #- "data_loading"
+      #- "data_import"
       - "plot_examples"
       #- "pairing_zenodo_data"
       - "pairing_updated"

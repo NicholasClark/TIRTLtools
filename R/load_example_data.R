@@ -28,7 +28,7 @@
 #' The function returns NULL invisibly, but loads a dataset and assigns it to either 
 #' `SJTRC_minimal` or `SJTRC_longitudinal` in the global environment.
 #'
-#' @family data_loading
+#' @family data_import
 #'
 #' @examples
 #' load_example_data("SJTRC_minimal")

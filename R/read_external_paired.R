@@ -39,7 +39,7 @@
 #' - n_cells_total -(integer) total number of cells
 #' - n_cells_complete - (integer) number of cells with both chains
 #'
-#' @family data_processing
+#' @family data_import
 
 read_external_paired = function(
     path,

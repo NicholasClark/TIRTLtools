@@ -49,7 +49,9 @@ summary(SJTRC_longitudinal)
 
 }
 \seealso{
-Other data_loading:
-\code{\link[=load_tirtlseq]{load_tirtlseq()}}
+Other data_import:
+\code{\link[=load_tirtlseq]{load_tirtlseq()}},
+\code{\link[=read_external_bulk]{read_external_bulk()}},
+\code{\link[=read_external_paired]{read_external_paired()}}
 }
-\concept{data_loading}
+\concept{data_import}

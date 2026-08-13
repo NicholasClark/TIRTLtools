@@ -33,8 +33,6 @@ Other data_processing:
 \code{\link[=filter_short_cdr3s]{filter_short_cdr3s()}},
 \code{\link[=make_tcr_schema]{make_tcr_schema()}},
 \code{\link[=prep_for_tcrdist]{prep_for_tcrdist()}},
-\code{\link[=read_external_bulk]{read_external_bulk()}},
-\code{\link[=read_external_paired]{read_external_paired()}},
 \code{\link[=remove_duplicates]{remove_duplicates()}}
 }
 \concept{data_processing}

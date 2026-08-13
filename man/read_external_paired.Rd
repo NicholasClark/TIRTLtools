@@ -67,17 +67,9 @@ Supported data types:
 }
 }
 \seealso{
-Other data_processing:
-\code{\link[=clean_pairs]{clean_pairs()}},
-\code{\link[=combine_bulk_and_paired_data]{combine_bulk_and_paired_data()}},
-\code{\link[=filter_duplicate_tcrs]{filter_duplicate_tcrs()}},
-\code{\link[=filter_mait]{filter_mait()}},
-\code{\link[=filter_nonfunctional_TCRs]{filter_nonfunctional_TCRs()}},
-\code{\link[=filter_short_cdr3s]{filter_short_cdr3s()}},
-\code{\link[=filter_v_alleles]{filter_v_alleles()}},
-\code{\link[=make_tcr_schema]{make_tcr_schema()}},
-\code{\link[=prep_for_tcrdist]{prep_for_tcrdist()}},
-\code{\link[=read_external_bulk]{read_external_bulk()}},
-\code{\link[=remove_duplicates]{remove_duplicates()}}
+Other data_import:
+\code{\link[=load_example_data]{load_example_data()}},
+\code{\link[=load_tirtlseq]{load_tirtlseq()}},
+\code{\link[=read_external_bulk]{read_external_bulk()}}
 }
-\concept{data_processing}
+\concept{data_import}

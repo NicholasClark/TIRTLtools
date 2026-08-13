@@ -65,7 +65,7 @@
 #'         ├───beta (beta pseudobulk dataframe)
 #'         └───paired (paired pseudobulk dataframe)
 #' }
-#' @family data_loading
+#' @family data_import
 #'
 #' @export
 #' @examples
