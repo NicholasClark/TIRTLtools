@@ -116,6 +116,7 @@ SJTRC_minimal$info ## information
 }
 \seealso{
 Other data_import:
+\code{\link[=get_samples]{get_samples()}},
 \code{\link[=load_example_data]{load_example_data()}},
 \code{\link[=read_external_bulk]{read_external_bulk()}},
 \code{\link[=read_external_paired]{read_external_paired()}}

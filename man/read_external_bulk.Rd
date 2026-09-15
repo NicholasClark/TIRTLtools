@@ -32,6 +32,7 @@ Supported data types:
 }
 \seealso{
 Other data_import:
+\code{\link[=get_samples]{get_samples()}},
 \code{\link[=load_example_data]{load_example_data()}},
 \code{\link[=load_tirtlseq]{load_tirtlseq()}},
 \code{\link[=read_external_paired]{read_external_paired()}}
