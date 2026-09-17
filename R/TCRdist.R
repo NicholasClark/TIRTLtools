@@ -43,14 +43,14 @@
 #' If write_to_csv is TRUE (default is FALSE), the function will write output .tsv files and return NULL.
 #' Otherwise, it will return a list with entries:
 #'
-#' \code{$edges_df} - a data frame with three columns: "node1_0index", "node2_0index", and "TCRdist".
-#' The first two columns contain the indices (0-indexed) of the TCRs for each pair.
-#' The last column contains the TCRdist if it is below the cutoff. The output is sparse in that it only contains
-#' pairs that have TCRdist <= cutoff.
+#' \code{$edges_df} - a data frame with three columns: "node1_idx", "node2_idx", and "TCRdist".
+#' The first two columns contain the (1-indexed, R-style) indices of the TCRs for each pair,
+#' matching \code{nodes_df$tcr_index}. The last column contains the TCRdist if it is below the
+#' cutoff. The output is sparse in that it only contains pairs that have TCRdist <= cutoff.
 #'
 #' \code{$nodes_df} - a data frame of the TCRs supplied to the function. It contains an additional column
-#' "tcr_index" with the (0-indexed) index of each TCR. If \code{tcr2} was supplied, this is
-#' \code{bind_rows(tcr1, tcr2)}: tcr1's rows are numbered first, and tcr2's \code{tcr_index}
+#' "tcr_index" with the (1-indexed, R-style) index of each TCR. If \code{tcr2} was supplied, this is
+#' \code{bind_rows(tcr1, tcr2)}: tcr1's rows are numbered first (starting at 1), and tcr2's \code{tcr_index}
 #' values continue on immediately after the highest \code{tcr_index} in tcr1.
 #'
 #' @family tcr_similarity
@@ -67,7 +67,7 @@
 #'   data.table::as.data.table() ### table of input data with indices
 #'
 #' edge_df ## sparse 3-column output: node1, node2, TCRdist
-#' ## note that indices start at 0 and are found in node_df$tcr_index
+#' ## note that indices start at 1 (R-style) and are found in node_df$tcr_index
 #'
 TCRdist = function(
     tcr1,
@@ -245,6 +245,15 @@ TCRdist = function(
     nodes_df = nodes_df |> bind_rows(as_tibble(tcr2))
   }
 
+  ## Convert from 0-indexed (Python-style) to 1-indexed (R-style) node ids, and
+  ## rename node1_0index/node2_0index -> node1_idx/node2_idx to match.
+  edges_df = edges_df |>
+    mutate(node1_idx = node1_0index + 1L, node2_idx = node2_0index + 1L) |>
+    select(node1_idx, node2_idx, everything(), -node1_0index, -node2_0index)
+
+  nodes_df = nodes_df |>
+    mutate(tcr_index = tcr_index + 1L)
+
   out = list(edges_df = edges_df, nodes_df = nodes_df)
   return(out)
 }
@@ -259,11 +268,11 @@ TCRdist = function(
 #' same names). Every edge gets weight 1 regardless of its TCRdist value -- i.e. this is
 #' a binary adjacency graph, not one weighted by TCRdist.
 #'
-#' @param edges_df a data frame with columns "node1_0index" and "node2_0index"
-#' (0-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
+#' @param edges_df a data frame with columns "node1_idx" and "node2_idx"
+#' (1-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
 #' Any additional columns (e.g. "TCRdist") are kept as igraph edge attributes.
 #' @param nodes_df a data frame with one row per node and a "tcr_index" column giving
-#' each node's 0-indexed id (matching \code{node1_0index}/\code{node2_0index}), such as
+#' each node's 1-indexed id (matching \code{node1_idx}/\code{node2_idx}), such as
 #' \code{TCRdist()}'s \code{$nodes_df}. Its other columns become igraph vertex
 #' attributes. Nodes with no edges are included in the graph as isolated vertices.
 #'
@@ -283,7 +292,7 @@ TCRdist_to_igraph = function(edges_df, nodes_df) {
   suggests::need("igraph>=2.1.4")
 
   vertices_df = nodes_df %>% select(tcr_index, everything())
-  edges_for_graph = edges_df %>% select(node1_0index, node2_0index, everything())
+  edges_for_graph = edges_df %>% select(node1_idx, node2_idx, everything())
 
   gr = igraph::graph_from_data_frame(d = edges_for_graph, directed = FALSE, vertices = vertices_df)
   ## graph_from_data_frame() consumes the first vertices_df column (tcr_index) into
@@ -305,8 +314,8 @@ TCRdist_to_igraph = function(edges_df, nodes_df) {
 #' regardless of its TCRdist value -- i.e. this is a binary adjacency matrix, not one
 #' weighted by TCRdist.
 #'
-#' @param edges_df a data frame with columns "node1_0index" and "node2_0index"
-#' (0-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
+#' @param edges_df a data frame with columns "node1_idx" and "node2_idx"
+#' (1-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
 #' @param nodes_df a data frame with one row per node, such as \code{TCRdist()}'s
 #' \code{$nodes_df}. Used to determine the total number of nodes (matrix dimensions)
 #' and row/column names, so that isolated nodes are still represented as all-zero
@@ -328,8 +337,8 @@ TCRdist_to_igraph = function(edges_df, nodes_df) {
 TCRdist_to_sparse_matrix = function(edges_df, nodes_df) {
   n = nrow(nodes_df)
   adj_mat = Matrix::sparseMatrix(
-    i = edges_df$node1_0index + 1L,
-    j = edges_df$node2_0index + 1L,
+    i = edges_df$node1_idx,
+    j = edges_df$node2_idx,
     x = 1,
     dims = c(n, n),
     symmetric = TRUE

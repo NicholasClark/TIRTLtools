@@ -131,46 +131,26 @@ cluster_tcrs = function(
     tcrdist_cutoff = 90,
     resolution = 0.1
 ) {
-  dist_df = dist$edges_df
-  dist_input = dist$nodes_df
-
-  dist_df = dist_df %>% mutate(
-    node1_1index = node1_0index + 1,
-    node2_1index = node2_0index + 1
-  )
-  dist_df$weight_binary = 1
-  #dist_df$TCRdist_mod = ifelse(dist_df$TCRdist_mod == 0, -1, dist_df$TCRdist_mod)
-
-  ## TCRdist() already returns a single combined nodes_df (tcr1 then tcr2, with
-  ## node2_0index offset accordingly) when tcr2 is supplied, so no further merge needed here.
-  n_valid = nrow(dist_input)
-  sparse_weight_mat_binary = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
-                                                  x=dist_df$weight_binary, symmetric = TRUE,
-                                                  dims = c(n_valid, n_valid))
-  # sparse_tcrdist_mat = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
-  #                                           x=dist_df$TCRdist_mod, symmetric = TRUE,
-  #                                           dims = c(n_valid, n_valid))
-
-  # sparse_weight_mat = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
-  #                                          x=dist_df$weight, symmetric = TRUE,
-  #                                          dims = c(n_valid, n_valid) )
-
-  gr_binary = igraph::graph_from_adjacency_matrix(sparse_weight_mat_binary, mode = "undirected", weighted = NULL)
+  gr_binary = do.call(TCRdist_to_igraph, dist)
+  sparse_weight_mat_binary = do.call(TCRdist_to_sparse_matrix, dist)
   leiden_clust = igraph::cluster_leiden(gr_binary, resolution = resolution)
-  dist_input$idx_1index = 1:dim(dist_input)[1]
-  dist_input$cluster = leiden_clust$membership ### assign clusters to TCR sequences
+  #dist_input = dist$nodes_df
+  #dist_input$idx_1index = 1:dim(dist_input)[1]
+  #dist_input$cluster = leiden_clust$membership ### assign clusters to TCR sequences
+  dist$nodes_df$cluster = leiden_clust$membership ### assign clusters to TCR sequences
+  dist$nodes_df = dist$nodes_df |> select(tcr_index, source, cluster, everything())
   tab = table(leiden_clust$membership)
   single = sum(tab == 1)
   g2 = sum(tab >= 2)
   g10 = sum(tab >= 10)
   g50 = sum(tab >= 50)
   g100 = sum(tab >= 100)
-  msg1 = paste("Out of ", dim(dist_input)[1], " valid TCRs, ", g2, " clusters detected and ", single, " singleton TCRs.", sep = "") %>% .add_newline()
+  msg1 = paste("Out of ", nrow(dist$nodes_df), " valid TCRs, ", g2, " clusters detected and ", single, " singleton TCRs.", sep = "") %>% .add_newline()
   msg2 = paste(g10, " clusters of size >= 10, ", g50, " clusters of size >= 50, ", g100, " clusters of size >=100.", sep = "") %>% .add_newline()
   cat(msg1); cat(msg2)
   out = list(
-    nodes_df = dist_input,
-    edges_df = dist_df,
+    nodes_df = dist$nodes_df,
+    edges_df = dist$edges_df,
     #sparse_tcrdist_mat = sparse_tcrdist_mat, ### returning this as a sparse matrix is problematic because missing entries will be seen as TCRdist = 0 instead of TCRdist > cutoff.
     sparse_adj_mat = sparse_weight_mat_binary,
     graph_adj = gr_binary,
