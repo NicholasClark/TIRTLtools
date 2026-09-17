@@ -100,12 +100,12 @@ result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 
 The function returns a "list" with two slots:
 
-- `edges_df` - a dataframe with 3 columns, containing all TCRdist values <= cutoff (default 90) in sparse format. Each row contains the TCRdist value between two TCRs identified by their indices. This may be thought of as a dataframe of "edges" between "nodes" (TCRs) in a network.
-- `nodes_df` - The dataframe with input TCRs, their assigned indices, and any other metadata. The TCR indices, starting from 0, are found in the `tcr_index` column. Note that this dataframe may have fewer rows than the input because some TCRs with non-functional CDR3s or non-standard V-segments may have been removed.
+- `edges_df` - a dataframe with 3 columns ("node1_idx", "node2_idx", "TCRdist"), containing all TCRdist values <= cutoff (default 90) in sparse format. Each row contains the TCRdist value between two TCRs identified by their indices. This may be thought of as a dataframe of "edges" between "nodes" (TCRs) in a network.
+- `nodes_df` - The dataframe with input TCRs, their assigned indices, and any other metadata. The TCR indices, starting from 1, are found in the `tcr_index` column. Note that this dataframe may have fewer rows than the input because some TCRs with non-functional CDR3s or non-standard V-segments may have been removed.
 
-When calculating TCRdist between two different sets of TCRs, the output will also contain another slot `tcr2` with the second dataframe of input TCRs.
+When calculating TCRdist between two different sets of TCRs (tcr1 and tcr2), `nodes_df` contains both: tcr1's rows are numbered first, and tcr2's `tcr_index` values continue on immediately after the highest `tcr_index` in tcr1.
 
-**Important note: TCRs are assigned indices starting at 0 (Python-style) rather than starting at 1 (R style)**
+**Note: TCRs are assigned indices starting at 1 (R-style)**
 
 ```{r}
 edge_df = result[['edges_df']] ### table of TCRdist values <= cutoff
@@ -128,7 +128,7 @@ For any row of the output table, we can view the two TCRs:
 ```{r}
 row_idx = 1
 node_df %>% 
-  filter(tcr_index %in% c(edge_df$node1_0index[row_idx], edge_df$node2_0index[row_idx])) %>%
+  filter(tcr_index %in% c(edge_df$node1_idx[row_idx], edge_df$node2_idx[row_idx])) %>%
   select(va, ja, cdr3a, cdr3b, vb, jb) %>%
   paged_table()
 ```
