@@ -1,11 +1,10 @@
-#' GPU implementation of TCRdist with minimal python (v2)
+#' GPU/CPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
 #'
-#' A reimplementation of \code{\link{TCRdist}()} that keeps almost all of the logic in R
-#' and calls out to python only for the one step that benefits from running on a GPU:
-#' summing substitution-matrix penalties across encoded TCR features for a chunk of TCRs.
+#' An efficient, batched, chunked version of TCRdist that supports NVIDIA GPUs, Apple
+#' Silicon GPUs, and a parallel CPU-only C++ backend that does not require python.
 #'
 #' @details
 #' This function calculates pairwise TCRdist (Dash et al., Nature 2017) for a set of TCRs
@@ -13,11 +12,13 @@
 #' that have TCRdist less than or equal to a desired cutoff (default cutoff is 90).
 #'
 #' TCR encoding, chunking (row-by-row and column-by-column), sparsification, and output
-#' assembly all happen in R. For each chunk of \code{chunk_size} TCRs (by \code{chunk_size}
-#' TCRs), R calls a single minimal python function (using `cupy` for NVIDIA GPUs, `mlx` for
-#' Apple Silicon GPUs, or `numpy` otherwise) that returns a dense matrix of summed penalties
-#' for that chunk, which R then filters by \code{tcrdist_cutoff} and appends to the running
-#' edge list.
+#' assembly all happen in R. For each chunk of \code{chunk_size} TCRs, R calls a single
+#' minimal compute kernel for the one step that benefits from parallel hardware --
+#' summing substitution-matrix penalties across encoded TCR features -- using either
+#' python (`cupy` for NVIDIA GPUs, `mlx` for Apple Silicon GPUs, or `numpy` otherwise) or,
+#' with \code{backend = "cpp"}, a parallel C++ implementation via RcppParallel that needs
+#' no python at all. R then filters the resulting chunk by \code{tcrdist_cutoff} and
+#' appends it to the running edge list.
 #'
 #' @param tcr1 a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"
 #' @param tcr2 (optional) another data frame of TCRs. If supplied, TCRdist will be calculated
@@ -40,7 +41,10 @@
 #' With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)
 #' @param write_to_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
 #' @param output_folder (optional) folder to write output ".tsv" files to, if \code{write_to_tsv} is TRUE (default is the current directory).
-#' @param backend (optional) the CPU or GPU backend to use (default "auto")
+#' @param backend (optional) the backend to use for the chunk computation (default "auto").
+#' One of "auto" (pick a GPU backend if available, otherwise numpy), "cpp" (a parallel C++
+#' implementation via RcppParallel -- fast, CPU-only, and does not require python at all),
+#' "cpu" (numpy, via python), "cupy" (NVIDIA GPU, via python), or "mlx" (Apple Silicon GPU, via python).
 #'
 #' @return
 #' A list with entries:
@@ -56,13 +60,13 @@
 #' \code{$tcr2} - a similar data frame for tcr2, if it was supplied.
 #'
 #' @family tcr_similarity
-#' @seealso \code{\link{TCRdist}()}, \code{\link{cluster_tcrs}()}, and \code{\link{plot_clusters}()}
+#' @seealso \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 #'
 #' @export
 #' @examples
 #' load_example_data(dataset = "SJTRC_minimal")
 #' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
-#' result = TCRdist_new(df, tcrdist_cutoff = 90)
+#' result = TCRdist(df, tcrdist_cutoff = 90)
 #' edge_df = result[['TCRdist_df']] %>%
 #'   data.table::as.data.table() ### table of TCRdist values <= cutoff
 #' node_df = result[['tcr1']] %>%
@@ -86,10 +90,11 @@ TCRdist = function(
     return_data = TRUE,
     write_to_tsv = FALSE,
     output_folder = ".",
-    backend = c("auto", "cpu", "cupy", "mlx")
+    backend = c("auto", "cpp", "cpu", "cupy", "mlx")
     ) {
   backend = match.arg(backend)
-  py_require( packages = .get_py_deps_new() )
+  use_cpp = identical(backend, "cpp")
+  if (!use_cpp) py_require( packages = .get_py_deps_new() )
 
   has_a = ifelse("cdr3a" %in% colnames(tcr1), TRUE, FALSE)
   has_b = ifelse("cdr3b" %in% colnames(tcr1), TRUE, FALSE)
@@ -130,13 +135,17 @@ TCRdist = function(
     chunk_size_col = as.integer(min(chunk_size_col, nrow(tcr2_enc)))
   }
 
-  backend_selected = .select_tcrdist_backend(backend)
-  py_mod = reticulate::import_from_path(
-    "TCRdist_core",
-    path = system.file("python/TCRdist_new/", package = "TIRTLtools"),
-    convert = TRUE,
-    delay_load = TRUE
-  )
+  if (use_cpp) {
+    if (print_res) cli::cli_alert_info("Using {.val cpp} backend (parallel C++ via RcppParallel, no python/GPU)")
+  } else {
+    backend_selected = .select_tcrdist_backend(backend)
+    py_mod = reticulate::import_from_path(
+      "TCRdist_core",
+      path = system.file("python/TCRdist_new/", package = "TIRTLtools"),
+      convert = TRUE,
+      delay_load = TRUE
+    )
+  }
 
   n1 = nrow(tcr1_enc)
   n2 = nrow(tcr2_enc)
@@ -175,12 +184,20 @@ TCRdist = function(
     rows1 = (ch1 + 1L):end1
     rows2 = (ch2 + 1L):end2
 
-    chunk_mat = py_mod$tcrdist_chunk(
-      tcr1_enc = tcr1_enc[rows1, , drop = FALSE],
-      tcr2_enc = tcr2_enc[rows2, , drop = FALSE],
-      submat = submat,
-      backend = backend_selected
-    )
+    if (use_cpp) {
+      chunk_mat = tcrdist_chunk_cpp(
+        tcr1_enc = tcr1_enc[rows1, , drop = FALSE],
+        tcr2_enc = tcr2_enc[rows2, , drop = FALSE],
+        submat = submat
+      )
+    } else {
+      chunk_mat = py_mod$tcrdist_chunk(
+        tcr1_enc = tcr1_enc[rows1, , drop = FALSE],
+        tcr2_enc = tcr2_enc[rows2, , drop = FALSE],
+        submat = submat,
+        backend = backend_selected
+      )
+    }
 
     edges_tmp = .sparsify_chunk(
       chunk_mat = chunk_mat,

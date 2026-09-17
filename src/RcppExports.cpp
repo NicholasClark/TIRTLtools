@@ -38,10 +38,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// tcrdist_chunk_cpp
+IntegerMatrix tcrdist_chunk_cpp(const IntegerMatrix& tcr1_enc, const IntegerMatrix& tcr2_enc, const IntegerMatrix& submat);
+RcppExport SEXP _TIRTLtools_tcrdist_chunk_cpp(SEXP tcr1_encSEXP, SEXP tcr2_encSEXP, SEXP submatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type tcr1_enc(tcr1_encSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type tcr2_enc(tcr2_encSEXP);
+    Rcpp::traits::input_parameter< const IntegerMatrix& >::type submat(submatSEXP);
+    rcpp_result_gen = Rcpp::wrap(tcrdist_chunk_cpp(tcr1_enc, tcr2_enc, submat));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_TIRTLtools_tcrdist_cpp", (DL_FUNC) &_TIRTLtools_tcrdist_cpp, 4},
     {"_TIRTLtools_tcrdist_parallel", (DL_FUNC) &_TIRTLtools_tcrdist_parallel, 4},
+    {"_TIRTLtools_tcrdist_chunk_cpp", (DL_FUNC) &_TIRTLtools_tcrdist_chunk_cpp, 3},
     {NULL, NULL, 0}
 };
 

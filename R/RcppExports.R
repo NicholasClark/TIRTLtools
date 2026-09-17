@@ -9,3 +9,7 @@ tcrdist_parallel <- function(all_mat1, all_mat2, submat, tcr2_equals_tcr1) {
     .Call(`_TIRTLtools_tcrdist_parallel`, all_mat1, all_mat2, submat, tcr2_equals_tcr1)
 }
 
+tcrdist_chunk_cpp <- function(tcr1_enc, tcr2_enc, submat) {
+    .Call(`_TIRTLtools_tcrdist_chunk_cpp`, tcr1_enc, tcr2_enc, submat)
+}
+
