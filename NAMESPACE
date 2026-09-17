@@ -37,6 +37,7 @@ export(load_tirtlseq) # full docs
 export(load_example_data)
 export(read_external_bulk)
 export(read_external_paired)
+export(get_samples)
 
 ## data_wrangling
 export(add_metadata) # docs 99% done, could use an example
