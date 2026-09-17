@@ -26,12 +26,18 @@ set.seed(42)
   return(list(elapsed = elapsed, res = res))
 }
 
+## TCRdist() (new) always prints progress (no print_res option); TCRdist_old() still
+## supports silencing it. The two also use different names for the returned list
+## entries ($edges_df/$nodes_df vs. $TCRdist_df/$tcr1) -- these helpers paper over that.
+.get_edges_df = function(res) if (!is.null(res$edges_df)) res$edges_df else res$TCRdist_df
+.get_nodes_df = function(res) if (!is.null(res$nodes_df)) res$nodes_df else res$tcr1
+
 ## Each implementation to benchmark: a label and the function call to time.
 ## "auto" picks a GPU backend (cupy/mlx) if available, otherwise numpy.
 implementations = list(
   TCRdist_old      = function(tcr1) TIRTLtools:::TCRdist_old(tcr1 = tcr1, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_res = FALSE),
-  TCRdist_auto     = function(tcr1) TCRdist(tcr1 = tcr1, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_res = FALSE, backend = "auto"),
-  TCRdist_cpp      = function(tcr1) TCRdist(tcr1 = tcr1, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, print_res = FALSE, backend = "cpp")
+  TCRdist_auto     = function(tcr1) TCRdist(tcr1 = tcr1, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, backend = "auto"),
+  TCRdist_cpp      = function(tcr1) TCRdist(tcr1 = tcr1, tcrdist_cutoff = tcrdist_cutoff, chunk_size = chunk_size, backend = "cpp")
 )
 
 benchmark_results = data.frame(
@@ -54,14 +60,14 @@ for (n in sizes) {
   for (impl_name in names(implementations)) {
     cli::cli_alert_info("Running {impl_name} ...")
     timing = .time_call(implementations[[impl_name]], tcr1 = tcr_subset)
-    cli::cli_alert_success("{impl_name}: {round(timing$elapsed, 2)} sec, {nrow(timing$res$TCRdist_df)} edges")
+    cli::cli_alert_success("{impl_name}: {round(timing$elapsed, 2)} sec, {nrow(.get_edges_df(timing$res))} edges")
 
     benchmark_results = rbind(
       benchmark_results,
       data.frame(
         n_tcrs_requested = n, implementation = impl_name,
-        n_tcrs_after_prep = nrow(timing$res$tcr1),
-        n_edges = nrow(timing$res$TCRdist_df),
+        n_tcrs_after_prep = nrow(.get_nodes_df(timing$res)),
+        n_edges = nrow(.get_edges_df(timing$res)),
         elapsed_sec = timing$elapsed
       )
     )

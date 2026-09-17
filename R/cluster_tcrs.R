@@ -38,9 +38,9 @@
 #' @return
 #' Returns a list with the following elements:
 #'
-#' \code{$df} - a data frame with all unique TCRs along with cluster annotations
+#' \code{$nodes_df} - a data frame with all unique TCRs along with cluster annotations
 #'
-#' \code{$dist_df} - a data frame with distances (TCRdist) between TCR pairs in long format
+#' \code{$edges_df} - a data frame with distances (TCRdist) between TCR pairs in long format
 #'
 #' \code{$sparse_adj_mat} - an adjacency matrix (in sparse format) marking TCR pairs with TCRdist <= tcrdist_cutoff
 #'
@@ -131,8 +131,8 @@ cluster_tcrs = function(
     tcrdist_cutoff = 90,
     resolution = 0.1
 ) {
-  dist_df = dist$TCRdist_df
-  dist_input = dist$tcr1
+  dist_df = dist$edges_df
+  dist_input = dist$nodes_df
 
   dist_df = dist_df %>% mutate(
     node1_1index = node1_0index + 1,
@@ -142,8 +142,8 @@ cluster_tcrs = function(
   #dist_df$TCRdist_mod = ifelse(dist_df$TCRdist_mod == 0, -1, dist_df$TCRdist_mod)
 
   if(!is.null(dist$tcr2)) {
-    dist_df$node2_1index = dist_df$node2_1index + nrow(dist$tcr1)
-    dist_input = bind_rows(dist$tcr1, dist$tcr2)
+    dist_df$node2_1index = dist_df$node2_1index + nrow(dist$nodes_df)
+    dist_input = bind_rows(dist$nodes_df, dist$tcr2)
     n_valid = nrow(dist_input)
   }
   n_valid = nrow(dist_input)
@@ -172,8 +172,8 @@ cluster_tcrs = function(
   msg2 = paste(g10, " clusters of size >= 10, ", g50, " clusters of size >= 50, ", g100, " clusters of size >=100.", sep = "") %>% .add_newline()
   cat(msg1); cat(msg2)
   out = list(
-    df = dist_input,
-    dist_df = dist_df,
+    nodes_df = dist_input,
+    edges_df = dist_df,
     #sparse_tcrdist_mat = sparse_tcrdist_mat, ### returning this as a sparse matrix is problematic because missing entries will be seen as TCRdist = 0 instead of TCRdist > cutoff.
     sparse_adj_mat = sparse_weight_mat_binary,
     graph_adj = gr_binary,

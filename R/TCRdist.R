@@ -32,13 +32,6 @@
 #' @param tcrdist_cutoff (optional) discard all TCRdist values above this cutoff. If not supplied by the user, this will default to 90 for dual-chain TCRdist or 45 for single-chain TCRdist.
 #' @param chunk_size (optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
 #' it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory.
-#' @param chunk_size_col (optional) the chunk size to use for tcr2 (or for the columns, when comparing tcr1 to itself).
-#' Defaults to \code{chunk_size} when not supplied.
-#' @param print_chunk_size (optional) print a line of output for approximately every n percent of chunks processed (default 10)
-#' @param print_res (optional) print summary of results (default is TRUE)
-#' @param only_lower_tri (optional) return one TCRdist value for each pair (like the lower triangle of a symmetric matrix). Default is TRUE.
-#' @param return_data (optional) whether to return the output result from the function.
-#' With large data it may be desirable to write the result to disk instead. (default is TRUE, returns output)
 #' @param write_to_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
 #' @param output_folder (optional) folder to write output ".tsv" files to, if \code{write_to_tsv} is TRUE (default is the current directory).
 #' @param backend (optional) the backend to use for the chunk computation (default "auto").
@@ -47,14 +40,15 @@
 #' "cpu" (numpy, via python), "cupy" (NVIDIA GPU, via python), or "mlx" (Apple Silicon GPU, via python).
 #'
 #' @return
-#' A list with entries:
+#' If write_to_csv is TRUE (default is FALSE), the function will write output .tsv files and return NULL.
+#' Otherwise, it will return a list with entries:
 #'
-#' \code{$TCRdist_df} - a data frame with three columns: "node1_0index", "node2_0index", and "TCRdist".
+#' \code{$edges_df} - a data frame with three columns: "node1_0index", "node2_0index", and "TCRdist".
 #' The first two columns contain the indices (0-indexed) of the TCRs for each pair.
 #' The last column contains the TCRdist if it is below the cutoff. The output is sparse in that it only contains
 #' pairs that have TCRdist <= cutoff.
 #'
-#' \code{$tcr1} - a data frame of the TCRs supplied to the function. It contains an additional column
+#' \code{$nodes_df} - a data frame of the TCRs supplied to the function (tcr1). It contains an additional column
 #' "tcr_index" with the (0-indexed) index of each TCR.
 #'
 #' \code{$tcr2} - a similar data frame for tcr2, if it was supplied.
@@ -67,9 +61,9 @@
 #' load_example_data(dataset = "SJTRC_minimal")
 #' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 #' result = TCRdist(df, tcrdist_cutoff = 90)
-#' edge_df = result[['TCRdist_df']] %>%
+#' edge_df = result[['edges_df']] %>%
 #'   data.table::as.data.table() ### table of TCRdist values <= cutoff
-#' node_df = result[['tcr1']] %>%
+#' node_df = result[['nodes_df']] %>%
 #'   data.table::as.data.table() ### table of input data with indices
 #'
 #' edge_df ## sparse 3-column output: node1, node2, TCRdist
@@ -83,16 +77,19 @@ TCRdist = function(
     submat = NULL,
     tcrdist_cutoff = NULL,
     chunk_size = 1000,
-    chunk_size_col = NULL,
-    print_chunk_size = 10,
-    print_res = TRUE,
-    only_lower_tri = TRUE,
-    return_data = TRUE,
     write_to_tsv = FALSE,
     output_folder = ".",
     backend = c("auto", "cpp", "cpu", "cupy", "mlx")
     ) {
+  ## former parameters, moved to hard-coded
+  print_res = TRUE
+  return_data = !write_to_tsv
+  only_lower_tri = TRUE
+  print_chunk_size = 10
+  chunk_size_col = NULL
+
   backend = match.arg(backend)
+
   use_cpp = identical(backend, "cpp")
   if (!use_cpp) py_require( packages = .get_py_deps_new() )
 
@@ -228,23 +225,23 @@ TCRdist = function(
 
   if (!return_data) return(invisible(NULL))
 
-  TCRdist_df = data.table::rbindlist(edge_list) |>
+  edges_df = data.table::rbindlist(edge_list) |>
     as_tibble() |>
     arrange(node1_0index, node2_0index)
 
-  tcr1 = as_tibble(tcr1)
+  nodes_df = as_tibble(tcr1)
 
-  attr(TCRdist_df, "pandas.index") <- NULL
-  attr(tcr1, "pandas.index") <- NULL
+  attr(edges_df, "pandas.index") <- NULL
+  attr(nodes_df, "pandas.index") <- NULL
 
   if (!compare_to_self) {
-    TCRdist_df$node2_0index = TCRdist_df$node2_0index + nrow(tcr1)
+    edges_df$node2_0index = edges_df$node2_0index + nrow(nodes_df)
   }
 
   if (compare_to_self) {
-    out = list(TCRdist_df = TCRdist_df, tcr1 = tcr1)
+    out = list(edges_df = edges_df, nodes_df = nodes_df)
   } else {
-    out = list(TCRdist_df = TCRdist_df, tcr1 = tcr1, tcr2 = tcr2)
+    out = list(edges_df = edges_df, nodes_df = nodes_df, tcr2 = tcr2)
   }
   return(out)
 }
@@ -317,14 +314,15 @@ TCRdist = function(
 }
 
 ### Pick which array backend the python kernel should use.
-.select_tcrdist_backend = function(backend = c("auto", "cpu", "cupy", "mlx")) {
+.select_tcrdist_backend = function(backend = c("auto", "cpp", "cpu", "cupy", "mlx")) {
   backend = match.arg(backend)
   if (backend == "cpu") return("numpy")
   if (backend %in% c("cupy", "mlx")) return(backend)
-  # auto
-  if (.has_nvidia_gpu()) return("cupy")
-  if (.is_apple_silicon()) return("mlx")
-  return("numpy")
+  if (backend == "cpp") return("cpp")
+  if (backend == "auto") {
+    if (.has_nvidia_gpu()) return("cupy")
+    if (.is_apple_silicon()) return("mlx")
+  }
 }
 
 ### Minimal python dependencies for TCRdist_new() -- just numpy plus a GPU array

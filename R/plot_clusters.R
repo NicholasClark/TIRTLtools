@@ -44,13 +44,13 @@ plot_clusters = function(obj, n_clusters = 10, seed = 1234, annotation_cols = c(
   suggests::need("irlba>=2.3.5.1")
 
 
-  cluster_summ = obj$df %>% group_by(cluster) %>%
+  cluster_summ = obj$nodes_df %>% group_by(cluster) %>%
     summarize(n_total = n(), n_vdjdb = sum(source == "vdj-db"), n_obs = sum(source == "observed"))
   largest_clusters = cluster_summ %>% arrange(desc(n_obs)) %>% mutate(cluster = as.integer(cluster)) %>% head(n_clusters)
-  # largest_clusters = table(obj$df$cluster) %>% sort() %>% tail(n_clusters) %>% as.data.frame() %>% as_tibble() %>% set_colnames(c("cluster", "n")) %>% mutate(cluster = factor(cluster, levels = cluster %>% as.character() %>% as.integer() %>% sort() ) ) %>% arrange(desc(n))
+  # largest_clusters = table(obj$nodes_df$cluster) %>% sort() %>% tail(n_clusters) %>% as.data.frame() %>% as_tibble() %>% set_colnames(c("cluster", "n")) %>% mutate(cluster = factor(cluster, levels = cluster %>% as.character() %>% as.integer() %>% sort() ) ) %>% arrange(desc(n))
   #largest_clusters$cluster = factor(largest_clusters$cluster, levels = sort(as.integer(as.character(largest_clusters$cluster))))
   ### testing plotting umap or graph of largest clusters
-  df_sub = obj$df %>% filter(cluster %in% largest_clusters$cluster) %>% mutate(cluster = factor(cluster %>% as.character() , levels = cluster %>% as.character() %>% unique() %>% as.integer() %>% sort() %>% as.character() ) )
+  df_sub = obj$nodes_df %>% filter(cluster %in% largest_clusters$cluster) %>% mutate(cluster = factor(cluster %>% as.character() , levels = cluster %>% as.character() %>% unique() %>% as.integer() %>% sort() %>% as.character() ) )
   idx_keep = unique(df_sub$idx_1index)
   dist_mat = .dist_obj_to_matrix(obj, idx_keep)
   dist_mat_noNA = dist_mat
