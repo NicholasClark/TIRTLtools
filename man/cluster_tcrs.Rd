@@ -86,6 +86,7 @@ result = cluster_tcrs(df)
 Other tcr_similarity:
 \code{\link[=TCRdist]{TCRdist()}},
 \code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
+\code{\link[=TCRdist_old]{TCRdist_old()}},
 \code{\link[=plot_clusters]{plot_clusters()}}
 }
 \concept{tcr_similarity}

@@ -54,6 +54,7 @@ a heatmap.
 Other tcr_similarity:
 \code{\link[=TCRdist]{TCRdist()}},
 \code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
+\code{\link[=TCRdist_old]{TCRdist_old()}},
 \code{\link[=cluster_tcrs]{cluster_tcrs()}}
 }
 \concept{tcr_similarity}

@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' This is an alternative to the GPU version of TCRdist that is still very fast for
 #' large datasets (tens of thousands of TCRs). It is written in C++ and will
 #' run in parallel across available CPU cores.
@@ -41,7 +41,7 @@
 #'          beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) %>%
 #'   data.table::as.data.table()
 #'
-#'
+#' @keywords internal
 TCRdist_cpp = function(tcr1, tcr2=NULL) {
 
   submat = TIRTLtools::submat

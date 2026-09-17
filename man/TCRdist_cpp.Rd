@@ -49,12 +49,13 @@ node_df \%>\%
          beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) \%>\%
   data.table::as.data.table()
 
-
 }
 \seealso{
 Other tcr_similarity:
 \code{\link[=TCRdist]{TCRdist()}},
+\code{\link[=TCRdist_old]{TCRdist_old()}},
 \code{\link[=cluster_tcrs]{cluster_tcrs()}},
 \code{\link[=plot_clusters]{plot_clusters()}}
 }
 \concept{tcr_similarity}
+\keyword{internal}

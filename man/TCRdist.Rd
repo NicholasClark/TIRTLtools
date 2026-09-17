@@ -2,7 +2,7 @@
 % Please edit documentation in R/TCRdist.R
 \name{TCRdist}
 \alias{TCRdist}
-\title{GPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs}
+\title{GPU/CPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs}
 \usage{
 TCRdist(
   tcr1,
@@ -12,14 +12,14 @@ TCRdist(
   submat = NULL,
   tcrdist_cutoff = NULL,
   chunk_size = 1000,
+  chunk_size_col = NULL,
   print_chunk_size = 10,
   print_res = TRUE,
   only_lower_tri = TRUE,
   return_data = TRUE,
   write_to_tsv = FALSE,
-  backend = c("auto", "cpu", "cupy", "mlx"),
-  fork = NULL,
-  shared = NULL
+  output_folder = ".",
+  backend = c("auto", "cpp", "cpu", "cupy", "mlx")
 )
 }
 \arguments{
@@ -40,11 +40,12 @@ combination of amino acids or va/vb segments (default is NULL, which uses TIRTLt
 \item{tcrdist_cutoff}{(optional) discard all TCRdist values above this cutoff. If not supplied by the user, this will default to 90 for dual-chain TCRdist or 45 for single-chain TCRdist.}
 
 \item{chunk_size}{(optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
-it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory
-(in our testing, a chunk_size of 1000 to 5000 provided the fastest runtime and
-chunk_size of over 7500 resulted in memory errors on some GPUs).}
+it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory.}
 
-\item{print_chunk_size}{(optional) print a line of output for every n TCRs processed (default 1000)}
+\item{chunk_size_col}{(optional) the chunk size to use for tcr2 (or for the columns, when comparing tcr1 to itself).
+Defaults to \code{chunk_size} when not supplied.}
+
+\item{print_chunk_size}{(optional) print a line of output for approximately every n percent of chunks processed (default 10)}
 
 \item{print_res}{(optional) print summary of results (default is TRUE)}
 
@@ -55,11 +56,12 @@ With large data it may be desirable to write the result to disk instead. (defaul
 
 \item{write_to_tsv}{(optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)}
 
-\item{backend}{(optional) the CPU or GPU backend to use (default "auto")}
+\item{output_folder}{(optional) folder to write output ".tsv" files to, if \code{write_to_tsv} is TRUE (default is the current directory).}
 
-\item{fork}{(optional) a TRUE/FALSE value for whether to "fork" a new Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.}
-
-\item{shared}{(optional) a TRUE/FALSE value for whether to "share" the Python process for running TCRdist via the "basilisk" package. Default is NULL, which should use choose a safe value based on how the package is loaded.}
+\item{backend}{(optional) the backend to use for the chunk computation (default "auto").
+One of "auto" (pick a GPU backend if available, otherwise numpy), "cpp" (a parallel C++
+implementation via RcppParallel -- fast, CPU-only, and does not require python at all),
+"cpu" (numpy, via python), "cupy" (NVIDIA GPU, via python), or "mlx" (Apple Silicon GPU, via python).}
 }
 \value{
 A list with entries:
@@ -77,15 +79,22 @@ pairs that have TCRdist <= cutoff.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
-An efficient, batched version of TCRdist that is compatible with both NVIDIA and Apple Silicon GPUs.
+An efficient, batched, chunked version of TCRdist that supports NVIDIA GPUs, Apple
+Silicon GPUs, and a parallel CPU-only C++ backend that does not require python.
 }
 \details{
 This function calculates pairwise TCRdist (Dash et al., Nature 2017) for a set of TCRs
 (or between two sets of TCRs) and returns a sparse output with the TCRdist and indices of all pairs
 that have TCRdist less than or equal to a desired cutoff (default cutoff is 90).
 
-The function uses the \code{reticulate} package to call a python script that uses \code{cupy} (NVIDIA GPUs), \code{mlx} (Apple Silicon GPUs),
-or \code{numpy} (no GPU) to calculate TCRdist efficiently.
+TCR encoding, chunking (row-by-row and column-by-column), sparsification, and output
+assembly all happen in R. For each chunk of \code{chunk_size} TCRs, R calls a single
+minimal compute kernel for the one step that benefits from parallel hardware --
+summing substitution-matrix penalties across encoded TCR features -- using either
+python (\code{cupy} for NVIDIA GPUs, \code{mlx} for Apple Silicon GPUs, or \code{numpy} otherwise) or,
+with \code{backend = "cpp"}, a parallel C++ implementation via RcppParallel that needs
+no python at all. R then filters the resulting chunk by \code{tcrdist_cutoff} and
+appends it to the running edge list.
 }
 \examples{
 load_example_data(dataset = "SJTRC_minimal")
@@ -99,18 +108,13 @@ node_df = result[['tcr1']] \%>\%
 edge_df ## sparse 3-column output: node1, node2, TCRdist
 ## note that indices start at 0 and are found in node_df$tcr_index
 
-node_df \%>\%
-  select(tcr_index, everything()) \%>\%
-  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
-         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = ""))
-
-
 }
 \seealso{
 \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
 
 Other tcr_similarity:
 \code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
+\code{\link[=TCRdist_old]{TCRdist_old()}},
 \code{\link[=cluster_tcrs]{cluster_tcrs()}},
 \code{\link[=plot_clusters]{plot_clusters()}}
 }

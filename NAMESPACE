@@ -90,7 +90,7 @@ export(remove_duplicates) ## docs 99% done, could use an example -- maybe hide, 
 #export(_TIRTLtools_tcrdist_parallel)
 export(TCRdist) ## full docs
 #export(tcrdist_cpp)
-export(TCRdist_cpp) ## full docs
+#export(TCRdist_cpp)
 #export(tcrdist_parallel)
 export(cluster_tcrs) ## docs 99% done, could use a real example
 export(plot_clusters)

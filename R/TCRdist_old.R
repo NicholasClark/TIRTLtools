@@ -71,7 +71,7 @@
 #'   mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
 #'          beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = ""))
 #'
-#'
+#' @keywords internal
 
 TCRdist_old = function(
     tcr1,
