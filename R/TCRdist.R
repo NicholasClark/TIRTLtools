@@ -249,6 +249,95 @@ TCRdist = function(
   return(out)
 }
 
+#' Build an undirected igraph graph from TCRdist() results
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#' Builds an undirected \code{igraph} graph from the \code{edges_df}/\code{nodes_df}
+#' produced by \code{\link{TCRdist}()} (or \code{\link{cluster_tcrs}()}, which uses the
+#' same names). Every edge gets weight 1 regardless of its TCRdist value -- i.e. this is
+#' a binary adjacency graph, not one weighted by TCRdist.
+#'
+#' @param edges_df a data frame with columns "node1_0index" and "node2_0index"
+#' (0-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
+#' Any additional columns (e.g. "TCRdist") are kept as igraph edge attributes.
+#' @param nodes_df a data frame with one row per node and a "tcr_index" column giving
+#' each node's 0-indexed id (matching \code{node1_0index}/\code{node2_0index}), such as
+#' \code{TCRdist()}'s \code{$nodes_df}. Its other columns become igraph vertex
+#' attributes. Nodes with no edges are included in the graph as isolated vertices.
+#'
+#' @returns an undirected \code{igraph} object with \code{vcount() == nrow(nodes_df)}
+#' and an edge attribute \code{weight} equal to 1 for every edge.
+#'
+#' @family tcr_similarity
+#' @seealso \code{\link{TCRdist}()}, \code{\link{cluster_tcrs}()}, \code{\link{TCRdist_to_sparse_matrix}()}
+#'
+#' @export
+#' @examples
+#' load_example_data(dataset = "SJTRC_minimal")
+#' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
+#' result = TCRdist(df, tcrdist_cutoff = 90)
+#' gr = TCRdist_to_igraph(result$edges_df, result$nodes_df)
+TCRdist_to_igraph = function(edges_df, nodes_df) {
+  suggests::need("igraph>=2.1.4")
+
+  vertices_df = nodes_df %>% select(tcr_index, everything())
+  edges_for_graph = edges_df %>% select(node1_0index, node2_0index, everything())
+
+  gr = igraph::graph_from_data_frame(d = edges_for_graph, directed = FALSE, vertices = vertices_df)
+  ## graph_from_data_frame() consumes the first vertices_df column (tcr_index) into
+  ## V(gr)$name (coerced to character) rather than keeping it as its own attribute --
+  ## restore it so V(gr)$tcr_index still works and keeps its original type.
+  igraph::V(gr)$tcr_index = nodes_df$tcr_index
+  igraph::E(gr)$weight = 1
+  return(gr)
+}
+
+#' Build a sparse adjacency matrix from TCRdist() results
+#'
+#' @description
+#' `r lifecycle::badge('experimental')`
+#'
+#' Builds a symmetric, binary sparse adjacency matrix from the \code{edges_df}/\code{nodes_df}
+#' produced by \code{\link{TCRdist}()} (or \code{\link{cluster_tcrs}()}, which uses the
+#' same names), using \code{\link[Matrix]{sparseMatrix}()}. Every edge gets weight 1
+#' regardless of its TCRdist value -- i.e. this is a binary adjacency matrix, not one
+#' weighted by TCRdist.
+#'
+#' @param edges_df a data frame with columns "node1_0index" and "node2_0index"
+#' (0-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
+#' @param nodes_df a data frame with one row per node, such as \code{TCRdist()}'s
+#' \code{$nodes_df}. Used to determine the total number of nodes (matrix dimensions)
+#' and row/column names, so that isolated nodes are still represented as all-zero
+#' rows/columns.
+#'
+#' @returns an \code{n x n} symmetric sparse matrix (class \code{dsCMatrix}), where
+#' \code{n = nrow(nodes_df)}. Entry `[i, j]` is 1 if the two TCRs are connected by an
+#' edge (TCRdist <= cutoff) and 0 otherwise. Row/column names are \code{nodes_df$tcr_index}.
+#'
+#' @family tcr_similarity
+#' @seealso \code{\link{TCRdist}()}, \code{\link{cluster_tcrs}()}, \code{\link{TCRdist_to_igraph}()}
+#'
+#' @export
+#' @examples
+#' load_example_data(dataset = "SJTRC_minimal")
+#' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
+#' result = TCRdist(df, tcrdist_cutoff = 90)
+#' adj_mat = TCRdist_to_sparse_matrix(result$edges_df, result$nodes_df)
+TCRdist_to_sparse_matrix = function(edges_df, nodes_df) {
+  n = nrow(nodes_df)
+  adj_mat = Matrix::sparseMatrix(
+    i = edges_df$node1_0index + 1L,
+    j = edges_df$node2_0index + 1L,
+    x = 1,
+    dims = c(n, n),
+    symmetric = TRUE
+  )
+  dimnames(adj_mat) = list(as.character(nodes_df$tcr_index), as.character(nodes_df$tcr_index))
+  return(adj_mat)
+}
+
 ### Encode a prepped TCR data frame into an integer matrix of features
 ### (same feature layout as the python process_TCRs() in inst/python/TCRdist/TCRdist_gpu.py:
 ### trimmed+padded cdr3a, va, trimmed+padded cdr3b, vb), using a named vector
