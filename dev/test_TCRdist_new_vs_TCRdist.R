@@ -10,11 +10,17 @@ pkgload::load_all(quiet = TRUE)
 load_example_data(dataset = "SJTRC_minimal")
 all_tcrs = get_all_tcrs(SJTRC_minimal, chain = "paired", remove_duplicates = TRUE)
 
-## TCRdist() (new) names its returned list entries $edges_df/$nodes_df;
-## TCRdist_old() still uses $TCRdist_df/$tcr1. These helpers paper over that
-## so the same comparison code works against either.
+## TCRdist() (new) names its returned list entries $edges_df/$nodes_df, and when
+## tcr2 is supplied, folds tcr2 into that single combined $nodes_df (tcr1 rows
+## first, tcr2 rows numbered on after tcr1's highest tcr_index). TCRdist_old()
+## still uses $TCRdist_df/$tcr1/$tcr2 (a separate slot for tcr2). These helpers
+## paper over both differences so the same comparison code works against either.
 .get_edges_df = function(res) if (!is.null(res$edges_df)) res$edges_df else res$TCRdist_df
-.get_nodes_df = function(res) if (!is.null(res$nodes_df)) res$nodes_df else res$tcr1
+.get_nodes_df = function(res) {
+  nodes = if (!is.null(res$nodes_df)) res$nodes_df else res$tcr1
+  if (!is.null(res$tcr2)) nodes = dplyr::bind_rows(nodes, res$tcr2)
+  return(nodes)
+}
 
 .normalize_edges = function(res) {
   edges = as.data.frame(.get_edges_df(res))[, c("node1_0index", "node2_0index", "TCRdist")]
@@ -35,16 +41,10 @@ all_tcrs = get_all_tcrs(SJTRC_minimal, chain = "paired", remove_duplicates = TRU
   nodes_match = identical(as.numeric(.get_nodes_df(old_res)$tcr_index), as.numeric(.get_nodes_df(new_res)$tcr_index))
   if (!nodes_match) ok = FALSE
 
-  tcr2_match = TRUE
-  if (!is.null(old_res$tcr2) || !is.null(new_res$tcr2)) {
-    tcr2_match = identical(as.numeric(old_res$tcr2$tcr_index), as.numeric(new_res$tcr2$tcr_index))
-    if (!tcr2_match) ok = FALSE
-  }
-
   status = if (ok) "PASS" else "FAIL"
   cat(sprintf(
-    "[%s] %s -- edges: %d (old) vs %d (new), edges_match=%s, nodes_match=%s, tcr2_match=%s\n",
-    status, label, nrow(old_edges), nrow(new_edges), edges_match, nodes_match, tcr2_match
+    "[%s] %s -- edges: %d (old) vs %d (new), edges_match=%s, nodes_match=%s\n",
+    status, label, nrow(old_edges), nrow(new_edges), edges_match, nodes_match
   ))
   return(ok)
 }

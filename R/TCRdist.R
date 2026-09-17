@@ -48,10 +48,10 @@
 #' The last column contains the TCRdist if it is below the cutoff. The output is sparse in that it only contains
 #' pairs that have TCRdist <= cutoff.
 #'
-#' \code{$nodes_df} - a data frame of the TCRs supplied to the function (tcr1). It contains an additional column
-#' "tcr_index" with the (0-indexed) index of each TCR.
-#'
-#' \code{$tcr2} - a similar data frame for tcr2, if it was supplied.
+#' \code{$nodes_df} - a data frame of the TCRs supplied to the function. It contains an additional column
+#' "tcr_index" with the (0-indexed) index of each TCR. If \code{tcr2} was supplied, this is
+#' \code{bind_rows(tcr1, tcr2)}: tcr1's rows are numbered first, and tcr2's \code{tcr_index}
+#' values continue on immediately after the highest \code{tcr_index} in tcr1.
 #'
 #' @family tcr_similarity
 #' @seealso \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
@@ -79,7 +79,7 @@ TCRdist = function(
     chunk_size = 1000,
     write_to_tsv = FALSE,
     output_folder = ".",
-    backend = c("auto", "cpp", "cpu", "cupy", "mlx")
+    backend = c("auto", "cupy", "mlx", "cpp")
     ) {
   ## former parameters, moved to hard-coded
   print_res = TRUE
@@ -119,7 +119,7 @@ TCRdist = function(
   tcr1$tcr_index = seq_len(nrow(tcr1)) - 1L
   if (!compare_to_self) {
     tcr2 = as.data.frame(tcr2)
-    tcr2$tcr_index = nrow(tcr1) + seq_len(nrow(tcr2)) - 1L
+    tcr2$tcr_index = max(tcr1$tcr_index) + seq_len(nrow(tcr2))
   }
 
   tcr1_enc = .encode_tcrs_new(tcr1, params_vec)
@@ -229,7 +229,9 @@ TCRdist = function(
     as_tibble() |>
     arrange(node1_0index, node2_0index)
 
-  nodes_df = as_tibble(tcr1)
+  nodes_df = as_tibble(tcr1) |>
+    mutate(source = "tcr1") |>
+    select(tcr_index, source, everything())
 
   attr(edges_df, "pandas.index") <- NULL
   attr(nodes_df, "pandas.index") <- NULL
@@ -238,11 +240,12 @@ TCRdist = function(
     edges_df$node2_0index = edges_df$node2_0index + nrow(nodes_df)
   }
 
-  if (compare_to_self) {
-    out = list(edges_df = edges_df, nodes_df = nodes_df)
-  } else {
-    out = list(edges_df = edges_df, nodes_df = nodes_df, tcr2 = tcr2)
+  if (!compare_to_self) {
+    tcr2 = tcr2 |> mutate(source = "tcr2")
+    nodes_df = nodes_df |> bind_rows(as_tibble(tcr2))
   }
+
+  out = list(edges_df = edges_df, nodes_df = nodes_df)
   return(out)
 }
 
@@ -314,12 +317,12 @@ TCRdist = function(
 }
 
 ### Pick which array backend the python kernel should use.
-.select_tcrdist_backend = function(backend = c("auto", "cpp", "cpu", "cupy", "mlx")) {
+.select_tcrdist_backend = function(backend = c("auto", "cpp", "cupy", "mlx")) {
   backend = match.arg(backend)
-  if (backend == "cpu") return("numpy")
-  if (backend %in% c("cupy", "mlx")) return(backend)
+  #if (backend == "cpu") return("numpy")
+  #if (backend %in% c("cupy", "mlx")) return(backend)
   if (backend == "cpp") return("cpp")
-  if (backend == "auto") {
+  if (backend %in% c("auto", "cupy", "mlx")) {
     if (.has_nvidia_gpu()) return("cupy")
     if (.is_apple_silicon()) return("mlx")
   }

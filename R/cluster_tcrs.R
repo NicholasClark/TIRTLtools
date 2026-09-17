@@ -141,11 +141,8 @@ cluster_tcrs = function(
   dist_df$weight_binary = 1
   #dist_df$TCRdist_mod = ifelse(dist_df$TCRdist_mod == 0, -1, dist_df$TCRdist_mod)
 
-  if(!is.null(dist$tcr2)) {
-    dist_df$node2_1index = dist_df$node2_1index + nrow(dist$nodes_df)
-    dist_input = bind_rows(dist$nodes_df, dist$tcr2)
-    n_valid = nrow(dist_input)
-  }
+  ## TCRdist() already returns a single combined nodes_df (tcr1 then tcr2, with
+  ## node2_0index offset accordingly) when tcr2 is supplied, so no further merge needed here.
   n_valid = nrow(dist_input)
   sparse_weight_mat_binary = Matrix::sparseMatrix(i=dist_df$node1_1index, j=dist_df$node2_1index,
                                                   x=dist_df$weight_binary, symmetric = TRUE,
