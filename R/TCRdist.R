@@ -347,6 +347,26 @@ TCRdist_to_sparse_matrix = function(edges_df, nodes_df) {
   return(adj_mat)
 }
 
+### Add node metadata (all columns of nodes_df) for both endpoints of each edge to
+### edges_df, via two dplyr::left_join() calls against nodes_df$tcr_index (once for
+### node1_idx, once for node2_idx). nodes_df columns are prefixed "node1_"/"node2_"
+### to keep the two endpoints' metadata distinguishable in the joined result.
+.add_node_metadata_to_edges = function(edges_df, nodes_df) {
+  node1_meta = nodes_df %>%
+    dplyr::rename_with(~ paste0("node1_", .x), .cols = -tcr_index) %>%
+    dplyr::rename(node1_idx = tcr_index)
+  node2_meta = nodes_df %>%
+    dplyr::rename_with(~ paste0("node2_", .x), .cols = -tcr_index) %>%
+    dplyr::rename(node2_idx = tcr_index)
+
+  edges_with_metadata = edges_df %>%
+    dplyr::left_join(node1_meta, by = "node1_idx") %>%
+    dplyr::left_join(node2_meta, by = "node2_idx") %>%
+    select(node1_idx, node2_idx, TCRdist, everything())
+
+  return(edges_with_metadata)
+}
+
 ### Encode a prepped TCR data frame into an integer matrix of features
 ### (same feature layout as the python process_TCRs() in inst/python/TCRdist/TCRdist_gpu.py:
 ### trimmed+padded cdr3a, va, trimmed+padded cdr3b, vb), using a named vector
