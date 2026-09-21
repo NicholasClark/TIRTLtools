@@ -101,6 +101,8 @@ load_tirtlseq = function(
   start = Sys.time()
   chain = chain[1]
   compress_strings = FALSE
+
+  checkmate::assert_character(samples, unique = TRUE, null.ok = TRUE)
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
   ll = lapply(directory, function(dir_tmp) {
