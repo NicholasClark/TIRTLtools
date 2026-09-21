@@ -55,6 +55,9 @@ Other tcr_similarity:
 \code{\link[=TCRdist]{TCRdist()}},
 \code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
 \code{\link[=TCRdist_old]{TCRdist_old()}},
+\code{\link[=TCRdist_to_igraph]{TCRdist_to_igraph()}},
+\code{\link[=TCRdist_to_sparse_matrix]{TCRdist_to_sparse_matrix()}},
+\code{\link[=add_to_tcr_network]{add_to_tcr_network()}},
 \code{\link[=cluster_tcrs]{cluster_tcrs()}}
 }
 \concept{tcr_similarity}

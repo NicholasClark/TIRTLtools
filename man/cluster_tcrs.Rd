@@ -41,9 +41,9 @@ of the data including the input and the annotated TCRs.}
 \value{
 Returns a list with the following elements:
 
-\code{$df} - a data frame with all unique TCRs along with cluster annotations
+\code{$nodes_df} - a data frame with all unique TCRs along with cluster annotations
 
-\code{$dist_df} - a data frame with distances (TCRdist) between TCR pairs in long format
+\code{$edges_df} - a data frame with distances (TCRdist) between TCR pairs in long format
 
 \code{$sparse_adj_mat} - an adjacency matrix (in sparse format) marking TCR pairs with TCRdist <= tcrdist_cutoff
 
@@ -87,6 +87,9 @@ Other tcr_similarity:
 \code{\link[=TCRdist]{TCRdist()}},
 \code{\link[=TCRdist_cpp]{TCRdist_cpp()}},
 \code{\link[=TCRdist_old]{TCRdist_old()}},
+\code{\link[=TCRdist_to_igraph]{TCRdist_to_igraph()}},
+\code{\link[=TCRdist_to_sparse_matrix]{TCRdist_to_sparse_matrix()}},
+\code{\link[=add_to_tcr_network]{add_to_tcr_network()}},
 \code{\link[=plot_clusters]{plot_clusters()}}
 }
 \concept{tcr_similarity}
