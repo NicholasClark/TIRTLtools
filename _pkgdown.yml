@@ -111,7 +111,7 @@ articles:
     navbar: "Tutorials"
     contents:
       - "TIRTLtools"
-      #- "data_import"
+      - "data_import"
       - "plot_examples"
       #- "pairing_zenodo_data"
       - "pairing_updated"

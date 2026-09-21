@@ -33,9 +33,8 @@ TIRTLtools:::download_data("exp3_tp1_cd8.tar.gz") ## download well-level data
 data_dir = file.path(TIRTLtools:::get_cache_dir(),"exp3_tp1_cd8") ## get the directory that data was downloaded and extracted to
 print(data_dir)
 dir(data_dir) |> head()
-write_folder = "~/TIRTLtools_exp3_tp1_cd8" ### change this to the folder you would like to save paired output in (if the folder does not exist it will be created)
+write_folder = tools::R_user_dir("TIRTLtools", which = "cache") ### change this to the folder you would like to save paired output in (if the folder does not exist it will be created)
 wells = get_well_subset(row_range = 1:16, col_range = 1:12) ## wells on left half of plate
-print(wells)
 ```
 
 ### Run pairing algorithms
@@ -52,7 +51,7 @@ The main arguments of the function are:
 - `prefix` - a prefix (e.g. the sample name) for the output file names
 - `well_filter_thres` - a threshold on the number of unique clones found in a well, for quality control
 - `well_pos` - the position of the well ID (e.g. "B5") in the file names.
-- `wellset1` - a vector of wells to use for the pairing.
+- `wellset` - a vector of wells to use for the pairing.
 
 For more information, check the documentation with `?run_pairing`.
 
