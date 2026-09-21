@@ -89,6 +89,9 @@ export(remove_duplicates) ## docs 99% done, could use an example -- maybe hide, 
 #export(_TIRTLtools_tcrdist_cpp)
 #export(_TIRTLtools_tcrdist_parallel)
 export(TCRdist) ## full docs
+export(TCRdist_to_igraph) ## full docs
+export(TCRdist_to_sparse_matrix) ## full docs
+export(add_to_tcr_network) ## full docs
 #export(tcrdist_cpp)
 #export(TCRdist_cpp)
 #export(tcrdist_parallel)

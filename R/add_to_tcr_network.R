@@ -1,30 +1,34 @@
-#' Add new TCRs to an existing TCRdist network
+#' Add new TCRs to an existing TCR similarity network
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
 #'
 #' Given a network previously built with \code{\link{TCRdist}()} (or \code{\link{cluster_tcrs}()},
-#' which uses the same \code{edges_df}/\code{nodes_df} shape), calculates TCRdist between a new
-#' set of TCRs (\code{nodes_new_df}) and all of the existing nodes, then appends the new nodes
+#' this function calculates TCRdist between a new
+#' set of TCRs (\code{nodes_new_df}) and all of the existing TCRs, then appends the new nodes
 #' and edges to the network and returns the updated \code{edges_df}/\code{nodes_df}.
 #'
 #' @details
-#' This calculates TCRdist between the new TCRs and the existing nodes, \strong{and}
-#' between pairs of new TCRs themselves (two separate \code{\link{TCRdist}()} calls), but
-#' does not recompute anything for the existing nodes/edges. The result is the same
-#' network you would get by running \code{\link{TCRdist}()} once on the combined set of
-#' old and new TCRs -- see the "compare to a single TCRdist() run" example below -- but
-#' cheaper, since the existing nodes/edges are reused rather than recomputed.
+#' `nodes_new_df` must contain the columns "va", "vb", "cdr3a", and "cdr3b".
+#' These columns must contain the V-alpha segment, V-beta segment,
+#' the CDR3-alpha amino acid sequence, and the CDR3-beta amino acid sequence, respectively.
+#'
+#' `nodes_df` must contain the columns "va", "vb", "cdr3a", "cdr3b", and "tcr_index", where "tcr_index"
+#' is an integer and the other columns are as above.
+#'
+#' `edges_df` must contain the columns "node1_idx", "node2_idx", and "TCRdist", where the first
+#' two columns are integers that map to the "tcr_index" column in `nodes_df` and "TCRdist" is the value of TCRdist
+#' between the two TCRs.
 #'
 #' New nodes are numbered starting right after the highest \code{tcr_index} already present
-#' in \code{nodes_df}, matching how \code{\link{TCRdist}()} itself numbers a \code{tcr2}
-#' passed alongside \code{tcr1}.
+#' in \code{nodes_df}.
 #'
 #' @param edges_df the \code{edges_df} from a previous \code{\link{TCRdist}()} (or
 #' \code{\link{cluster_tcrs}()}) result: a data frame with columns "node1_idx", "node2_idx",
 #' and "TCRdist".
-#' @param nodes_df the \code{nodes_df} from that same previous result: one row per existing
-#' TCR, with a 1-indexed (R-style) "tcr_index" column.
+#' @param nodes_df the \code{nodes_df} from a previous \code{\link{TCRdist}()} (or
+#' \code{\link{cluster_tcrs}()}) result: one row per existing
+#' TCR.
 #' @param nodes_new_df a data frame of new TCRs to add to the network. Must have the columns
 #' "va", "vb", "cdr3a", and "cdr3b" (the same requirements as \code{tcr1}/\code{tcr2} in
 #' \code{\link{TCRdist}()}).

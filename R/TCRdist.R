@@ -1,29 +1,24 @@
-#' GPU/CPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs
+#' A fast implementation of TCRdist, a distance/similarity metric for TCRs
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
 #'
-#' An efficient, batched, chunked version of TCRdist that supports NVIDIA GPUs, Apple
-#' Silicon GPUs, and a parallel CPU-only C++ backend that does not require python.
+#' An efficient GPU-enabled version of TCRdist with an almost-as-fast CPU version backup.
+#' If a GPU is available it will run a version of TCRdist using the `cupy` (NVIDIA) or `mlx`
+#' (Apple Silicon) Python package via `reticulate`. If no GPU is available, it will run a
+#' CPU-only C++ version. The C++ version is slower than the GPU, but still relatively fast.
 #'
 #' @details
 #' This function calculates pairwise TCRdist (Dash et al., Nature 2017) for a set of TCRs
 #' (or between two sets of TCRs) and returns a sparse output with the TCRdist and indices of all pairs
 #' that have TCRdist less than or equal to a desired cutoff (default cutoff is 90).
 #'
-#' TCR encoding, chunking (row-by-row and column-by-column), sparsification, and output
-#' assembly all happen in R. For each chunk of \code{chunk_size} TCRs, R calls a single
-#' minimal compute kernel for the one step that benefits from parallel hardware --
-#' summing substitution-matrix penalties across encoded TCR features -- using either
-#' python (`cupy` for NVIDIA GPUs, `mlx` for Apple Silicon GPUs, or `numpy` otherwise) or,
-#' with \code{backend = "cpp"}, a parallel C++ implementation via RcppParallel that needs
-#' no python at all. R then filters the resulting chunk by \code{tcrdist_cutoff} and
-#' appends it to the running edge list.
-#'
-#' @param tcr1 a data frame with one TCR per row. It must have the columns "va", "vb", "cdr3a", and "cdr3b"
+#' @param tcr1 a data frame with one TCR per row. It must have the columns "va",
+#' "vb", "cdr3a", and "cdr3b". These columns must contain the V-alpha segment, V-beta segment,
+#' the CDR3-alpha amino acid sequence, and the CDR3-beta amino acid sequence, respectively.
 #' @param tcr2 (optional) another data frame of TCRs. If supplied, TCRdist will be calculated
 #' for every combination of one TCR from tcr1 and one TCR from tcr2. Otherwise, it will calculate TCRdist
-#' for every pair of TCRs in tcr1.
+#' for each pair of TCRs in tcr1.
 #' @param remove_MAIT whether to remove TCRs from MAIT cells (default is FALSE)
 #' @param params (optional) a table of valid parameters for amino acids and va/vb segments.
 #' (default is NULL, which uses TIRTLtools::params)
@@ -31,27 +26,28 @@
 #' combination of amino acids or va/vb segments (default is NULL, which uses TIRTLtools::submat).
 #' @param tcrdist_cutoff (optional) discard all TCRdist values above this cutoff. If not supplied by the user, this will default to 90 for dual-chain TCRdist or 45 for single-chain TCRdist.
 #' @param chunk_size (optional) The chunk size to use in calculation of TCRdist (default 1000). If set at n,
-#' it will calculate pairwise TCRdist for n x n TCRs at once. This may be as high as allowable by GPU memory.
+#' it will calculate pairwise TCRdist for n x n TCRs at once.
 #' @param write_to_tsv (optional) write the results to a tab-separated file ".tsv" (default is FALSE, does not write .tsv file)
 #' @param output_folder (optional) folder to write output ".tsv" files to, if \code{write_to_tsv} is TRUE (default is the current directory).
 #' @param backend (optional) the backend to use for the chunk computation (default "auto").
-#' One of "auto" (pick a GPU backend if available, otherwise numpy), "cpp" (a parallel C++
+#' One of "auto" (a GPU backend if available, otherwise C++), "cpp" (a parallel C++
 #' implementation via RcppParallel -- fast, CPU-only, and does not require python at all),
-#' "cpu" (numpy, via python), "cupy" (NVIDIA GPU, via python), or "mlx" (Apple Silicon GPU, via python).
+#' "cupy" (NVIDIA GPU, via python), or "mlx" (Apple Silicon GPU, via python).
 #'
 #' @return
-#' If write_to_csv is TRUE (default is FALSE), the function will write output .tsv files and return NULL.
+#' If write_to_tsv is TRUE (default is FALSE), the function will write output .tsv files and return NULL.
 #' Otherwise, it will return a list with entries:
 #'
 #' \code{$edges_df} - a data frame with three columns: "node1_idx", "node2_idx", and "TCRdist".
-#' The first two columns contain the (1-indexed, R-style) indices of the TCRs for each pair,
+#' The first two columns contain the indices of the TCRs for each pair,
 #' matching \code{nodes_df$tcr_index}. The last column contains the TCRdist if it is below the
 #' cutoff. The output is sparse in that it only contains pairs that have TCRdist <= cutoff.
 #'
 #' \code{$nodes_df} - a data frame of the TCRs supplied to the function. It contains an additional column
-#' "tcr_index" with the (1-indexed, R-style) index of each TCR. If \code{tcr2} was supplied, this is
+#' "tcr_index" with the index of each TCR. If \code{tcr2} was supplied, this is
 #' \code{bind_rows(tcr1, tcr2)}: tcr1's rows are numbered first (starting at 1), and tcr2's \code{tcr_index}
-#' values continue on immediately after the highest \code{tcr_index} in tcr1.
+#' values continue on immediately after the highest \code{tcr_index} in tcr1. Note that any TCRs
+#' with invalid V-segments or frameshifts/stop-codons in their amino acid sequence will be removed.
 #'
 #' @family tcr_similarity
 #' @seealso \code{\link{cluster_tcrs}()}, \code{\link{plot_clusters}()}, and \code{\link{identify_non_functional_seqs}()}
@@ -61,13 +57,8 @@
 #' load_example_data(dataset = "SJTRC_minimal")
 #' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 #' result = TCRdist(df, tcrdist_cutoff = 90)
-#' edge_df = result[['edges_df']] %>%
-#'   data.table::as.data.table() ### table of TCRdist values <= cutoff
-#' node_df = result[['nodes_df']] %>%
-#'   data.table::as.data.table() ### table of input data with indices
-#'
-#' edge_df ## sparse 3-column output: node1, node2, TCRdist
-#' ## note that indices start at 1 (R-style) and are found in node_df$tcr_index
+#' edge_df = result[['edges_df']] ### table of TCRdist values <= cutoff
+#' node_df = result[['nodes_df']] ### table of input metadata with indices
 #'
 TCRdist = function(
     tcr1,
@@ -308,18 +299,15 @@ TCRdist_to_igraph = function(edges_df, nodes_df) {
 #' @description
 #' `r lifecycle::badge('experimental')`
 #'
-#' Builds a symmetric, binary sparse adjacency matrix from the \code{edges_df}/\code{nodes_df}
-#' produced by \code{\link{TCRdist}()} (or \code{\link{cluster_tcrs}()}, which uses the
-#' same names), using \code{\link[Matrix]{sparseMatrix}()}. Every edge gets weight 1
-#' regardless of its TCRdist value -- i.e. this is a binary adjacency matrix, not one
-#' weighted by TCRdist.
+#' Builds a sparse adjacency matrix from the \code{edges_df}/\code{nodes_df}
+#' produced by \code{\link{TCRdist}()} (or \code{\link{cluster_tcrs}()} using \code{\link[Matrix]{sparseMatrix}()}.
 #'
-#' @param edges_df a data frame with columns "node1_idx" and "node2_idx"
-#' (1-indexed pairs of connected nodes), such as \code{TCRdist()}'s \code{$edges_df}.
+#'
+#' @param edges_df a data frame with columns "node1_idx" and "node2_idx", such as \code{TCRdist()}'s \code{$edges_df}.
 #' @param nodes_df a data frame with one row per node, such as \code{TCRdist()}'s
-#' \code{$nodes_df}. Used to determine the total number of nodes (matrix dimensions)
-#' and row/column names, so that isolated nodes are still represented as all-zero
-#' rows/columns.
+#' \code{$nodes_df}.
+#' @param binary if TRUE, the nonzero values in the matrix will all be 1, otherwise they will be equal to TCRdist
+#' between the two TCRs (default if FALSE).
 #'
 #' @returns an \code{n x n} symmetric sparse matrix (class \code{dsCMatrix}), where
 #' \code{n = nrow(nodes_df)}. Entry `[i, j]` is 1 if the two TCRs are connected by an
@@ -334,12 +322,14 @@ TCRdist_to_igraph = function(edges_df, nodes_df) {
 #' df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 #' result = TCRdist(df, tcrdist_cutoff = 90)
 #' adj_mat = TCRdist_to_sparse_matrix(result$edges_df, result$nodes_df)
-TCRdist_to_sparse_matrix = function(edges_df, nodes_df) {
+TCRdist_to_sparse_matrix = function(edges_df, nodes_df, binary = FALSE) {
   n = nrow(nodes_df)
+  if(binary) vals = 1
+  if(!binary) vals = edges_df$TCRdist
   adj_mat = Matrix::sparseMatrix(
     i = edges_df$node1_idx,
     j = edges_df$node2_idx,
-    x = 1,
+    x = vals,
     dims = c(n, n),
     symmetric = TRUE
   )

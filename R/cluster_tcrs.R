@@ -132,7 +132,7 @@ cluster_tcrs = function(
     resolution = 0.1
 ) {
   gr_binary = do.call(TCRdist_to_igraph, dist)
-  sparse_weight_mat_binary = do.call(TCRdist_to_sparse_matrix, dist)
+  sparse_weight_mat = do.call(TCRdist_to_sparse_matrix, dist)
   leiden_clust = igraph::cluster_leiden(gr_binary, resolution = resolution)
   #dist_input = dist$nodes_df
   #dist_input$idx_1index = 1:dim(dist_input)[1]
@@ -152,7 +152,7 @@ cluster_tcrs = function(
     nodes_df = dist$nodes_df,
     edges_df = dist$edges_df,
     #sparse_tcrdist_mat = sparse_tcrdist_mat, ### returning this as a sparse matrix is problematic because missing entries will be seen as TCRdist = 0 instead of TCRdist > cutoff.
-    sparse_adj_mat = sparse_weight_mat_binary,
+    sparse_adj_mat = sparse_weight_mat,
     graph_adj = gr_binary,
     tcrdist_cutoff = tcrdist_cutoff,
     resolution = resolution
