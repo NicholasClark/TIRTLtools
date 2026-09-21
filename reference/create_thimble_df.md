@@ -1,11 +1,6 @@
 # Convert paired TCRs to a "thimble" data frame for Stitchr
 
-**\[experimental\]** This function creates a "thimble" data frame for
-use with the Stitchr Python package
-(https://jamieheather.github.io/stitchr/) to stitch together TCR
-nucleotide coding sequences. The resulting data frame can be written to
-a .tsv with
-[`write_stitchr_tsv()`](https://nicholasclark.github.io/TIRTLtools/reference/write_stitchr_tsv.md).
+**\[experimental\]**
 
 ## Usage
 
@@ -114,6 +109,14 @@ create_thimble_df(
 ## Value
 
 A data frame with TCRs properly formatted for use with Stitchr.
+
+## Details
+
+This function creates a "thimble" data frame for use with the Stitchr
+Python package (https://jamieheather.github.io/stitchr/) to stitch
+together TCR nucleotide coding sequences. The resulting data frame can
+be written to a .tsv with
+[`write_stitchr_tsv()`](https://nicholasclark.github.io/TIRTLtools/reference/write_stitchr_tsv.md).
 
 ## See also
 

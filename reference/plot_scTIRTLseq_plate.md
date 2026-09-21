@@ -1,7 +1,9 @@
 # Plot a plate of single-cell TIRTL-seq data
 
-**\[experimental\]** This function plots which wells in a plate are
-missing an alpha and/or beta chain for single-cell TIRTL-seq data.
+**\[experimental\]**
+
+This function plots which wells in a plate are missing an alpha and/or
+beta chain for single-cell TIRTL-seq data.
 
 ## Usage
 

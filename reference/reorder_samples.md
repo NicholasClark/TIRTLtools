@@ -1,7 +1,6 @@
 # Re-order samples in a TIRTLseqDataSet object
 
-**\[experimental\]** This function changes the order of the samples in a
-TIRTLseqDataSet object to the order that the user specifies.
+**\[experimental\]**
 
 ## Usage
 
@@ -32,6 +31,11 @@ reorder_samples(data, samples)
 
 A TIRTLseqDataSet object with re-ordered samples.
 
+## Details
+
+This function changes the order of the samples in a TIRTLseqDataSet
+object to the order that the user specifies.
+
 ## See also
 
 Other data_wrangling:
@@ -41,12 +45,9 @@ Other data_wrangling:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  chain = "paired", verbose = FALSE)
-print(sjtrc$meta)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
+print(SJTRC_longitudinal$meta)
 #> # A tibble: 6 × 5
 #>   sample_id  marker timepoint version label                                     
 #>   <chr>      <chr>  <chr>     <chr>   <chr>                                     
@@ -56,12 +57,12 @@ print(sjtrc$meta)
 #> 4 cd8_tp1_v2 cd8    tp1       v2      marker: cd8 | timepoint: tp1 | version: v2
 #> 5 cd8_tp2_v2 cd8    tp2       v2      marker: cd8 | timepoint: tp2 | version: v2
 #> 6 cd8_tp3_v2 cd8    tp3       v2      marker: cd8 | timepoint: tp3 | version: v2
-new_order = names(sjtrc$data) %>% rev()
+new_order = names(SJTRC_longitudinal$data) %>% rev()
 print(new_order)
 #> [1] "cd8_tp3_v2" "cd8_tp2_v2" "cd8_tp1_v2" "cd4_tp3_v2" "cd4_tp2_v2"
 #> [6] "cd4_tp1_v2"
-sjtrc = reorder_samples(sjtrc, new_order)
-print(sjtrc$meta)
+SJTRC_longitudinal = reorder_samples(SJTRC_longitudinal, new_order)
+print(SJTRC_longitudinal$meta)
 #> # A tibble: 6 × 5
 #>   sample_id  marker timepoint version label                                     
 #>   <chr>      <chr>  <chr>     <chr>   <chr>                                     

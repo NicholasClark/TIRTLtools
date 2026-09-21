@@ -1,8 +1,10 @@
 # Stacked bar plot of the fraction of alpha/beta chains with different numbers of partners
 
-**\[experimental\]** `plot_num_partners()` creates bar plots for alpha
-and beta chains showing how many partners they are paired with by the
-MAD-HYPE and/or T-shell algorithms.
+**\[experimental\]**
+
+`plot_num_partners()` creates bar plots for alpha and beta chains
+showing how many partners they are paired with by the MAD-HYPE and/or
+T-shell algorithms.
 
 ## Usage
 
@@ -91,13 +93,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-ts_data = load_tirtlseq(folder,
-  meta_columns = c("marker","timepoint", "version"),
-  sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_num_partners(ts_data)
+plot_num_partners(SJTRC_longitudinal)
 
 
 ```

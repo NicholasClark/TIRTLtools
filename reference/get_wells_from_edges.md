@@ -1,7 +1,9 @@
 # Get well names from the top left and bottom right wells
 
-**\[experimental\]** This function returns a vector of well names in a
-rectangle containing the top left well and the bottom right well.
+**\[experimental\]**
+
+This function returns a vector of well names in a rectangle containing
+the top left well and the bottom right well.
 
 ## Usage
 

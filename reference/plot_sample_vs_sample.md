@@ -1,10 +1,11 @@
 # Scatterplot of TCR clone read fraction of clones between two samples
 
-**\[experimental\]** `plot_sample_vs_sample()` returns a scatterplot of
-read frequencies of TCRs between two samples.
+**\[experimental\]**
 
-The function labels each TCR as up-regulated, down-regulated, or stable,
-based on the log2 fold-change cutoff supplied (default 1.5).
+This function returns a scatterplot of read frequencies of TCRs between
+two samples. It labels clones that expand (orange) or contract (green)
+based on their single-chain pseudo-bulk frequencies (beta chain
+frequency is default).
 
 ## Usage
 
@@ -46,7 +47,7 @@ plot_sample_vs_sample(
 - log2fc_cutoff:
 
   the log2 fold-change cutoff to call a TCR up- or down-regulated
-  (default 1.5)
+  (default 3)
 
 - sem_cutoff:
 
@@ -112,21 +113,47 @@ given the log2 fold-change cutoff.
 If `return_data` is TRUE, the data frame used to make the plot is
 returned instead of the plot.
 
+## Details
+
+You may call
+[`get_expanded_clones()`](https://nicholasclark.github.io/TIRTLtools/reference/get_expanded_clones.md)
+with the same arguments for `log2fc_cutoff` and `sem_cutoff` in order to
+get data frames with expanded and contracted clones (both single-chain
+and corresponding αβ TCR pairs).
+
+To call expanded and contracted clonotypes from TIRTL-seq data, we
+calculated mean frequency and standard error of the mean (SEM) for each
+TCRβ chain over all wells. We call clones significantly expanded or
+contracted between time points if there is a log2 fold-change log2FC \>
+3 between average frequencies and the difference between average
+frequencies exceeds 5 SEM intervals. This matches the analysis in
+Pogorelyy & Kirk et al. (2025).
+
+Note: For each TCR, we actually calculate two SEMs, one for each
+timepoint/sample. To calculate 5 SEM intervals, we multiply each SEM by
+2.5 and sum them. The `sem_cutoff` argument controls this value, which
+is why the default is 2.5.
+
+## References
+
+Pogorelyy, M, Kirk, A, Adhikari, S et al. (2025). "TIRTL-seq: deep,
+quantitative and affordable paired TCR repertoire sequencing." *Nature
+Methods*, 23, 56–64.
+[doi:10.1038/s41592-025-02907-9](https://doi.org/10.1038/s41592-025-02907-9)
+
 ## See also
 
 Other longitudinal:
+[`get_expanded_clones()`](https://nicholasclark.github.io/TIRTLtools/reference/get_expanded_clones.md),
 [`plot_clone_size_across_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.md)
 
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+load_example_data(dataset = "SJTRC_minimal")
+#> Example data already loaded into object: 'SJTRC_minimal'
 
-plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
+plot_sample_vs_sample(SJTRC_minimal$data$cd8_tp1_v2, SJTRC_minimal$data$cd8_tp2_v2, chain = "beta")
 #> Warning: Ignoring unknown aesthetics: text
 
 

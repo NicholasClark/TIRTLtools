@@ -1,7 +1,19 @@
 # Find TCRalpha/beta pairs from individual well read counts
 
-**\[experimental\]** This runs the MAD-HYPE and T-SHELL algorithms to
-find TCRalpha-beta pairs originating from the same clone.
+**\[experimental\]**
+
+This function runs the MAD-HYPE and T-SHELL algorithms (with efficient
+GPU implementations) on multi-well TCR-seq data, returning TCR
+alpha/beta chain pairs predicted to come from the same clone.
+
+The MAD-HYPE (Multicell Analytical Deconvolution for High Yield
+Paired-chain Evaluation) algorithm uses Bayesian inference over well
+co-occurrence counts to call TCR alpha/beta chain pairings from
+multicell-per-well sequencing data.
+
+The T-SHELL algorithm (TCRαβ Sequence Highly Efficient Linkage Learning)
+is a heuristic for pairing TCR chains from multi-well data, based on
+correlation of read frequency across wells.
 
 ## Usage
 
@@ -17,7 +29,7 @@ run_pairing(
   tshell_settings = get_tshell_settings(format = "auto"),
   wellset = get_well_subset(1:16, 1:24),
   wellset1 = lifecycle::deprecated(),
-  compute = TRUE,
+  compute = lifecycle::deprecated(),
   backend = c("auto", "cpu", "cupy", "mlx"),
   pval_thres_tshell = lifecycle::deprecated(),
   wij_thres_tshell = lifecycle::deprecated(),
@@ -29,7 +41,11 @@ run_pairing(
   chunk_size = 500,
   exclude_nonfunctional = FALSE,
   select_best_madhype = FALSE,
-  select_best_tshell = FALSE
+  select_best_tshell = FALSE,
+  gzip_output = FALSE,
+  pseudobulk_only = FALSE,
+  run_qc = TRUE,
+  clone_threshold_chain = c("alpha", "beta", "independent")
 )
 ```
 
@@ -91,11 +107,6 @@ run_pairing(
 
   a vector of wells to use for the pairing
 
-- compute:
-
-  whether or not to run the pairing algorithms after tabulating and
-  writing pseudobulk data (default TRUE)
-
 - backend:
 
   the computing backend to use. The function looks for a GPU and
@@ -113,16 +124,6 @@ run_pairing(
 
   whether to filter by loss fraction before extracting top 3 correlation
   values for T-SHELL (default FALSE)
-
-- fork:
-
-  whether to "fork" the python process for basilisk (default is NULL,
-  which automatically chooses an appropriate option)
-
-- shared:
-
-  whether to use a "shared" python process for basilisk (default is
-  NULL, which automatically chooses an appropriate option)
 
 - chunk_size:
 
@@ -142,6 +143,30 @@ run_pairing(
 
   whether to use a secondary algorithm on the pairs from the T-SHELL
   algorithm to select the best pairs for each clone (default is FALSE)
+
+- gzip_output:
+
+  whether to compress (gzip) output files (default is FALSE)
+
+- pseudobulk_only:
+
+  only output pseudobulk with no pairing (default is FALSE)
+
+- run_qc:
+
+  whether to run the quality control pipeline on the samples, dropping
+  wells with a number of unique alpha or beta clones below a certain
+  threshold.
+
+- clone_threshold_chain:
+
+  the chain to use to determine the clone threshold for QC. If "alpha",
+  clone counts for TCRalpha will be used to determine a threshold for
+  both alpha and beta chains. If "beta", TCRbeta clone counts will be
+  used to determine the threshold for both chains. If "independent",
+  then TCRalpha clones will be used to determine a QC threshold for
+  alpha and TCRbeta clones will be used to determine a separate QC
+  threshold for beta clones. ("alpha" is default)
 
 ## Value
 
@@ -170,6 +195,40 @@ and metadata for the wells is written to "\_well_meta.parquet".
 These files can be loaded using the
 [`load_well_counts_binary()`](https://nicholasclark.github.io/TIRTLtools/reference/load_well_counts_binary.md)
 function.
+
+## Details
+
+The function also performs QC on the wells, dropping wells with
+unusually small numbers of clones, and calculates "pseudobulk" for TCRα
+and TCRβ, aggregating reads over all wells. It writes three
+tab-separated files (.tsv), one for TCRα pseudobulk, one for TCRβ
+pseudobulk, and one for predicted TCRαβ pairs.
+
+Output may include alpha or beta chains with many predicted partners. To
+keep only the best partners by p-value for each algorithm (allowing up
+to two alphas for each beta chain), you may run with the options
+`select_best_madhype = TRUE` and `select_best_tshell == TRUE`. Removing
+nonfunctional chains with `exclude_nonfunctional = TRUE` may also help
+to reduce multi-pairing.
+
+See Pogorelyy & Kirk et al. (2026) for a full description of the T-SHELL
+algorithm.
+
+See Holec et al. (2019) for a full description of the MAD-HYPE
+algorithm.
+
+## References
+
+Pogorelyy MV, Kirk AM, Adhikari S, Minervina AA, Sundararaman B,
+Vegesana K, Brice DC, Scott ZB, SJTRC Study Team, Thomas PG (2026).
+"TIRTL-seq: deep, quantitative and affordable paired TCR repertoire
+sequencing." *Nature Methods*, **23**, 56-64.
+[doi:10.1038/s41592-025-02907-9](https://doi.org/10.1038/s41592-025-02907-9)
+
+Holec PV, Berleant J, Bathe M, Birnbaum ME (2019). "A Bayesian framework
+for high-throughput T cell receptor pairing." *Bioinformatics*,
+**35**(8), 1318-1325.
+[doi:10.1093/bioinformatics/bty801](https://doi.org/10.1093/bioinformatics/bty801)
 
 ## See also
 

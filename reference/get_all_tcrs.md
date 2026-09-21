@@ -1,7 +1,9 @@
 # Returns all of the paired TCRs from all samples in a dataset
 
-**\[experimental\]** The `get_all_tcrs()` function aggregates the TCRs
-from all samples of a dataset and puts them into one table.
+**\[experimental\]**
+
+The `get_all_tcrs()` function aggregates the TCRs from all samples of a
+dataset and puts them into one table.
 
 ## Usage
 
@@ -61,10 +63,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-get_all_tcrs(ts_data, chain = "paired")
+get_all_tcrs(SJTRC_longitudinal, chain = "paired")
 #> Key: <beta_nuc>
 #>          method         va     ja            cdr3a               cdr3b       vb
 #>          <char>     <char> <char>           <char>              <char>   <char>

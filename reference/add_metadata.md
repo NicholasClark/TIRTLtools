@@ -1,9 +1,10 @@
 # Add metadata to a TIRTLseqDataSet object
 
-**\[experimental\]** This function adds a metadata data frame,
-`obj$meta`, to the input TIRTLseqDataSet object based on the sample
-names. This can be useful when the metadata was not specified when the
-initial object was loaded.
+**\[experimental\]**
+
+This function adds a metadata data frame, `obj$meta`, to the input
+TIRTLseqDataSet object based on the sample names. This can be useful
+when the metadata was not specified when the initial object was loaded.
 
 ## Usage
 

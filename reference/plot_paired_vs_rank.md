@@ -1,8 +1,10 @@
 # A step plot of the cumulative number of paired/unpaired alpha/beta chains among the most frequent chains
 
-**\[experimental\]** The function creates a stepped line plot of the
-cumulative number of paired/unpaired alpha or beta chains (default is
-both) among the `n_max` most frequent chains.
+**\[experimental\]**
+
+The function creates a stepped line plot of the cumulative number of
+paired/unpaired alpha or beta chains (default is both) among the `n_max`
+most frequent chains.
 
 ## Usage
 
@@ -68,13 +70,13 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_not_paired", chain = "both", n_max = 100)
+plot_paired_vs_rank(SJTRC_longitudinal, sample = 1, y_axis = "n_not_paired", chain = "both", n_max = 100)
 
 
-plot_paired_vs_rank(ts_data, sample = 1, y_axis = "n_paired", chain = "both", n_max = 100)
+plot_paired_vs_rank(SJTRC_longitudinal, sample = 1, y_axis = "n_paired", chain = "both", n_max = 100)
 
 
 ```

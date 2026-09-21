@@ -1,7 +1,9 @@
 # Get well names from numerical rows and columns
 
-**\[experimental\]** This function returns a vector of well names from
-the specified rows and columns.
+**\[experimental\]**
+
+This function returns a vector of well names from the specified rows and
+columns.
 
 ## Usage
 

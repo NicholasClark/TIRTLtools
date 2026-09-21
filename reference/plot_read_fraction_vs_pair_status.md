@@ -1,8 +1,9 @@
 # A point plot of read fraction vs. rank for the most frequent alpha/beta chains
 
-**\[experimental\]** This function creates two point plots (alpha left,
-beta right) of the `n_max` most frequent single-chains found in a
-sample.
+**\[experimental\]**
+
+This function creates two point plots (alpha left, beta right) of the
+`n_max` most frequent single-chains found in a sample.
 
 This function creates a plot similar to
 [`plot_pairs_with_eachother()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_pairs_with_eachother.md),
@@ -72,13 +73,13 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100)
+plot_read_fraction_vs_pair_status(SJTRC_longitudinal, sample = 1, n_max = 100)
 
 
-plot_read_fraction_vs_pair_status(ts_data, sample = 1, n_max = 100,
+plot_read_fraction_vs_pair_status(SJTRC_longitudinal, sample = 1, n_max = 100,
 show_num_partners = TRUE)
 
 ```

@@ -11,7 +11,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,9 +26,9 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
+    <li><a class="dropdown-item" href="../articles/data_import.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_updated.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
   </ul></li>
@@ -86,10 +86,38 @@
 
       <dl><dt>
 
+          <code><a href="get_samples.html">get_samples()</a></code>
+
+        </dt>
+        <dd>Returns sample names that are available to be imported from a directory</dd>
+
+        <dt>
+
+          <code><a href="load_example_data.html">load_example_data()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Load example TIRTL-seq data</dd>
+
+        <dt>
+
           <code><a href="load_tirtlseq.html">load_tirtlseq()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Load data from TIRTLseq experiments</dd>
+
+        <dt>
+
+          <code><a href="read_external_bulk.html">read_external_bulk()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Read and process bulk single-chain TCR-seq data</dd>
+
+        <dt>
+
+          <code><a href="read_external_paired.html">read_external_paired()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Read and process single-cell paired-chain TCR-seq data</dd>
       </dl></div><div class="section level2">
       <h2 id="data-wrangling">Data wrangling<a class="anchor" aria-label="anchor" href="#data-wrangling"></a></h2>
 
@@ -131,13 +159,6 @@
 
 
       <dl><dt>
-
-          <code><a href="add_single_chain_data.html">add_single_chain_data()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Add single-chain read counts/fractions to the paired TCR data</dd>
-
-        <dt>
 
           <code><a href="clean_pairs.html">clean_pairs()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
@@ -188,20 +209,6 @@
 
         <dt>
 
-          <code><a href="identify_non_functional_seqs.html">identify_non_functional_seqs()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Identify TCRs that contain non-functional CDR3 sequences</dd>
-
-        <dt>
-
-          <code><a href="identify_paired.html">identify_paired()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Identify which single chains were paired</dd>
-
-        <dt>
-
           <code><a href="make_tcr_schema.html">make_tcr_schema()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
@@ -213,27 +220,6 @@
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
         <dd>Prepare paired TCRs for TCRdist calculation</dd>
-
-        <dt>
-
-          <code><a href="process_TIRTLseq.html">TIRTL_process()</a></code> <code><a href="process_TIRTLseq.html">process_TIRTLseq()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Run data processing functions on a TIRTLseqDataSet object</dd>
-
-        <dt>
-
-          <code><a href="read_external_bulk.html">read_external_bulk()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Read and process bulk single-chain TCR-seq data</dd>
-
-        <dt>
-
-          <code><a href="read_external_paired.html">read_external_paired()</a></code>
-          <span class="badge lifecycle lifecycle-experimental">experimental</span>
-        </dt>
-        <dd>Read and process single-cell paired-chain TCR-seq data</dd>
 
         <dt>
 
@@ -356,14 +342,28 @@
           <code><a href="TCRdist.html">TCRdist()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>GPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs</dd>
+        <dd>A fast implementation of TCRdist, a distance/similarity metric for TCRs</dd>
 
         <dt>
 
-          <code><a href="TCRdist_cpp.html">TCRdist_cpp()</a></code>
+          <code><a href="TCRdist_to_igraph.html">TCRdist_to_igraph()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Parallelized C++ implementation of TCRdist (no GPU required)</dd>
+        <dd>Build an undirected igraph graph from TCRdist() results</dd>
+
+        <dt>
+
+          <code><a href="TCRdist_to_sparse_matrix.html">TCRdist_to_sparse_matrix()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Build a sparse adjacency matrix from TCRdist() results</dd>
+
+        <dt>
+
+          <code><a href="add_to_tcr_network.html">add_to_tcr_network()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Add new TCRs to an existing TCR similarity network</dd>
 
         <dt>
 
@@ -389,6 +389,13 @@
 
 
       <dl><dt>
+
+          <code><a href="get_expanded_clones.html">get_expanded_clones()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Find expanded or contracted clones</dd>
+
+        <dt>
 
           <code><a href="plot_clone_size_across_samples.html">plot_clone_size_across_samples()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
@@ -423,7 +430,7 @@
           <code><a href="get_all_div_metrics.html">get_all_div_metrics()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Returns all diversity metric options for <code><a href="../reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
+        <dd>Returns all diversity metric options for <code><a href="https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html">calculate_diversity()</a></code></dd>
 
         <dt>
 
@@ -565,6 +572,43 @@
 
         </dt>
         <dd>Table of known TCRs from VDJ-db</dd>
+      </dl></div><div class="section level2">
+      <h2 id="deprecated">Deprecated<a class="anchor" aria-label="anchor" href="#deprecated"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="add_single_chain_data.html">add_single_chain_data()</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>Add single-chain read counts/fractions to the paired TCR data</dd>
+
+        <dt>
+
+          <code><a href="identify_non_functional_seqs.html">identify_non_functional_seqs()</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>Identify TCRs that contain non-functional CDR3 sequences</dd>
+
+        <dt>
+
+          <code><a href="identify_paired.html">identify_paired()</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>Identify which single chains were paired</dd>
+
+        <dt>
+
+          <code><a href="process_TIRTLseq.html">process_TIRTLseq()</a></code>
+          <span class="badge lifecycle lifecycle-deprecated">deprecated</span>
+        </dt>
+        <dd>Run data processing functions on a TIRTLseqDataSet object</dd>
       </dl></div><div class="section level2">
       <h2 id="other">Other<a class="anchor" aria-label="anchor" href="#other"></a></h2>
 

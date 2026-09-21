@@ -4,6 +4,13 @@
 
 ## News
 
+Dec. 8th 2025
+
+- *Nature Methods* highlights TIRTL-seq in an *Immunology News & Views*
+  article:  
+  [**TIRTL-seq: heroes with
+  T-SHELL**](https://doi.org/10.1038/s41592-025-02984-w).
+
 Nov. 24th 2025
 
 - The TIRTLseq assay paper has been published in Nature Methods:  

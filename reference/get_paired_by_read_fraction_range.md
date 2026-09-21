@@ -1,8 +1,10 @@
 # Calculate the number and fraction of single chains that were paired by frequency
 
-**\[experimental\]** This function returns the number and fraction of
-single-chains (alpha or beta, default is beta) that were paired within
-different frequency ranges (default is
+**\[experimental\]**
+
+This function returns the number and fraction of single-chains (alpha or
+beta, default is beta) that were paired within different frequency
+ranges (default is
 `[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]`) for
 each sample. You can use this function to get the data used in the plot
 for
@@ -61,10 +63,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-get_paired_by_read_fraction_range(ts_data, chain = "beta")
+get_paired_by_read_fraction_range(SJTRC_longitudinal, chain = "beta")
 #> # A tibble: 33 × 13
 #>    range          n_paired_sum n_paired_sum_tshell n_paired_sum_madhype n_total
 #>    <fct>                 <int>               <int>                <int>   <int>

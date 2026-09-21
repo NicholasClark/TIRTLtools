@@ -17,7 +17,7 @@ pair and a cross indicating an unpaired single-chain."><meta property="og:image"
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,9 +32,9 @@ pair and a cross indicating an unpaired single-chain."><meta property="og:image"
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
+    <li><a class="dropdown-item" href="../articles/data_import.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_updated.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
   </ul></li>
@@ -60,8 +60,8 @@ pair and a cross indicating an unpaired single-chain."><meta property="og:image"
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
-This function creates a point plot of read fraction vs. rank for the N most frequent alpha (left, mirrored)
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>This function creates a point plot of read fraction vs. rank for the N most frequent alpha (left, mirrored)
 and beta (right) chains with lines between alpha and beta chains indicating a
 pair and a cross indicating an unpaired single-chain.</p>
     </div>
@@ -124,13 +124,13 @@ pair and a cross indicating an unpaired single-chain.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTL_seq_longitudinal"</span>, package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>, meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="load_example_data.html">load_example_data</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"SJTRC_longitudinal"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Example data already loaded into object: 'SJTRC_longitudinal'</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">plot_pairs_with_eachother</span><span class="op">(</span><span class="va">ts_data</span>, sample <span class="op">=</span> <span class="fl">1</span>, n_max <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_pairs_with_eachother</span><span class="op">(</span><span class="va">SJTRC_longitudinal</span>, sample <span class="op">=</span> <span class="fl">1</span>, n_max <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_pairs_with_eachother-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">plot_pairs_with_eachother</span><span class="op">(</span><span class="va">ts_data</span>, sample <span class="op">=</span> <span class="fl">1</span>, n_max <span class="op">=</span> <span class="fl">100</span>, show_num_partners <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_pairs_with_eachother</span><span class="op">(</span><span class="va">SJTRC_longitudinal</span>, sample <span class="op">=</span> <span class="fl">1</span>, n_max <span class="op">=</span> <span class="fl">100</span>, show_num_partners <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_pairs_with_eachother-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

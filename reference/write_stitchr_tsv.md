@@ -1,9 +1,6 @@
 # Write a tab-separated "thimble" text file for use with Stitchr
 
-**\[experimental\]** This function takes a data frame created by
-[`create_thimble_df()`](https://nicholasclark.github.io/TIRTLtools/reference/create_thimble_df.md)
-and writes it to a .tsv file for use with Stitchr
-(https://jamieheather.github.io/stitchr/).
+**\[experimental\]**
 
 ## Usage
 
@@ -29,6 +26,13 @@ write_stitchr_tsv(df, output_name, output_folder = "")
 ## Value
 
 this function returns NULL and writes a .tsv to the specified folder.
+
+## Details
+
+This function takes a data frame created by
+[`create_thimble_df()`](https://nicholasclark.github.io/TIRTLtools/reference/create_thimble_df.md)
+and writes it to a .tsv file for use with Stitchr
+(https://jamieheather.github.io/stitchr/).
 
 ## See also
 

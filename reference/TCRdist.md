@@ -1,7 +1,13 @@
-# GPU implementation of TCRdist, a distance/similarity metric for pairs of TCRs
+# A fast implementation of TCRdist, a distance/similarity metric for TCRs
 
-**\[experimental\]** An efficient, batched version of TCRdist that is
-compatible with both NVIDIA and Apple Silicon GPUs.
+**\[experimental\]**
+
+An efficient GPU-enabled version of TCRdist with an almost-as-fast CPU
+version backup. If a GPU is available it will run a version of TCRdist
+using the `cupy` (NVIDIA) or `mlx` (Apple Silicon) Python package via
+`reticulate`. If no GPU is available, it will run a CPU-only C++
+version. The C++ version is slower than the GPU, but still relatively
+fast.
 
 ## Usage
 
@@ -12,16 +18,11 @@ TCRdist(
   remove_MAIT = FALSE,
   params = NULL,
   submat = NULL,
-  tcrdist_cutoff = 90,
+  tcrdist_cutoff = NULL,
   chunk_size = 1000,
-  print_chunk_size = 10,
-  print_res = TRUE,
-  only_lower_tri = TRUE,
-  return_data = TRUE,
   write_to_tsv = FALSE,
-  backend = c("auto", "cpu", "cupy", "mlx"),
-  fork = NULL,
-  shared = NULL
+  output_folder = ".",
+  backend = c("auto", "cupy", "mlx", "cpp")
 )
 ```
 
@@ -30,13 +31,15 @@ TCRdist(
 - tcr1:
 
   a data frame with one TCR per row. It must have the columns "va",
-  "vb", "cdr3a", and "cdr3b"
+  "vb", "cdr3a", and "cdr3b". These columns must contain the V-alpha
+  segment, V-beta segment, the CDR3-alpha amino acid sequence, and the
+  CDR3-beta amino acid sequence, respectively.
 
 - tcr2:
 
   (optional) another data frame of TCRs. If supplied, TCRdist will be
   calculated for every combination of one TCR from tcr1 and one TCR from
-  tcr2. Otherwise, it will calculate TCRdist for every pair of TCRs in
+  tcr2. Otherwise, it will calculate TCRdist for each pair of TCRs in
   tcr1.
 
 - remove_MAIT:
@@ -56,74 +59,53 @@ TCRdist(
 
 - tcrdist_cutoff:
 
-  (optional) discard all TCRdist values above this cutoff (default is
-  90).
+  (optional) discard all TCRdist values above this cutoff. If not
+  supplied by the user, this will default to 90 for dual-chain TCRdist
+  or 45 for single-chain TCRdist.
 
 - chunk_size:
 
   (optional) The chunk size to use in calculation of TCRdist (default
   1000). If set at n, it will calculate pairwise TCRdist for n x n TCRs
-  at once. This may be as high as allowable by GPU memory (in our
-  testing, a chunk_size of 1000 to 5000 provided the fastest runtime and
-  chunk_size of over 7500 resulted in memory errors on some GPUs).
-
-- print_chunk_size:
-
-  (optional) print a line of output for every n TCRs processed (default
-  1000)
-
-- print_res:
-
-  (optional) print summary of results (default is TRUE)
-
-- only_lower_tri:
-
-  (optional) return one TCRdist value for each pair (like the lower
-  triangle of a symmetric matrix). Default is TRUE.
-
-- return_data:
-
-  (optional) whether to return the output result from the function. With
-  large data it may be desirable to write the result to disk instead.
-  (default is TRUE, returns output)
+  at once.
 
 - write_to_tsv:
 
   (optional) write the results to a tab-separated file ".tsv" (default
   is FALSE, does not write .tsv file)
 
+- output_folder:
+
+  (optional) folder to write output ".tsv" files to, if `write_to_tsv`
+  is TRUE (default is the current directory).
+
 - backend:
 
-  (optional) the CPU or GPU backend to use (default "auto")
-
-- fork:
-
-  (optional) a TRUE/FALSE value for whether to "fork" a new Python
-  process for running TCRdist via the "basilisk" package. Default is
-  NULL, which should use choose a safe value based on how the package is
-  loaded.
-
-- shared:
-
-  (optional) a TRUE/FALSE value for whether to "share" the Python
-  process for running TCRdist via the "basilisk" package. Default is
-  NULL, which should use choose a safe value based on how the package is
-  loaded.
+  (optional) the backend to use for the chunk computation (default
+  "auto"). One of "auto" (a GPU backend if available, otherwise C++),
+  "cpp" (a parallel C++ implementation via RcppParallel – fast,
+  CPU-only, and does not require python at all), "cupy" (NVIDIA GPU, via
+  python), or "mlx" (Apple Silicon GPU, via python).
 
 ## Value
 
-A list with entries:
+If write_to_tsv is TRUE (default is FALSE), the function will write
+output .tsv files and return NULL. Otherwise, it will return a list with
+entries:
 
-`$TCRdist_df` - a data frame with three columns: "node1_0index",
-"node2_0index", and "TCRdist". The first two columns contain the indices
-(0-indexed) of the TCRs for each pair. The last column contains the
+`$edges_df` - a data frame with three columns: "node1_idx", "node2_idx",
+and "TCRdist". The first two columns contain the indices of the TCRs for
+each pair, matching `nodes_df$tcr_index`. The last column contains the
 TCRdist if it is below the cutoff. The output is sparse in that it only
 contains pairs that have TCRdist \<= cutoff.
 
-`$tcr1` - a data frame of the TCRs supplied to the function. It contains
-an additional column "tcr_index" with the (0-indexed) index of each TCR.
-
-`$tcr2` - a similar data frame for tcr2, if it was supplied.
+`$nodes_df` - a data frame of the TCRs supplied to the function. It
+contains an additional column "tcr_index" with the index of each TCR. If
+`tcr2` was supplied, this is `bind_rows(tcr1, tcr2)`: tcr1's rows are
+numbered first (starting at 1), and tcr2's `tcr_index` values continue
+on immediately after the highest `tcr_index` in tcr1. Note that any TCRs
+with invalid V-segments or frameshifts/stop-codons in their amino acid
+sequence will be removed.
 
 ## Details
 
@@ -131,10 +113,6 @@ This function calculates pairwise TCRdist (Dash et al., Nature 2017) for
 a set of TCRs (or between two sets of TCRs) and returns a sparse output
 with the TCRdist and indices of all pairs that have TCRdist less than or
 equal to a desired cutoff (default cutoff is 90).
-
-The function uses the `reticulate` package to call a python script that
-uses `cupy` (NVIDIA GPUs), `mlx` (Apple Silicon GPUs), or `numpy` (no
-GPU) to calculate TCRdist efficiently.
 
 ## See also
 
@@ -145,48 +123,37 @@ and
 
 Other tcr_similarity:
 [`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md),
+[`TCRdist_old()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_old.md),
+[`TCRdist_to_igraph()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_igraph.md),
+[`TCRdist_to_sparse_matrix()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_sparse_matrix.md),
+[`add_to_tcr_network()`](https://nicholasclark.github.io/TIRTLtools/reference/add_to_tcr_network.md),
 [`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md),
 [`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md)
 
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  chain = "paired", verbose = FALSE)
-df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+load_example_data(dataset = "SJTRC_minimal")
+#> Loading file: SJTRC_minimal.qs2...
+#> 8.971 sec elapsed
+df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 result = TCRdist(df, tcrdist_cutoff = 90)
 #> Removed 384 TCRs with unknown V-segments (1.2%) from a total of 32,164 TCRs.
-#> Removed 12 TCRs with short CDR3 segments (0.038%) from a total of 31,780 TCRs.
-#> Removed 13,324 TCRs with non-functional CDR3 amino acid sequences (42%) from a total of 31,768 TCRs.
+#> Removed 10 TCRs with short CDR3 segments (0.031%) from a total of 31,780 TCRs.
+#> Removed 13,326 TCRs with non-functional CDR3 amino acid sequences (42%) from a total of 31,770 TCRs.
 #> Filtered data frame contains 18,444 TCRs (57%) of original 32,164 TCRs.
-edge_df = result[['TCRdist_df']] %>%
-  data.table::as.data.table() ### table of TCRdist values <= cutoff
-node_df = result[['tcr1']] %>%
-  data.table::as.data.table() ### table of input data with indices
-
-edge_df ## sparse 3-column output: node1, node2, TCRdist
-#>        node1_0index node2_0index TCRdist
-#>               <int>        <int>   <int>
-#>     1:          158          157       0
-#>     2:          286          284      84
-#>     3:          287          283      89
-#>     4:          288          284      89
-#>     5:          289          285      89
-#>    ---                                  
-#> 18422:        18434        18073       0
-#> 18423:        18437        18406      72
-#> 18424:        18440        18241      90
-#> 18425:        18440        18324      66
-#> 18426:        18440        18422      84
-## note that indices start at 0 and are found in node_df$tcr_index
-
-node_df %>%
-  select(tcr_index, everything()) %>%
-  mutate(alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...", sep = ""),
-         beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = ""))
-#> Error in mutate(., alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...",     sep = ""), beta_nuc = paste(substr(beta_nuc, 0, 20), "...",     sep = "")): could not find function "mutate"
-
+#> ℹ Number of chunks: 190
+#> ℹ 10% done — time taken so far: 0.75 seconds
+#> ℹ 20% done — time taken so far: 0.99 seconds
+#> ℹ 30% done — time taken so far: 1.09 seconds
+#> ℹ 40% done — time taken so far: 1.34 seconds
+#> ℹ 50% done — time taken so far: 1.59 seconds
+#> ℹ 60% done — time taken so far: 1.68 seconds
+#> ℹ 70% done — time taken so far: 1.92 seconds
+#> ℹ 80% done — time taken so far: 2.16 seconds
+#> ℹ 90% done — time taken so far: 2.4 seconds
+#> ℹ 100% done — time taken so far: 2.44 seconds
+#> ✔ Total time taken: 2.45 seconds
+edge_df = result[['edges_df']] ### table of TCRdist values <= cutoff
+node_df = result[['nodes_df']] ### table of input metadata with indices
 ```

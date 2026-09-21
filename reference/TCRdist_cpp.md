@@ -1,9 +1,10 @@
 # Parallelized C++ implementation of TCRdist (no GPU required)
 
-**\[experimental\]** This is an alternative to the GPU version of
-TCRdist that is still very fast for large datasets (tens of thousands of
-TCRs). It is written in C++ and will run in parallel across available
-CPU cores.
+**\[experimental\]**
+
+This is an alternative to the GPU version of TCRdist that is still very
+fast for large datasets (tens of thousands of TCRs). It is written in
+C++ and will run in parallel across available CPU cores.
 
 ## Usage
 
@@ -48,41 +49,30 @@ output or writing output directly to a file.
 
 Other tcr_similarity:
 [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md),
+[`TCRdist_old()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_old.md),
+[`TCRdist_to_igraph()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_igraph.md),
+[`TCRdist_to_sparse_matrix()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_sparse_matrix.md),
+[`add_to_tcr_network()`](https://nicholasclark.github.io/TIRTLtools/reference/add_to_tcr_network.md),
 [`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md),
 [`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md)
 
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  chain = "paired", verbose = FALSE)
-df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+load_example_data(dataset = "SJTRC_minimal")
+#> Example data already loaded into object: 'SJTRC_minimal'
+df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 
 result = TCRdist_cpp(df)
-#> Removed 384 TCRs with unknown V-segments (1.2%) from a total of 32,164 TCRs.
-#> Removed 12 TCRs with short CDR3 segments (0.038%) from a total of 31,780 TCRs.
-#> Removed 13,324 TCRs with non-functional CDR3 amino acid sequences (42%) from a total of 31,768 TCRs.
-#> Removed 812 MAIT TCRs (4.4%) from a total of 18,444 TCRs.
-#> Filtered data frame contains 17,632 TCRs (55%) of original 32,164 TCRs.
-#> Removed 384 TCRs with unknown V-segments (1.2%) from a total of 32,164 TCRs.
-#> Removed 12 TCRs with short CDR3 segments (0.038%) from a total of 31,780 TCRs.
-#> Removed 13,324 TCRs with non-functional CDR3 amino acid sequences (42%) from a total of 31,768 TCRs.
-#> Removed 812 MAIT TCRs (4.4%) from a total of 18,444 TCRs.
-#> Filtered data frame contains 17,632 TCRs (55%) of original 32,164 TCRs.
+#> Error in TCRdist_cpp(df): could not find function "TCRdist_cpp"
 
 mat = result$matrix
+#> Error: object 'result' not found
 node_df = result$tcr1
+#> Error: object 'result' not found
 
 mat[1:5,1:5]
-#>      [,1] [,2] [,3] [,4] [,5]
-#> [1,]   NA   NA   NA   NA   NA
-#> [2,]  338   NA   NA   NA   NA
-#> [3,]  287  270   NA   NA   NA
-#> [4,]  374  320  293   NA   NA
-#> [5,]  382  372  386  387   NA
+#> Error: object 'mat' not found
 ## note: TCRdist is symmetric. Returned matrix contains only lower-triangular values
 
 node_df %>%
@@ -90,5 +80,4 @@ node_df %>%
          beta_nuc = paste(substr(beta_nuc, 0, 20), "...", sep = "")) %>%
   data.table::as.data.table()
 #> Error in mutate(., alpha_nuc = paste(substr(alpha_nuc, 0, 20), "...",     sep = ""), beta_nuc = paste(substr(beta_nuc, 0, 20), "...",     sep = "")): could not find function "mutate"
-
 ```

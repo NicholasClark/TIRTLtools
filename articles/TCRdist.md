@@ -126,10 +126,16 @@ three timepoints as part of the St. Jude Tracking Study of Immune
 Responses Associated with COVID-19 (SJTRC).
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", chain = "paired", verbose = FALSE)
+## This loads a TIRTLseqDataSet object called "SJTRC_longitudinal"
+load_example_data("SJTRC_longitudinal")
+```
 
-data$meta %>%
+    ## Loading file: SJTRC_longitudinal.qs2...
+
+    ## 36.702 sec elapsed
+
+``` r
+SJTRC_longitudinal$meta %>%
   mutate(label = paste(substr(label, 0, 20), "...", sep = "")) %>%
   paged_table()
 ```
@@ -144,19 +150,19 @@ may not be interested in.
 After filtering, we have ~100k TCRs.
 
 ``` r
-all_tcrs = get_all_tcrs(data)
+all_tcrs = get_all_tcrs(SJTRC_longitudinal)
 input_tcrs = all_tcrs %>% prep_for_tcrdist(remove_MAIT = TRUE)
 ```
 
     ## Removed 1,755 TCRs with unknown V-segments (1.1%) from a total of 165,671 TCRs.
 
-    ## Removed 94 TCRs with short CDR3 segments (0.057%) from a total of 163,916 TCRs.
+    ## Removed 78 TCRs with short CDR3 segments (0.048%) from a total of 163,916 TCRs.
 
-    ## Removed 59,986 TCRs with non-functional CDR3 amino acid sequences (37%) from a total of 163,822 TCRs.
+    ## Removed 59,996 TCRs with non-functional CDR3 amino acid sequences (37%) from a total of 163,838 TCRs.
 
-    ## Removed 1,321 MAIT TCRs (1.3%) from a total of 103,836 TCRs.
+    ## Removed 1,321 MAIT TCRs (1.3%) from a total of 103,842 TCRs.
 
-    ## Filtered data frame contains 102,515 TCRs (62%) of original 165,671 TCRs.
+    ## Filtered data frame contains 102,521 TCRs (62%) of original 165,671 TCRs.
 
 ``` r
 ### note: You may replace this with a file of your choice - needs to have columns "va", "vb", "cdr3a", and "cdr3b"
@@ -179,70 +185,63 @@ takes about 30 seconds.
 result = TCRdist(tcr1 = input_tcrs, tcrdist_cutoff = 90, chunk_size = 1000)
 ```
 
-    ## Removed 0 TCRs with unknown V-segments (0%) from a total of 102,515 TCRs.
+    ## Removed 0 TCRs with unknown V-segments (0%) from a total of 102,521 TCRs.
 
-    ## Removed 0 TCRs with short CDR3 segments (0%) from a total of 102,515 TCRs.
+    ## Removed 0 TCRs with short CDR3 segments (0%) from a total of 102,521 TCRs.
 
-    ## Removed 0 TCRs with non-functional CDR3 amino acid sequences (0%) from a total of 102,515 TCRs.
+    ## Removed 0 TCRs with non-functional CDR3 amino acid sequences (0%) from a total of 102,521 TCRs.
 
-    ## Filtered data frame contains 102,515 TCRs (100%) of original 102,515 TCRs.
+    ## Filtered data frame contains 102,521 TCRs (100%) of original 102,521 TCRs.
 
-    ## Checking for available GPU...
-    ## 
-    ## Apple Silicon GPU detected:
-    ## Apple Silicon GPU (M1/M2/M3)
-    ## Checking for GPU-related Python modules...
-    ## 
-    ## 'mlx' is installed (for Apple Silicon GPUs).
-    ## Loading mlx
-    ## Number of chunks: 5253
-    ## 10% done
-    ## Time taken so far: 2.212686 seconds
-    ## 20% done
-    ## Time taken so far: 4.361812 seconds
-    ## 30% done
-    ## Time taken so far: 6.517786 seconds
-    ## 40% done
-    ## Time taken so far: 8.692389 seconds
-    ## 50% done
-    ## Time taken so far: 10.830549 seconds
-    ## 60% done
-    ## Time taken so far: 12.971768 seconds
-    ## 70% done
-    ## Time taken so far: 15.100641 seconds
-    ## 80% done
-    ## Time taken so far: 17.238724 seconds
-    ## 90% done
-    ## Time taken so far: 19.415030 seconds
-    ## 100% done
-    ## Time taken so far: 21.597793 seconds
-    ## Total time taken: 21.880054 seconds
+    ## ℹ Number of chunks: 5356
+
+    ## ℹ 10% done — time taken so far: 4.98 seconds
+
+    ## ℹ 20% done — time taken so far: 9.51 seconds
+
+    ## ℹ 30% done — time taken so far: 14.03 seconds
+
+    ## ℹ 40% done — time taken so far: 18.07 seconds
+
+    ## ℹ 50% done — time taken so far: 22.6 seconds
+
+    ## ℹ 60% done — time taken so far: 27.62 seconds
+
+    ## ℹ 70% done — time taken so far: 31.73 seconds
+
+    ## ℹ 80% done — time taken so far: 36.3 seconds
+
+    ## ℹ 90% done — time taken so far: 40.87 seconds
+
+    ## ℹ 100% done — time taken so far: 45.19 seconds
+
+    ## ✔ Total time taken: 45.19 seconds
 
 ### Inspect the output
 
 The function returns a “list” with two slots:
 
-- `TCRdist_df` - a dataframe with 3 columns, containing all TCRdist
-  values \<= cutoff (default 90) in sparse format. Each row contains the
-  TCRdist value between two TCRs identified by their indices. This may
-  be thought of as a dataframe of “edges” between “nodes” (TCRs) in a
-  network.
-- `tcr1` - The dataframe with input TCRs, their assigned indices, and
-  any other metadata. The TCR indices, starting from 0, are found in the
-  `tcr_index` column. Note that this dataframe may have fewer rows than
-  the input because some TCRs with non-functional CDR3s or non-standard
-  V-segments may have been removed.
+- `edges_df` - a dataframe with 3 columns (“node1_idx”, “node2_idx”,
+  “TCRdist”), containing all TCRdist values \<= cutoff (default 90) in
+  sparse format. Each row contains the TCRdist value between two TCRs
+  identified by their indices. This may be thought of as a dataframe of
+  “edges” between “nodes” (TCRs) in a network.
+- `nodes_df` - The dataframe with input TCRs, their assigned indices,
+  and any other metadata. The TCR indices, starting from 1, are found in
+  the `tcr_index` column. Note that this dataframe may have fewer rows
+  than the input because some TCRs with non-functional CDR3s or
+  non-standard V-segments may have been removed.
 
-When calculating TCRdist between two different sets of TCRs, the output
-will also contain another slot `tcr2` with the second dataframe of input
-TCRs.
+When calculating TCRdist between two different sets of TCRs (tcr1 and
+tcr2), `nodes_df` contains both: tcr1’s rows are numbered first, and
+tcr2’s `tcr_index` values continue on immediately after the highest
+`tcr_index` in tcr1.
 
-**Important note: TCRs are assigned indices starting at 0 (Python-style)
-rather than starting at 1 (R style)**
+**Note: TCRs are assigned indices starting at 1 (R-style)**
 
 ``` r
-edge_df = result[['TCRdist_df']] ### table of TCRdist values <= cutoff
-node_df = result[['tcr1']] ### table of input data with indices
+edge_df = result[['edges_df']] ### table of TCRdist values <= cutoff
+node_df = result[['nodes_df']] ### table of input data with indices
 
 node_df %>% 
   select(tcr_index, everything()) %>%
@@ -259,7 +258,7 @@ edge_df %>% paged_table()
 nrow(edge_df) # ~75k edges
 ```
 
-    ## [1] 75713
+    ## [1] 75715
 
 For this dataset of ~100k TCRs, we detect ~75k relationships between
 similar TCRs (TCRdist \<= 90). For any row of the output table, we can
@@ -268,7 +267,7 @@ view the two TCRs:
 ``` r
 row_idx = 1
 node_df %>% 
-  filter(tcr_index %in% c(edge_df$node1_0index[row_idx], edge_df$node2_0index[row_idx])) %>%
+  filter(tcr_index %in% c(edge_df$node1_idx[row_idx], edge_df$node2_idx[row_idx])) %>%
   select(va, ja, cdr3a, cdr3b, vb, jb) %>%
   paged_table()
 ```

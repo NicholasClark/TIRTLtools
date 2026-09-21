@@ -1,7 +1,8 @@
 # Plot clusters of similar TCRs
 
-**\[experimental\]** `plot_clusters()` plots TCRs that were previously
-clustered by the
+**\[experimental\]**
+
+`plot_clusters()` plots TCRs that were previously clustered by the
 [`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md)
 function.
 
@@ -66,6 +67,10 @@ plot, and a heatmap.
 Other tcr_similarity:
 [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md),
 [`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md),
+[`TCRdist_old()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_old.md),
+[`TCRdist_to_igraph()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_igraph.md),
+[`TCRdist_to_sparse_matrix()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_sparse_matrix.md),
+[`add_to_tcr_network()`](https://nicholasclark.github.io/TIRTLtools/reference/add_to_tcr_network.md),
 [`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md)
 
 ## Examples

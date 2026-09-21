@@ -1,9 +1,11 @@
 # Stacked bar chart with fractions of reads attributed to the most frequent clonotypes
 
-**\[experimental\]** `plot_clonotype_indices()` creates a stacked bar
-chart containing the fraction of reads for the top 10 most frequent
-clonotypes, the 11th to 100th most frequent clonotypes, the 101st to
-1000th most frequent, and so on, for each sample in the dataset.
+**\[experimental\]**
+
+`plot_clonotype_indices()` creates a stacked bar chart containing the
+fraction of reads for the top 10 most frequent clonotypes, the 11th to
+100th most frequent clonotypes, the 101st to 1000th most frequent, and
+so on, for each sample in the dataset.
 
 ## Usage
 
@@ -77,13 +79,10 @@ Other diversity:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-data = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_clonotype_indices(data, chain = "beta")
+plot_clonotype_indices(SJTRC_longitudinal, chain = "beta")
 
 
 ```

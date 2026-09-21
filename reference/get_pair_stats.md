@@ -1,8 +1,10 @@
 # Count the number of pairs called by each algorithm
 
-**\[experimental\]** This function tabulates the number of TCR pairs
-called for each sample by the MAD-HYPE algorithm, the T-SHELL algorithm,
-or both. It is used in the
+**\[experimental\]**
+
+This function tabulates the number of TCR pairs called for each sample
+by the MAD-HYPE algorithm, the T-SHELL algorithm, or both. It is used in
+the
 [`plot_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_paired.md)
 function.
 
@@ -57,10 +59,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-get_pair_stats(ts_data)
+get_pair_stats(SJTRC_longitudinal)
 #> Calculating pairing stats for sample 1
 #> Calculating pairing stats for sample 2
 #> Calculating pairing stats for sample 3

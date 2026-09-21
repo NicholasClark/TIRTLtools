@@ -11,24 +11,12 @@ library(TIRTLtools)
 library(dplyr)
 library(rmarkdown)
 library(ggplot2)
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-dir(folder)
+
+## This loads a TIRTLseqDataSet object called "SJTRC_longitudinal"
+load_example_data("SJTRC_longitudinal")
 ```
 
-    ##  [1] "cd4_tp1_v2_pseudobulk_TRA.tsv.gz" "cd4_tp1_v2_pseudobulk_TRB.tsv.gz"
-    ##  [3] "cd4_tp1_v2_TIRTLoutput.tsv.gz"    "cd4_tp2_v2_pseudobulk_TRA.tsv.gz"
-    ##  [5] "cd4_tp2_v2_pseudobulk_TRB.tsv.gz" "cd4_tp2_v2_TIRTLoutput.tsv.gz"   
-    ##  [7] "cd4_tp3_v2_pseudobulk_TRA.tsv.gz" "cd4_tp3_v2_pseudobulk_TRB.tsv.gz"
-    ##  [9] "cd4_tp3_v2_TIRTLoutput.tsv.gz"    "cd8_tp1_v2_pseudobulk_TRA.tsv.gz"
-    ## [11] "cd8_tp1_v2_pseudobulk_TRB.tsv.gz" "cd8_tp1_v2_TIRTLoutput.tsv.gz"   
-    ## [13] "cd8_tp2_v2_pseudobulk_TRA.tsv.gz" "cd8_tp2_v2_pseudobulk_TRB.tsv.gz"
-    ## [15] "cd8_tp2_v2_TIRTLoutput.tsv.gz"    "cd8_tp3_v2_pseudobulk_TRA.tsv.gz"
-    ## [17] "cd8_tp3_v2_pseudobulk_TRB.tsv.gz" "cd8_tp3_v2_TIRTLoutput.tsv.gz"
-
-``` r
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
-## these files are named (marker)_(timepoint)_(version)_etc.tsv.gz
-```
+    ## 36.029 sec elapsed
 
 We offer the following diversity metrics/indices:
 
@@ -100,7 +88,7 @@ get_all_div_metrics()
     ## [13] "top100fraction" "topNfraction"
 
 ``` r
-div = calculate_diversity(ts_data, chain = "beta")
+div = calculate_diversity(SJTRC_longitudinal, chain = "beta")
 ```
 
     ## 

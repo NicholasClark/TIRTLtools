@@ -1,8 +1,9 @@
 # Process single-cell TIRTL-seq data
 
-**\[experimental\]** This function reads a directory of MiXCR output
-files from single-cell TIRTL-seq and outputs a data frame with a single
-TCR for each well.
+**\[experimental\]**
+
+This function reads a directory of MiXCR output files from single-cell
+TIRTL-seq and outputs a data frame with a single TCR for each well.
 
 ## Usage
 

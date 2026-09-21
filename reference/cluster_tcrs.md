@@ -1,16 +1,18 @@
 # Cluster TCRs (using the Leiden algorithm) based on their pairwise TCRdist values
 
-**\[experimental\]** The `cluster_tcrs()` function aggregates all of the
-paired TCRs found in the data, calculates pairwise similarity using the
-va, vb, cdr3a, and cdr3b regions (via TCRdist), and clusters the results
-using the Leiden algorithm.
+**\[experimental\]**
+
+The `cluster_tcrs()` function aggregates all of the paired TCRs found in
+the data, calculates pairwise similarity using the va, vb, cdr3a, and
+cdr3b regions (via TCRdist), and clusters the results using the Leiden
+algorithm.
 
 ## Usage
 
 ``` r
 cluster_tcrs(
   data,
-  tcrdist_cutoff = 90,
+  tcrdist_cutoff = NULL,
   resolution = 0.1,
   with_db = TRUE,
   db = TIRTLtools::vdj_db,
@@ -28,10 +30,9 @@ cluster_tcrs(
 
 - tcrdist_cutoff:
 
-  the
-  [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md)
-  function will only record TCRdist values less than or equal to the
-  cutoff. Default is 90. Note: Higher cutoffs will return more data, at
+  discard all TCRdist values above this cutoff. If not supplied by the
+  user, this will default to 90 for dual-chain TCRdist or 45 for
+  single-chain TCRdist. Note: Higher cutoffs will return more data, at
   most NxN where N is the number of unique TCRs.
 
 - resolution:
@@ -66,9 +67,10 @@ cluster_tcrs(
 
 Returns a list with the following elements:
 
-`$df` - a data frame with all unique TCRs along with cluster annotations
+`$nodes_df` - a data frame with all unique TCRs along with cluster
+annotations
 
-`$dist_df` - a data frame with distances (TCRdist) between TCR pairs in
+`$edges_df` - a data frame with distances (TCRdist) between TCR pairs in
 long format
 
 `$sparse_adj_mat` - an adjacency matrix (in sparse format) marking TCR
@@ -106,25 +108,39 @@ V-segments that do not specify an allele (e.g. "TRAV1-2" instead of
 Other tcr_similarity:
 [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md),
 [`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md),
+[`TCRdist_old()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_old.md),
+[`TCRdist_to_igraph()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_igraph.md),
+[`TCRdist_to_sparse_matrix()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_sparse_matrix.md),
+[`add_to_tcr_network()`](https://nicholasclark.github.io/TIRTLtools/reference/add_to_tcr_network.md),
 [`plot_clusters()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clusters.md)
 
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTLseq_minimal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  chain = "paired", verbose = FALSE)
-df = get_all_tcrs(sjtrc, chain="paired", remove_duplicates = TRUE)
+load_example_data(dataset = "SJTRC_minimal")
+#> Example data already loaded into object: 'SJTRC_minimal'
+df = get_all_tcrs(SJTRC_minimal, chain="paired", remove_duplicates = TRUE)
 
 result = cluster_tcrs(df)
+#> ℹ Both cdr3a and cdr3b found — using "tcrdist_cutoff = 90"
 #> Removed 1,583 MAIT TCRs (2.2%) from a total of 71,206 TCRs.
 #> Removed 999 MAIT TCRs (3.1%) from a total of 32,164 TCRs.
 #> Removed 452 TCRs with unknown V-segments (0.65%) from a total of 69,623 TCRs.
-#> Removed 15 TCRs with short CDR3 segments (0.022%) from a total of 69,171 TCRs.
-#> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,156 TCRs.
+#> Removed 13 TCRs with short CDR3 segments (0.019%) from a total of 69,171 TCRs.
+#> Removed 13,139 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,158 TCRs.
 #> Filtered data frame contains 56,019 TCRs (80%) of original 69,623 TCRs.
-#> Out of 56019 valid TCRs, 5723 clusters detected and 37995 singleton TCRs.
-#> 132 clusters of size >= 10, 13 clusters of size >= 50, 5 clusters of size >=100.
+#> ℹ Number of chunks: 1653
+#> ℹ 10% done — time taken so far: 1.38 seconds
+#> ℹ 20% done — time taken so far: 4.52 seconds
+#> ℹ 30% done — time taken so far: 5.32 seconds
+#> ℹ 40% done — time taken so far: 6.66 seconds
+#> ℹ 50% done — time taken so far: 7.99 seconds
+#> ℹ 60% done — time taken so far: 9.34 seconds
+#> ℹ 70% done — time taken so far: 10.68 seconds
+#> ℹ 80% done — time taken so far: 11.99 seconds
+#> ℹ 90% done — time taken so far: 13.31 seconds
+#> ℹ 100% done — time taken so far: 13.86 seconds
+#> ✔ Total time taken: 13.86 seconds
+#> Out of 56019 valid TCRs, 5724 clusters detected and 37998 singleton TCRs.
+#> 128 clusters of size >= 10, 13 clusters of size >= 50, 5 clusters of size >=100.
 ```

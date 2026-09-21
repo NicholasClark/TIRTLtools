@@ -1,8 +1,10 @@
 # Bar plot of the fraction of paired single chains by frequency
 
-**\[experimental\]** This function returns a bar plot of the fraction of
-single-chains (alpha or beta, default is beta) that were paired within
-different frequency ranges (default is
+**\[experimental\]**
+
+This function returns a bar plot of the fraction of single-chains (alpha
+or beta, default is beta) that were paired within different frequency
+ranges (default is
 `[10^-1, 10^-2], [10^-2, 10^-3], ... , [10^-5,10^-6], [10^-6, 0]`) for
 each sample.
 
@@ -71,9 +73,9 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_paired_by_read_fraction_range(ts_data, chain = "beta")
+plot_paired_by_read_fraction_range(SJTRC_longitudinal, chain = "beta")
 
 ```

@@ -17,7 +17,7 @@ and clusters the results using the Leiden algorithm."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,9 +32,9 @@ and clusters the results using the Leiden algorithm."><meta property="og:image" 
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
+    <li><a class="dropdown-item" href="../articles/data_import.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_updated.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
   </ul></li>
@@ -60,8 +60,8 @@ and clusters the results using the Leiden algorithm."><meta property="og:image" 
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
-The <code>cluster_tcrs()</code> function aggregates all of the paired TCRs found in the data,
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>The <code>cluster_tcrs()</code> function aggregates all of the paired TCRs found in the data,
 calculates pairwise similarity using the va, vb, cdr3a, and cdr3b regions (via TCRdist),
 and clusters the results using the Leiden algorithm.</p>
     </div>
@@ -70,7 +70,7 @@ and clusters the results using the Leiden algorithm.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cluster_tcrs</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  tcrdist_cutoff <span class="op">=</span> <span class="fl">90</span>,</span>
+<span>  tcrdist_cutoff <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  resolution <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  with_db <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  db <span class="op">=</span> <span class="fu">TIRTLtools</span><span class="fu">::</span><span class="va"><a href="vdj_db.html">vdj_db</a></span>,</span>
@@ -88,8 +88,9 @@ and clusters the results using the Leiden algorithm.</p>
 
 
 <dt id="arg-tcrdist-cutoff">tcrdist_cutoff<a class="anchor" aria-label="anchor" href="#arg-tcrdist-cutoff"></a></dt>
-<dd><p>the <code><a href="TCRdist.html">TCRdist()</a></code> function will only record TCRdist values
-less than or equal to the cutoff. Default is 90. Note: Higher cutoffs will return more
+<dd><p>discard all TCRdist values above this cutoff. If not
+supplied by the user, this will default to 90 for dual-chain TCRdist or 45
+for single-chain TCRdist. Note: Higher cutoffs will return more
 data, at most NxN where N is the number of unique TCRs.</p></dd>
 
 
@@ -122,8 +123,8 @@ of the data including the input and the annotated TCRs.</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Returns a list with the following elements:</p>
-<p><code>$df</code> - a data frame with all unique TCRs along with cluster annotations</p>
-<p><code>$dist_df</code> - a data frame with distances (TCRdist) between TCR pairs in long format</p>
+<p><code>$nodes_df</code> - a data frame with all unique TCRs along with cluster annotations</p>
+<p><code>$edges_df</code> - a data frame with distances (TCRdist) between TCR pairs in long format</p>
 <p><code>$sparse_adj_mat</code> - an adjacency matrix (in sparse format) marking TCR pairs with TCRdist &lt;= tcrdist_cutoff</p>
 <p><code>$graph_adj</code> - an igraph object created from the adjacency matrix</p>
 <p><code>$tcrdist_cutoff</code> - the cutoff used for TCRdist</p>
@@ -144,27 +145,41 @@ will be assigned to the "*01" allele.</p>
 <p>Other tcr_similarity:
 <code><a href="TCRdist.html">TCRdist()</a></code>,
 <code><a href="TCRdist_cpp.html">TCRdist_cpp()</a></code>,
+<code><a href="TCRdist_old.html">TCRdist_old()</a></code>,
+<code><a href="TCRdist_to_igraph.html">TCRdist_to_igraph()</a></code>,
+<code><a href="TCRdist_to_sparse_matrix.html">TCRdist_to_sparse_matrix()</a></code>,
+<code><a href="add_to_tcr_network.html">add_to_tcr_network()</a></code>,
 <code><a href="plot_clusters.html">plot_clusters()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTLseq_minimal"</span>,</span></span>
-<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sjtrc</span> <span class="op">=</span> <span class="fu"><a href="load_tirtlseq.html">load_tirtlseq</a></span><span class="op">(</span><span class="va">folder</span>,</span></span>
-<span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span>,</span></span>
-<span class="r-in"><span>  chain <span class="op">=</span> <span class="st">"paired"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="get_all_tcrs.html">get_all_tcrs</a></span><span class="op">(</span><span class="va">sjtrc</span>, chain<span class="op">=</span><span class="st">"paired"</span>, remove_duplicates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="load_example_data.html">load_example_data</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"SJTRC_minimal"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Example data already loaded into object: 'SJTRC_minimal'</span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">=</span> <span class="fu"><a href="get_all_tcrs.html">get_all_tcrs</a></span><span class="op">(</span><span class="va">SJTRC_minimal</span>, chain<span class="op">=</span><span class="st">"paired"</span>, remove_duplicates <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">=</span> <span class="fu">cluster_tcrs</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Both <span style="color: #00BB00;">cdr3a</span> and <span style="color: #00BB00;">cdr3b</span> found — using <span style="color: #0000BB;">"tcrdist_cutoff = 90"</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 1,583 MAIT TCRs (2.2%) from a total of 71,206 TCRs.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 999 MAIT TCRs (3.1%) from a total of 32,164 TCRs.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 452 TCRs with unknown V-segments (0.65%) from a total of 69,623 TCRs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 15 TCRs with short CDR3 segments (0.022%) from a total of 69,171 TCRs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 13,137 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,156 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 13 TCRs with short CDR3 segments (0.019%) from a total of 69,171 TCRs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Removed 13,139 TCRs with non-functional CDR3 amino acid sequences (19%) from a total of 69,158 TCRs.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Filtered data frame contains 56,019 TCRs (80%) of original 69,623 TCRs.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Out of 56019 valid TCRs, 5723 clusters detected and 37995 singleton TCRs.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 132 clusters of size &gt;= 10, 13 clusters of size &gt;= 50, 5 clusters of size &gt;=100.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Number of chunks: 1653</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 10% done — time taken so far: 1.38 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 20% done — time taken so far: 4.52 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 30% done — time taken so far: 5.32 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 40% done — time taken so far: 6.66 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 50% done — time taken so far: 7.99 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 60% done — time taken so far: 9.34 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 70% done — time taken so far: 10.68 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 80% done — time taken so far: 11.99 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 90% done — time taken so far: 13.31 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 100% done — time taken so far: 13.86 seconds</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Total time taken: 13.86 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Out of 56019 valid TCRs, 5724 clusters detected and 37998 singleton TCRs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128 clusters of size &gt;= 10, 13 clusters of size &gt;= 50, 5 clusters of size &gt;=100.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

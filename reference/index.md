@@ -11,8 +11,18 @@
 
 ## Data loading
 
+- [`get_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/get_samples.md)
+  : Returns sample names that are available to be imported from a
+  directory
+- [`load_example_data()`](https://nicholasclark.github.io/TIRTLtools/reference/load_example_data.md)
+  **\[experimental\]** : Load example TIRTL-seq data
 - [`load_tirtlseq()`](https://nicholasclark.github.io/TIRTLtools/reference/load_tirtlseq.md)
   **\[experimental\]** : Load data from TIRTLseq experiments
+- [`read_external_bulk()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_bulk.md)
+  **\[experimental\]** : Read and process bulk single-chain TCR-seq data
+- [`read_external_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_paired.md)
+  **\[experimental\]** : Read and process single-cell paired-chain
+  TCR-seq data
 
 ## Data wrangling
 
@@ -25,9 +35,6 @@
 
 ## Data processing and cleaning
 
-- [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md)
-  **\[experimental\]** : Add single-chain read counts/fractions to the
-  paired TCR data
 - [`clean_pairs()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.md)
   **\[experimental\]** : Remove excess pairs for individual single
   chains
@@ -46,24 +53,10 @@
   **\[experimental\]** : Remove TCRs with short CDR3 loops
 - [`filter_v_alleles()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_v_alleles.md)
   **\[experimental\]** : Remove TCRs with unknown V-segments
-- [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md)
-  **\[experimental\]** : Identify TCRs that contain non-functional CDR3
-  sequences
-- [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md)
-  **\[experimental\]** : Identify which single chains were paired
 - [`make_tcr_schema()`](https://nicholasclark.github.io/TIRTLtools/reference/make_tcr_schema.md)
   **\[experimental\]** : Make a "schema" for defining a T-Cell Receptor
 - [`prep_for_tcrdist()`](https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.md)
   **\[experimental\]** : Prepare paired TCRs for TCRdist calculation
-- [`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
-  [`process_TIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
-  **\[experimental\]** : Run data processing functions on a
-  TIRTLseqDataSet object
-- [`read_external_bulk()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_bulk.md)
-  **\[experimental\]** : Read and process bulk single-chain TCR-seq data
-- [`read_external_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_paired.md)
-  **\[experimental\]** : Read and process single-cell paired-chain
-  TCR-seq data
 - [`remove_duplicates()`](https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.md)
   **\[experimental\]** : Removes duplicate paired TCRs
 
@@ -114,11 +107,17 @@
 ## TCR similarity and clustering
 
 - [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md)
-  **\[experimental\]** : GPU implementation of TCRdist, a
-  distance/similarity metric for pairs of TCRs
-- [`TCRdist_cpp()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_cpp.md)
-  **\[experimental\]** : Parallelized C++ implementation of TCRdist (no
-  GPU required)
+  **\[experimental\]** : A fast implementation of TCRdist, a
+  distance/similarity metric for TCRs
+- [`TCRdist_to_igraph()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_igraph.md)
+  **\[experimental\]** : Build an undirected igraph graph from TCRdist()
+  results
+- [`TCRdist_to_sparse_matrix()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist_to_sparse_matrix.md)
+  **\[experimental\]** : Build a sparse adjacency matrix from TCRdist()
+  results
+- [`add_to_tcr_network()`](https://nicholasclark.github.io/TIRTLtools/reference/add_to_tcr_network.md)
+  **\[experimental\]** : Add new TCRs to an existing TCR similarity
+  network
 - [`cluster_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/cluster_tcrs.md)
   **\[experimental\]** : Cluster TCRs (using the Leiden algorithm) based
   on their pairwise TCRdist values
@@ -127,6 +126,8 @@
 
 ## Longitudinal analysis
 
+- [`get_expanded_clones()`](https://nicholasclark.github.io/TIRTLtools/reference/get_expanded_clones.md)
+  **\[experimental\]** : Find expanded or contracted clones
 - [`plot_clone_size_across_samples()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clone_size_across_samples.md)
   **\[experimental\]** : Line plot of clone read fraction across
   multiple samples
@@ -144,7 +145,7 @@
   **\[experimental\]** :
 
   Returns all diversity metric options for
-  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.md)
+  [`calculate_diversity()`](https://nicholasclark.github.io/TIRTLtools/reference/calculate_diversity.html)
 
 - [`plot_clonotype_indices()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_clonotype_indices.md)
   **\[experimental\]** : Stacked bar chart with fractions of reads
@@ -196,5 +197,19 @@
   : Substitution penalty matrix for TCRdist amino acids and V-segments
 - [`vdj_db`](https://nicholasclark.github.io/TIRTLtools/reference/vdj_db.md)
   : Table of known TCRs from VDJ-db
+
+## Deprecated
+
+- [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md)
+  **\[deprecated\]** : Add single-chain read counts/fractions to the
+  paired TCR data
+- [`identify_non_functional_seqs()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_non_functional_seqs.md)
+  **\[deprecated\]** : Identify TCRs that contain non-functional CDR3
+  sequences
+- [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md)
+  **\[deprecated\]** : Identify which single chains were paired
+- [`process_TIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
+  **\[deprecated\]** : Run data processing functions on a
+  TIRTLseqDataSet object
 
 ## Other

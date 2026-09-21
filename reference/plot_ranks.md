@@ -1,7 +1,9 @@
 # Line plot of clonotype rank vs. read fraction for each sample
 
-**\[experimental\]** `plot_ranks()` returns a line plot of TCR rank vs.
-read fraction for a given sample.
+**\[experimental\]**
+
+`plot_ranks()` returns a line plot of TCR rank vs. read fraction for a
+given sample.
 
 ## Usage
 
@@ -57,10 +59,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_ranks(ts_data, chain = "beta")
+plot_ranks(SJTRC_longitudinal, chain = "beta")
 
 
 ```

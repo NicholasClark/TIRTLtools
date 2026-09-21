@@ -1,10 +1,11 @@
 # Line plot of clone read fraction across multiple samples
 
-**\[experimental\]** This function creates a line plot of clone read
-fraction for the specified clones across multiple samples. The function
-can color the lines by groups of clones. If `sum_readFraction` is TRUE,
-the read fraction for each group will be summed and presented in one
-line.
+**\[experimental\]**
+
+This function creates a line plot of clone read fraction for the
+specified clones across multiple samples. The function can color the
+lines by groups of clones. If `sum_readFraction` is TRUE, the read
+fraction for each group will be summed and presented in one line.
 
 ## Usage
 
@@ -85,27 +86,19 @@ a ggplot object with a line plot of clone read fractions across samples.
 ## See also
 
 Other longitudinal:
+[`get_expanded_clones()`](https://nicholasclark.github.io/TIRTLtools/reference/get_expanded_clones.md),
 [`plot_sample_vs_sample()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_sample_vs_sample.md)
 
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>%
-  dplyr::arrange(desc(readFraction)) %>%
-  head(5) %>%
-  magrittr::extract2("targetSequences") %>% as.character()
-top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>%
-  dplyr::arrange(desc(readFraction)) %>%
-  head(5) %>%
-  magrittr::extract2("targetSequences") %>% as.character()
+top_clones1 = head(SJTRC_longitudinal$data$cd8_tp1_v2$beta$targetSequences)
+top_clones2 = head(SJTRC_longitudinal$data$cd8_tp2_v2$beta$targetSequences)
 
-plot_clone_size_across_samples(sjtrc,
+plot_clone_size_across_samples(SJTRC_longitudinal,
   clones = c(top_clones1, top_clones2), chain = "beta")
 
 

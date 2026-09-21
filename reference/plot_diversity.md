@@ -1,7 +1,8 @@
 # Bar plot of clonal diversity metrics
 
-**\[experimental\]** The `plot_diversity()` plots the requested clonal
-diversity metric
+**\[experimental\]**
+
+The `plot_diversity()` plots the requested clonal diversity metric
 
 This function can plot a variety of clonal diversity metrics for a
 dataset (richness, Simpson diversity index, Shannon-Wiener index, etc.).
@@ -116,13 +117,10 @@ Other diversity:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+div = calculate_diversity(SJTRC_longitudinal, chain = "beta", metrics = "d50")
 #> 
 #> -- Calculating diversity indices for sample 1 of 6.
 #> -- Calculating diversity indices for sample 2 of 6.

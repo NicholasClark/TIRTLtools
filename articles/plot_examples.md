@@ -15,23 +15,11 @@ library(dplyr)
 ## Load the SJTRC COVID-19 data
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-dir(folder)
+## This loads a TIRTLseqDataSet object called "SJTRC_longitudinal"
+load_example_data("SJTRC_longitudinal")
 ```
 
-    ##  [1] "cd4_tp1_v2_pseudobulk_TRA.tsv.gz" "cd4_tp1_v2_pseudobulk_TRB.tsv.gz"
-    ##  [3] "cd4_tp1_v2_TIRTLoutput.tsv.gz"    "cd4_tp2_v2_pseudobulk_TRA.tsv.gz"
-    ##  [5] "cd4_tp2_v2_pseudobulk_TRB.tsv.gz" "cd4_tp2_v2_TIRTLoutput.tsv.gz"   
-    ##  [7] "cd4_tp3_v2_pseudobulk_TRA.tsv.gz" "cd4_tp3_v2_pseudobulk_TRB.tsv.gz"
-    ##  [9] "cd4_tp3_v2_TIRTLoutput.tsv.gz"    "cd8_tp1_v2_pseudobulk_TRA.tsv.gz"
-    ## [11] "cd8_tp1_v2_pseudobulk_TRB.tsv.gz" "cd8_tp1_v2_TIRTLoutput.tsv.gz"   
-    ## [13] "cd8_tp2_v2_pseudobulk_TRA.tsv.gz" "cd8_tp2_v2_pseudobulk_TRB.tsv.gz"
-    ## [15] "cd8_tp2_v2_TIRTLoutput.tsv.gz"    "cd8_tp3_v2_pseudobulk_TRA.tsv.gz"
-    ## [17] "cd8_tp3_v2_pseudobulk_TRB.tsv.gz" "cd8_tp3_v2_TIRTLoutput.tsv.gz"
-
-``` r
-sjtrc = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_")
-```
+    ## 36.184 sec elapsed
 
 ## Longitudinal plots for individual TCRs or groups of TCRs
 
@@ -43,10 +31,10 @@ We can see they are highly frequent at CD8 timepoint 3, but not in any
 of the CD4 samples.
 
 ``` r
-top_clones1 = sjtrc$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
-top_clones2 = sjtrc$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
+top_clones1 = SJTRC_longitudinal$data$cd8_tp1_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
+top_clones2 = SJTRC_longitudinal$data$cd8_tp2_v2$beta %>% arrange(desc(readFraction)) %>% head(5) %>% magrittr::extract2("targetSequences") %>% as.character()
 
-plot_clone_size_across_samples(sjtrc, clones = c(top_clones1, top_clones2), chain = "beta")
+plot_clone_size_across_samples(SJTRC_longitudinal, clones = c(top_clones1, top_clones2), chain = "beta")
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-3-1.png)
@@ -58,7 +46,7 @@ Here we can see that the top CD8 clones occupy more of the repertoire
 than their CD4 counterparts.
 
 ``` r
-plot_clonotype_indices(sjtrc, chain = "beta")
+plot_clonotype_indices(SJTRC_longitudinal, chain = "beta")
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-4-1.png)
@@ -73,7 +61,7 @@ We see that the CD8 repertoire is more clonal than the CD4 and at
 timepoint 2 it is the most clonal.
 
 ``` r
-div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+div = calculate_diversity(SJTRC_longitudinal, chain = "beta", metrics = "d50")
 ```
 
     ## 
@@ -108,7 +96,7 @@ We can also plot the total number of alpha and beta chain reads for each
 sample.
 
 ``` r
-plot_n_reads(sjtrc)
+plot_n_reads(SJTRC_longitudinal)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-7-1.png)
@@ -117,7 +105,7 @@ We can also check how many alpha and beta chains were paired for each
 sample and by which algorithm.
 
 ``` r
-plot_paired(sjtrc)
+plot_paired(SJTRC_longitudinal)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-8-1.png)
@@ -132,7 +120,7 @@ these extra partners indicate mispairings and sometimes they are
 sequencing/PCR errors of the true partner.
 
 ``` r
-plot_num_partners(sjtrc)
+plot_num_partners(SJTRC_longitudinal)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-9-1.png)
@@ -148,7 +136,7 @@ of the chains in the one-in-one-hundred-thousand to one-in-one-million
 range (light green, \[1e-06,1e-05\]) are paired.
 
 ``` r
-plot_paired_by_read_fraction_range(sjtrc, chain = "beta")
+plot_paired_by_read_fraction_range(SJTRC_longitudinal, chain = "beta")
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-10-1.png)
@@ -167,7 +155,7 @@ very difficult time pairing clones that are found in all or almost all
 wells.
 
 ``` r
-plot_paired_vs_rank(sjtrc, sample = 4)
+plot_paired_vs_rank(SJTRC_longitudinal, sample = 4)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-11-1.png) Another way
@@ -180,7 +168,7 @@ frequent clones while the MAD-HYPE algorithm has trouble with clones
 that are more frequent than one in a thousand (10^-3).
 
 ``` r
-plot_read_fraction_vs_pair_status(sjtrc, sample = 4)
+plot_read_fraction_vs_pair_status(SJTRC_longitudinal, sample = 4)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-12-1.png) We might
@@ -196,7 +184,7 @@ We can see that most of the top 100 alpha clones have a partner in the
 top 100 beta clones, which makes sense.
 
 ``` r
-plot_pairs_with_eachother(sjtrc, sample = 4)
+plot_pairs_with_eachother(SJTRC_longitudinal, sample = 4)
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-13-1.png)
@@ -209,7 +197,7 @@ a frequency of around 1 in 1000 (10^-3) while the most frequent clones
 from CD8 samples have a frequency of over 1%.
 
 ``` r
-plot_ranks(sjtrc, chain = "beta")
+plot_ranks(SJTRC_longitudinal, chain = "beta")
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-14-1.png)
@@ -222,7 +210,7 @@ that there is significant sharing within CD4 and CD8 samples, but not
 between them, which is expected.
 
 ``` r
-plot_sample_overlap(sjtrc, chain = "beta")
+plot_sample_overlap(SJTRC_longitudinal, chain = "beta")
 ```
 
 ![](plot_examples_files/figure-html/unnamed-chunk-15-1.png)
@@ -233,7 +221,7 @@ timepoint 1 to 2 are shown in orange and those that are contracting are
 shown in green.
 
 ``` r
-plot_sample_vs_sample(sjtrc$data$cd8_tp1_v2, sjtrc$data$cd8_tp2_v2, chain = "beta")
+plot_sample_vs_sample(SJTRC_longitudinal$data$cd8_tp1_v2, SJTRC_longitudinal$data$cd8_tp2_v2, chain = "beta")
 ```
 
     ## Warning in geom_point(data = dt[dt$sign != "stable", ], aes((avg.x + pseudo1),

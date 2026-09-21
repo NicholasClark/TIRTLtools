@@ -1,8 +1,10 @@
 # Calculate TCR repertoire diversity metrics
 
-**\[experimental\]** `calculate_diversity()` returns a number of clonal
-diversity measures (e.g. Hill numbers, Shannon and Simpson indices)
-calculated from supplied data.
+**\[experimental\]**
+
+`calculate_diversity()` returns a number of clonal diversity measures
+(e.g. Hill numbers, Shannon and Simpson indices) calculated from
+supplied data.
 
 ## Usage
 
@@ -159,13 +161,11 @@ Other diversity:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal",
-  package = "TIRTLtools")
-sjtrc = load_tirtlseq(folder,
-  meta_columns = c("marker", "timepoint", "version"), sep = "_",
-  verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Loading file: SJTRC_longitudinal.qs2...
+#> 33.964 sec elapsed
 
-div = calculate_diversity(sjtrc, chain = "beta", metrics = "d50")
+div = calculate_diversity(SJTRC_longitudinal, chain = "beta", metrics = "d50")
 #> 
 #> -- Calculating diversity indices for sample 1 of 6.
 #> -- Calculating diversity indices for sample 2 of 6.

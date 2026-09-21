@@ -1,8 +1,13 @@
 # Identify TCRs that contain non-functional CDR3 sequences
 
-**\[experimental\]** `identify_non_functional_seqs()` identifies CDR3
-nucleotide sequences in the data that contain either stop codons (\*) or
-frame shifts (\_) that would indicate a non-functional protein product.
+**\[deprecated\]**
+
+This function has been deprecated because its functionality has been
+added to the load_tirtlseq() function
+
+`identify_non_functional_seqs()` identifies CDR3 nucleotide sequences in
+the data that contain either stop codons (\*) or frame shifts (\_) that
+would indicate a non-functional protein product.
 
 ## Usage
 
@@ -35,22 +40,10 @@ frameshift, and if it is functional.
 [`TCRdist()`](https://nicholasclark.github.io/TIRTLtools/reference/TCRdist.md),
 [`plot_num_partners()`](https://nicholasclark.github.io/TIRTLtools/reference/plot_num_partners.md)
 
-Other data_processing:
-[`TIRTL_process()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md),
+Other deprecated:
 [`add_single_chain_data()`](https://nicholasclark.github.io/TIRTLtools/reference/add_single_chain_data.md),
-[`clean_pairs()`](https://nicholasclark.github.io/TIRTLtools/reference/clean_pairs.md),
-[`combine_bulk_and_paired_data()`](https://nicholasclark.github.io/TIRTLtools/reference/combine_bulk_and_paired_data.md),
-[`filter_duplicate_tcrs()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_duplicate_tcrs.md),
-[`filter_mait()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_mait.md),
-[`filter_nonfunctional_TCRs()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_nonfunctional_TCRs.md),
-[`filter_short_cdr3s()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_short_cdr3s.md),
-[`filter_v_alleles()`](https://nicholasclark.github.io/TIRTLtools/reference/filter_v_alleles.md),
 [`identify_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/identify_paired.md),
-[`make_tcr_schema()`](https://nicholasclark.github.io/TIRTLtools/reference/make_tcr_schema.md),
-[`prep_for_tcrdist()`](https://nicholasclark.github.io/TIRTLtools/reference/prep_for_tcrdist.md),
-[`read_external_bulk()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_bulk.md),
-[`read_external_paired()`](https://nicholasclark.github.io/TIRTLtools/reference/read_external_paired.md),
-[`remove_duplicates()`](https://nicholasclark.github.io/TIRTLtools/reference/remove_duplicates.md)
+[`process_TIRTLseq()`](https://nicholasclark.github.io/TIRTLtools/reference/process_TIRTLseq.md)
 
 ## Examples
 

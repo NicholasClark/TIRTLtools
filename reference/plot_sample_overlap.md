@@ -1,8 +1,10 @@
 # Plot the overlap/agreement between samples (in terms of most frequent clones)
 
-**\[experimental\]** This function returns a heatmap showing the overlap
-among the most frequent `n_seq` TCRs (default is n_seq=200) among pairs
-of samples in a dataset.
+**\[experimental\]**
+
+This function returns a heatmap showing the overlap among the most
+frequent `n_seq` TCRs (default is n_seq=200) among pairs of samples in a
+dataset.
 
 ## Usage
 
@@ -100,13 +102,13 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_sample_overlap(ts_data, chain = "beta")
+plot_sample_overlap(SJTRC_longitudinal, chain = "beta")
 
-plot_sample_overlap(ts_data, chain = "alpha")
+plot_sample_overlap(SJTRC_longitudinal, chain = "alpha")
 
-plot_sample_overlap(ts_data, chain = "paired")
+plot_sample_overlap(SJTRC_longitudinal, chain = "paired")
 
 ```

@@ -1,9 +1,11 @@
 # A connected point plot of read fraction vs. rank for the most frequent alpha/beta chains
 
-**\[experimental\]** This function creates a point plot of read fraction
-vs. rank for the N most frequent alpha (left, mirrored) and beta (right)
-chains with lines between alpha and beta chains indicating a pair and a
-cross indicating an unpaired single-chain.
+**\[experimental\]**
+
+This function creates a point plot of read fraction vs. rank for the N
+most frequent alpha (left, mirrored) and beta (right) chains with lines
+between alpha and beta chains indicating a pair and a cross indicating
+an unpaired single-chain.
 
 ## Usage
 
@@ -63,13 +65,13 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_pairs_with_eachother(ts_data, sample = 1, n_max = 100)
+plot_pairs_with_eachother(SJTRC_longitudinal, sample = 1, n_max = 100)
 
 
-plot_pairs_with_eachother(ts_data, sample = 1, n_max = 100, show_num_partners = TRUE)
+plot_pairs_with_eachother(SJTRC_longitudinal, sample = 1, n_max = 100, show_num_partners = TRUE)
 
 
 ```

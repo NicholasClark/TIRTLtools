@@ -1,7 +1,9 @@
 # Create a summary table with number of reads and unique alpha/beta chains
 
-**\[experimental\]** This function creates a summary table with the
-number of reads and unique alpha/beta chains observed for each sample.
+**\[experimental\]**
+
+This function creates a summary table with the number of reads and
+unique alpha/beta chains observed for each sample.
 
 ## Usage
 
@@ -39,10 +41,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-summarize_data(ts_data)
+summarize_data(SJTRC_longitudinal)
 #> # A tibble: 6 × 6
 #>   sample_id  n_alpha_clones n_beta_clones n_clone_pairs n_reads_alpha
 #>   <chr>               <int>         <int>         <int>         <int>

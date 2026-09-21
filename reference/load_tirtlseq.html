@@ -15,7 +15,7 @@ from a given directory. It can also automatically assemble metadata from filenam
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,9 +30,9 @@ from a given directory. It can also automatically assemble metadata from filenam
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
+    <li><a class="dropdown-item" href="../articles/data_import.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_updated.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
   </ul></li>
@@ -189,44 +189,176 @@ then the metadata table will look like something like this:</p><div class="sourc
 </code></pre></div>
 
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other data_import:
+<code><a href="get_samples.html">get_samples()</a></code>,
+<code><a href="load_example_data.html">load_example_data()</a></code>,
+<code><a href="read_external_bulk.html">read_external_bulk()</a></code>,
+<code><a href="read_external_paired.html">read_external_paired()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">folder</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/SJTRC_TIRTL_seq_longitudinal"</span>,</span></span>
-<span class="r-in"><span>  package <span class="op">=</span> <span class="st">"TIRTLtools"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ts_data</span> <span class="op">=</span> <span class="fu">load_tirtlseq</span><span class="op">(</span><span class="va">folder</span>,</span></span>
-<span class="r-in"><span>  meta_columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"marker"</span>, <span class="st">"timepoint"</span>, <span class="st">"version"</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files from: /Users/nclark2/git/TIRTLtools/inst/extdata/SJTRC_TIRTL_seq_longitudinal...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 alpha chain pseudo-bulk files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 beta chain pseudo-bulk files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Found 6 paired chain files.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading files for 6 samples...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd4_tp1_v2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd4_tp1_v2_pseudobulk_TRA.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd4_tp1_v2_pseudobulk_TRB.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd4_tp1_v2_TIRTLoutput.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd4_tp2_v2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd4_tp2_v2_pseudobulk_TRA.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd4_tp2_v2_pseudobulk_TRB.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd4_tp2_v2_TIRTLoutput.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd4_tp3_v2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd4_tp3_v2_pseudobulk_TRA.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd4_tp3_v2_pseudobulk_TRB.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd4_tp3_v2_TIRTLoutput.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd8_tp1_v2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd8_tp1_v2_pseudobulk_TRA.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp1_v2_pseudobulk_TRB.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp1_v2_TIRTLoutput.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd8_tp2_v2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd8_tp2_v2_pseudobulk_TRA.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp2_v2_pseudobulk_TRB.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp2_v2_TIRTLoutput.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> -- Loading files for sample: cd8_tp3_v2...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (alpha chain) -- cd8_tp3_v2_pseudobulk_TRA.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- Pseudobulk (beta chain)  -- cd8_tp3_v2_pseudobulk_TRB.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ---- Loading file -- TIRTLseq (paired chain)  -- cd8_tp3_v2_TIRTLoutput.tsv...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loaded 18 files from 6 samples.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 57 secs</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="load_example_data.html">load_example_data</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">"SJTRC_minimal"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Example data already loaded into object: 'SJTRC_minimal'</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">SJTRC_minimal</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TIRTLseqDataSet&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of samples: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Samples: cd8_tp1_v2 cd8_tp2_v2</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">SJTRC_minimal</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TIRTLseqDataSet&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of samples: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Per-sample TCR counts (alpha / beta / paired):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample_id  `Paired TCRs` `Unique Paired TCRs` `Alpha Chains` `Beta Chains`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> cd8_tp1_v2         <span style="text-decoration: underline;">20</span>690                <span style="text-decoration: underline;">14</span>273         <span style="text-decoration: underline;">937</span>875        <span style="text-decoration: underline;">928</span>777</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> cd8_tp2_v2         <span style="text-decoration: underline;">26</span>260                <span style="text-decoration: underline;">17</span>891         <span style="text-decoration: underline;">980</span>522        <span style="text-decoration: underline;">895</span>688</span>
+<span class="r-in"><span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">meta</span> <span class="co">## metadata table</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   sample_id  marker timepoint version label                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> cd8_tp1_v2 cd8    tp1       v2      marker: cd8 | timepoint: tp1 | version: v2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> cd8_tp2_v2 cd8    tp2       v2      marker: cd8 | timepoint: tp2 | version: v2</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">data</span><span class="op">)</span> <span class="co">## samples</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "cd8_tp1_v2" "cd8_tp2_v2"</span>
+<span class="r-in"><span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp1_v2</span><span class="op">$</span><span class="va">alpha</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## alpha chain pseudobulk</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 937,875 × 23</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id        rank aaSeqCDR3           v     j     readFraction readCount n_wells</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> alpha_1      1 CAMRGRSNRDDKIIF     TRAV… TRAJ…      0.020<span style="text-decoration: underline;">6</span>    1<span style="text-decoration: underline;">411</span>609     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> alpha_2      2 CALKTSYDKVIF        TRAV… TRAJ…      0.014<span style="text-decoration: underline;">8</span>    1<span style="text-decoration: underline;">016</span>256     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> alpha_3      3 CAASRLPDDMRF        TRAV… TRAJ…      0.009<span style="text-decoration: underline;">56</span>    <span style="text-decoration: underline;">655</span>369     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> alpha_4      4 CAVRDSNYQLIW        TRAV… TRAJ…      0.005<span style="text-decoration: underline;">48</span>    <span style="text-decoration: underline;">375</span>648     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> alpha_5      5 CLLAHLRSGPNSGGSNYK… TRAV… TRAJ…      0.004<span style="text-decoration: underline;">70</span>    <span style="text-decoration: underline;">322</span>182     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> alpha_6      6 CAYRTPGETGANNLFF    TRAV… TRAJ…      0.004<span style="text-decoration: underline;">52</span>    <span style="text-decoration: underline;">309</span>912     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> alpha_7      7 CALSEVPYRGNTPLVF    TRAV… TRAJ…      0.003<span style="text-decoration: underline;">84</span>    <span style="text-decoration: underline;">263</span>000     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> alpha_8      8 CAVSDSNYQLIW        TRAV… TRAJ…      0.003<span style="text-decoration: underline;">67</span>    <span style="text-decoration: underline;">251</span>464     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> alpha_9      9 CAVMDSNYQLIW        TRAV… TRAJ…      0.003<span style="text-decoration: underline;">61</span>    <span style="text-decoration: underline;">247</span>566     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> alpha_10    10 CAMREGYNTDKLIF      TRAV… TRAJ…      0.003<span style="text-decoration: underline;">30</span>    <span style="text-decoration: underline;">226</span>187     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 937,865 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more variables: paired_status &lt;chr&gt;, n_paired &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   targetSequences &lt;chr&gt;, readCount_median &lt;dbl&gt;, readCount_max &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sem &lt;dbl&gt;, max_wells &lt;int&gt;, n_paired_madhype &lt;dbl&gt;, n_paired_tshell &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   has_stop_codon &lt;lgl&gt;, has_frameshift &lt;lgl&gt;, is_functional &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   is_paired &lt;lgl&gt;, is_paired_tshell &lt;lgl&gt;, is_paired_madhype &lt;lgl&gt;</span></span>
+<span class="r-in"><span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp1_v2</span><span class="op">$</span><span class="va">beta</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## beta chain pseudobulk</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 928,777 × 23</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id       rank aaSeqCDR3         v        j     readFraction readCount n_wells</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> beta_1      1 CSVERVNYNEQFF     TRBV29-1 TRBJ…      0.013<span style="text-decoration: underline;">5</span>    1<span style="text-decoration: underline;">325</span>768     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> beta_2      2 CASSTGLPRDTQYF    TRBV5-8  TRBJ…      0.011<span style="text-decoration: underline;">4</span>    1<span style="text-decoration: underline;">124</span>522     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> beta_3      3 CSATAGRNYGYTF     TRBV20-1 TRBJ…      0.010<span style="text-decoration: underline;">7</span>    1<span style="text-decoration: underline;">048</span>157     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> beta_4      4 CASSLTYEQYF       TRBV6-2  TRBJ…      0.008<span style="text-decoration: underline;">41</span>    <span style="text-decoration: underline;">827</span>268     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> beta_5      5 CASSWPQGSGSLDEQFF TRBV5-1  TRBJ…      0.005<span style="text-decoration: underline;">18</span>    <span style="text-decoration: underline;">509</span>093     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> beta_6      6 CASSTTWGTGELFF    TRBV7-8  TRBJ…      0.004<span style="text-decoration: underline;">91</span>    <span style="text-decoration: underline;">483</span>264     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> beta_7      7 CSVEQNTEAFF       TRBV29-1 TRBJ…      0.004<span style="text-decoration: underline;">91</span>    <span style="text-decoration: underline;">482</span>789     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> beta_8      8 CASSKEGASPLHF     TRBV5-1  TRBJ…      0.004<span style="text-decoration: underline;">56</span>    <span style="text-decoration: underline;">448</span>792     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> beta_9      9 CAWSKGEANVLTF     TRBV30   TRBJ…      0.004<span style="text-decoration: underline;">43</span>    <span style="text-decoration: underline;">435</span>608     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> beta_10    10 CASSYEGSWGDEQFF   TRBV6-2  TRBJ…      0.003<span style="text-decoration: underline;">96</span>    <span style="text-decoration: underline;">389</span>542     191</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 928,767 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more variables: paired_status &lt;chr&gt;, n_paired &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   targetSequences &lt;chr&gt;, readCount_median &lt;dbl&gt;, readCount_max &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   sem &lt;dbl&gt;, max_wells &lt;int&gt;, n_paired_madhype &lt;dbl&gt;, n_paired_tshell &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   has_stop_codon &lt;lgl&gt;, has_frameshift &lt;lgl&gt;, is_functional &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   is_paired &lt;lgl&gt;, is_paired_tshell &lt;lgl&gt;, is_paired_madhype &lt;lgl&gt;</span></span>
+<span class="r-in"><span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp1_v2</span><span class="op">$</span><span class="va">paired</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## all pairs (rows duplicated if called by both pairing algorithms)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20,690 × 47</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    method va         ja     cdr3a         cdr3b vb    jb    alpha_rank beta_rank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> tshell TRAV13-1   TRAJ32 CAAKGVYGGATN… CSVE… TRBV… TRBJ…         12         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> tshell TRAV10     TRAJ10 CVVNHGR_GNKL… CSVE… TRBV… TRBJ…         79         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> tshell TRAV14/DV4 TRAJ30 CAMRGRSNRDDK… CASS… TRBV… TRBJ…          1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> tshell TRAV12-2   TRAJ23 CAVKQ*P_GGKL… CASS… TRBV… TRBJ…         30         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> tshell TRAV29/DV5 TRAJ43 CAASRLPDDMRF  CSAT… TRBV… TRBJ…          3         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> tshell TRAV19     TRAJ29 CALSEVPYRGNT… CASS… TRBV… TRBJ…          7         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> tshell TRAV2      TRAJ42 CAVEASLW_GSQ… CASS… TRBV… TRBJ…         99         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> tshell TRAV8-1    TRAJ32 CAVDATNKLIF   CASS… TRBV… TRBJ…         28         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> tshell TRAV30     TRAJ48 CGTDAFISNFGN… CASS… TRBV… TRBJ…         67         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> tshell TRAV12-2   TRAJ24 CAVNTISDSWGK… CSVE… TRBV… TRBJ…         18         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 20,680 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 38 more variables: alpha_readFraction &lt;dbl&gt;, beta_readFraction &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alpha_readCount &lt;int&gt;, beta_readCount &lt;int&gt;, is_functional &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alpha_nuc &lt;chr&gt;, beta_nuc &lt;chr&gt;, alpha_beta &lt;chr&gt;, wi &lt;int&gt;, wj &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   wij &lt;int&gt;, wa &lt;int&gt;, wb &lt;int&gt;, score &lt;dbl&gt;, r &lt;dbl&gt;, ts &lt;dbl&gt;, pval &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pval_adj &lt;dbl&gt;, loss_a_frac &lt;dbl&gt;, loss_b_frac &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alpha_readCount_max &lt;int&gt;, alpha_readCount_median &lt;dbl&gt;, alpha_sem &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">cd8_tp1_v2</span><span class="op">$</span><span class="va">paired_alt</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## all pairs (each row unique)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14,273 × 49</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    paired_status va         ja     cdr3a  cdr3b vb    jb    alpha_rank beta_rank</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> T-SHELL only  TRAV13-1   TRAJ32 CAAKG… CSVE… TRBV… TRBJ…         12         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> T-SHELL only  TRAV10     TRAJ10 CVVNH… CSVE… TRBV… TRBJ…         79         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> T-SHELL only  TRAV14/DV4 TRAJ30 CAMRG… CASS… TRBV… TRBJ…          1         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> T-SHELL only  TRAV12-2   TRAJ23 CAVKQ… CASS… TRBV… TRBJ…         30         2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> T-SHELL only  TRAV29/DV5 TRAJ43 CAASR… CSAT… TRBV… TRBJ…          3         3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> T-SHELL only  TRAV19     TRAJ29 CALSE… CASS… TRBV… TRBJ…          7         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> T-SHELL only  TRAV2      TRAJ42 CAVEA… CASS… TRBV… TRBJ…         99         4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> T-SHELL only  TRAV8-1    TRAJ32 CAVDA… CASS… TRBV… TRBJ…         28         5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> T-SHELL only  TRAV30     TRAJ48 CGTDA… CASS… TRBV… TRBJ…         67         6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> T-SHELL only  TRAV12-2   TRAJ24 CAVNT… CSVE… TRBV… TRBJ…         18         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 14,263 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more variables: alpha_readFraction &lt;dbl&gt;, beta_readFraction &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alpha_readCount &lt;int&gt;, beta_readCount &lt;int&gt;, is_functional &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alpha_nuc &lt;chr&gt;, beta_nuc &lt;chr&gt;, alpha_beta &lt;chr&gt;, wi &lt;int&gt;, wj &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   wij &lt;int&gt;, wa &lt;int&gt;, wb &lt;int&gt;, score &lt;dbl&gt;, r &lt;dbl&gt;, ts &lt;dbl&gt;, pval &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pval_adj &lt;dbl&gt;, loss_a_frac &lt;dbl&gt;, loss_b_frac &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   alpha_readCount_max &lt;int&gt;, alpha_readCount_median &lt;dbl&gt;, alpha_sem &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span><span class="va">SJTRC_minimal</span><span class="op">$</span><span class="va">info</span> <span class="co">## information</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data_version</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "v1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $processing_version</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "v1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $package_version</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ‘0.2.1’</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$directory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/Users/nclark2/git/TIRTLtools/inst/extdata/SJTRC_TIRTLseq_minimal"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$chain</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "all"    "paired" "alpha"  "beta"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$sep</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$meta_columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "marker"    "timepoint" "version"  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$samples</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$clean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$remove_nonfunctional</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$process</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$pseudobulk_columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "auto"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$paired_columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "auto"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$n_threads</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$verbose</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$stringsAsFactors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $call$n_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

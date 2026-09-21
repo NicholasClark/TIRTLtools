@@ -1,8 +1,10 @@
 # Stacked bar plot of the number of TCRs paired by each algorithm
 
-**\[experimental\]** This function plots the number of TCRs paired by
-each algorithm. It can also plot the number of single-chains (alpha or
-beta) paired by the algorithms.
+**\[experimental\]**
+
+This function plots the number of TCRs paired by each algorithm. It can
+also plot the number of single-chains (alpha or beta) paired by the
+algorithms.
 
 ## Usage
 
@@ -63,10 +65,10 @@ Other qc:
 ## Examples
 
 ``` r
-folder = system.file("extdata/SJTRC_TIRTL_seq_longitudinal", package = "TIRTLtools")
-ts_data = load_tirtlseq(folder, meta_columns = c("marker", "timepoint", "version"), sep = "_", verbose = FALSE)
+load_example_data(dataset = "SJTRC_longitudinal")
+#> Example data already loaded into object: 'SJTRC_longitudinal'
 
-plot_paired(ts_data)
+plot_paired(SJTRC_longitudinal)
 
 
 ```

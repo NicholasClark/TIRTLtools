@@ -1,7 +1,9 @@
 # Get p-value and well threshold settings for T-SHELL
 
-**\[experimental\]** This function returns a list with p-value and well
-threshold settings for 384-well or 96-well T-SHELL.
+**\[experimental\]**
+
+This function returns a list with p-value and well threshold settings
+for 384-well or 96-well T-SHELL.
 
 ## Usage
 
@@ -29,3 +31,23 @@ settings will be used. Otherwise the "96_well" settings will be used.
 
 Other pairing:
 [`run_pairing()`](https://nicholasclark.github.io/TIRTLtools/reference/run_pairing.md)
+
+## Examples
+
+``` r
+get_tshell_settings("96_well")
+#> $pval_thres_tshell
+#> [1] 0.001
+#> 
+#> $wij_thres_tshell
+#> [1] 3
+#> 
+get_tshell_settings("384_well")
+#> $pval_thres_tshell
+#> [1] 1e-10
+#> 
+#> $wij_thres_tshell
+#> [1] 2
+#> 
+
+```

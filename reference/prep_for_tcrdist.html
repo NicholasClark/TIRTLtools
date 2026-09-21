@@ -17,7 +17,7 @@ TCRs with unrecognized V-segments or non-functional CDR3 sequences.'><meta prope
 
     <a class="navbar-brand me-2" href="../index.html">TIRTLtools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,9 +32,9 @@ TCRs with unrecognized V-segments or non-functional CDR3 sequences.'><meta prope
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Tutorials</h6></li>
-    <li><a class="dropdown-item" href="../articles/data_loading.html">Loading Paired TCR TIRTLseq data in R</a></li>
+    <li><a class="dropdown-item" href="../articles/data_import.html">Loading Paired TCR TIRTLseq data in R</a></li>
     <li><a class="dropdown-item" href="../articles/plot_examples.html">Plot examples with SJTRC COVID-19 data</a></li>
-    <li><a class="dropdown-item" href="../articles/pairing_zenodo_data.html">Pairing of alpha/beta TCR chains</a></li>
+    <li><a class="dropdown-item" href="../articles/pairing_updated.html">Pairing of alpha/beta TCR chains</a></li>
     <li><a class="dropdown-item" href="../articles/TCRdist.html">Fast TCR similarity calculation with TCRdist GPU</a></li>
     <li><a class="dropdown-item" href="../articles/summarizing_diversity.html">Estimating TCR Repertoire diversity</a></li>
   </ul></li>
@@ -60,8 +60,8 @@ TCRs with unrecognized V-segments or non-functional CDR3 sequences.'><meta prope
     </div>
 
     <div class="ref-description section level2">
-    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a>
-This function prepares a paired TCR data frame for running TCRdist,
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p>This function prepares a paired TCR data frame for running TCRdist,
 adding alleles to V-segments (i.e. "*01") if they are missing and removing
 TCRs with unrecognized V-segments or non-functional CDR3 sequences.</p>
     </div>
@@ -109,8 +109,6 @@ By default, the <code><a href="params.html">params</a></code> data frame is used
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other data_processing:
-<code><a href="process_TIRTLseq.html">TIRTL_process()</a></code>,
-<code><a href="add_single_chain_data.html">add_single_chain_data()</a></code>,
 <code><a href="clean_pairs.html">clean_pairs()</a></code>,
 <code><a href="combine_bulk_and_paired_data.html">combine_bulk_and_paired_data()</a></code>,
 <code><a href="filter_duplicate_tcrs.html">filter_duplicate_tcrs()</a></code>,
@@ -118,11 +116,7 @@ By default, the <code><a href="params.html">params</a></code> data frame is used
 <code><a href="filter_nonfunctional_TCRs.html">filter_nonfunctional_TCRs()</a></code>,
 <code><a href="filter_short_cdr3s.html">filter_short_cdr3s()</a></code>,
 <code><a href="filter_v_alleles.html">filter_v_alleles()</a></code>,
-<code><a href="identify_non_functional_seqs.html">identify_non_functional_seqs()</a></code>,
-<code><a href="identify_paired.html">identify_paired()</a></code>,
 <code><a href="make_tcr_schema.html">make_tcr_schema()</a></code>,
-<code><a href="read_external_bulk.html">read_external_bulk()</a></code>,
-<code><a href="read_external_paired.html">read_external_paired()</a></code>,
 <code><a href="remove_duplicates.html">remove_duplicates()</a></code></p></div>
     </div>
 
