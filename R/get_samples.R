@@ -74,9 +74,9 @@ get_samples_single_dir = function(data_dir, pattern = NULL) {
       )
     ) |>
     dplyr::mutate(
-      paired_file = dir(data_dir, pattern = glue::glue("{sample}_TIRTLoutput.tsv.*"), full.names = TRUE)[1],
-      tra_file = dir(data_dir, pattern = glue::glue("{sample}_pseudobulk_TRA.tsv.*"), full.names = TRUE)[1],
-      trb_file = dir(data_dir, pattern = glue::glue("{sample}_pseudobulk_TRB.tsv.*"), full.names = TRUE)[1]
+      paired_file = sapply(sample, function(x) dir(data_dir, pattern = glue::glue("{x}_TIRTLoutput.tsv.*"), full.names = TRUE)[1]),
+      tra_file = sapply(sample, function(x) dir(data_dir, pattern = glue::glue("{x}_pseudobulk_TRA.tsv.*"), full.names = TRUE)[1]),
+      trb_file = sapply(sample, function(x) dir(data_dir, pattern = glue::glue("{x}_pseudobulk_TRB.tsv.*"), full.names = TRUE)[1])
     ) ## note: will preferentially choose unzipped ".tsv" files over ".tsv.gz" if both are available due to default sorting in "dir" function
 
   return(return_df)
