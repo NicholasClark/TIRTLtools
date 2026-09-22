@@ -31,6 +31,7 @@
 #' @param meta_columns (optional) a vector of names identifying the metadata contained in the filenames,
 #' for example \code{c("marker", "timepoint", "donor")} for files named something like "cd8_timepoint2_donor1 ... .tsv".
 #' @param samples (optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).
+#' @param pattern (optional) a pattern used by `grep` to select samples. Default is NULL (loads all samples in the directory).
 #' @param clean (optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 #' excess pairs for individual alpha and beta chains (default is FALSE).
 #' @param remove_nonfunctional whether to remove non-functional TCR chains (default is FALSE)
@@ -86,6 +87,7 @@ load_tirtlseq = function(
     sep = "_",
     meta_columns = NULL,
     samples = NULL,
+    pattern = NULL,
     clean = FALSE,
     remove_nonfunctional = FALSE,
     process = TRUE,
@@ -102,7 +104,14 @@ load_tirtlseq = function(
   chain = chain[1]
   compress_strings = FALSE
 
-  checkmate::assert_character(samples, unique = TRUE, null.ok = TRUE)
+  checkmate::assert_character(directory, unique = TRUE, any.missing = FALSE, null.ok = FALSE)
+  checkmate::assert_directory_exists(directory)
+  checkmate::assert_character(samples, unique = TRUE, null.ok = TRUE, any.missing = FALSE)
+  checkmate::assert_string(pattern, null.ok = TRUE, na.ok = FALSE)
+  if(!is.null(pattern) && !is.null(samples)) stop("Only one of 'pattern' and 'samples' may be non-null")
+
+  if(!is.null(pattern)) samples = get_samples(directory, pattern = pattern)$sample
+
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
   ll = lapply(directory, function(dir_tmp) {
