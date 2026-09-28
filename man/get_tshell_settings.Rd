@@ -31,6 +31,7 @@ get_tshell_settings("384_well")
 }
 \seealso{
 Other pairing:
-\code{\link[=run_pairing]{run_pairing()}}
+\code{\link[=run_pairing]{run_pairing()}},
+\code{\link[=run_pairing_old]{run_pairing_old()}}
 }
 \concept{pairing}

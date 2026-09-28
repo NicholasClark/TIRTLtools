@@ -1,4 +1,108 @@
 
+forward_args <- function(.fn, ...) {
+  # Evaluate overrides once, in the caller's frame (e.g. forward_args(inner, c = FALSE))
+  overrides <- list(...)
+
+  # Execution frame of the calling function, where its arguments live as local variables
+  env <- parent.frame()
+
+  # The calling function itself, needed for its formals (names and defaults)
+  caller <- sys.function(sys.parent())
+  fmls   <- formals(caller)
+
+  # Argument names accepted by both functions.
+  # args() makes formals() work for primitives like sum().
+  shared <- intersect(names(formals(args(.fn))), names(fmls))
+
+  # Drop "..." (can't be looked up by name) and anything being overridden
+  shared <- setdiff(shared, c("...", names(overrides)))
+
+  # Keep an argument only if there's a value to forward: either the user
+  # supplied it, or the caller defines a default. Otherwise leave it out
+  # so .fn falls back to its own default.
+  has_value <- vapply(shared, function(n) {
+    # missing() only works in the frame that owns the argument,
+    # so build the call missing(<n>) and evaluate it there
+    supplied    <- !eval(call("missing", as.name(n)), env)
+    # quote(expr = ) is the empty symbol, which marks "no default"
+    has_default <- !identical(fmls[[n]], quote(expr = ))
+    supplied || has_default
+  }, logical(1))
+  shared <- shared[has_value]
+
+  # Pass symbols rather than values, e.g. list(df = quote(df), a = quote(a)),
+  # so they're looked up at call time (picking up any reassignment in the
+  # caller) and tracebacks stay readable
+  arg_syms <- setNames(lapply(shared, as.name), shared)
+
+  # Build .fn(df = df, a = a, <overrides>) and run it in the caller's frame
+  eval(as.call(c(list(.fn), arg_syms, overrides)), env)
+}
+
+# forward_args_old <- function(.fn, ...) {
+#   env    <- parent.frame()
+#   caller <- sys.function(sys.parent())
+#   fmls   <- formals(caller)
+#
+#   shared <- intersect(names(formals(args(.fn))), names(fmls))
+#   shared <- setdiff(shared, c("...", names(list(...))))
+#
+#   # skip args the user didn't supply that also have no default
+#   has_value <- vapply(shared, function(n) {
+#     !eval(call("missing", as.name(n)), env) ||
+#       !identical(fmls[[n]], quote(expr = ))
+#   }, logical(1))
+#   shared <- shared[has_value]
+#
+#   arg_syms <- setNames(lapply(shared, as.name), shared)
+#   eval(as.call(c(list(.fn), arg_syms, list(...))), env)
+# }
+
+#' Add columns to paired data frame with full alpha chain, beta chain, or both
+#' example: "TRAV30 | TRAJ34 | CGTEIGNTDKLIF | TGCGGCACAGAGATAGGTAACACCGACAAGCTCATCTTT"
+#' @param df paired data frame
+#' @returns the same data frame, with additional columns "alpha", "beta" and "receptor"
+#' @noRd
+add_ids_to_paired_df = function(df) {
+  df |> mutate(
+    alpha = paste(va, ja, cdr3a, alpha_nuc, sep = " | "),
+    beta = paste(vb, jb, cdr3b, beta_nuc, sep = " | ")
+  ) |>
+    mutate(receptor = paste(alpha, beta, sep = " + "))
+}
+
+#' Get number of partners for each chain from the paired data frame
+#' @param df paired data frame
+#' @returns a list with 3 items
+#' - df - the original data frame, filtered of duplicated TCRs and with
+#' added columns for each receptor chain.
+#' - df_a a dataframe with the number of partners for all alpha chains
+#' - df_b a dataframe with the number of partners for all beta chains
+#' @noRd
+get_n_partners = function(df) {
+  df = df |> add_ids_to_paired_df()
+  df = df |> filter(!duplicated(receptor))
+  df_a = df |>
+    pull(alpha) |> table() |> as.data.frame.table() |>
+    arrange(desc(Freq)) |>
+    as_tibble() |> rename(alpha = Var1, n_partners_alpha = Freq)
+  df_b = df |>
+    pull(beta) |> table() |> as.data.frame.table() |>
+    arrange(desc(Freq)) |>
+    as_tibble() |> rename(beta = Var1, n_partners_beta = Freq)
+  return(list(df = df, df_alpha = df_a, df_beta = df_b))
+}
+
+#' Add number of partners for each chain onto a paired dataframe
+#'
+#' Adds columns "n_partners_alpha", "n_partners_beta", and adds "alpha", "beta",
+#' and "receptor" column with full chains.
+#' @noRd
+annotate_n_partners = function(df) {
+  ll = get_n_partners(df)
+  ll$df |> left_join(ll$df_alpha, by = "alpha") |> left_join(ll$df_beta, by = "beta")
+}
+
 ### add alleles ("*01") to va and vb if necessary (needed for TCRdist)
 .add_alleles = function(df) {
   use_alpha = ifelse("va" %in% colnames(df), TRUE, FALSE)

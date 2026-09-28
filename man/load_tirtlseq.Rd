@@ -10,6 +10,7 @@ load_tirtlseq(
   sep = "_",
   meta_columns = NULL,
   samples = NULL,
+  pattern = NULL,
   clean = FALSE,
   remove_nonfunctional = FALSE,
   process = TRUE,
@@ -32,6 +33,8 @@ load_tirtlseq(
 for example \code{c("marker", "timepoint", "donor")} for files named something like "cd8_timepoint2_donor1 ... .tsv".}
 
 \item{samples}{(optional) specific sample ids (the part of the filename before "_pseudobulk" or "_TIRTLoutput") to load. Default is NULL (loads all samples in the directory).}
+
+\item{pattern}{(optional) a pattern used by \code{grep} to select samples. Default is NULL (loads all samples in the directory).}
 
 \item{clean}{(optional) a TRUE/FALSE value, whether or not to "clean" the paired data by removing
 excess pairs for individual alpha and beta chains (default is FALSE).}

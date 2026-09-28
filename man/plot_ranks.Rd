@@ -43,6 +43,7 @@ Other qc:
 \code{\link[=get_all_tcrs]{get_all_tcrs()}},
 \code{\link[=get_pair_stats]{get_pair_stats()}},
 \code{\link[=get_paired_by_read_fraction_range]{get_paired_by_read_fraction_range()}},
+\code{\link[=plot_n_paired_step]{plot_n_paired_step()}},
 \code{\link[=plot_n_reads]{plot_n_reads()}},
 \code{\link[=plot_num_partners]{plot_num_partners()}},
 \code{\link[=plot_paired]{plot_paired()}},
