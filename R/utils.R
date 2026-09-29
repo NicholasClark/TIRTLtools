@@ -1,3 +1,5 @@
+#' @noRd
+`%notin%` <- function(x, table) !(x %in% table)
 
 forward_args <- function(.fn, ...) {
   # Evaluate overrides once, in the caller's frame (e.g. forward_args(inner, c = FALSE))

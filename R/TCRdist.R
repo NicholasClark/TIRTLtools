@@ -343,9 +343,13 @@ TCRdist_to_sparse_matrix = function(edges_df, nodes_df, binary = FALSE) {
 ### to keep the two endpoints' metadata distinguishable in the joined result.
 .add_node_metadata_to_edges = function(edges_df, nodes_df) {
   node1_meta = nodes_df %>%
+    add_ids_to_paired_df() %>%
+    filter(!duplicated(receptor)) %>%
     dplyr::rename_with(~ paste0("node1_", .x), .cols = -tcr_index) %>%
     dplyr::rename(node1_idx = tcr_index)
   node2_meta = nodes_df %>%
+    add_ids_to_paired_df() %>%
+    filter(!duplicated(receptor)) %>%
     dplyr::rename_with(~ paste0("node2_", .x), .cols = -tcr_index) %>%
     dplyr::rename(node2_idx = tcr_index)
 
