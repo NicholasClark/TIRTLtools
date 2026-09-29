@@ -64,6 +64,7 @@ export(plot_sample_overlap) ## full docs
 export(plot_n_reads) ## full docs
 export(plot_num_partners) ## full docs
 export(plot_n_paired_step) ### full docs
+export(qc_report) ## full docs
 
 ## pairing
 export(run_pairing) # docs 90% done - needs details, examples

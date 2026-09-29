@@ -41,7 +41,7 @@ plot_ranks = function(
   xx = .get_log_labels_pos(df_all$rank)
   yy = .get_log_labels_neg(df_all[[column]])
 
-  gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample), linewidth = 1.5) +
+  gg = ggplot(df_all) + geom_line(aes(x=rank, y=!!sym(column), color = Sample), linewidth = 0.8) +
     xlab("rank") +
     #ylab("readFraction") +
     theme_classic() +
@@ -49,6 +49,10 @@ plot_ranks = function(
     theme(text = element_text(size = 16)) +
     scale_y_log10(breaks=yy$brks,labels=yy$labels) +
     scale_x_log10(breaks=xx$brks,labels=xx$labels)
-  gg = gg + scale_color_manual(values = .tirtl_colors_distinct(palette=color_scheme))
+  cols = .tirtl_colors_distinct(palette=color_scheme)
+  n_samples = length(unique(df_all$Sample))
+  ## not enough colors in the palette -- use evenly spaced hues instead
+  if(n_samples > length(cols)) cols = grDevices::hcl.colors(n_samples, palette = "Dark 3")
+  gg = gg + scale_color_manual(values = cols)
   return(gg)
 }

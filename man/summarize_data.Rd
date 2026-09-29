@@ -38,6 +38,7 @@ Other qc:
 \code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
 \code{\link[=plot_ranks]{plot_ranks()}},
 \code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
-\code{\link[=plot_sample_overlap]{plot_sample_overlap()}}
+\code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=qc_report]{qc_report()}}
 }
 \concept{qc}

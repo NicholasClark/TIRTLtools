@@ -54,26 +54,28 @@ summary.TIRTLseqDataSet = function(x, ...) {
   alpha_rows  <- integer(n_samples)
   beta_rows   <- integer(n_samples)
   paired_rows <- integer(n_samples)
+  alpha_reads <- integer(n_samples)
+  beta_reads <- integer(n_samples)
 
   # unique TCR counts
-  paired_rows2 <- integer(n_samples)
+  #paired_rows2 <- integer(n_samples)
 
   for (i in seq_len(n_samples)) {
     s <- x$data[[i]]
     alpha_rows[i]  <- nrow(s$alpha)
     beta_rows[i]   <- nrow(s$beta)
-    paired_rows[i] <- nrow(s$paired)
-
-    s_unique = remove_duplicates(s$paired)
-    paired_rows2[i] <- nrow(s_unique)
+    paired_rows[i] <- nrow(s$paired_alt)
+    alpha_reads[i] = sum(s$alpha$readCount)
+    beta_reads[i] = sum(s$beta$readCount)
   }
   cat("  Per-sample TCR counts (alpha / beta / paired):\n")
   summary_df <- data.frame(
     sample_id      = sample_names,
     `Paired TCRs` = paired_rows,
-    `Unique Paired TCRs` = paired_rows2,
-    `Alpha Chains`  = alpha_rows,
-    `Beta Chains`   = beta_rows,
+    `Alpha chains`  = alpha_rows,
+    `Beta chains`   = beta_rows,
+    `Number of reads (TCR-alpha)` = alpha_reads,
+    `Number of reads (TCR-beta)` = beta_reads,
     row.names   = NULL,
     check.names = FALSE
   )

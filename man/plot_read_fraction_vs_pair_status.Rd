@@ -61,6 +61,7 @@ Other qc:
 \code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
 \code{\link[=plot_ranks]{plot_ranks()}},
 \code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=qc_report]{qc_report()}},
 \code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}

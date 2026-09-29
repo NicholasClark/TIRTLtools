@@ -4,7 +4,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' The function creates a stepped line plot of the cumulative number of paired/unpaired alpha
 #' or beta chains (default is both) among the `n_max` most frequent chains.
 #'
@@ -33,7 +33,7 @@ plot_paired_vs_rank = function(
     sample,
     y_axis = c("n_not_paired", "n_paired"),
     chain = c("both", "beta", "alpha"),
-    n_max = 100,
+    n_max = 50,
     by_method=TRUE,
     color_scheme = NULL
     ) {
@@ -54,6 +54,7 @@ plot_paired_vs_rank = function(
   ylabel = ifelse(y_axis == "n_not_paired", "Number of clones not paired", "Number of clones paired")
   gg = ggplot(df_melt, aes(x=rank, y=!!sym(y_axis), color = method, shape = method)) +
     geom_step() +
+    coord_fixed(ylim=c(0, n_max), xlim = c(0,n_max)) +
     xlab("Clonal rank by readFraction") +
     ylab(ylabel) +
     #geom_point(aes(shape = method, color = method)) +

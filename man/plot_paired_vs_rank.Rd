@@ -9,7 +9,7 @@ plot_paired_vs_rank(
   sample,
   y_axis = c("n_not_paired", "n_paired"),
   chain = c("both", "beta", "alpha"),
-  n_max = 100,
+  n_max = 50,
   by_method = TRUE,
   color_scheme = NULL
 )
@@ -59,6 +59,7 @@ Other qc:
 \code{\link[=plot_ranks]{plot_ranks()}},
 \code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
 \code{\link[=plot_sample_overlap]{plot_sample_overlap()}},
+\code{\link[=qc_report]{qc_report()}},
 \code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}

@@ -77,6 +77,7 @@ Other qc:
 \code{\link[=plot_pairs_with_eachother]{plot_pairs_with_eachother()}},
 \code{\link[=plot_ranks]{plot_ranks()}},
 \code{\link[=plot_read_fraction_vs_pair_status]{plot_read_fraction_vs_pair_status()}},
+\code{\link[=qc_report]{qc_report()}},
 \code{\link[=summarize_data]{summarize_data()}}
 }
 \concept{qc}
