@@ -94,7 +94,8 @@ the best pairs for each clone (default is FALSE)}
 
 \item{gzip_output}{whether to compress (gzip) output files (default is FALSE)}
 
-\item{pseudobulk_only}{only output pseudobulk with no pairing (default is FALSE)}
+\item{pseudobulk_only}{only output pseudobulk with no pairing (default is FALSE).
+If \code{write_extra_files} is also TRUE, the plate statistics and read count matrices are written too.}
 
 \item{run_qc}{whether to run the quality control pipeline on the samples, dropping wells with a number of unique alpha or beta clones below a certain threshold.}
 
