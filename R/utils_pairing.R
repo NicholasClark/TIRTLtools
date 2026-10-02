@@ -41,7 +41,7 @@ getb_sm<-function(dtlist){ #same, but smaller files!
 get_good_wells_new = function(alpha_list, beta_list, thres_alpha, thres_beta, pos=3, wellset=get_well_subset(1:16,1:24), verbose = TRUE) {
   wells_a = names(alpha_list)
   wells_b = names(beta_list)
-  if(!all.equal(wells_a,wells_b)) stop("Alpha and beta wells not in the same order")
+  if(!isTRUE(all.equal(wells_a,wells_b))) stop("Alpha and beta wells not in the same order")
   good_wells_a = wells_a[sapply(alpha_list,nrow)>thres_alpha]
   good_wells_b = wells_b[sapply(beta_list,nrow)>thres_beta]
   good_wells = intersect(good_wells_a,good_wells_b)
@@ -64,7 +64,7 @@ get_good_wells_new = function(alpha_list, beta_list, thres_alpha, thres_beta, po
 get_good_wells_sub = function(alpha_list, beta_list, thres, pos=3, wellset=get_well_subset(1:16,1:24)) {
   wells_a = (sapply(strsplit(names(alpha_list),"_"),"[[",pos))
   wells_b = (sapply(strsplit(names(beta_list),"_"),"[[",pos))
-  if(!all.equal(wells_a,wells_b)) stop("Alpha and beta wells not in the same order")
+  if(!isTRUE(all.equal(wells_a,wells_b))) stop("Alpha and beta wells not in the same order")
   good_wells_a = wells_a[sapply(alpha_list,nrow)>thres]
   good_wells_b = wells_b[sapply(beta_list,nrow)>thres]
   good_wells = intersect(good_wells_a,good_wells_b)

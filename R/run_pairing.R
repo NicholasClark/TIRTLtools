@@ -40,7 +40,8 @@
 #' The default value is 0.5
 #' @param min_reads minimum number of reads a chain must have in a well to be considered observed
 #' (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)
-#' @param min_wells minimum number of wells a chain must be observed in to be paired.
+#' @param min_wells a chain must be observed in more than `min_wells` wells to be paired
+#' (default value is 2, i.e. chain must be observed in >= 3 wells)
 #' @param well_pos the position of the well ID (e.g. "B5") in the file names. For example, files
 #' named "<lab>_<project>_<well_id>_TCRalpha.tsv" would use well_pos=3. (default is 3)
 #' @param tshell_settings a named list with pairing settings for T-SHELL: `pval_thres_tshell` and `wij_thres_tshell`. You may pass your own list or call \code{\link{get_tshell_settings}()} with setting "auto", "384_well", or "96_well". By default, "auto" is selected and "384_well" settings will be used if there are >= 150 wells passing QC, otherwise "96_well" settings will be used.
@@ -66,6 +67,13 @@
 #' the threshold for both chains. If "independent", then TCRalpha clones will be used
 #' to determine a QC threshold for alpha and TCRbeta clones will be used to determine
 #' a separate QC threshold for beta clones. ("alpha" is default)
+#' @param wellset1 `r lifecycle::badge("deprecated")` Use `wellset` instead.
+#' @param compute `r lifecycle::badge("deprecated")` Use `pseudobulk_only` instead
+#' (`compute = FALSE` is the same as `pseudobulk_only = TRUE`).
+#' @param pval_thres_tshell `r lifecycle::badge("deprecated")` Use `tshell_settings` instead.
+#' @param wij_thres_tshell `r lifecycle::badge("deprecated")` Use `tshell_settings` instead.
+#' @param fork `r lifecycle::badge("deprecated")` No longer used.
+#' @param shared `r lifecycle::badge("deprecated")` No longer used.
 #'
 #' @return
 #' A data frame with the TCR-alpha/TCR-beta pairs.
@@ -140,6 +148,46 @@ run_pairing = function(
     )
     wellset = wellset1
   }
+  if (lifecycle::is_present(compute)) {
+    lifecycle::deprecate_warn(
+      when = "0.2.2",
+      what = "run_pairing(compute=)",
+      with = "run_pairing(pseudobulk_only=)"
+    )
+    pseudobulk_only = !compute
+  }
+  ## user-supplied T-SHELL thresholds override 'tshell_settings' (applied after "auto" settings are chosen)
+  tshell_overrides = list()
+  if (lifecycle::is_present(pval_thres_tshell)) {
+    lifecycle::deprecate_warn(
+      when = "0.1.22",
+      what = "run_pairing(pval_thres_tshell=)",
+      with = "run_pairing(tshell_settings=)"
+    )
+    tshell_overrides$pval_thres_tshell = pval_thres_tshell
+  }
+  if (lifecycle::is_present(wij_thres_tshell)) {
+    lifecycle::deprecate_warn(
+      when = "0.1.22",
+      what = "run_pairing(wij_thres_tshell=)",
+      with = "run_pairing(tshell_settings=)"
+    )
+    tshell_overrides$wij_thres_tshell = wij_thres_tshell
+  }
+  if (lifecycle::is_present(fork)) {
+    lifecycle::deprecate_warn(
+      when = "0.1.24",
+      what = "run_pairing(fork=)",
+      details = "This argument is no longer used and will be ignored."
+    )
+  }
+  if (lifecycle::is_present(shared)) {
+    lifecycle::deprecate_warn(
+      when = "0.1.24",
+      what = "run_pairing(shared=)",
+      details = "This argument is no longer used and will be ignored."
+    )
+  }
   if(!is.null(tshell_settings)) {
     checkmate::assert_subset(c("pval_thres_tshell", "wij_thres_tshell"), names(tshell_settings))
     checkmate::assert_number(tshell_settings$pval_thres_tshell, lower = 0, upper = 1)
@@ -154,7 +202,7 @@ run_pairing = function(
   df_alpha = tibble(file_alpha = list.files(path = folder_path,full.names = F, pattern = ".*_TRA\\.tsv")) %>%
     mutate(file_alpha_no_dot = gsub(".","_",file_alpha,fixed=T),
            #well = strsplit(file_alpha_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
-           well = .get_well_from_filename(file_alpha_no_dot),
+           well = .get_well_from_filename(file_alpha_no_dot, well_pos),
            well_row = substr(well, 0, 1),
            well_column = substr(well,2,3) %>% as.integer(),
            in_wellset = well %in% wellset) %>%
@@ -164,7 +212,7 @@ run_pairing = function(
   df_beta = tibble(file_beta = list.files(path = folder_path,full.names = F, pattern = ".*_TRB\\.tsv")) %>%
     mutate(file_beta_no_dot = gsub(".","_",file_beta,fixed=T),
            #well = strsplit(file_beta_no_dot, "_") %>% sapply(., function(x) x[[well_pos]]),
-           well = .get_well_from_filename(file_beta_no_dot),
+           well = .get_well_from_filename(file_beta_no_dot, well_pos),
            well_row = substr(well, 0, 1),
            well_column = substr(well,2,3) %>% as.integer(),
            in_wellset = well %in% wellset)  %>%
@@ -297,6 +345,11 @@ run_pairing = function(
       msg = paste(n_wells_pass, "wells passing: Using '96_well' T-SHELL settings")
       if(verbose) message(msg)
     }
+  }
+  if(length(tshell_overrides) > 0) {
+    tshell_settings = utils::modifyList(tshell_settings, tshell_overrides)
+    checkmate::assert_number(tshell_settings$pval_thres_tshell, lower = 0, upper = 1)
+    checkmate::assert_int(tshell_settings$wij_thres_tshell, lower = 0, upper = 383)
   }
 
   if(verbose) message("Tabulating TCRalpha pseudobulk counts")
@@ -459,8 +512,8 @@ run_pairing = function(
     result = .filter_pairs(result, filter_madhype = select_best_madhype, filter_tshell = select_best_tshell)
 
     file_paired = paste0(prefix,"_TIRTLoutput.tsv")
-    if(verbose) message(paste("Writing TCRalpha/beta pairs...", file_paired))
     if(gzip_output) file_paired = paste0(file_paired, ".gz")
+    if(verbose) message(paste("Writing TCRalpha/beta pairs...", file_paired))
     fwrite(result, file.path(folder_out, file_paired),sep="\t")
     if(verbose) {
       message("All pairing is finished!")

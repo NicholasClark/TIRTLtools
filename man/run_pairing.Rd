@@ -47,7 +47,8 @@ The default value is 0.5}
 \item{min_reads}{minimum number of reads a chain must have in a well to be considered observed
 (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)}
 
-\item{min_wells}{minimum number of wells a chain must be observed in to be paired.}
+\item{min_wells}{a chain must be observed in more than \code{min_wells} wells to be paired
+(default value is 2, i.e. chain must be observed in >= 3 wells)}
 
 \item{well_pos}{the position of the well ID (e.g. "B5") in the file names. For example, files
 named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha.tsv" would use well_pos=3. (default is 3)}
@@ -60,13 +61,26 @@ named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha
 
 \item{wellset}{a vector of wells to use for the pairing}
 
+\item{wellset1}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{wellset} instead.}
+
+\item{compute}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{pseudobulk_only} instead
+(\code{compute = FALSE} is the same as \code{pseudobulk_only = TRUE}).}
+
 \item{backend}{the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.}
+
+\item{pval_thres_tshell}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{tshell_settings} instead.}
+
+\item{wij_thres_tshell}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{tshell_settings} instead.}
 
 \item{verbose}{whether to print out messages (default TRUE)}
 
 \item{write_extra_files}{whether to write un-necessary intermediate files (default FALSE)}
 
 \item{filter_before_top3}{whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)}
+
+\item{fork}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} No longer used.}
+
+\item{shared}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} No longer used.}
 
 \item{chunk_size}{batch size for calculations in pairing scripts}
 
