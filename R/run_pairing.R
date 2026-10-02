@@ -40,6 +40,7 @@
 #' The default value is 0.5
 #' @param min_reads minimum number of reads a chain must have in a well to be considered observed
 #' (note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)
+#' Wells with no TCRalpha or no TCRbeta chains passing this filter are not used for pairing.
 #' @param min_wells a chain must be observed in more than `min_wells` wells to be paired
 #' (default value is 2, i.e. chain must be observed in >= 3 wells)
 #' @param well_pos the position of the well ID (e.g. "B5") in the file names. For example, files
@@ -236,9 +237,11 @@ run_pairing = function(
   if(pseudobulk_only && !write_extra_files) return(invisible(NULL))
 
   ## 4. Read count matrices (chain x well) ==================================
+  ## both matrices have the same wells (columns), in the same order
+  pairing_wells = .get_pairing_wells(counts, min_reads, verbose)
   mats = list(
-    alpha = .build_count_matrix(counts$alpha, "alpha", min_reads, min_wells, verbose),
-    beta = .build_count_matrix(counts$beta, "beta", min_reads, min_wells, verbose)
+    alpha = .build_count_matrix(counts$alpha, "alpha", pairing_wells, min_reads, min_wells, verbose),
+    beta = .build_count_matrix(counts$beta, "beta", pairing_wells, min_reads, min_wells, verbose)
   )
   if(write_extra_files) .write_count_matrices(mats, pseudobulk, folder_out, prefix, verbose)
   if(pseudobulk_only) return(invisible(NULL))

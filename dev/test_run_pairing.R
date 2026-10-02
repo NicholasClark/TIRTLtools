@@ -2,7 +2,8 @@
 # (original implementation, kept in R/run_pairing_old.R for comparison) to confirm
 # both produce identical results, using the python GPU backend ("cupy" or "mlx").
 # Also tests the bug fixes in run_pairing() (well_pos, deprecated arguments,
-# get_good_wells_new() well order check) and that pseudobulk_only skips pairing.
+# get_good_wells_new() well order check, alpha and beta matrices with the same wells)
+# and that pseudobulk_only skips pairing.
 #
 # Uses the well-level example data, which can be downloaded with:
 #   TIRTLtools:::download_data("exp3_tp1_cd8.tar.gz")
@@ -127,10 +128,64 @@ results["tshell_settings_filters"] = .test_old_vs_new(
 
 ## ===========================================================================
 ## Test 4: no QC, so the missing wells and the nearly empty well P3 are kept.
-## (Note: run_qc = FALSE with min_reads = 1 fails in both versions, because well
-## P3 has no beta chains with > 1 read and is dropped from the beta matrix only.)
 ## ===========================================================================
 results["no_qc"] = .test_old_vs_new("no_qc", folder_path = data_dir, backend = gpu_backend, run_qc = FALSE)
+
+## ===========================================================================
+## Test 4b: no QC with min_reads = 1. Well P3 has 6 alpha and 6 beta chains, but
+## no beta chains with > 1 read. run_pairing_old() drops P3 from the beta matrix
+## only (192 alpha vs 191 beta wells), and pairing fails in python. run_pairing()
+## should remove P3 from both matrices, so the wells match. On the remaining wells,
+## the matrices should be the same as building them without P3.
+## ===========================================================================
+.check_no_qc_min_reads = function() {
+  new = .run(run_pairing, "no_qc_min_reads_1", folder_path = data_dir, backend = gpu_backend,
+             run_qc = FALSE, min_reads = 1, write_extra_files = TRUE)
+  problems = c()
+  mats = lapply(c(alpha = "alpha", beta = "beta"), function(chain) {
+    readRDS(file.path(new$folder_out, paste0("test_", chain, "_mat.rds"))) ## well x chain
+  })
+  well_meta = as.data.frame(nanoparquet::read_parquet(file.path(new$folder_out, "test_well_meta.parquet")))
+  if (!identical(rownames(mats$alpha), rownames(mats$beta))) problems = c(problems, "alpha and beta wells differ")
+  if (!identical(rownames(mats$alpha), well_meta$well)) problems = c(problems, "well metadata differs from matrices")
+  if ("P3" %in% rownames(mats$alpha)) problems = c(problems, "P3 not removed")
+
+  ## expected wells: wells with data, in plate order, without P3
+  well_meta_files = .list_well_files(data_dir, get_well_subset(1:16, 1:24), verbose = FALSE)
+  counts = list(
+    alpha = .read_well_files(data_dir, well_meta_files$file_alpha, well_meta_files$well, "alpha", verbose = FALSE),
+    beta = .read_well_files(data_dir, well_meta_files$file_beta, well_meta_files$well, "beta", verbose = FALSE)
+  )
+  wells_expected = setdiff(names(counts$alpha)[sapply(counts$alpha, nrow) > 0], "P3")
+  if (!identical(rownames(mats$alpha), wells_expected)) problems = c(problems, "wells are not the expected wells")
+  for (chain in names(mats)) {
+    mat = big_merge_freqs2(counts[[chain]][wells_expected], min_reads = 1)
+    mat = mat[rowSums(mat > 0) > 2, , drop = FALSE]
+    if (!isTRUE(all.equal(t(mat), mats[[chain]]))) problems = c(problems, paste(chain, "matrix differs from matrix without P3"))
+  }
+  if (nrow(new$res) == 0) problems = c(problems, "no pairs returned")
+  return(list(ok = length(problems) == 0,
+              detail = paste(c(paste(length(wells_expected), "wells,", nrow(new$res), "pairs"), problems), collapse = "; ")))
+}
+cmp = tryCatch(.check_no_qc_min_reads(), error = function(e) list(ok = FALSE, detail = paste("error:", conditionMessage(e))))
+results["no_qc_min_reads_1"] = .report("no QC, min_reads = 1: P3 removed from both chains", cmp$ok, cmp$detail)
+
+## ===========================================================================
+## Test 4c: big_merge_freqs2() with 'wells' gives exactly those columns, in that
+## order, with all-zero columns for wells without chains passing min_reads.
+## Without 'wells', columns are the wells with chains (unchanged behavior).
+## ===========================================================================
+.well_dt = function(seqs, reads) data.table::data.table(targetSequences = seqs, readCount = reads,
+                                                        readFraction = reads / sum(reads))
+dl = list(A1 = .well_dt(c("x", "y"), c(5, 2)), A2 = tibble::tibble(), A3 = .well_dt("x", 1),
+          A4 = .well_dt(c("y", "z"), c(3, 9)))
+m_default = big_merge_freqs2(dl, min_reads = 1)
+m_wells = big_merge_freqs2(dl, min_reads = 1, wells = c("A4", "A1", "A2", "A3"))
+ok = identical(colnames(m_default), c("A1", "A4")) &&
+  identical(colnames(m_wells), c("A4", "A1", "A2", "A3")) &&
+  identical(as.matrix(m_wells[, c("A1", "A4")]), as.matrix(m_default)) &&
+  all(m_wells[, c("A2", "A3")] == 0)
+results["big_merge_freqs2_wells"] = .report("big_merge_freqs2() with 'wells'", ok)
 
 ## ===========================================================================
 ## Test 5: pseudobulk only. Output files should match the old function, and

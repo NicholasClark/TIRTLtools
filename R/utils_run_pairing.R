@@ -139,10 +139,33 @@
 
 ## read count matrices ---------------------------------------------------------
 
-## sparse matrix of read fractions (chain x well), keeping chains seen in more than min_wells wells
-.build_count_matrix = function(mlist, chain, min_reads = 0, min_wells = 2, verbose = TRUE) {
+## wells used for pairing: wells with at least one chain passing min_reads for both TCRalpha
+## and TCRbeta, in the order of the well lists. A well with no chains for only one of the
+## two is removed for both, so that the columns of the alpha and beta matrices match.
+.get_pairing_wells = function(counts, min_reads = 0, verbose = TRUE) {
+  if(!identical(names(counts$alpha), names(counts$beta))) stop("Alpha and beta wells not in the same order")
+  has_chains = lapply(counts, function(mlist) {
+    vapply(mlist, function(x) nrow(x) > 0 && any(x$readCount > min_reads), logical(1))
+  })
+  keep = has_chains$alpha & has_chains$beta
+  if(verbose) {
+    ## wells with no data for both chains (e.g. missing files) are not reported again
+    has_data = sapply(counts$alpha, nrow) > 0 | sapply(counts$beta, nrow) > 0
+    for(chain in names(has_chains)) {
+      removed = names(keep)[has_data & !has_chains[[chain]]]
+      if(length(removed) > 0) {
+        message(paste0(length(removed), " wells with no ", .chain_names[[chain]], " chains with more than ",
+                       min_reads, " reads removed from pairing (for both chains): ", paste0(removed, collapse = ", ")))
+      }
+    }
+  }
+  return(names(keep)[keep])
+}
+
+## sparse matrix of read fractions (chain x well) with columns 'wells', keeping chains seen in more than min_wells wells
+.build_count_matrix = function(mlist, chain, wells, min_reads = 0, min_wells = 2, verbose = TRUE) {
   if(verbose) message(paste0("Merging ", chain, " clonesets..."))
-  mat = big_merge_freqs2(mlist, min_reads = min_reads)
+  mat = big_merge_freqs2(mlist, min_reads = min_reads, wells = wells)
   if(verbose) message(paste("Done! Unique", chain, "clones after filtering:", nrow(mat)))
   mat = mat[rowSums(mat > 0) > min_wells, , drop = FALSE]
   if(verbose) message(paste0("Unique ", chain, " clones in more than ", min_wells, " wells: ", nrow(mat)))
@@ -182,6 +205,10 @@
 ## "mdh" (MAD-HYPE) and "corr" (T-SHELL), with chains given by row indices of the matrices.
 .run_pairing_python = function(mats, mdh, prefix, folder_out, backend, filter_before_top3,
                                chunk_size, write_files, verbose = TRUE) {
+  ## the python code assumes that the columns of both matrices are the same wells
+  if(!identical(colnames(mats$alpha), colnames(mats$beta))) {
+    stop("Error creating alpha/beta read count matrices: wells are not in the same order")
+  }
   py_require(packages = get_py_deps())
   if(verbose) message("Running pairing algorithms...")
   py_path = system.file("python/pairing/", package = "TIRTLtools")

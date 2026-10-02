@@ -45,7 +45,8 @@ run_pairing(
 The default value is 0.5}
 
 \item{min_reads}{minimum number of reads a chain must have in a well to be considered observed
-(note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)}
+(note: actual minimum is min_reads+1. Default value is 0, i.e. chain must have >= 1 read in a well)
+Wells with no TCRalpha or no TCRbeta chains passing this filter are not used for pairing.}
 
 \item{min_wells}{a chain must be observed in more than \code{min_wells} wells to be paired
 (default value is 2, i.e. chain must be observed in >= 3 wells)}

@@ -1,10 +1,17 @@
 ## general pairing utils ------------------------------------------------------
 
-big_merge_freqs2<-function(dtlist,min_reads=0){ #optimised
+## sparse matrix of read fractions (chain x well) from a list of well data named by well.
+## If 'wells' is given, the columns are exactly 'wells' in that order (wells with no chains
+## passing min_reads are all-zero columns, and data from other wells is dropped).
+## Otherwise the columns are the wells in names(dtlist) with at least one chain passing min_reads.
+big_merge_freqs2<-function(dtlist,min_reads=0,wells=NULL){ #optimised
+  if(!is.null(wells) && !all(wells %in% names(dtlist))) stop("'wells' must be names of 'dtlist'")
   all_data <- rbindlist(dtlist, idcol = "source")[readCount>min_reads,]
+  if(!is.null(wells)) all_data <- all_data[source %in% wells,]
   all_data_summ = all_data %>% group_by(targetSequences) %>%
     summarize(readCount = sum(readCount)) %>% arrange(desc(readCount))
-  all_data$source <- factor(all_data$source, levels=unique(all_data$source))
+  if(is.null(wells)) wells <- unique(all_data$source)
+  all_data$source <- factor(all_data$source, levels=wells)
   cols <- levels(all_data$source)
   #all_data$targetSequences <- factor(all_data$targetSequences,levels=unique(all_data$targetSequences))
   all_data$targetSequences <- factor(all_data$targetSequences,levels= all_data_summ$targetSequences)
@@ -13,6 +20,7 @@ big_merge_freqs2<-function(dtlist,min_reads=0){ #optimised
     i = as.integer(all_data$targetSequences),    # row indices
     j = as.integer(all_data$source),  # column indices
     x = all_data$readFraction,            # values
+    dims = c(length(rows), length(cols)), # keeps empty wells at the end of 'wells'
     dimnames = list(rows, cols)    # dimension names
   )
   stmpsp
