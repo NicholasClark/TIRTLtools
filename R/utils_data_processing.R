@@ -4,12 +4,12 @@
   checkmate::assert_logical(remove_nonfunctional)
 
   data = lapply(data, function(x) .identify_non_functional_seqs_single(x, remove = remove_nonfunctional))
-  check1 = .check_has_paired_data(data, error = FALSE, warn = TRUE)
-  check2 = .check_has_single_chain_data(data, error = FALSE, warn = TRUE)
-  if((!check1) || (!check2)) {
-    warning("Skipping cleaning and annotation")
-    return(data)
-  }
+  #check1 = .check_has_paired_data(data, error = FALSE, warn = TRUE)
+  #check2 = .check_has_single_chain_data(data, error = FALSE, warn = TRUE)
+  #if((!check1) || (!check2)) {
+  #  warning("Skipping cleaning and annotation")
+  #  return(data)
+  #}
 
   data$alpha = data$alpha %>%
     arrange(desc(readFraction), desc(is_functional)) %>%
