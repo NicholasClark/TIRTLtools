@@ -49,11 +49,15 @@
 #' - `pval_thres_tshell` is the adjusted p-value threshold for T-SHELL significance (default 1e-10 for 384-well plate, 1e-3 for 96-well plate)
 #' - `wij_thres_tshell` is the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells for 384-well plate, >3 wells for 96-well plate)
 #' @param wellset a vector of wells to use for the pairing
-#' @param backend the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.
+#' @param backend the computing backend for the pairing algorithms: "auto" (default) uses a GPU if one is
+#' available and otherwise C++. "cupy" (NVIDIA GPU) and "mlx" (Apple silicon GPU) run on the GPU with python.
+#' "cpp" runs on the CPU with parallel C++ and does not need python. ("cpu" is deprecated, use "cpp".)
+#' The GPU backends compute correlations for T-SHELL in single precision (float32) and the C++ backend
+#' in double precision, so T-SHELL results may differ very slightly between them.
 #' @param verbose whether to print out messages (default TRUE)
 #' @param write_extra_files whether to write un-necessary intermediate files (default FALSE)
 #' @param filter_before_top3 whether to filter by loss fraction before extracting top 3 correlation values for T-SHELL (default FALSE)
-#' @param chunk_size batch size for calculations in pairing scripts
+#' @param chunk_size number of TCRalpha chains to pair at a time (default 500)
 #' @param exclude_nonfunctional whether to exclude non-functional chains before pairing (default is FALSE)
 #' @param select_best_madhype whether to use a secondary algorithm on the pairs from the MAD-HYPE algorithm to select
 #' the best pairs for each clone (default is FALSE)
@@ -121,7 +125,7 @@ run_pairing = function(
     wellset = get_well_subset(1:16,1:24),
     wellset1 = lifecycle::deprecated(),
     compute = lifecycle::deprecated(),
-    backend = c("auto", "cpu", "cupy", "mlx"),
+    backend = c("auto", "cupy", "mlx", "cpp"),
     pval_thres_tshell = lifecycle::deprecated(),
     wij_thres_tshell= lifecycle::deprecated(),
     verbose = TRUE,
@@ -142,9 +146,18 @@ run_pairing = function(
   on.exit(tictoc::toc(quiet = !verbose), add = TRUE)
   clone_threshold_chain = clone_threshold_chain[1]
   checkmate::assert_choice(clone_threshold_chain, choices = c("alpha", "beta", "independent"))
-  backend = backend[1]
 
   ## 0. Arguments ===========================================================
+  backend = backend[1]
+  if(identical(backend, "cpu")) {
+    lifecycle::deprecate_warn(
+      when = "0.2.7",
+      what = I('run_pairing(backend = "cpu")'),
+      with = I('run_pairing(backend = "cpp")')
+    )
+    backend = "cpp"
+  }
+  checkmate::assert_choice(backend, choices = .pairing_backends)
   if (lifecycle::is_present(wellset1)) {
     lifecycle::deprecate_warn(
       when = "0.1.22",
@@ -255,9 +268,10 @@ run_pairing = function(
   mdh = madhyper_surface(n_wells = n_wells, cells = clone_thres$alpha, alpha = 2, prior = prior)
   if(write_extra_files) write_dat(mdh, fname = file.path(folder_out, .pairing_output_file(prefix, "mdh.tsv")))
 
-  pair_res = .run_pairing_python(mats, mdh, prefix = prefix, folder_out = folder_out, backend = backend,
-                                 filter_before_top3 = filter_before_top3, chunk_size = chunk_size,
-                                 write_files = write_extra_files, verbose = verbose)
+  backend = .setup_pairing_backend(backend, verbose)
+  pair_res = .run_pairing_algorithms(mats, mdh, backend, filter_before_top3 = filter_before_top3,
+                                     chunk_size = chunk_size, verbose = verbose)
+  if(write_extra_files) .write_unfiltered_pairs(pair_res, folder_out, prefix, verbose)
 
   ## 6. Post-processing =====================================================
   if(verbose) message("Filtering results, adding amino acid and V segment information...")

@@ -201,29 +201,180 @@
   1/(as.numeric(nrow(mats$alpha)) * as.numeric(nrow(mats$beta)))^0.5
 }
 
-## run MAD-HYPE and T-SHELL in python. Returns a list with two data frames:
-## "mdh" (MAD-HYPE) and "corr" (T-SHELL), with chains given by row indices of the matrices.
-.run_pairing_python = function(mats, mdh, prefix, folder_out, backend, filter_before_top3,
-                               chunk_size, write_files, verbose = TRUE) {
-  ## the python code assumes that the columns of both matrices are the same wells
+## pairing backends ------------------------------------------------------------
+## The MAD-HYPE and T-SHELL computations run either on a GPU, with the python kernels in
+## inst/python/pairing_new/pairing_core.py ("cupy" for NVIDIA, "mlx" for Apple silicon),
+## or on the CPU with the C++ kernels in src/pairing_cpp.cpp ("cpp"). Everything else
+## (inputs, chunking, outputs) is done in R and is the same for all backends.
+
+.pairing_backends = c("auto", "cupy", "mlx", "cpp")
+
+## Returns a list with 'name' ("cupy", "mlx", or "cpp") and 'kernels' (the python module
+## for a GPU backend). "auto" uses a GPU if one is found and its python library can be
+## loaded, and otherwise C++.
+.setup_pairing_backend = function(backend = "auto", verbose = TRUE) {
+  name = backend
+  if(backend == "auto") {
+    name = if(.has_nvidia_gpu()) "cupy" else if(.is_apple_silicon()) "mlx" else "cpp"
+  }
+  kernels = NULL
+  if(name == "mlx" && !nzchar(Sys.getenv("MLX_ENABLE_TF32"))) {
+    ## mlx >= 0.31 uses TF32 for float32 matrix products on the GPU by default, which makes the
+    ## T-SHELL correlations accurate to only ~1e-3. Turn it off (mlx reads this once, when first used).
+    Sys.setenv(MLX_ENABLE_TF32 = "0")
+  }
+  if(name != "cpp") {
+    kernels = tryCatch({
+      py_require(packages = .get_py_deps_new())
+      kernels = reticulate::import_from_path("pairing_core", path = system.file("python/pairing_new/", package = "TIRTLtools"),
+                                             convert = TRUE)
+      kernels$check_backend(name)
+      kernels
+    }, error = function(e) {
+      if(backend != "auto") stop("Could not load the '", name, "' backend: ", conditionMessage(e))
+      if(verbose) message("Could not load the '", name, "' backend, using 'cpp' instead: ", conditionMessage(e))
+      NULL
+    })
+    if(is.null(kernels)) name = "cpp"
+  }
+  if(verbose) message("Using '", name, "' backend for pairing")
+  return(list(name = name, kernels = kernels))
+}
+
+## number of wells with each chain (rows of a chain x well matrix)
+.n_wells_per_chain = function(mat) as.integer(Matrix::rowSums(mat > 0))
+
+## number of wells shared by alpha chains alpha_rows and beta chains beta_rows (one value per pair)
+.count_shared_wells = function(alpha, beta, alpha_rows, beta_rows) {
+  shared = (alpha[alpha_rows, , drop = FALSE] > 0) & (beta[beta_rows, , drop = FALSE] > 0)
+  return(as.integer(Matrix::rowSums(shared)))
+}
+
+## mean and centered L2 norm of each chain's read fractions across wells (for correlations)
+.chain_stats = function(mat) {
+  mat = Matrix::drop0(mat)
+  n_wells = ncol(mat)
+  chain_mean = Matrix::rowSums(mat) / n_wells
+  centered_sq = mat
+  centered_sq@x = (mat@x - chain_mean[mat@i + 1])^2 ## nonzero wells; zero wells are added below
+  n_zero = n_wells - .n_wells_per_chain(mat)
+  chain_norm = sqrt(Matrix::rowSums(centered_sq) + n_zero * chain_mean^2)
+  return(list(mean = chain_mean, norm = chain_norm))
+}
+
+## run a pairing kernel on chunks of alpha chains (rows 1..n_alpha). kernel(rows) returns a
+## list with "i" (0-based position in 'rows') and "j" (0-based beta chain) for each pair, plus
+## other values. Returns a data.table with all pairs, with i and j as 1-based row numbers.
+.run_kernel_in_chunks = function(kernel, n_alpha, chunk_size, label, verbose = TRUE) {
+  if(n_alpha == 0) return(data.table())
+  starts = seq.int(1L, n_alpha, by = chunk_size)
+  milestones = .get_progress_milestones(length(starts), 10)
+  if(verbose) message(paste0("Running ", label, " (", length(starts), " chunks)..."))
+  res = lapply(seq_along(starts), function(k) {
+    rows = starts[k]:min(starts[k] + chunk_size - 1L, n_alpha)
+    pairs = lapply(kernel(rows), as.vector)
+    pairs$i = rows[pairs$i + 1L]
+    pairs$j = pairs$j + 1L
+    if(verbose && k %in% milestones) message(paste0(label, ": ", round(100 * k / length(starts)), "% done"))
+    as.data.table(pairs)
+  })
+  return(rbindlist(res))
+}
+
+## MAD-HYPE: all alpha/beta pairs that pass the MAD-HYPE look-up table 'mdh'. Returns a data frame
+## with alpha_nuc, beta_nuc (row numbers in mats$alpha, mats$beta), wij (wells with both chains),
+## and wa, wb (wells with the alpha, beta chain), sorted by alpha_nuc and beta_nuc.
+.run_madhype = function(mats, mdh, backend, chunk_size = 500, verbose = TRUE) {
+  wa = .n_wells_per_chain(mats$alpha)
+  wb = .n_wells_per_chain(mats$beta)
+  storage.mode(mdh) = "integer"
+  if(backend$name == "cpp") {
+    alpha_t = Matrix::drop0(Matrix::t(mats$alpha)) ## wells x alpha chains
+    beta = Matrix::drop0(mats$beta)
+    beta_by_wb = order(wb) - 1L ## for pairs with no shared wells
+    kernel = function(rows) {
+      madhype_chunk_cpp(alpha_t, beta, wa, wb, mdh, beta_by_wb, start = rows[1] - 1L, end = rows[length(rows)])
+    }
+  } else {
+    gpu = backend$kernels$MadHype(beta_bin = np_array(as.matrix(mats$beta > 0), dtype = "float32"),
+                                  b_total = np_array(wb, dtype = "int32"),
+                                  mdh = np_array(mdh, dtype = "int32"), backend = backend$name)
+    kernel = function(rows) {
+      gpu$chunk(alpha_bin = np_array(as.matrix(mats$alpha[rows, , drop = FALSE] > 0), dtype = "float32"),
+                a_total = np_array(wa[rows], dtype = "int32"))
+    }
+  }
+  pairs = .run_kernel_in_chunks(kernel, nrow(mats$alpha), chunk_size, "MAD-HYPE", verbose)
+  if(verbose) message(paste("MAD-HYPE pairs:", nrow(pairs)))
+  return(data.frame(alpha_nuc = as.integer(pairs$i), beta_nuc = as.integer(pairs$j), wij = as.numeric(pairs$wij),
+                    wa = wa[pairs$i], wb = wb[pairs$j]))
+}
+
+## T-SHELL: the 3 beta chains with the highest correlation of read fractions across wells for each
+## alpha chain, using chains seen in more than 2 wells. Returns a data frame with alpha_nuc, beta_nuc
+## (row numbers in mats$alpha, mats$beta), r (correlation), wij, wa, and wb, sorted by alpha_nuc
+## and, for each alpha chain, from lowest to highest correlation.
+.run_tshell = function(mats, backend, filter_before_top3 = FALSE, chunk_size = 500, verbose = TRUE) {
+  wa = .n_wells_per_chain(mats$alpha)
+  wb = .n_wells_per_chain(mats$beta)
+  alpha_rows = which(wa > 2)
+  beta_rows = which(wb > 2)
+  alpha = mats$alpha[alpha_rows, , drop = FALSE]
+  beta = mats$beta[beta_rows, , drop = FALSE]
+  if(backend$name == "cpp") {
+    alpha_t = Matrix::drop0(Matrix::t(alpha)) ## wells x alpha chains
+    beta = Matrix::drop0(beta)
+    alpha_stats = .chain_stats(alpha)
+    beta_stats = .chain_stats(beta)
+    ## for pairs with no shared wells, the correlation is highest for the beta chains with the
+    ## lowest mean/norm. Ties: the beta chain with the higher row number first (same as the GPU).
+    beta_order = order(beta_stats$mean / beta_stats$norm, -seq_along(beta_rows)) - 1L
+    kernel = function(rows) {
+      tshell_chunk_cpp(alpha_t, beta, alpha_stats$mean, alpha_stats$norm, beta_stats$mean, beta_stats$norm,
+                       wa[alpha_rows], wb[beta_rows], beta_order, filter_before_top3,
+                       start = rows[1] - 1L, end = rows[length(rows)])
+    }
+  } else {
+    gpu = backend$kernels$TShell(beta = np_array(as.matrix(beta), dtype = "float32"),
+                                 b_total = np_array(wb[beta_rows], dtype = "int32"),
+                                 filter_before_top3 = filter_before_top3, backend = backend$name)
+    kernel = function(rows) {
+      gpu$chunk(alpha = np_array(as.matrix(alpha[rows, , drop = FALSE]), dtype = "float32"),
+                a_total = np_array(wa[alpha_rows][rows], dtype = "int32"))
+    }
+  }
+  pairs = .run_kernel_in_chunks(kernel, length(alpha_rows), chunk_size, "T-SHELL", verbose)
+  alpha_nuc = alpha_rows[pairs$i]
+  beta_nuc = beta_rows[pairs$j]
+  return(data.frame(alpha_nuc = alpha_nuc, beta_nuc = beta_nuc, r = as.numeric(pairs$r),
+                    wij = as.numeric(.count_shared_wells(mats$alpha, mats$beta, alpha_nuc, beta_nuc)),
+                    wa = wa[alpha_nuc], wb = wb[beta_nuc]))
+}
+
+## run MAD-HYPE and T-SHELL. Returns a list with two data frames: "mdh" (MAD-HYPE) and "corr" (T-SHELL)
+.run_pairing_algorithms = function(mats, mdh, backend, filter_before_top3 = FALSE, chunk_size = 500, verbose = TRUE) {
+  ## the alpha and beta matrices must have the same wells (columns)
   if(!identical(colnames(mats$alpha), colnames(mats$beta))) {
     stop("Error creating alpha/beta read count matrices: wells are not in the same order")
   }
-  py_require(packages = get_py_deps())
-  if(verbose) message("Running pairing algorithms...")
-  py_path = system.file("python/pairing/", package = "TIRTLtools")
-  pairing = reticulate::import_from_path("pairing_all_backends", path = py_path, convert = TRUE, delay_load = TRUE)
-  pair_res = pairing$pairing(
-    prefix = prefix, folder_out = folder_out,
-    bigmas = np_array(as.matrix(mats$alpha), dtype = "float32"),
-    bigmbs = np_array(as.matrix(mats$beta), dtype = "float32"),
-    mdh = r_to_py(mdh), backend = backend, filter_before_top3 = filter_before_top3,
-    chunk_size = chunk_size, write_files = write_files
+  chunk_size = as.integer(chunk_size)
+  pair_res = list(
+    mdh = .run_madhype(mats, mdh, backend, chunk_size, verbose),
+    corr = .run_tshell(mats, backend, filter_before_top3, chunk_size, verbose)
   )
   if(verbose) message("Pairing is finished.")
-  ### fix for when r_to_py doesn't convert data frames
-  if(reticulate::is_py_object(pair_res[[1]])) pair_res = .fix_py_to_r_df_list(pair_res)
   return(pair_res)
+}
+
+## write the MAD-HYPE and T-SHELL pairs before filtering and post-processing
+.write_unfiltered_pairs = function(pair_res, folder_out, prefix, verbose = TRUE) {
+  files = c(mdh = "madhyperesults.csv", corr = "corresults.csv")
+  for(method in names(files)) {
+    file = .pairing_output_file(prefix, files[[method]])
+    if(verbose) message(paste("Writing unfiltered pairs...", file))
+    fwrite(pair_res[[method]], file.path(folder_out, file))
+  }
+  return(invisible(NULL))
 }
 
 ## post-processing -------------------------------------------------------------

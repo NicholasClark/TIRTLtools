@@ -16,7 +16,7 @@ run_pairing(
   wellset = get_well_subset(1:16, 1:24),
   wellset1 = lifecycle::deprecated(),
   compute = lifecycle::deprecated(),
-  backend = c("auto", "cpu", "cupy", "mlx"),
+  backend = c("auto", "cupy", "mlx", "cpp"),
   pval_thres_tshell = lifecycle::deprecated(),
   wij_thres_tshell = lifecycle::deprecated(),
   verbose = TRUE,
@@ -67,7 +67,11 @@ named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha
 \item{compute}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{pseudobulk_only} instead
 (\code{compute = FALSE} is the same as \code{pseudobulk_only = TRUE}).}
 
-\item{backend}{the computing backend to use. The function looks for a GPU and automatically chooses an appropriate backend by default.}
+\item{backend}{the computing backend for the pairing algorithms: "auto" (default) uses a GPU if one is
+available and otherwise C++. "cupy" (NVIDIA GPU) and "mlx" (Apple silicon GPU) run on the GPU with python.
+"cpp" runs on the CPU with parallel C++ and does not need python. ("cpu" is deprecated, use "cpp".)
+The GPU backends compute correlations for T-SHELL in single precision (float32) and the C++ backend
+in double precision, so T-SHELL results may differ very slightly between them.}
 
 \item{pval_thres_tshell}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{tshell_settings} instead.}
 
@@ -83,7 +87,7 @@ named "\if{html}{\out{<lab>}}\emph{\if{html}{\out{<project>}}}<well_id>_TCRalpha
 
 \item{shared}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} No longer used.}
 
-\item{chunk_size}{batch size for calculations in pairing scripts}
+\item{chunk_size}{number of TCRalpha chains to pair at a time (default 500)}
 
 \item{exclude_nonfunctional}{whether to exclude non-functional chains before pairing (default is FALSE)}
 

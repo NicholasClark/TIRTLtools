@@ -53,7 +53,7 @@ cd8_wells = get_well_subset(row_range = 1:16, col_range = 1:12) ## left half of 
 ### Run pairing algorithms
 
 The `run_pairing()` function will run the pairing scripts, which implement the MAD-HYPE and T-SHELL algorithms.
-These algorithms are implemented in Python using GPU-accelerated packages (with numpy as a CPU-only backup) for fast calculation. The package should automatically install a python environment with the necessary packages and detect the GPU type (NVIDIA or Apple Silicon) of your machine, if it has one available.
+The main computations of these algorithms run on a GPU if your machine has one (using the Python packages cupy for NVIDIA GPUs or mlx for Apple Silicon GPUs), and otherwise on the CPU with fast, parallel C++ code. The package automatically detects the GPU type of your machine and installs a Python environment with the necessary packages. To use the C++ code even if you have a GPU (no Python needed), use `backend = "cpp"`.
 
 Each function call may take a few minutes to run.
 

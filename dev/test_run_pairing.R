@@ -11,7 +11,12 @@
 #
 # Run interactively, e.g.:
 #   source("dev/test_run_pairing.R")
+# See also dev/test_run_pairing_backends.R for comparisons of the GPU and C++ backends.
 
+## mlx >= 0.31 uses reduced precision (TF32) for float32 matrix products on the GPU unless this is
+## set before mlx is first used. run_pairing() sets it for the new code, so set it here for
+## run_pairing_old() too (which runs first), so that both compute in full float32 precision.
+Sys.setenv(MLX_ENABLE_TF32 = "0")
 pkgload::load_all(quiet = TRUE)
 
 data_dir = file.path(get_cache_dir(), "exp3_tp1_cd8")
@@ -56,6 +61,10 @@ results = c()
   return(readBin(file, "raw", n = file.size(file)))
 }
 
+## the unfiltered T-SHELL pairs (written with write_extra_files = TRUE) have float32 correlations,
+## written as text by pandas (old) or data.table (new) with different numbers of digits
+.file_tolerance = function(file) if (grepl("_corresults\\.csv$", file)) 1e-6 else 1.5e-8
+
 ## compare returned pairs and every file written to the output folders
 .compare_runs = function(old, new) {
   problems = c()
@@ -71,7 +80,7 @@ results = c()
   for (f in intersect(files_old, files_new)) {
     same = isTRUE(all.equal(.read_output(file.path(old$folder_out, f)),
                             .read_output(file.path(new$folder_out, f)),
-                            check.attributes = FALSE))
+                            check.attributes = FALSE, tolerance = .file_tolerance(f)))
     if (!same) problems = c(problems, paste("file differs:", f))
   }
   return(list(ok = length(problems) == 0, detail = paste(c(paste(length(files_new), "files"), problems), collapse = "; ")))

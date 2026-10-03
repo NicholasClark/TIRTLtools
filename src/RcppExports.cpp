@@ -10,6 +10,46 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// madhype_chunk_cpp
+List madhype_chunk_cpp(S4 alpha_t, S4 beta, IntegerVector wa, IntegerVector wb, IntegerMatrix mdh, IntegerVector beta_by_wb, int start, int end);
+RcppExport SEXP _TIRTLtools_madhype_chunk_cpp(SEXP alpha_tSEXP, SEXP betaSEXP, SEXP waSEXP, SEXP wbSEXP, SEXP mdhSEXP, SEXP beta_by_wbSEXP, SEXP startSEXP, SEXP endSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type alpha_t(alpha_tSEXP);
+    Rcpp::traits::input_parameter< S4 >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type wa(waSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type wb(wbSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type mdh(mdhSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type beta_by_wb(beta_by_wbSEXP);
+    Rcpp::traits::input_parameter< int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< int >::type end(endSEXP);
+    rcpp_result_gen = Rcpp::wrap(madhype_chunk_cpp(alpha_t, beta, wa, wb, mdh, beta_by_wb, start, end));
+    return rcpp_result_gen;
+END_RCPP
+}
+// tshell_chunk_cpp
+List tshell_chunk_cpp(S4 alpha_t, S4 beta, NumericVector mean_a, NumericVector norm_a, NumericVector mean_b, NumericVector norm_b, IntegerVector wa, IntegerVector wb, IntegerVector beta_order, bool filter_before_top3, int start, int end);
+RcppExport SEXP _TIRTLtools_tshell_chunk_cpp(SEXP alpha_tSEXP, SEXP betaSEXP, SEXP mean_aSEXP, SEXP norm_aSEXP, SEXP mean_bSEXP, SEXP norm_bSEXP, SEXP waSEXP, SEXP wbSEXP, SEXP beta_orderSEXP, SEXP filter_before_top3SEXP, SEXP startSEXP, SEXP endSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type alpha_t(alpha_tSEXP);
+    Rcpp::traits::input_parameter< S4 >::type beta(betaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mean_a(mean_aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type norm_a(norm_aSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type mean_b(mean_bSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type norm_b(norm_bSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type wa(waSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type wb(wbSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type beta_order(beta_orderSEXP);
+    Rcpp::traits::input_parameter< bool >::type filter_before_top3(filter_before_top3SEXP);
+    Rcpp::traits::input_parameter< int >::type start(startSEXP);
+    Rcpp::traits::input_parameter< int >::type end(endSEXP);
+    rcpp_result_gen = Rcpp::wrap(tshell_chunk_cpp(alpha_t, beta, mean_a, norm_a, mean_b, norm_b, wa, wb, beta_order, filter_before_top3, start, end));
+    return rcpp_result_gen;
+END_RCPP
+}
 // tcrdist_cpp
 NumericMatrix tcrdist_cpp(const IntegerMatrix& all_mat1, const IntegerMatrix& all_mat2, const IntegerMatrix& submat, const bool tcr2_equals_tcr1);
 RcppExport SEXP _TIRTLtools_tcrdist_cpp(SEXP all_mat1SEXP, SEXP all_mat2SEXP, SEXP submatSEXP, SEXP tcr2_equals_tcr1SEXP) {
@@ -53,6 +93,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_TIRTLtools_madhype_chunk_cpp", (DL_FUNC) &_TIRTLtools_madhype_chunk_cpp, 8},
+    {"_TIRTLtools_tshell_chunk_cpp", (DL_FUNC) &_TIRTLtools_tshell_chunk_cpp, 12},
     {"_TIRTLtools_tcrdist_cpp", (DL_FUNC) &_TIRTLtools_tcrdist_cpp, 4},
     {"_TIRTLtools_tcrdist_parallel", (DL_FUNC) &_TIRTLtools_tcrdist_parallel, 4},
     {"_TIRTLtools_tcrdist_chunk_cpp", (DL_FUNC) &_TIRTLtools_tcrdist_chunk_cpp, 3},
