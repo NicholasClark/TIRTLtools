@@ -7,4 +7,6 @@ docs
 __pycache__
 *.Rproj
 extra
-
+src/*.o
+src/*.so
+src/*.dll

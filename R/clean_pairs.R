@@ -3,7 +3,7 @@
 #'
 #' @description
 #' `r lifecycle::badge('experimental')`
-#' 
+#'
 #' This function filters the paired TCR data, keeping at most one beta-chain partner for each
 #' individual alpha-chain and at most two alpha-chain partners for each individual beta-chain.
 #'
@@ -42,8 +42,8 @@ clean_pairs = function(
     prefer_functional = TRUE,
     verbose = TRUE) {
   version = "fast"
-  .check_has_paired_data(data)
-  .check_has_single_chain_data(data)
+  # .check_has_paired_data(data)
+  # .check_has_single_chain_data(data)
   # if(is.null(data$is_annotated)) {
   #   data = add_single_chain_data(data, verbose = verbose)
   # }

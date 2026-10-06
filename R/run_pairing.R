@@ -146,6 +146,7 @@ run_pairing = function(
   on.exit(tictoc::toc(quiet = !verbose), add = TRUE)
   clone_threshold_chain = clone_threshold_chain[1]
   checkmate::assert_choice(clone_threshold_chain, choices = c("alpha", "beta", "independent"))
+  checkmate::assert_directory_exists(folder_path)
 
   ## 0. Arguments ===========================================================
   backend = backend[1]
