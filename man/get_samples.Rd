@@ -25,6 +25,7 @@ samples that match this pattern.
 Other data_import:
 \code{\link[=load_example_data]{load_example_data()}},
 \code{\link[=load_tirtlseq]{load_tirtlseq()}},
+\code{\link[=load_tirtlseq_old]{load_tirtlseq_old()}},
 \code{\link[=read_external_bulk]{read_external_bulk()}},
 \code{\link[=read_external_paired]{read_external_paired()}}
 }

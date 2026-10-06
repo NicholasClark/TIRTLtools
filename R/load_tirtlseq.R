@@ -11,6 +11,10 @@
 #' "_pseudobulk_TRA.tsv" (alpha-chain pseudo-bulk), "_pseudobulk_TRB.tsv" (beta-chain pseudo-bulk),
 #' and "_TIRTLoutput.tsv" (paired alpha and beta chains).
 #'
+#' The files in the directory are found using [get_samples()]. If a sample is missing
+#' one of its three files, the corresponding data frame is an empty tibble (zero rows)
+#' with the expected column names.
+#'
 #' By default, the function will construct a metadata table with a row for each sample, based
 #' on unique strings at the beginning of filenames (before "_TIRTLoutput.tsv" or similar).
 #' If the filename contains sample metadata, then it can add multiple columns to the metadata
@@ -25,7 +29,7 @@
 #' 3 cd4_timepoint1_donor3    cd4       timepoint1      donor3    cell_type: cd4 | timepoint: timepoint1 | donor: donor3
 #' }
 #'
-#' @param directory the directory to look in for ".tsv" or ".tsv.gz" files of TIRTLseq data
+#' @param directory the directory (or a vector of directories) to look in for ".tsv" or ".tsv.gz" files of TIRTLseq data
 #' @param chain which TCR chain data to load data for -- "all" chains (alpha, beta, and paired) by default.
 #' @param sep (optional) separator in the filename for metadata information ("_" by default)
 #' @param meta_columns (optional) a vector of names identifying the metadata contained in the filenames,
@@ -94,12 +98,10 @@ load_tirtlseq = function(
     pseudobulk_columns = "auto",
     paired_columns = "auto",
     n_threads = data.table::getDTthreads(),
-    #compress_strings = FALSE,
     verbose = TRUE,
     stringsAsFactors = FALSE,
     n_max = Inf) {
   args <- as.list(environment())
-  #tictoc::tic()
   start = Sys.time()
   chain = chain[1]
   compress_strings = FALSE
@@ -109,157 +111,70 @@ load_tirtlseq = function(
   checkmate::assert_character(samples, unique = TRUE, null.ok = TRUE, any.missing = FALSE)
   checkmate::assert_string(pattern, null.ok = TRUE, na.ok = FALSE)
   if(!is.null(pattern) && !is.null(samples)) stop("Only one of 'pattern' and 'samples' may be non-null")
-
-  if(!is.null(pattern)) samples = get_samples(directory, pattern = pattern)$sample
-
   if(!chain %in% c("all","alpha", "beta", "paired")) stop("'chain' must be 'all', 'alpha', 'beta', or 'paired'")
   if("label" %in% meta_columns) stop("'meta_columns' cannot contain a column called 'label'")
-  ll = lapply(directory, function(dir_tmp) {
-    msg = paste("Loading files from: ", dir_tmp, "...", sep = "")
-    if(verbose) message(msg)
-    # if(chain == "alpha") ptn = "*TRA.tsv.gz"
-    # if(chain == "beta") ptn = "*TRB.tsv.gz"
-    # if(chain == "paired") ptn = "*TIRTLoutput.tsv.gz"
-    all_files = dir(dir_tmp, pattern = ".*(_pseudobulk_TRA\\.tsv|_pseudobulk_TRB\\.tsv|_TIRTLoutput\\.tsv)")
-    file_exts = all_files %>% tools::file_ext() %>% unique()
 
-    #if(length(file_exts) > 1) stop("All files need to be either .tsv or .tsv.gz")
-    alpha_post = "_pseudobulk_TRA.tsv"
-    beta_post = "_pseudobulk_TRB.tsv"
-    paired_post = "_TIRTLoutput.tsv"
-    # if(file_exts == "tsv") {
-    #   alpha_post = "_pseudobulk_TRA.tsv"
-    #   beta_post = "_pseudobulk_TRB.tsv"
-    #   paired_post = "_TIRTLoutput.tsv"
-    # } else {
-    #   alpha_post = "_pseudobulk_TRA.tsv.gz"
-    #   beta_post = "_pseudobulk_TRB.tsv.gz"
-    #   paired_post = "_TIRTLoutput.tsv.gz"
-    # }
+  ## the three data frames loaded for each sample: where get_samples() puts the
+  ## file path, how to describe it in messages, and which columns to read
+  chains = c("alpha", "beta", "paired")
+  file_col = c(alpha = "tra_file", beta = "trb_file", paired = "paired_file")
+  chain_desc = c(alpha = "Pseudobulk (alpha chain)", beta = "Pseudobulk (beta chain) ", paired = "TIRTLseq (paired chain) ")
+  chain_columns = list(alpha = pseudobulk_columns, beta = pseudobulk_columns, paired = paired_columns)
 
+  ### find samples -- one row per sample, with the path to each file (NA if missing)
+  if(verbose) message("Loading files from: ", paste(directory, collapse = ", "), "...")
+  sample_df = get_samples(directory, pattern = pattern)
+  if(verbose) {
+    message("Found ", sum(sample_df$has_tra), " alpha chain pseudo-bulk files.")
+    message("Found ", sum(sample_df$has_trb), " beta chain pseudo-bulk files.")
+    message("Found ", sum(sample_df$has_paired), " paired chain files.")
+  }
 
-    files_alpha = dir(dir_tmp, pattern = alpha_post )
-    msg1 = paste("Found", length(files_alpha), "alpha chain pseudo-bulk files.")
-    files_beta = dir(dir_tmp, pattern = beta_post )
-    msg2 = paste("Found", length(files_beta), "beta chain pseudo-bulk files.")
-    files_paired = dir(dir_tmp, pattern = paired_post )
-    msg3 = paste("Found", length(files_paired), "paired chain files.")
-    if(verbose) { message(msg1); message(msg2); message(msg3) }
-
-    files_pre_paired = gsub("_TIRTLoutput\\.tsv.*", "",files_paired)
-    files_pre_alpha = gsub("_pseudobulk_TRA\\.tsv.*", "",files_alpha)
-    files_pre_beta = gsub("_pseudobulk_TRB\\.tsv.*", "",files_beta)
-
-    if(chain == "all") {
-      files_pre = unique(c(files_pre_paired, files_pre_alpha, files_pre_beta))
-    } else if(chain == "alpha") {
-      files_pre = files_pre_alpha
-    } else if(chain == "beta") {
-      files_pre = files_pre_beta
-    } else {
-      files_pre = files_pre_paired
+  ### subset to the samples requested
+  if(!is.null(samples)) {
+    not_found = setdiff(samples, sample_df$sample)
+    if(length(not_found) > 0) {
+      warning("No files found for sample(s): ", paste(not_found, collapse = ", "), call. = FALSE)
     }
+    sample_df = sample_df[match(setdiff(samples, not_found), sample_df$sample), ]
+  }
+  if(chain != "all") sample_df = sample_df[!is.na(sample_df[[ file_col[[chain]] ]]), ]
+  if(n_max < nrow(sample_df)) {
+    message("Loading first ", n_max, " samples:")
+    sample_df = sample_df[seq_len(n_max), ]
+  }
+  sample_ids = sample_df$sample
+  if(verbose) message("Loading files for ", length(sample_ids), " samples...")
 
-    if(n_max < length(files_pre)) {
-      files_pre = files_pre[1:n_max]
-      msg = paste("Loading first ", n_max, " files:", sep = "")
-      message(msg)
-    }
-
-    if(!is.null(samples)) {
-      files_pre = samples
-    }
-    msg = paste("Loading files for", length(files_pre), "samples...")
-    if(verbose) message(msg)
-
-    file_counter = 0
-    ### loop over each experiment to load files
-    list_tmp = lapply(files_pre, function(ff_pre) {
-      if(verbose) {
-        msg = paste("-- Loading files for sample: ", ff_pre, "...", sep = "")
-        message(msg)
+  ### load the files for each sample
+  load_chains = if(chain == "all") chains else chain
+  data_final = lapply(seq_along(sample_ids), function(i) {
+    if(verbose) message("-- Loading files for sample: ", sample_ids[i], "...")
+    obj = lapply(chains, function(chain_tmp) {
+      file = sample_df[[ file_col[[chain_tmp]] ]][i]
+      columns = chain_columns[[chain_tmp]]
+      if(!chain_tmp %in% load_chains) return(.empty_chain_tibble(chain_tmp, columns))
+      if(is.na(file)) {
+        message("------ File not found -- ", chain_desc[[chain_tmp]])
+        return(.empty_chain_tibble(chain_tmp, columns))
       }
-      fa = paste(ff_pre, alpha_post, sep = "") %>% gsub("\\\\", "", .)
-      fb = paste(ff_pre, beta_post, sep = "") %>% gsub("\\\\", "", .)
-      fp = paste(ff_pre, paired_post, sep = "") %>% gsub("\\\\", "", .)
-      obj_names = c("alpha", "beta", "paired")
-      obj_desc = c("Pseudobulk (alpha chain)", "Pseudobulk (beta chain) ", "TIRTLseq (paired chain) ")
-      ff_all = c(fa, fb, fp)
-      ### load files for one experiment
-      obj = lapply(1:length(ff_all), function(i) {
-        desc = obj_desc[i]
-        chain_tmp = obj_names[i]
-        ff = ff_all[i]
-        if(!file.exists(file.path(dir_tmp, ff))) {
-          file_long = paste(file.path(dir_tmp, ff), ".gz", sep = "")
-        } else {
-          file_long = file.path(dir_tmp, ff)
-        }
+      if(verbose) message("---- Loading file -- ", chain_desc[[chain_tmp]], " -- ", basename(file), "...")
+      .read_file(file, chain = chain_tmp, cols = columns, n_threads = n_threads,
+                 compress_strings = compress_strings, stringsAsFactors = stringsAsFactors)
+    }) %>% setNames(chains)
+    ## processing needs both pseudobulk data frames
+    if( !process || nrow(obj$alpha) == 0 || nrow(obj$beta) == 0 ) return(obj)
+    obj = obj %>% .process_TIRTLseq_single(clean = clean, remove_nonfunctional = remove_nonfunctional)
+    class(obj) = c("TIRTLseqData", "pairedTCRData")
+    return(obj)
+  }) %>% setNames(sample_ids)
 
+  n_files = sum(!is.na(unlist(sample_df[ file_col[load_chains] ])))
+  if(verbose) message("Loaded ", n_files, " files from ", length(sample_ids), " samples.")
 
-        if(chain_tmp %in% c("alpha", "beta")) columns = pseudobulk_columns
-        if(chain_tmp %in% "paired") columns = paired_columns
-        if(chain %in% c("alpha", "beta", "paired") && chain != chain_tmp) return(tibble())
-        if(file.exists(file_long)) {
-          if(verbose) {
-            msg = paste("---- Loading file -- ", desc, " -- ", ff, "...", sep = "")
-            message(msg)
-          }
-          df_tmp = .read_file(file_long, chain = chain_tmp, cols = columns, n_threads = n_threads, compress_strings = compress_strings, stringsAsFactors = stringsAsFactors)
-          #df_tmp =  data.table::fread(file_long, nThread = n_threads) # %>% dtplyr::lazy_dt()
-          #if(chain %in% c("alpha", "beta")) setkey(df_tmp, targetSequences)
-          #df_tmp = identify_non_functional_seqs(df_tmp)
-          file_counter <<- file_counter + 1
-          return(df_tmp)
-        } else {
-          msg = paste("------ File not found -- ", desc, " -- ", ff, sep = "")
-          message(msg)
-          return(tibble())
-        }
-      }) %>% setNames(obj_names)
-      if( nrow(obj$alpha) == 0 || nrow(obj$beta) == 0 ) return(obj) ## no processing
-      obj = obj %>% .process_TIRTLseq_single(clean = clean, remove_nonfunctional = remove_nonfunctional)
-      class(obj) = c("TIRTLseqData", "pairedTCRData")
-      return(obj)
-      }) %>% setNames(files_pre)
-    ### make metadata table
-    if(is.null(meta_columns)) {
-      meta_tmp = tibble(sample_id = files_pre, label = files_pre)
-    } else {
-      meta_tmp = lapply(1:length(files_pre), function(i) {
-        ff = files_pre[i]
-        spl = strsplit(ff, split = sep)[[1]]
-        df_tmp = list()
-        df_tmp$sample_id = ff
-        if(length(meta_columns) > 0) {
-          for(i in 1:length(meta_columns)) {
-            if(i > length(spl)) next
-            col = meta_columns[i]
-            df_tmp[[ col ]] = spl[i]
-          }
-        }
-        return(df_tmp)
-      }) %>% bind_rows()
+  meta_final = .make_sample_meta(sample_ids, meta_columns = meta_columns, sep = sep)
 
-      if(length(meta_columns) > 0) {
-        meta_tmp$label = apply(meta_tmp[-1], 1, function(row) {
-          paste(colnames(meta_tmp[-1]), row, sep = ": ", collapse = " | ")
-        })
-      } else {
-        meta_tmp$label = meta_tmp$sample_id
-      }
-
-    }
-    msg = paste("Loaded ", file_counter, " files from ", length(list_tmp), " samples.", sep = "")
-    if(verbose) message(msg)
-    return(list(data = list_tmp, meta = meta_tmp))
-  })
-  meta_final = lapply(ll, function(x) x$meta) %>% bind_rows()
-  data_final = lapply(ll, function(x) x$data) %>% do.call(c, .)
-  #tictoc::toc()
-  end = Sys.time()
-  duration = end-start
-  #n_secs = as.vector(time) %>% round(2)
+  duration = Sys.time() - start
   if(verbose) message(paste(round(duration[[1]], 2), units(duration)))
   info = list(data_version = "v1",
               processing_version = "v1",
@@ -270,6 +185,68 @@ load_tirtlseq = function(
   return(out)
 }
 
+## Build the metadata table (one row per sample) from the sample ids, optionally
+## splitting each id on `sep` into the columns named in `meta_columns`
+.make_sample_meta = function(sample_ids, meta_columns = NULL, sep = "_") {
+  if(length(meta_columns) == 0) return(tibble(sample_id = sample_ids, label = sample_ids))
+  meta = lapply(sample_ids, function(id) {
+    spl = strsplit(id, split = sep)[[1]]
+    n = min(length(spl), length(meta_columns))
+    c(list(sample_id = id), setNames(as.list(spl[seq_len(n)]), meta_columns[seq_len(n)]))
+  }) %>% bind_rows()
+  if(nrow(meta) == 0) return(tibble(sample_id = character(), label = character()))
+  meta$label = apply(meta[-1], 1, function(row) {
+    paste(colnames(meta[-1]), row, sep = ": ", collapse = " | ")
+  })
+  return(meta)
+}
+
+## A zero-row tibble with the columns that would have been read from a file,
+## used as a placeholder when a sample has no file for a chain
+.empty_chain_tibble = function(chain, cols) {
+  all_cols = .get_read_cols(chain, "all")
+  read_cols = .get_read_cols(chain, cols)
+  if(is.null(read_cols)) read_cols = all_cols
+  if(is.null(names(read_cols))) { ## column names only -- look up their types
+    types = unname(all_cols[read_cols])
+    types[is.na(types)] = "character"
+    read_cols = setNames(types, read_cols)
+  }
+  lapply(read_cols, function(type) {
+    tryCatch(vector(type, 0), error = function(e) character(0))
+  }) %>% tibble::as_tibble()
+}
+
+## The columns (and their types) to read from a pseudobulk ("alpha"/"beta") or
+## "paired" file. `cols` is a vector of columns or one of "all", "auto", "minimal".
+## Returns NULL (read everything) if `cols` is not recognized.
+.get_read_cols = function(chain, cols) {
+  if(length(cols) > 1) return(cols)
+  if(chain == "paired") {
+    all_cols = c(wi = "integer", wj = "integer", wij = "integer", alpha_nuc = "character",
+                 beta_nuc = "character", wa = "integer", wb = "integer",
+                 alpha_nuc_seq = "character", beta_nuc_seq = "character", alpha_beta = "character",
+                 method = "character", r = "double", ts = "double", pval = "double",
+                 pval_adj = "double", loss_a_frac = "double", loss_b_frac = "double",
+                 score = "double", cdr3a = "character", va = "character", ja = "character",
+                 cdr3b = "character", vb = "character", jb = "character")
+    auto_drop = c("alpha_nuc_seq", "beta_nuc_seq")
+    minimal = c("alpha_nuc", "beta_nuc", "method", "cdr3a", "va", "ja", "cdr3b", "vb", "jb")
+  } else {
+    all_cols = c(targetSequences = "character", readCount = "integer", v = "character",
+                 j = "character", aaSeqCDR3 = "character", n_wells = "integer",
+                 readCount_max = "integer", readCount_median = "double", sem = "double",
+                 avg = "double",
+                 readFraction = "double", max_wells = "integer")
+    auto_drop = "avg"
+    minimal = c("targetSequences", "readCount", "v", "j", "aaSeqCDR3", "sem", "readFraction")
+  }
+  if(identical(cols, "all")) return(all_cols)
+  if(identical(cols, "auto")) return(all_cols[!names(all_cols) %in% auto_drop])
+  if(identical(cols, "minimal")) return(all_cols[minimal])
+  warning("'cols' must be a list of permissible columns or 'all', 'auto' or 'minimal'. Loading all columns.")
+  return(NULL)
+}
 
 .read_file = function(file, chain, cols, n_threads, compress_strings, stringsAsFactors) {
   if(!chain %in% c("alpha", "beta", "paired")) {
@@ -281,39 +258,7 @@ load_tirtlseq = function(
 }
 
 .read_paired = function(file, cols, n_threads, compress_strings, stringsAsFactors) {
-  if(length(cols) > 1) {
-    read_cols = cols
-  } else if(cols == "all") {
-    #read_cols = NULL
-    read_cols = c(wi = "integer", wj = "integer", wij = "integer", alpha_nuc = "character",
-                  beta_nuc = "character", wa = "integer", wb = "integer",
-                  alpha_nuc_seq = "character", beta_nuc_seq = "character", alpha_beta = "character",
-                  method = "character", r = "double", ts = "double", pval = "double",
-                  pval_adj = "double", loss_a_frac = "double", loss_b_frac = "double",
-                  score = "double", cdr3a = "character", va = "character", ja = "character",
-                  cdr3b = "character", vb = "character", jb = "character")
-  } else if(cols == "auto") {
-    # read_cols = c("wi", "wj", "wij", "alpha_nuc", "beta_nuc", "wa", "wb",
-    #          "alpha_beta", "method", "r", "ts", "pval", "pval_adj",
-    #          "loss_a_frac", "loss_b_frac", "score", "cdr3a", "va", "ja", "cdr3b",
-    #          "vb", "jb")
-    read_cols = c(wi = "integer", wj = "integer", wij = "integer", alpha_nuc = "character",
-                  beta_nuc = "character", wa = "integer", wb = "integer", alpha_beta = "character",
-                  method = "character", r = "double", ts = "double", pval = "double",
-                  pval_adj = "double", loss_a_frac = "double", loss_b_frac = "double",
-                  score = "double", cdr3a = "character", va = "character", ja = "character",
-                  cdr3b = "character", vb = "character", jb = "character")
-  } else if(cols == "minimal") {
-    # read_cols = c("alpha_nuc", "beta_nuc", "method",
-    #               "cdr3a", "va", "ja", "cdr3b", "vb", "jb")
-    read_cols = c(alpha_nuc = "character", beta_nuc = "character",
-      method = "character", cdr3a = "character", va = "character", ja = "character",
-      cdr3b = "character", vb = "character", jb = "character")
-  } else {
-    msg = "'cols' must be a list of permissible columns or 'all', 'auto' or 'minimal'. Loading all columns."
-    warning(msg)
-    read_cols = NULL
-  }
+  read_cols = .get_read_cols("paired", cols)
   df = data.table::fread(file, nThread = n_threads, select = read_cols, stringsAsFactors = stringsAsFactors)
   if(compress_strings) {
     df = DataFrame(df)
@@ -328,33 +273,7 @@ load_tirtlseq = function(
 }
 
 .read_pseudobulk = function(file, cols, n_threads, compress_strings, stringsAsFactors) {
-  if(length(cols) > 1) {
-    read_cols = cols
-  } else if(cols == "all") {
-    #read_cols = NULL
-    read_cols = c(targetSequences = "character", readCount = "integer", v = "character",
-                  j = "character", aaSeqCDR3 = "character", n_wells = "integer",
-                  readCount_max = "integer", readCount_median = "double", sem = "double",
-                  avg = "double",
-                  readFraction = "double", max_wells = "integer")
-  } else if(cols == "auto") {
-    # read_cols = c("targetSequences", "readCount", "v", "j", "aaSeqCDR3", "n_wells",
-    #               "readCount_max", "readCount_median", "sem", "readFraction",
-    #               "max_wells")
-    read_cols = c(targetSequences = "character", readCount = "integer", v = "character",
-                  j = "character", aaSeqCDR3 = "character", n_wells = "integer",
-                  readCount_max = "integer", readCount_median = "double", sem = "double",
-                  readFraction = "double", max_wells = "integer")
-  } else if(cols == "minimal") {
-    #read_cols = c("targetSequences", "readCount", "v", "j", "aaSeqCDR3", "sem", "readFraction")
-    read_cols = c(targetSequences = "character", readCount = "integer", v = "character",
-      j = "character", aaSeqCDR3 = "character", sem = "double",
-      readFraction = "double")
-  } else {
-    msg = "'cols' must be a list of permissible columns or 'all', 'auto' or 'minimal'. Loading all columns."
-    warning(msg)
-    read_cols = NULL
-  }
+  read_cols = .get_read_cols("pseudobulk", cols)
   df = data.table::fread(file, nThread = n_threads, select = read_cols, stringsAsFactors = stringsAsFactors)
   if(compress_strings) {
     df = DataFrame(df)

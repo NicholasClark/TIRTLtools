@@ -55,6 +55,15 @@ get_samples_single_dir = function(data_dir, pattern = NULL) {
   } else {
     all_samples = all_any
   }
+  ## full path to a sample's file (NA if it has none) -- matches the exact sample name.
+  ## note: will preferentially choose unzipped ".tsv" files over ".tsv.gz" if both are available due to default sorting in "dir" function
+  all_files = dir(data_dir)
+  find_file = function(samples, suffix) {
+    vapply(samples, function(x) {
+      hits = all_files[startsWith(all_files, paste0(x, suffix))]
+      if(length(hits) == 0) NA_character_ else file.path(data_dir, hits[1])
+    }, character(1), USE.NAMES = FALSE)
+  }
   return_df = tibble::tibble(
     sample = all_samples,
     has_paired = all_samples %in% all_paired,
@@ -74,10 +83,10 @@ get_samples_single_dir = function(data_dir, pattern = NULL) {
       )
     ) |>
     dplyr::mutate(
-      paired_file = sapply(sample, function(x) dir(data_dir, pattern = glue::glue("{x}_TIRTLoutput.tsv.*"), full.names = TRUE)[1]),
-      tra_file = sapply(sample, function(x) dir(data_dir, pattern = glue::glue("{x}_pseudobulk_TRA.tsv.*"), full.names = TRUE)[1]),
-      trb_file = sapply(sample, function(x) dir(data_dir, pattern = glue::glue("{x}_pseudobulk_TRB.tsv.*"), full.names = TRUE)[1])
-    ) ## note: will preferentially choose unzipped ".tsv" files over ".tsv.gz" if both are available due to default sorting in "dir" function
+      paired_file = find_file(sample, "_TIRTLoutput.tsv"),
+      tra_file = find_file(sample, "_pseudobulk_TRA.tsv"),
+      trb_file = find_file(sample, "_pseudobulk_TRB.tsv")
+    )
 
   return(return_df)
 }

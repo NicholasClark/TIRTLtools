@@ -44,6 +44,7 @@ Other tcr_similarity:
 \code{\link[=TCRdist_to_sparse_matrix]{TCRdist_to_sparse_matrix()}},
 \code{\link[=add_to_tcr_network]{add_to_tcr_network()}},
 \code{\link[=cluster_tcrs]{cluster_tcrs()}},
+\code{\link[=get_similar_tcrs]{get_similar_tcrs()}},
 \code{\link[=plot_clusters]{plot_clusters()}}
 }
 \concept{tcr_similarity}

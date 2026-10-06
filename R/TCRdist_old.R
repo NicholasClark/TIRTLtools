@@ -180,12 +180,12 @@ TCRdist_old = function(
   return(res)
 }
 
-.fix_py_to_r_df_list = function(res) {
+.fix_py_to_r_df_list_old = function(res) {
   res = lapply(res, .fix_py_to_r_df)
   return(res)
 }
 
-.fix_py_to_r_df = function(df) {
+.fix_py_to_r_df_old = function(df) {
   mat = df$values
   ncols = length(df$columns$values)
   cols = sapply(0:(ncols-1), function(i) df$columns$values[i])

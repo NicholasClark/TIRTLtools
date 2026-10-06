@@ -71,6 +71,7 @@ Other data_import:
 \code{\link[=get_samples]{get_samples()}},
 \code{\link[=load_example_data]{load_example_data()}},
 \code{\link[=load_tirtlseq]{load_tirtlseq()}},
+\code{\link[=load_tirtlseq_old]{load_tirtlseq_old()}},
 \code{\link[=read_external_bulk]{read_external_bulk()}}
 }
 \concept{data_import}

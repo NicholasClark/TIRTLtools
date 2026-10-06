@@ -23,7 +23,7 @@ load_tirtlseq(
 )
 }
 \arguments{
-\item{directory}{the directory to look in for ".tsv" or ".tsv.gz" files of TIRTLseq data}
+\item{directory}{the directory (or a vector of directories) to look in for ".tsv" or ".tsv.gz" files of TIRTLseq data}
 
 \item{chain}{which TCR chain data to load data for -- "all" chains (alpha, beta, and paired) by default.}
 
@@ -90,6 +90,10 @@ The function expects ".tsv" (or ".tsv.gz") files. It looks for files ending in
 "_pseudobulk_TRA.tsv" (alpha-chain pseudo-bulk), "_pseudobulk_TRB.tsv" (beta-chain pseudo-bulk),
 and "_TIRTLoutput.tsv" (paired alpha and beta chains).
 
+The files in the directory are found using \code{\link[=get_samples]{get_samples()}}. If a sample is missing
+one of its three files, the corresponding data frame is an empty tibble (zero rows)
+with the expected column names.
+
 By default, the function will construct a metadata table with a row for each sample, based
 on unique strings at the beginning of filenames (before "_TIRTLoutput.tsv" or similar).
 If the filename contains sample metadata, then it can add multiple columns to the metadata
@@ -121,6 +125,7 @@ SJTRC_minimal$info ## information
 Other data_import:
 \code{\link[=get_samples]{get_samples()}},
 \code{\link[=load_example_data]{load_example_data()}},
+\code{\link[=load_tirtlseq_old]{load_tirtlseq_old()}},
 \code{\link[=read_external_bulk]{read_external_bulk()}},
 \code{\link[=read_external_paired]{read_external_paired()}}
 }
