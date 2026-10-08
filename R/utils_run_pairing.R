@@ -65,6 +65,48 @@
   return(well_meta)
 }
 
+## list with one item per plate: list(path = folder, wells = wellset for the plate, name = plate name).
+## 'wellset' is a vector (used for all plates) or a list with a vector for each plate.
+.get_plate_wellsets = function(folder_path, wellset) {
+  checkmate::assert_directory_exists(folder_path)
+  n_plates = length(folder_path)
+  if(is.list(wellset)) {
+    if(length(wellset) != n_plates) stop("If 'wellset' is a list, it needs to be the same length as 'folder_path'")
+  } else {
+    wellset = rep(list(wellset), n_plates)
+  }
+  plates = lapply(seq_len(n_plates), function(i) {
+    list(path = folder_path[i], wells = wellset[[i]], name = basename(normalizePath(folder_path[i])))
+  })
+  if(n_plates > 1 && anyDuplicated(sapply(plates, `[[`, "name"))) {
+    stop("Folder names in 'folder_path' need to be unique to tell plates apart")
+  }
+  return(plates)
+}
+
+## well metadata for all plates, with a 'plate' column. For multiple plates, 'well' has the
+## plate name appended ("<well>_<plate>") so that well names are unique.
+.list_well_files_plates = function(plates, well_pos = 3, verbose = TRUE) {
+  multi = length(plates) > 1
+  well_meta = lapply(plates, function(pl) {
+    if(verbose && multi) message(paste0("Plate ", pl$name, ":"))
+    meta = .list_well_files(pl$path, pl$wells, well_pos, verbose)
+    meta$plate = pl$name
+    if(multi) meta$well = paste0(meta$well, "_", pl$name)
+    meta
+  })
+  return(bind_rows(well_meta))
+}
+
+## read clone files for wells from all plates into one list named by (plate-specific) well
+.read_well_files_plates = function(plates, plate_of_well, files, wells, chain, verbose = TRUE) {
+  mlist = lapply(plates, function(pl) {
+    idx = plate_of_well == pl$name
+    .read_well_files(pl$path, files[idx], wells[idx], chain, verbose)
+  })
+  return(do.call(c, mlist))
+}
+
 ## read clone files into a list named by well. Wells without a file get an empty table.
 .read_well_files = function(folder_path, files, wells, chain, verbose = TRUE) {
   n_files = sum(!is.na(files))

@@ -33,7 +33,9 @@
 #' See Holec et al. (2019) for a full description of the MAD-HYPE algorithm.
 #'
 #'
-#' @param folder_path the path of the folder with well-level data
+#' @param folder_path the path of the folder with well-level data. To pair a sample spread over multiple plates,
+#' pass a vector of folder paths (one per plate). Well names are then made unique by appending the plate
+#' (folder) name, e.g. "A1_UD01", so the folder names must be unique.
 #' @param folder_out the path of the folder to write results to. The function will create the folder if it does not exist.
 #' @param prefix a prefix for the output file names
 #' @param well_filter_thres wells are removed if they have fewer unique clones than: wellfilter_thres*(Avg. # of unique clones per well).
@@ -48,7 +50,8 @@
 #' @param tshell_settings a named list with pairing settings for T-SHELL: `pval_thres_tshell` and `wij_thres_tshell`. You may pass your own list or call \code{\link{get_tshell_settings}()} with setting "auto", "384_well", or "96_well". By default, "auto" is selected and "384_well" settings will be used if there are >= 150 wells passing QC, otherwise "96_well" settings will be used.
 #' - `pval_thres_tshell` is the adjusted p-value threshold for T-SHELL significance (default 1e-10 for 384-well plate, 1e-3 for 96-well plate)
 #' - `wij_thres_tshell` is the threshold for the number of wells containing both chains for T-SHELL significance (default >2 wells for 384-well plate, >3 wells for 96-well plate)
-#' @param wellset a vector of wells to use for the pairing
+#' @param wellset a vector of wells to use for the pairing. For multiple plates, either a vector of wells
+#' (used for every plate) or a list with one vector of wells for each plate (in the same order as `folder_path`).
 #' @param backend the computing backend for the pairing algorithms: "auto" (default) uses a GPU if one is
 #' available and otherwise C++. "cupy" (NVIDIA GPU) and "mlx" (Apple silicon GPU) run on the GPU with python.
 #' "cpp" runs on the CPU with parallel C++ and does not need python. ("cpu" is deprecated, use "cpp".)
@@ -212,10 +215,12 @@ run_pairing = function(
   .create_folder(folder_out, verbose = verbose)
 
   ## 1. Load well data ======================================================
-  well_meta = .list_well_files(folder_path, wellset, well_pos, verbose)
+  plates = .get_plate_wellsets(folder_path, wellset)
+  well_meta = .list_well_files_plates(plates, well_pos, verbose)
+  wellset = well_meta$well ## multiple plates: well names have the plate name appended
   counts = list(
-    alpha = .read_well_files(folder_path, well_meta$file_alpha, well_meta$well, "alpha", verbose),
-    beta = .read_well_files(folder_path, well_meta$file_beta, well_meta$well, "beta", verbose)
+    alpha = .read_well_files_plates(plates, well_meta$plate, well_meta$file_alpha, well_meta$well, "alpha", verbose),
+    beta = .read_well_files_plates(plates, well_meta$plate, well_meta$file_beta, well_meta$well, "beta", verbose)
   )
   if(exclude_nonfunctional) {
     if(verbose) message("Excluding chains with stop codons or frameshifts...")
