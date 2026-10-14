@@ -80,6 +80,7 @@
 #' @param wellset1 `r lifecycle::badge("deprecated")` Use `wellset` instead.
 #' @param compute `r lifecycle::badge("deprecated")` Use `pseudobulk_only` instead
 #' (`compute = FALSE` is the same as `pseudobulk_only = TRUE`).
+#' @param algorithm which pairing algorithm(s) to run: "both" (default), "madhype", or "tshell".
 #' @param pval_thres_tshell `r lifecycle::badge("deprecated")` Use `tshell_settings` instead.
 #' @param wij_thres_tshell `r lifecycle::badge("deprecated")` Use `tshell_settings` instead.
 #' @param fork `r lifecycle::badge("deprecated")` No longer used.
@@ -145,7 +146,8 @@ run_pairing = function(
     pseudobulk_only = FALSE,
     run_qc = TRUE,
     clone_threshold_chain = c("alpha", "beta", "independent"),
-    print_timings = FALSE
+    print_timings = FALSE,
+    algorithm = c("both", "madhype", "tshell")
 ){
   ## step timings (tictoc): timer$start("name") ... timer$stop()
   timer = .make_step_timer(verbose = print_timings && verbose)
@@ -155,6 +157,7 @@ run_pairing = function(
     if(print_timings) .report_step_timings(timer$timings())
     tictoc::toc(quiet = !verbose)
   }, add = TRUE)
+  algorithm = match.arg(algorithm)
   clone_threshold_chain = clone_threshold_chain[1]
   checkmate::assert_choice(clone_threshold_chain, choices = c("alpha", "beta", "independent"))
   checkmate::assert_directory_exists(folder_path)
@@ -292,7 +295,7 @@ run_pairing = function(
 
   timer$start("Pairing (MAD-HYPE + T-SHELL)")
   backend = .setup_pairing_backend(backend, verbose)
-  pair_res = .run_pairing_algorithms(mats, mdh, backend, filter_before_top3 = filter_before_top3,
+  pair_res = .run_pairing_algorithms(mats, mdh, backend, algorithm = algorithm, filter_before_top3 = filter_before_top3,
                                      chunk_size = chunk_size, verbose = verbose)
   if(write_extra_files) .write_unfiltered_pairs(pair_res, folder_out, prefix, verbose)
 

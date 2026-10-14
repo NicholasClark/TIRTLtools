@@ -541,14 +541,14 @@ get_input_mat<-function(mat,mat2) #matrix form: gets two matrices outputs wi, wj
   # with most significant chains at the top. sort all functional chains higher than all non-functional.
   df_mdh = df %>% filter(method == "madhype") %>%
     arrange(desc(is_functional), desc(score))
-  df_tshell = df %>% filter(method == "tshell") %>%
-    arrange(desc(is_functional), pval)
-  if(filter_madhype) {
+  df_tshell = df %>% filter(method == "tshell")
+  if(nrow(df_tshell) > 0) df_tshell = df_tshell %>% arrange(desc(is_functional), pval)
+  if(filter_madhype && nrow(df_mdh) > 0) {
     pairs_mdh = .build_pairs_df(df_mdh)
   } else {
     pairs_mdh = df_mdh
   }
-  if(filter_tshell) {
+  if(filter_tshell && nrow(df_tshell) > 0) {
     pairs_tshell = .build_pairs_df(df_tshell)
   } else {
     pairs_tshell = df_tshell

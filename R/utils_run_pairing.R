@@ -394,16 +394,15 @@
 }
 
 ## run MAD-HYPE and T-SHELL. Returns a list with two data frames: "mdh" (MAD-HYPE) and "corr" (T-SHELL)
-.run_pairing_algorithms = function(mats, mdh, backend, filter_before_top3 = FALSE, chunk_size = 500, verbose = TRUE) {
+.run_pairing_algorithms = function(mats, mdh, backend, algorithm = "both", filter_before_top3 = FALSE, chunk_size = 500, verbose = TRUE) {
   ## the alpha and beta matrices must have the same wells (columns)
   if(!identical(colnames(mats$alpha), colnames(mats$beta))) {
     stop("Error creating alpha/beta read count matrices: wells are not in the same order")
   }
   chunk_size = as.integer(chunk_size)
-  pair_res = list(
-    mdh = .run_madhype(mats, mdh, backend, chunk_size, verbose),
-    corr = .run_tshell(mats, backend, filter_before_top3, chunk_size, verbose)
-  )
+  pair_res = list()
+  if(algorithm %in% c("both", "madhype")) pair_res$mdh = .run_madhype(mats, mdh, backend, chunk_size, verbose)
+  if(algorithm %in% c("both", "tshell")) pair_res$corr = .run_tshell(mats, backend, filter_before_top3, chunk_size, verbose)
   if(verbose) message("Pairing is finished.")
   return(pair_res)
 }
@@ -411,7 +410,7 @@
 ## write the MAD-HYPE and T-SHELL pairs before filtering and post-processing
 .write_unfiltered_pairs = function(pair_res, folder_out, prefix, verbose = TRUE) {
   files = c(mdh = "madhyperesults.csv", corr = "corresults.csv")
-  for(method in names(files)) {
+  for(method in intersect(names(files), names(pair_res))) {
     file = .pairing_output_file(prefix, files[[method]])
     if(verbose) message(paste("Writing unfiltered pairs...", file))
     fwrite(pair_res[[method]], file.path(folder_out, file))
@@ -432,20 +431,31 @@
       mutate(alpha_nuc = alpha_nuc_seq, beta_nuc = beta_nuc_seq,
              alpha_beta = paste0(alpha_nuc_seq, "_", beta_nuc_seq))
   }
-  madhype = pair_res$mdh %>%
-    .add_sequences() %>%
-    mutate(method = "madhype") %>%
-    as.data.table()
+  madhype = NULL
+  tshell = NULL
+  if(!is.null(pair_res$mdh)) {
+    madhype = pair_res$mdh %>%
+      .add_sequences() %>%
+      mutate(method = "madhype") %>%
+      as.data.table()
+  }
   ## T-SHELL results -- top 3 betas for each alpha
-  tshell = pair_res$corr %>%
-    .add_sequences() %>%
-    mutate(ts = r*sqrt((n_wells - 2) / (1 - r^2)),
-           pval = 2*pt(-abs(ts), n_wells - 2)) %>%
-    as.data.table()
-  tshell[, pval_adj := pval/sort(pval)[3], alpha_nuc]
-  tshell[, method := "tshell"]
+  if(!is.null(pair_res$corr)) {
+    tshell = pair_res$corr %>%
+      .add_sequences() %>%
+      mutate(ts = r*sqrt((n_wells - 2) / (1 - r^2)),
+             pval = 2*pt(-abs(ts), n_wells - 2)) %>%
+      as.data.table()
+    tshell[, pval_adj := pval/sort(pval)[3], alpha_nuc]
+    tshell[, method := "tshell"]
+  }
 
   result = rbind(madhype, tshell, fill = TRUE)
+  ## same columns, in the same order, whichever algorithms were run
+  cols = c("alpha_nuc", "beta_nuc", "wij", "wa", "wb", "alpha_nuc_seq", "beta_nuc_seq", "alpha_beta",
+           "method", "r", "ts", "pval", "pval_adj")
+  for(col in setdiff(cols, names(result))) result[, (col) := NA_real_]
+  data.table::setcolorder(result, cols)
   ## wa/wb: wells with alpha/beta chain, wij: wells with both
   result[, loss_a_frac := (wb-wij)/(wij+(wb-wij)+(wa-wij))]
   result[, loss_b_frac := (wa-wij)/(wij+(wb-wij)+(wa-wij))]
@@ -467,6 +477,7 @@
 
 ## keep all MAD-HYPE pairs and T-SHELL pairs passing the significance thresholds
 .filter_tshell_pairs = function(result, tshell_settings) {
+  if(!"tshell" %in% result$method) return(result)
   result[method == "madhype" |
            (method == "tshell" &
               wij > tshell_settings$wij_thres_tshell &
