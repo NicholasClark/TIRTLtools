@@ -76,6 +76,7 @@
 #' the threshold for both chains. If "independent", then TCRalpha clones will be used
 #' to determine a QC threshold for alpha and TCRbeta clones will be used to determine
 #' a separate QC threshold for beta clones. ("alpha" is default)
+#' @param print_timings whether to print timings for each step (default FALSE)
 #' @param wellset1 `r lifecycle::badge("deprecated")` Use `wellset` instead.
 #' @param compute `r lifecycle::badge("deprecated")` Use `pseudobulk_only` instead
 #' (`compute = FALSE` is the same as `pseudobulk_only = TRUE`).
@@ -143,15 +144,23 @@ run_pairing = function(
     gzip_output = FALSE,
     pseudobulk_only = FALSE,
     run_qc = TRUE,
-    clone_threshold_chain = c("alpha", "beta", "independent")
+    clone_threshold_chain = c("alpha", "beta", "independent"),
+    print_timings = FALSE
 ){
+  ## step timings (tictoc): timer$start("name") ... timer$stop()
+  timer = .make_step_timer(verbose = print_timings && verbose)
   tictoc::tic()
-  on.exit(tictoc::toc(quiet = !verbose), add = TRUE)
+  on.exit({
+    timer$stop()
+    if(print_timings) .report_step_timings(timer$timings())
+    tictoc::toc(quiet = !verbose)
+  }, add = TRUE)
   clone_threshold_chain = clone_threshold_chain[1]
   checkmate::assert_choice(clone_threshold_chain, choices = c("alpha", "beta", "independent"))
   checkmate::assert_directory_exists(folder_path)
 
   ## 0. Arguments ===========================================================
+  timer$start("Argument checks")
   backend = backend[1]
   if(identical(backend, "cpu")) {
     lifecycle::deprecate_warn(
@@ -215,6 +224,7 @@ run_pairing = function(
   .create_folder(folder_out, verbose = verbose)
 
   ## 1. Load well data ======================================================
+  timer$start("Load well data")
   plates = .get_plate_wellsets(folder_path, wellset)
   well_meta = .list_well_files_plates(plates, well_pos, verbose)
   wellset = well_meta$well ## multiple plates: well names have the plate name appended
@@ -232,6 +242,7 @@ run_pairing = function(
   }
 
   ## 2. Well QC =============================================================
+  timer$start("Well QC")
   clone_thres = .get_clone_thresholds(counts, well_filter_thres, clone_threshold_chain)
   qc = NULL
   if(run_qc) {
@@ -249,23 +260,28 @@ run_pairing = function(
   }
 
   ## 3. Pseudobulk ==========================================================
+  timer$start("Pseudobulk")
   if(verbose) message("Tabulating pseudobulk counts")
   pseudobulk = lapply(counts, .make_pseudobulk)
   .write_pseudobulk(pseudobulk, folder_out, prefix, gzip_output, verbose)
   if(verbose) message("Pseudobulk done")
+  timer$stop()
   if(pseudobulk_only && !write_extra_files) return(invisible(NULL))
 
   ## 4. Read count matrices (chain x well) ==================================
   ## both matrices have the same wells (columns), in the same order
+  timer$start("Count matrices")
   pairing_wells = .get_pairing_wells(counts, min_reads, verbose)
   mats = list(
     alpha = .build_count_matrix(counts$alpha, "alpha", pairing_wells, min_reads, min_wells, verbose),
     beta = .build_count_matrix(counts$beta, "beta", pairing_wells, min_reads, min_wells, verbose)
   )
   if(write_extra_files) .write_count_matrices(mats, pseudobulk, folder_out, prefix, verbose)
+  timer$stop()
   if(pseudobulk_only) return(invisible(NULL))
 
   ## 5. Pairing =============================================================
+  timer$start("Look-up table")
   tshell_settings = .resolve_tshell_settings(tshell_settings, n_wells = length(counts$alpha),
                                              overrides = tshell_overrides, verbose = verbose)
   n_wells = ncol(mats$alpha)
@@ -274,12 +290,14 @@ run_pairing = function(
   mdh = madhyper_surface(n_wells = n_wells, cells = clone_thres$alpha, alpha = 2, prior = prior)
   if(write_extra_files) write_dat(mdh, fname = file.path(folder_out, .pairing_output_file(prefix, "mdh.tsv")))
 
+  timer$start("Pairing (MAD-HYPE + T-SHELL)")
   backend = .setup_pairing_backend(backend, verbose)
   pair_res = .run_pairing_algorithms(mats, mdh, backend, filter_before_top3 = filter_before_top3,
                                      chunk_size = chunk_size, verbose = verbose)
   if(write_extra_files) .write_unfiltered_pairs(pair_res, folder_out, prefix, verbose)
 
   ## 6. Post-processing =====================================================
+  timer$start("Post-processing")
   if(verbose) message("Filtering results, adding amino acid and V segment information...")
   result = .combine_pair_results(pair_res, mats)
   if(verbose) message("Scoring unique pairs...")
@@ -290,6 +308,40 @@ run_pairing = function(
   result = .filter_pairs(result, filter_madhype = select_best_madhype, filter_tshell = select_best_tshell)
 
   ## 7. Write output ========================================================
+  timer$start("Write output")
   .write_pairs(result, folder_out, prefix, gzip_output, verbose)
   return(result)
+}
+
+## Timer for the steps of run_pairing(), based on tictoc. start() ends any step in progress
+## and begins a new one; stop() ends the current step (no-op if none).
+.make_step_timer = function(verbose = FALSE) {
+  times = numeric(0)
+  open = FALSE
+  stop = function() {
+    if(!open) return(invisible(NULL))
+    t = tictoc::toc(quiet = TRUE)
+    times[[t$msg]] <<- unname(t$toc - t$tic)
+    if(verbose) message(sprintf("  %s done: %.2f s", t$msg, times[[t$msg]]))
+    open <<- FALSE
+    invisible(NULL)
+  }
+  start = function(name) {
+    stop()
+    tictoc::tic(name)
+    open <<- TRUE
+    invisible(NULL)
+  }
+  list(start = start, stop = stop, timings = function() times)
+}
+
+## print a table of step timings (seconds and % of total)
+.report_step_timings = function(times) {
+  if(length(times) == 0) return(invisible(NULL))
+  total = sum(times)
+  pct = if(total > 0) 100 * times / total else rep(0, length(times))
+  secs = formatC(times, format = "f", digits = 2, width = 8)
+  lines = paste0("  ", formatC(names(times), width = -max(nchar(names(times))), flag = "-"),
+                 "  ", secs, " s  (", formatC(pct, format = "f", digits = 1, width = 5), "%)")
+  message("Step timings:\n", paste(lines, collapse = "\n"))
 }
