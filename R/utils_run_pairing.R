@@ -511,3 +511,58 @@
   }
   return(invisible(NULL))
 }
+
+
+.filter_pairs = function(df, filter_madhype = TRUE, filter_tshell = TRUE, prefer_functional = TRUE,
+                         n_max_alpha = 2, n_max_beta = 1) {
+  df = df %>%
+    mutate(is_functional = (!grepl("\\*", cdr3a)) & (!grepl("_", cdr3a)) & (!grepl("\\*", cdr3b)) & (!grepl("_", cdr3b)) )
+
+  # sort initial pairs data frames by score (madhype) and p-value (t-shell)
+  # with most significant chains at the top. sort all functional chains higher than all non-functional.
+  df_mdh = df %>% filter(method == "madhype")
+  if(nrow(df_mdh) > 0 && prefer_functional) df_mdh = df_mdh %>% arrange(desc(is_functional), desc(score))
+  if(nrow(df_mdh) > 0 && !prefer_functional) df_mdh = df_mdh %>% arrange(desc(score))
+
+  df_tshell = df %>% filter(method == "tshell")
+  if(nrow(df_tshell) > 0 && prefer_functional) df_tshell = df_tshell %>% arrange(desc(is_functional), pval)
+  if(nrow(df_tshell) > 0 && !prefer_functional) df_tshell = df_tshell %>% arrange(pval)
+
+  if(filter_madhype && nrow(df_mdh) > 0) {
+    pairs_mdh = .build_pairs_df(df_mdh, n_max_alpha = n_max_alpha, n_max_beta = n_max_beta)
+  } else {
+    pairs_mdh = df_mdh
+  }
+  if(filter_tshell && nrow(df_tshell) > 0) {
+    pairs_tshell = .build_pairs_df(df_tshell, n_max_alpha = n_max_alpha, n_max_beta = n_max_beta)
+  } else {
+    pairs_tshell = df_tshell
+  }
+  pairs_both = bind_rows(pairs_mdh, pairs_tshell)
+  return(pairs_both)
+}
+
+### make final pairs data frame after sorting initial pairs by score (or p-value for t-shell)
+# input: df is a data frame with pairs, sorted by p-value (t-shell) or score (mad-hype)
+# with the most significant/high-scoring pairs at the top
+.build_pairs_df = function(df, n_max_alpha = 2, n_max_beta = 1) {
+  ## initialize an empty dataframe for final pairs
+  pairs = df[c(),]
+  ## iterate through all initial pairs, starting with most significant
+  for(i in 1:nrow(df)) {
+    ## for each initial pair:
+    ## count how many times the alpha and beta chain appears in the final pairs data frame
+    alpha_tmp = df$alpha_nuc[i] ## current alpha
+    beta_tmp = df$beta_nuc[i] ## current beta
+    n_beta_paired = sum(pairs$beta_nuc %in% beta_tmp) ## current beta count in final pairs data frame
+    n_alpha_paired = sum(pairs$alpha_nuc %in% alpha_tmp) ## current alpha count in final pairs data frame
+    ## if alpha is not in final pairs (or it is less than n_max_beta times) and beta is in final pairs at most once (or less than n_max_alpha times), add pair to final pairs!
+    if(n_beta_paired < n_max_alpha && n_alpha_paired < n_max_beta) {
+      tmp = df[i,]
+      pairs = bind_rows(pairs, tmp)
+    } ## else discard row
+  }
+  pairs = pairs %>% select(-is_functional) ## remove "is_functional" column
+  return(pairs)
+}
+

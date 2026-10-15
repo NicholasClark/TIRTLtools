@@ -25,14 +25,15 @@
   data = data %>% .annotate_paired_single() ## adds "is_paired" column to single-chain data and adds "paired_alt" data frame
 
   if(clean) data$paired = data$paired %>% .clean_pairs_single()
-  if(clean && (!is.null(data$paired_alt))) data$paired_alt = data$paired_alt %>% .clean_pairs_single()
+  #if(clean && (!is.null(data$paired_alt))) data$paired_alt = data$paired_alt %>% .clean_pairs_single()
 
   data$paired = data$paired %>%
     .order_columns(.get_paired_cols_ordered(), keep_extra = TRUE, verbose = verbose) %>%
     arrange(receptor_rank)
-  data$paired_alt = data$paired_alt %>%
-    .order_columns(.get_paired_alt_cols_ordered(), keep_extra = TRUE, verbose = verbose) %>%
-    arrange(receptor_rank)
+  data$paired_alt = .paired_df_to_paired_alt(data$paired)
+  # data$paired_alt = data$paired_alt %>%
+  #   .order_columns(.get_paired_alt_cols_ordered(), keep_extra = TRUE, verbose = verbose) %>%
+  #   arrange(receptor_rank)
   data$alpha = data$alpha %>%
     .order_columns(.get_single_chain_cols_ordered(), keep_extra = TRUE, verbose = verbose) %>%
     arrange(rank)
@@ -210,6 +211,20 @@
       .default = "error"
     ))
 
+  paired_tmp = .paired_df_to_paired_alt(paired_tmp)
+
+  return(list(alpha = tmp_alpha, beta = tmp_beta, paired_alt = paired_tmp))
+}
+
+.paired_df_to_paired_alt = function(paired_df) {
+  if(.is.DataFrame(paired_df)) paired_df = as.data.table(paired_df)
+
+  paired_tmp_madhype = paired_df %>% filter(method == "madhype")
+  paired_tmp_tshell = paired_df %>% filter(method == "tshell")
+
+  paired_tmp = paired_df %>% remove_duplicates() %>% as.data.table()
+  paired_tmp$paired_status = "paired"
+
   paired_tmp = paired_tmp %>%
     mutate(method = NULL) %>%
     mutate(is_paired_madhype = alpha_beta %in% paired_tmp_madhype$alpha_beta) %>%
@@ -220,9 +235,11 @@
       is_paired_tshell & !is_paired_madhype ~ "T-SHELL only",
       (!is_paired_tshell) & (!is_paired_madhype) ~ "neither",
       .default = "error"
-    )) ## paired data frame with no duplicates, labeled by method
+    ))  %>%
+    .order_columns(.get_paired_alt_cols_ordered(), keep_extra = TRUE, verbose = F) %>%
+    arrange(receptor_rank)
 
-  return(list(alpha = tmp_alpha, beta = tmp_beta, paired_alt = paired_tmp))
+  return(paired_tmp)
 }
 
 
